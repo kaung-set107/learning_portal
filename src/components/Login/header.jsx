@@ -13,10 +13,10 @@ export default function Header ({
       <div className='flex justify-center'>
         <img alt='' className='h-24 w-24' src={Img} />
       </div>
-      <h2 className='mt-6 text-center text-3xl font-extrabold text-blue-500'>
+      <h2 className='mt-6 text-center text-3xl font-extrabold text-secondary-500'>
         {heading}
       </h2>
-      <p className='mt-2 text-center text-sm text-blue-500 mt-5'>
+      <p className='mt-2 text-center text-sm text-secondary-400 '>
         {paragraph}{' '}
         <Link
           to={linkUrl}

@@ -15,7 +15,7 @@ export default function LoginPage() {
         >
           <Header
             heading='Login to your account'
-            paragraph="Welcome To HRM"
+            paragraph="Welcome To MSI Learning Portal"
 
           />
           <Login />

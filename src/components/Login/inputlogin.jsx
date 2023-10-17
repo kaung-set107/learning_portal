@@ -59,7 +59,7 @@ export default function Login() {
         <Input
           variant={'underlined'}
           type='email'
-          label='Email'
+     placeholder="Email"
           ref={emailRef}
           endContent={
             <MailFilledIcon className='text-2xl text-default-400 pointer-events-none flex-shrink-0' />
@@ -69,7 +69,7 @@ export default function Login() {
           variant={'underlined'}
           ref={passRef}
           type={isVisible ? 'text' : 'password'}
-          label='Password'
+placeholder="Password"
           endContent={
             <button
               className='focus:outline-none'

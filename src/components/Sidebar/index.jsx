@@ -1,7 +1,7 @@
 // import { Accordion} from '@nextui-org/react'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBriefcase, faBuildingUser, faCalendarDays, faCalendarXmark, faHandHoldingDollar, faMoneyCheckDollar, faUsers } from '@fortawesome/free-solid-svg-icons'
+import { faBook, faBuildingUser, faLaptopFile, faCalendarXmark, faHandHoldingDollar, faMoneyCheckDollar, faUsers } from '@fortawesome/free-solid-svg-icons'
 import {
   Card,
   CardBody,
@@ -41,26 +41,26 @@ export default function Sidebar () {
                     <div className='hover:bg-default-100 px-4 py-3 m-auto'>
                       <FontAwesomeIcon icon={faUsers} size='xl' />
                       &nbsp;&nbsp;
-                      <span className='ml-3 font-medium'>Student</span>
+                      <span className='ml-3 font-medium'>Instructor</span>
                     </div>
                   </Link>
                   <Divider></Divider>
                   <Link to='/attendance'>
 
                     <div className='hover:bg-default-100 px-4 py-3'>
-                      <FontAwesomeIcon icon={faCalendarDays} size='xl' />
+                      <FontAwesomeIcon icon={faLaptopFile} size='xl'/>
 
-                      &nbsp;&nbsp;
-                      <span className='ml-4 font-medium'>Attendance</span>
+                      &nbsp;
+                      <span className='ml-4 font-medium'>Courses</span>
                     </div>
                   </Link>
 
                   <Divider></Divider>
                   <Link to='/position'>
                     <div className='hover:bg-default-100 px-4 py-3'>
-                      <FontAwesomeIcon icon={faBriefcase} size='xl' />
+                      <FontAwesomeIcon icon={faBook} size='xl' />
                       &nbsp;&nbsp;
-                      <span className='ml-3 font-medium'>Position</span>
+                      <span className='ml-4 font-medium'>Subjects</span>
                     </div>
                   </Link>
                   <Divider></Divider>

@@ -14,14 +14,14 @@ import {
   CardFooter
 } from '@nextui-org/react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from "@nextui-org/react";
-import { Image } from '@nextui-org/react'
+// import { Image } from '@nextui-org/react'
 // import { SearchIcon } from './search'
 // import { Link } from 'react-router-dom'
 import ThemeSwitch from '../ThemeSwitch/index'
 import { useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import apiInstance from '../../util/api'
-import LP from '../../assets/lp.png'
+// import LP from '../../assets/lp.png'
 import { EyeFilledIcon } from './EyeFilledIcon';
 import { EyeSlashFilledIcon } from './EyeSlashFilledIcon';
 import Swal from 'sweetalert2';
@@ -167,21 +167,12 @@ export default function NavBar() {
   // const NavCheck = location.pathname === '/'
   return (
     <>
-      {location.pathname !== '/' && (
+      {location.pathname !== '/' && location.pathname !== '/login' && (
         <Navbar maxWidth='full' isBordered isBlurred={false} className='py-4 sticky-top'>
           {/* <h3>Hello</h3> */}
 
           <NavbarBrand>
-            <div className='flex flex-row place-content-between'>
-              <Image
-                alt='nextui logo'
-              
-                radius='sm'
-                src={LP}
-     style={{ width:'180px' }}
-              />
-  
-            </div>
+             <h3 className="text-3xl text-dark-900 font-semibold">E-Learning</h3>
           </NavbarBrand>
 
           <NavbarContent
