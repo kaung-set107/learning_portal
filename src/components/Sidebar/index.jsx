@@ -37,7 +37,7 @@ export default function Sidebar () {
               > */}
                 {/* Employee */}
                 {/* <AccordionItem key='1' title='Master'> */}
-                  <Link to='/emp'>
+                  <Link to='/instru'>
                     <div className='hover:bg-default-100 px-4 py-3 m-auto'>
                       <FontAwesomeIcon icon={faUsers} size='xl' />
                       &nbsp;&nbsp;

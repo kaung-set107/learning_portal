@@ -6,28 +6,28 @@ import {
   CardFooter,
   Divider,
 } from "@nextui-org/react";
-import Back from '../../assets/img/ba.svg'
 
-import { Button } from "@nextui-org/react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCircleChevronLeft} from '@fortawesome/free-solid-svg-icons'
 // import {Button} from "@nextui-org/react";
 import { Link } from "react-router-dom";
-import Input from "../../components/Instructor/employeeUpdateInput";
-export default function employeeAdd() {
+import Input from "../../components/Instructor/employeeInput";
+export default function InstructorAdd() {
   return (
     <div className="flex">
       <div className="sidebar">
         <Sidebar />
       </div>
-      <div className=" flex-grow">
-        <div className="body ">
-          <Card className="rounded-md shadow-md ml-20">
+      <div className="flex-grow">
+        <div className="body">
+          <Card className="rounded-md">
             <CardHeader className="justify-between">
-              <Button
-                variant="light"
+              <div
+               
                 className="rounded-none px-4 py-0 text-left">
-                <Link to="/emp" className='text-cyan-600'><img src={Back} width='20px' height='20px'/></Link>
-              </Button>
-              <div className="font-semibold">Instructor Update & Detail</div>
+                <Link to="/instru" className='mr-5'><FontAwesomeIcon icon={faCircleChevronLeft} size="2xl" /></Link>
+              </div>
+              <div className="font-semibold text-2xl">Instructor Register</div>
               <div></div>
             </CardHeader>
             <CardBody>

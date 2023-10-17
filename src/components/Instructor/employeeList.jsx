@@ -51,7 +51,7 @@ export default function EmployeeTable() {
   };
   useEffect(() => {
     const getEmployee = async () => {
-      await apiInstance.get(`users`, { params: { limit: 80, rowsPerPage: rowsPerPage } }).then((res) => {
+      await apiInstance.get(`instructors`, { params: { limit: 80, rowsPerPage: rowsPerPage } }).then((res) => {
         setEmpList(res.data.data);
         setPages(res.data._metadata.page_count)
         console.log(res.data.data, "emp");
@@ -78,7 +78,7 @@ export default function EmployeeTable() {
 
   const handleDelete = async () => {
     console.log(setDelID);
-    await apiInstance.delete("user/" + delID).then(() => {
+    await apiInstance.delete("instructors/" + delID).then(() => {
       setEmpList(empList.filter((item) => item._id !== delID));
 
       onClose();
@@ -127,11 +127,11 @@ export default function EmployeeTable() {
           <TableColumn key="no">No</TableColumn>
           <TableColumn key="name">Name</TableColumn>
           <TableColumn key="description">Gender</TableColumn>
-          <TableColumn key="workingFrom">Age/DOB</TableColumn>
+          <TableColumn key="workingFrom">Phone</TableColumn>
           <TableColumn key="workingUntil">NRC</TableColumn>
-          <TableColumn key="casualLeaves">Phone</TableColumn>
-          <TableColumn key="medicalLeaves">Department</TableColumn>
-          <TableColumn key="vacationLeaves">Position</TableColumn>
+          <TableColumn key="casualLeaves">Qualification</TableColumn>
+          <TableColumn key="vacationLeaves">Role</TableColumn>
+           <TableColumn key="vacationLeaves">UserName</TableColumn>
           <TableColumn key="actions">Actions</TableColumn>
         </TableHeader>
         <TableBody emptyContent={"No Positions to display."}>
@@ -139,15 +139,15 @@ export default function EmployeeTable() {
             <TableRow key={item._id}>
               <TableCell>{index + 1}</TableCell>
               <TableCell>
-                {console.log(item.profile, 'profile')}
+                
                 <User
                   avatarProps={{
                     radius: "lg",
                     src:
-                      item.profile.length > 0 ? "http://hrmbackend.kwintechnologykw11.com:5000/static/hrm/" + item.profile[0].imgUrl : '',
+                      item.image ? "http://learningportalbackend.kwintechnologies.com:3600/img/instructors/" + item.image.filename : '',
                   }}
                   description={item.email}
-                  name={item.givenName}>
+                  name={item.name}>
                   {item.email}
                 </User>
               </TableCell>
@@ -155,16 +155,11 @@ export default function EmployeeTable() {
                 {item.gender}
               </TableCell>
 
-              <TableCell>{item.DOB?.split('T')[0]}</TableCell>
-              <TableCell>{item.NRC}</TableCell>
-              <TableCell>{item.phone}</TableCell>
-              <TableCell>{item.relatedDepartment?.name}</TableCell>
-              <TableCell> <div className="flex flex-col">
-                
-                <p className="text-bold text-sm capitalize ">
-                  {item.relatedPosition?.name}
-                </p>
-              </div></TableCell>
+              <TableCell>{item?.phone}</TableCell>
+              <TableCell>{item.nrc}</TableCell>
+              <TableCell>{item.qualification}</TableCell>
+              <TableCell>{item?.role}</TableCell>
+              <TableCell>{item?.username}</TableCell>
           
               <TableCell>
                 <div className="relative flex items-center gap-2">
@@ -176,7 +171,7 @@ export default function EmployeeTable() {
                   <Tooltip content="Edit user">
 
                     <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                      <Link to={'/emp-update/' + item._id}> <EditIcon />    </Link>
+                      <Link to={'/instru-update/' + item._id}> <EditIcon />    </Link>
                     </span>
 
 

@@ -2,9 +2,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Login from './pages/Login/login'
 import Nav from './components/Navbar/index'
 import Dashboard from './pages/Dashboard/index.jsx'
-import Employee from './pages/Instructor/employeeList'
-import EmployeeAdd from './pages/Instructor/employeeAdd'
-import EmployeeUpdate from './pages/Instructor/employeeDetail'
+import Instructor from './pages/Instructor/InstructorList'
+import InstructorAdd from './pages/Instructor/InstructorAdd'
+import InstructorUpdate from './pages/Instructor/InstructorDetail'
 import Position from './pages/Subject/Position.jsx'
 import AuthContainer from './util/AuthContainer.jsx'
 import PositionRegsiter from './pages/Subject/Add'
@@ -65,10 +65,10 @@ export default function RouteFile() {
               element={<DepartmentUpdate />}
             ></Route>
 
-            {/* Employee */}
-            <Route path='/emp' element={<Employee />} />
-            <Route path='/emp-add' element={<EmployeeAdd />} />
-            <Route path='/emp-update/:id' element={<EmployeeUpdate />} />
+            {/* Instructor or user create from admin */}
+            <Route path='/instru' element={<Instructor />} />
+            <Route path='/instru-add' element={<InstructorAdd />} />
+            <Route path='/instru-update/:id' element={<InstructorUpdate />} />
 
             {/* Pay Roll */}
             <Route path='/payroll' element={<PayRoll />} />

@@ -1,819 +1,215 @@
-import { Input } from '@nextui-org/react'
-import { RadioGroup, Radio } from '@nextui-org/react'
+import { Checkbox, Input } from '@nextui-org/react'
 import {
-  Modal,
+
   Button,
-  useDisclosure,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Checkbox
+ Textarea
 } from '@nextui-org/react'
-import { Link } from '@nextui-org/react'
-import { AnchorIcon } from '../../assets/Icons/AnchorIcon.jsx'
-import { Image } from '@nextui-org/react'
-import { useState, useEffect } from 'react'
+import { useState,useEffect} from 'react'
 import apiInstance from '../../util/api.js'
 import Swal from 'sweetalert2'
-import { FileUploader } from 'react-drag-drop-files'
-import { useLocation } from 'react-router-dom'
 
-const fileTypes = ['JPG', 'PNG', 'GIF']
-
+import { useForm } from 'react-hook-form'
+import { useLocation } from 'react-router-dom';
+import { AnchorIcon } from '../../assets/Icons/AnchorIcon'
+import { Link } from '@nextui-org/react'
 export default function EmployeeInput() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const variant = ['faded']
-
-  const [other, setOther] = useState([])
-  const [showOther, setShowOther] = useState([])
-  const [euCer, setEuCer] = useState(null)
-  const [recLetter, setRecLetter] = useState(null)
-  const [profile, setProfile] = useState(null)
-  const location = useLocation()
-  const EmpID = location.pathname.split('/')[2]
-  const [positionList, setPositionList] = useState([])
-  const [directManager, setDirectManager] = useState('')
-  const [directManagerID, setDirectManagerID] = useState('')
-  const [marriedFile, setMarriedFile] = useState(null)
-  const [positionID, setPositionID] = useState([])
-  const [departmentList, setDepartmentList] = useState([])
-  const [showMarried, setShowMarried] = useState(false)
-  const [employee, setEmployee] = useState([])
-  const [department, setDepartment] = useState(null)
-  const [isSelectedCRM, setIsSelectedCRM] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm()
+  const [iList,setIList]=useState([])
+  const Id = useLocation().pathname.split('/')[2]
 
   const [profileAnchor, setProfileAnchor] = useState('')
-  const [marriedAnchor, setMarriedAnchor] = useState('')
-  const [recLetAnchor, setRecLetAnchor] = useState('')
-  const [cvAnchor, setcvAnchor] = useState('')
-  const [eduAnchor, seteduAnchor] = useState('')
+  const [name, setName] = useState('')
+    const [username, setUserName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [nrc, setNrc] = useState('')
+  const [address, setAddress] = useState('')
+  const [phone, setPhone] = useState('')
+  const [intro, setIntro] = useState('')
+  const [quali, setQuali] = useState('')
+  const [role,setRole]=useState('')
+  const [workExp, setWorkExp] = useState('')
+  const [gender, setGender] = useState('')
+  const [isSelectedCRM, setIsSelectedCRM] = useState(false);
 
-  const handleChange = e => {
-    let array = []
-    for (const item of e) {
-      array.push(item)
-    }
-    setOther(array)
-  }
-
-  useEffect(() => {
-    const getPosition = async () => {
-      await apiInstance
-        .get(`positions`, { params: { limit: 80 } })
-        .then(res => {
-          setPositionList(res.data.data)
-        })
-    }
-
-    const getEmployee = async () => {
-      await apiInstance
-        .get('user/' + EmpID, { params: { limit: 80 } })
-        .then(res => {
-          console.log(res.data.data, 'em lis')
-          setEmployee(res.data.data)
-          setDirectManager(
-            res.data.data.relatedDepartment.directManager?.givenName
-          )
-          setIsSelectedCRM(res.data.data.isCRM)
-          setDirectManagerID(res.data.data.relatedDepartment.directManager?._id)
-          setPositionID(res.data.data.relatedPosition)
-          handleInputChange(
-            'relatedDepartment',
-            res.data.data.relatedDepartment._id
-          )
-          handleInputChange(
-            'relatedPosition',
-            res.data.data.relatedPosition._id
-          )
-          setDepartment(res.data.data.relatedDepartment?.name)
-          if (res.data.data.isMarried === true) setShowMarried(!showMarried)
-          setProfileAnchor(
-            res.data.data.profile.length > 0
-              ? 'http://hrmbackend.kwintechnologykw11.com:5000/static/hrm' +
-              res.data.data.profile[0].imgUrl
-              : ''
-          )
-          seteduAnchor(
-            res.data.data.educationCertificate.length > 0
-              ? 'http://hrmbackend.kwintechnologykw11.com:5000/static/hrm' +
-              res.data.data.educationCertificate[0].imgUrl
-              : ''
-          )
-          setcvAnchor(
-            res.data.data['CV'].length > 0
-              ? 'http://hrmbackend.kwintechnologykw11.com:5000/static/hrm' +
-              res.data.data['CV'][0].imgUrl
-              : ''
-          )
-          setMarriedAnchor(
-            res.data.data.married.length > 0
-              ? 'http://hrmbackend.kwintechnologykw11.com:5000/static/hrm' +
-              res.data.data.married[0].imgUrl
-              : ''
-          )
-          setRecLetAnchor(
-            res.data.data.recommendationLetter.length > 0
-              ? 'http://hrmbackend.kwintechnologykw11.com:5000/static/hrm' +
-              res.data.data.recommendationLetter[0].imgUrl
-              : ''
-          )
-          if (res.data.data.other) {
-            setShowOther(res.data.data.other)
-          }
-        })
-    }
-    const getDeparttment = async () => {
-      await apiInstance
-        .get(`departments`, { params: { limit: 80 } })
-        .then(res => {
-          setDepartmentList(res.data.data)
-        })
-    }
-    getEmployee()
-    getDeparttment()
-    getPosition()
-  }, [])
-
-  const handleMarriedFile = e => {
-    if (e.target.files) {
-      setMarriedFile(e.target.files[0])
-    }
-  }
-
-  const handlePosition = val => {
-    setPositionID(positionList.filter(el => el._id === val)[0])
-    handleInputChange('relatedPosition', val)
-  }
-  const handleDirectManager = id => {
-    console.log('id', id, 'handleDepartment')
-    handleInputChange('relatedDepartment', id)
-    setDirectManager(
-      departmentList.filter(el => el._id == id)[0].directManager.givenName
-    )
-    setDirectManagerID(
-      departmentList.filter(el => el._id == id)[0].directManager._id
-    )
-  }
-
-  const handleCer = e => {
-    if (e.target.files) {
-      setEuCer(e.target.files[0])
-    }
-  }
-
-  const handleRecLetter = e => {
-    if (e.target.files) {
-      setRecLetter(e.target.files[0])
-    }
-  }
+  const [profile, setProfile] = useState(null)
 
   const handleProfile = e => {
     if (e.target.files) {
       setProfile(e.target.files[0])
+      console.log(e.target.files, 'file')
     }
   }
 
-  const handleInputChange = (fieldName, value) => {
-    setEmployee(prevValues => ({
-      ...prevValues,
-      [fieldName]: value
-    }))
-  }
-
-  const handleUpdate = async () => {
+  const create = () => {
     const formData = new FormData()
-    // Append fields using ternary if they exist in the employee object
-    employee.givenName
-      ? formData.append('givenName', employee.givenName)
-      : undefined
-    employee.email ? formData.append('email', employee.email) : undefined
-    employee['NRC'] ? formData.append('NRC', employee['NRC']) : undefined
-    employee.address ? formData.append('address', employee.address) : undefined
-    employee['DOB'] ? formData.append('DOB', employee['DOB']) : undefined
-    employee.emergencyContact
-      ? formData.append('emergencyContact', employee.emergencyContact)
-      : undefined
-    isSelectedCRM !== undefined ? formData.append('isCRM', isSelectedCRM) : undefined
-    employee.phone ? formData.append('phone', employee.phone) : undefined
-    employee.passportNo
-      ? formData.append('passportNo', employee.passportNo)
-      : undefined
-    employee.educationBackground
-      ? formData.append('educationBackground', employee.educationBackground)
-      : undefined
-    euCer ? formData.append('edu', euCer) : undefined
-    employee.workExperience
-      ? formData.append('workExperience', employee.workExperience)
-      : undefined
-    employee.cv ? formData.append('cv', employee.cv) : undefined
-    profile ? formData.append('pf', profile) : undefined
-    employee.relatedPosition
-      ? formData.append('relatedPosition', employee.relatedPosition)
-      : undefined
-    recLetter ? formData.append('recLet', recLetter) : undefined
-    employee.firstInterviewDate
-      ? formData.append('firstInterviewDate', employee.firstInterviewDate)
-      : undefined
-    employee.firstInterviewResult
-      ? formData.append('firstInterviewResult', employee.firstInterviewResult)
-      : undefined
-    employee.secondInterviewDate
-      ? formData.append('secondInterviewDate', employee.secondInterviewDate)
-      : undefined
-    employee.secondInterviewResult
-      ? formData.append('secondInterviewResult', employee.secondInterviewResult)
-      : undefined
-    employee.fatherName
-      ? formData.append('fatherName', employee.fatherName)
-      : undefined
 
-    // Append gender and employedDate using ternary if they exist in the employee object
-    employee.gender ? formData.append('gender', employee.gender) : undefined
-    employee.employedDate
-      ? formData.append('employedDate', employee.employedDate)
-      : undefined
+    formData.append('name', name)
+    formData.append('email', email)
+    formData.append('nrc', nrc)
+    formData.append('address', address)
+    formData.append('phone', phone)
+    formData.append('experience', workExp)
+    formData.append('image', profile)
+    formData.append('gender', gender)
+    formData.append('role',role)
+      formData.append('introduction',intro)
+        formData.append('qualification',quali)
+    formData.append('createUser', isSelectedCRM)
+if(isSelectedCRM){
+   formData.append('username', username)
+    formData.append('password',password)
+}
 
-    // Append marriedFile if it exists in the employee object
-    if (marriedFile) {
-      formData.append('married', marriedFile)
-    }
-
-    // Append other fields using ternary if they exist in the employee object
-    employee.isMarried
-      ? formData.append('isMarried', employee.isMarried)
-      : undefined
-    employee.description
-      ? formData.append('description', employee.description)
-      : undefined
-    employee.directManager
-      ? formData.append('directManager', employee.directManager)
-      : undefined
-    employee.relatedDepartment
-      ? formData.append('relatedDepartment', employee.relatedDepartment)
-      : undefined
-    EmpID ? formData.append('id', EmpID) : undefined
-    // other ? formData.append('other', other) : undefined;
-    other
-      ? other.forEach(item => {
-        formData.append('other', item) // Assuming 'item' is a File object
-      })
-      : undefined
-    await apiInstance
-      .put('user', formData, {
+    apiInstance
+      .post('instructors', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       })
-      .then(() => {
+      .then(function () {
         Swal.fire({
           icon: 'success',
-          title: 'Successfully Edited'
+          title: 'Login Successful',
+          text: 'Welcome back!',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#3085d6'
         })
       })
-      .catch(err => {
-        console.log(err)
+      .catch(error => {
+        alert(error)
       })
   }
+
+    useEffect(()=>{
+     const getInstructor = async () => {
+      await apiInstance.get(`instructors/${Id}`,).then((res) => {
+        setIList(res.data.data);
+        setPhone(res.data.data.phone)
+        setName(res.data.data.name)
+        setNrc(res.data.data.nrc)
+        setQuali(res.data.data.qualification)
+        setEmail(res.data.data.email)
+        setUserName(res.data.data.username)
+        setIntro(res.data.data.introduction)
+        setGender(res.data.data.gender)
+        setRole(res.data.data.role)
+        setAddress(res.data.data.address)
+        setWorkExp(res.data.data.experience)
+    
+             setProfileAnchor(
+            res.data.data.image
+              ? 'http://learningportalbackend.kwintechnologies.com:3600/img/instructors/' +
+              res.data.data.image.filename
+              : ''
+          )
+        
+        console.log(  res.data.data, "emp");
+      });
+    };
+    getInstructor();
+  },[])
   return (
-    <div className='w-full flex flex-col gap-4'>
-      <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-        <Input
-          type='text'
-          label='Name'
-          value={employee.givenName}
-          onChange={e => handleInputChange('givenName', e.target.value)}
-          placeholder='Name'
-          variant={variant}
-          labelPlacement='outside'
-        />
-        <Input
-          type='number'
-          label='Phone No'
-          onChange={e => handleInputChange('phone', e.target.value)}
-          value={employee.phone}
-          placeholder='Phone Number'
-          variant={variant}
-          labelPlacement='outside'
-        />
-      </div>
-      <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-        <Input
-          type='date'
-          label='Age/DOB'
-          value={employee.DOB?.split('T')[0]}
-          onChange={e => handleInputChange('DOB', e.target.value)}
-          placeholder='you@example.com'
-          labelPlacement='outside'
-          variant={variant}
-        />
-        <Input
-          isRequired
-          type='text'
-          variant={variant}
-          label='NRC'
-          placeholder='NRC..'
-          value={employee.NRC}
-          onChange={e => handleInputChange('NRC', e.target.value)}
-          labelPlacement='outside'
-        />
-      </div>
-      <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-        <Input
-          type='text'
-          label='Passport No'
-          placeholder='Passport Number..'
-          labelPlacement='outside'
-          value={employee.passportNo}
-          onChange={e => handleInputChange('passportNo', e.target.value)}
-          variant={variant}
-        />
-        <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-          <label className='text-sm font-semibold'>Gender</label>
-          <select
-            onChange={e => handleInputChange('gender', e.target.value)}
-            id='countries'
-            className='bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-xl m-0 px-0 py-2 focus:ring-gray-500 focus:border-gray-500 block w-full p-3 dark:bg-default-100 dark:border-gray-600 dark:placeholder-gray-100 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500'
-          >
-            <option hidden value={employee.gender}>
-              {employee.gender}
-            </option>
-            <option value='Male'>Male</option>
-            <option value='Female'>Female</option>
-          </select>
-        </div>
-      </div>
-      <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-        <Input
-          isRequired
-          type='email'
-          variant={variant}
-          value={employee.email}
-          onChange={e => handleInputChange('email', e.target.value)}
-          label='Personal Email'
-          placeholder=' '
-          labelPlacement='outside'
-        />
-        <Input
-          isRequired
-          type='text'
-          label='Password'
-          onChange={e => handleInputChange('password', e.target.value)}
-          variant={variant}
-          placeholder='Password..'
-          labelPlacement='outside'
-        />
-      </div>
-      <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-        <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+    <div className='gap-6'>
+      <form onSubmit={handleSubmit(create)}>
+
+        <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
           <Input
             type='text'
-            label='Address'
-            placeholder='Address..'
-            value={employee.address}
-            onChange={e => handleInputChange('address', e.target.value)}
+            validationState={
+              errors.name && errors.name.type === 'required'
+                ? 'invalid'
+                : 'valid'
+            }
+            label='Name'
+            placeholder='Name'
+value={name}
+            variant={variant}
+            labelPlacement='outside'
+            {...register('name', { required: true, onChange: (e) => setName(e.target.value) })}
+          />
+          <Input
+            type='text'
+            label='Phone No'
+            placeholder='Phone Number'
+            variant={variant}
+           value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            labelPlacement='outside'
+          />
+        </div>
+        <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
+         <Input
+            type='text'
+            variant={variant}
+            label='Qualification'
+            placeholder='..'
+            value={quali}
+            labelPlacement='outside'
+            onChange={(e) => setQuali(e.target.value)}
+          />
+          <Input
+            type='text'
+            variant={variant}
+            label='NRC'
+            value={nrc}
+            placeholder='NRC..'
+            labelPlacement='outside'
+            onChange={(e) => setNrc(e.target.value)}
+          />
+        </div>
+      
+        <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
+          <Input
+            type='email'
+            variant={variant}
+            validationState={
+              errors.email && errors.email.type === 'required'
+                ? 'invalid'
+                : 'valid'
+            }
+            label='Personal Email'
+            placeholder='example@gmail.com'
+            labelPlacement='outside'
+            value={email}
+            {...register('email', { required: true, onChange: (e) => setEmail(e.target.value) })}
+          />
+        <Input
+            type='text'
+            onChange={(e) => setWorkExp(e.target.value)}
+            label='Work Experience'
+            placeholder='..'
+            value={workExp}
             labelPlacement='outside'
             variant={variant}
           />
         </div>
-        <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-          <Input
+        <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
+          <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+            <Input
+              type='text'
+              label='Address'
+              placeholder='Address..'
+              labelPlacement='outside'
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              variant={variant}
+            />
+          </div>
+          <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+           <Input
             type='file'
-            accept='.pdf,.png,.jpeg,.jpg'
-            label='CV'
-            variant={variant}
-            onChange={e => handleInputChange('cv', e.target.files[0])}
+            onChange={handleProfile}
+            label='Profile'
             placeholder=' '
             labelPlacement='outside'
+            variant={variant}
             endContent={
-              cvAnchor ? (
-                <Link
-                  isExternal
-                  showAnchorIcon
-                  href={cvAnchor}
-                  anchorIcon={<AnchorIcon />}
-                ></Link>
-              ) : (
-                ''
-              )
-            }
-          />
-        </div>
-      </div>
-      <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-        <Input
-          type='text'
-          variant={variant}
-          value={employee.educationBackground}
-          onChange={e =>
-            handleInputChange('educationBackground', e.target.value)
-          }
-          label='Education Background'
-          placeholder=' '
-          labelPlacement='outside'
-        />
-        <Input
-          type='file'
-          label='Education Certificate'
-          variant={variant}
-          onChange={handleCer}
-          placeholder=' '
-          labelPlacement='outside'
-          endContent={
-            eduAnchor ? (
-              <Link
-                isExternal
-                showAnchorIcon
-                href={eduAnchor}
-                anchorIcon={<AnchorIcon />}
-              ></Link>
-            ) : (
-              ''
-            )
-          }
-        />
-      </div>
-      <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-        <Input
-          type='date'
-          value={employee.firstInterviewDate?.split('T')[0]}
-          onChange={e =>
-            handleInputChange('firstInterviewDate', e.target.value)
-          }
-          label='First Interview Date'
-          placeholder='you@example.com'
-          labelPlacement='outside'
-          variant={variant}
-        />
-        <Input
-          type='text'
-          label='First Interview Result'
-          onChange={e =>
-            handleInputChange('firstInterviewResult', e.target.value)
-          }
-          value={employee.firstInterviewResult}
-          placeholder='...'
-          labelPlacement='outside'
-          variant={variant}
-        />
-      </div>
-
-      <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-        <div className='block w-full flex-wrap md:flex-nowrap mb-4 md:mb-0 gap-4'>
-          <Input
-            type='date'
-            label='Second Interview Date'
-            value={employee.secondInterviewDate?.split('T')[0]}
-            onChange={e =>
-              handleInputChange('secondInterviewDate', e.target.value)
-            }
-            placeholder=' '
-            labelPlacement='outside'
-            variant={variant}
-          />
-        </div>
-        <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-          <Input
-            type='text'
-            onChange={e =>
-              handleInputChange('secondInterviewResult', e.target.value)
-            }
-            value={employee.secondInterviewResult}
-            label='Second Interview Result'
-            variant={variant}
-            placeholder='...'
-            labelPlacement='outside'
-          />
-        </div>
-      </div>
-
-      <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-        <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-          <label className='text-sm font-semibold'>Department</label>
-          <select
-            id='countries'
-            onChange={e => handleDirectManager(e.target.value)}
-            className='bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-xl m-0 px-0 py-2 focus:ring-gray-500 focus:border-gray-500 block w-full p-3 dark:bg-default-100 dark:border-gray-600 dark:placeholder-gray-100 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500'
-          >
-
-            {console.log(department, 'de')}
-            <option hidden>{department}</option>
-
-            {departmentList.map(option => (
-              <option key={option._id} value={option._id}>
-                {option.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-          <label className='text-sm font-semibold'>Direct Manager</label>
-          <select
-            id='countries'
-            className='bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-xl m-0 px-0 py-2 focus:ring-gray-500 focus:border-gray-500 block w-full p-3 dark:bg-default-100 dark:border-gray-600 dark:placeholder-gray-100 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500'
-          >
-            <option hidden value={directManagerID}>
-              {directManager}
-            </option>
-          </select>
-        </div>
-      </div>
-      <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-        <Input
-          type='text'
-          variant={variant}
-          label='Father Name'
-          onChange={e => handleInputChange('fatherName', e.target.value)}
-          value={employee.fatherName}
-          placeholder=' '
-          labelPlacement='outside'
-        />
-        <Input
-          type='date'
-          label='Employed Date'
-          placeholder=' '
-          onChange={e => handleInputChange('employedDate', e.target.value)}
-          value={employee.employedDate?.split('T')[0]}
-          labelPlacement='outside'
-          variant={variant}
-        />
-      </div>
-      <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-        <Input
-          type='tel'
-          variant={variant}
-          label='Emergecy Contact'
-          onChange={e => handleInputChange('emergencyContact', e.target.value)}
-          value={employee.emergencyContact}
-          placeholder=' '
-          labelPlacement='outside'
-        />
-        <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-          <label className='text-sm font-semibold'>Position</label>
-          <select
-            id='countries'
-            onChange={e => handlePosition(e.target.value)}
-            className='bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-xl m-0 px-0 py-2 focus:ring-gray-500 focus:border-gray-500 block w-full p-3 dark:bg-default-100 dark:border-gray-600 dark:placeholder-gray-100 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500'
-          >
-            <option hidden>{positionID?.name}</option>
-            {positionList.map(option => (
-              <option key={option} value={option._id}>
-                {option.name}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-      <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-        <Input
-          type='text'
-          onChange={e => handleInputChange('workExperience', e.target.value)}
-          value={employee.workExperience}
-          label='Work Experience'
-          placeholder=' '
-          labelPlacement='outside'
-          variant={variant}
-        />
-
-        <Input
-          type='number'
-          label='Basic Salary'
-          value={positionID ? positionID.basicSalary : ''}
-          placeholder=' '
-          labelPlacement='outside'
-          variant={variant}
-        />
-      </div>
-      <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-        <div className='block w-full flex-wrap md:flex-nowrap mb-4 md:mb-0 gap-4 mt-3'>
-          <label className='text-sm font-semibold'>Leave Entitled</label>
-          <div className='flex flex-row text-sm mt-1 gap-2'>
-            <div>
-              <label>Casual</label>
-              <Input
-                disabled
-                value={positionID?.casualLeaves}
-                className='py-1'
-              />
-            </div>
-            <div>
-              <label>Medical</label>
-              <Input
-                disabled
-                value={positionID?.medicalLeaves}
-                className='py-1'
-              />
-            </div>
-            <div>
-              <label>Vacation</label>
-              <Input
-                disabled
-                value={positionID?.vacationLeaves}
-                className='py-1'
-              />
-            </div>
-            <div>
-              <label>
-                <abbr
-                  title='Maternity Male'
-                  style={{ textDecoration: 'none', border: 'none' }}
-                >
-                  Male
-                </abbr>
-              </label>
-              <Input
-                disabled
-                value={positionID?.maternityLeaveMale}
-                className='py-1'
-              />
-            </div>
-            <div>
-              <label>
-                <abbr
-                  title='Maternity Female'
-                  style={{ textDecoration: 'none', border: 'none' }}
-                >
-                  Female
-                </abbr>
-              </label>
-              <Input
-                disabled
-                value={positionID?.maternityLeaveFemale}
-                className='py-1'
-              />
-            </div>
-          </div>
-        </div>
-        <div className='block w-full flex-wrap md:flex-nowrap mb-4 md:mb-0 gap-4 mt-3'>
-          <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-            <div className='w-1/3'>
-              <label className='text-sm font-semibold'>Meal Allowance</label>
-              <RadioGroup
-                orientation='horizontal'
-                className='mt-8'
-                value={positionID ? positionID.isMealAllowance : ''}
-              >
-                <Radio value={true}>Yes</Radio>
-                <Radio value={false}>No</Radio>
-              </RadioGroup>
-            </div>
-            <Input
-              className='mt-11'
-              type='number'
-              value={positionID ? positionID.mealAllowance : 'Not Set'}
-              placeholder='Meal Allowance'
-              variant={variant}
-              labelPlacement='outside'
-            />
-          </div>
-        </div>
-      </div>
-      <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-        <div className='block w-full flex-wrap md:flex-nowrap mb-4 md:mb-0 gap-4 mt-3'>
-          <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-            <div className='w-1/3'>
-              <label className='text-sm font-semibold'>Married</label>
-              <RadioGroup
-                orientation='horizontal'
-                className='mt-3'
-                onChange={e => handleInputChange('isMarried', e.target.value)}
-                value={employee.isMarried}
-              >
-                <Radio
-                  value={true}
-                  onClick={() => setShowMarried(!showMarried)}
-                >
-                  Yes
-                </Radio>
-                <Radio value={false}>No</Radio>
-              </RadioGroup>
-            </div>
-            {showMarried && (
-              <Input
-                className='mt-7'
-                type='file'
-                onChange={handleMarriedFile}
-
-                placeholder='Married Date'
-                variant={variant}
-                labelPlacement='outside'
-                endContent={
-                  marriedAnchor ? (
-                    <Link
-                      isExternal
-                      showAnchorIcon
-                      href={marriedAnchor}
-                      anchorIcon={<AnchorIcon />}
-                    ></Link>
-                  ) : (
-                    ''
-                  )
-                }
-              />
-            )}
-          </div>
-        </div>
-        <div className='block w-full flex-wrap md:flex-nowrap mb-4 md:mb-0 gap-4 mt-3'>
-          <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-            <div className='w-1/3'>
-              <label className='text-sm font-semibold'>Travel Allowance</label>
-              <RadioGroup
-                orientation='horizontal'
-                className='mt-3'
-                value={positionID ? positionID.isTravelAllowance : ''}
-              >
-                <Radio value={true}>Yes</Radio>
-                <Radio value={false}>No</Radio>
-              </RadioGroup>
-            </div>
-            <Input
-              className='mt-7'
-              type='number'
-              value={positionID ? positionID.travelAllowance : 'Not Set'}
-              placeholder='Travel Allowance'
-              variant={variant}
-              labelPlacement='outside'
-            />
-          </div>
-        </div>
-      </div>
-      <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-        <div className='block w-full flex-wrap md:flex-nowrap mb-4 md:mb-0 gap-4 mt-3'>
-          <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-            <div className='w-1/3'>
-              <label className='text-sm font-semibold'>Yearly Bonus</label>
-              <RadioGroup
-                orientation='horizontal'
-                className='mt-3'
-                value={positionID ? positionID.isBonus : ''}
-              >
-                <Radio value={true}>Yes</Radio>
-                <Radio value={false}>No</Radio>
-              </RadioGroup>
-            </div>
-            <Input
-              className='mt-7'
-              type='number'
-              value={positionID ? positionID.bonus : 'Not Set'}
-              placeholder='Bonus'
-              variant={variant}
-              labelPlacement='outside'
-            />
-          </div>
-        </div>
-        <div className='block w-full flex-wrap md:flex-nowrap mb-4 md:mb-0 gap-4 mt-3'>
-          <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-            <div className='w-1/3'>
-              <label className='text-sm font-semibold'>Incentive</label>
-              <RadioGroup
-                orientation='horizontal'
-                className='mt-3'
-                value={positionID ? positionID.isIncentive : ''}
-              >
-                <Radio value={true}>Yes</Radio>
-                <Radio value={false}>No</Radio>
-              </RadioGroup>
-            </div>
-            <Input
-              className='mt-7'
-              type='number'
-              value={positionID ? positionID.incentive : 'Not Set'}
-              placeholder='Incentive'
-              variant={variant}
-              labelPlacement='outside'
-            />
-          </div>
-        </div>
-      </div>
-      <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-        <Input
-          type='file'
-          onChange={handleRecLetter}
-          label='Recommendation Letter'
-          placeholder=' '
-          labelPlacement='outside'
-          variant={variant}
-          endContent={
-            recLetAnchor ? (
-              <Link
-                isExternal
-                showAnchorIcon
-                href={recLetAnchor}
-                anchorIcon={<AnchorIcon />}
-              ></Link>
-            ) : (
-              ''
-            )
-          }
-        />
-        <Input
-          type='file'
-          onChange={handleProfile}
-          label='Profile'
-          placeholder=' '
-          labelPlacement='outside'
-          variant={variant}
-          endContent={
             profileAnchor ? (
               <Link
                 isExternal
@@ -825,112 +221,145 @@ export default function EmployeeInput() {
               ''
             )
           }
-        />
-        <div></div>
-      </div>
-
-      <div className='block w-full flex-wrap md:flex-nowrap mb-4 md:mb-0 gap-4 mt-7 '>
-        <Checkbox className='' isSelected={isSelectedCRM} onValueChange={setIsSelectedCRM}>CRM Account</Checkbox>
-        &nbsp;
-        &nbsp;
-        <Button
-          isIconOnly
-          size='sm'
-          color='primary'
-          variant='shadow'
-          className='rounded-xl px-4 py-0 text-left'
-          onPress={onOpen}
-        >
-          +
-        </Button>
-        &nbsp;
-        <label className='text-sm font-semibold'>Other Document</label>
-
-
-        <div className='flex mt-5'>
-          {showOther.map(item => (
-            <>
-              <Image
-                src={
-                  'http://hrmbackend.kwintechnologykw11.com:5000/static/hrm/' +
-                  item.imgUrl
-                }
-                style={{ width: '200px', height: '150px' }}
-                // className='object-contain max-w-full max-h-full'
-
-                alt={item.fileName}
-              />
-              &nbsp;
-              {console.log(item.imgUrl, 'ur')}
-            </>
-          ))}
+          />
+          </div>
         </div>
-      </div>
-      <div className='flex justify-center w-full flex-wrap md:flex-nowrap mb-4 md:mb-0 gap-4 mt-3'>
-        <Button
-          size='sm'
-          color='danger'
-          variant='shadow'
-          className='rounded-xl px-4 py-0 text-left'
-        >
-          Cancel
-        </Button>
-        <Button
-          size='sm'
-          color='primary'
-          variant='shadow'
-          className='rounded-xl px-4 py-0 text-left'
-          onClick={() => handleUpdate()}
-        >
-          Register
-        </Button>
+   
 
-      </div>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-        <ModalContent>
-          {onClose => (
-            <>
-              <ModalHeader className='flex flex-col gap-1'>
-                Other Document
-              </ModalHeader>
-              <ModalBody>
-                <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-                  <FileUploader
-                    multiple={true}
-                    handleChange={handleChange}
-                    name='file'
-                    types={fileTypes}
-                  />
-                  {/* <p>
-                  {otherDoc
-                    ? `File name: ${otherDoc[0].name}`
-                    : ""}
-                </p> */}
+ 
+     
 
-                  <Input
-                    type='text'
-                    label='Description'
-                    placeholder=''
-                    onChange={e =>
-                      handleInputChange('description', e.target.value)
-                    }
-                    variant='faded'
-                    className='mt-5'
-                  />
-                </div>
-              </ModalBody>
-              <ModalFooter>
-                <Button color='danger' variant='light' onClick={onClose}>
-                  Close
-                </Button>
-                <Button color='primary' onPress={onClose}>
-                  Save
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+        <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
+  
+          <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+            <label
+              className={`text-sm font-semibold ${errors.position && errors.position.type === 'required'
+                ? 'text-[#f31260]'
+                : ''
+                }`}
+            >
+              Role
+            </label>
+            <select
+              id='countries'
+              {...register('role', { required: true })}
+              onChange={e => setRole(e.target.value)}
+              className='bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-xl m-0 px-0 py-2 focus:ring-gray-500 focus:border-gray-500 block w-full p-3 dark:bg-default-100 dark:border-gray-600 dark:placeholder-gray-100 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500'
+            >
+              <option  hidden>
+                {role}
+              </option>
+               <option value='Instructor'>
+                Instructor
+              </option>
+               <option value='Supervisor Instructor'>
+                Supervisor Instructor
+              </option>
+              {/* {positionList.map(option => (
+                <option key={option} value={option._id}>
+                  {option.name}
+                </option>
+              ))} */}
+            </select>
+          </div>
+            <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+            <label
+              className={`text-sm font-semibold ${errors.gender && errors.gender.type === 'required'
+                ? 'text-[#f31260]'
+                : ''
+                }`}
+            >
+              Gender
+            </label>
+            <select
+
+              id='countries'
+              {...register('gender', { required: true, onChange: (e) => setGender(e.target.value) })}
+              className='bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-xl m-0 px-0 py-2 focus:ring-gray-500 focus:border-gray-500 block w-full p-3 dark:bg-default-100 dark:border-gray-600 dark:placeholder-gray-100 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500'
+            >
+              <option hidden>
+                {gender}
+              </option>
+              <option value='Male'>Male</option>
+              <option value='Female'>Female</option>
+            </select>
+          </div>
+        </div>
+        {isSelectedCRM && (
+    <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
+          <Input
+            type='text'
+            label='User Name'
+            placeholder='user name..'
+            labelPlacement='outside'
+            onChange={(e) => setUserName(e.target.value)}
+            variant={variant}
+          />
+             
+                <Input
+            validationState={
+              errors.password && errors.password.type === 'required'
+                ? 'invalid'
+                : 'valid'
+            }
+            type='password'
+            label='Password'
+            variant={variant}
+            placeholder='Password..'
+            labelPlacement='outside'
+            value={password}
+            {...register('password', { required: true, onChange: (e) => setPassword(e.target.value) })}
+          />
+        
+        </div>
+        )}
+
+          <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
+   
+       <Textarea
+      label="Introduction"
+      labelPlacement="outside"
+      placeholder="Enter your info"
+      value={intro}
+      onChange={e=>setIntro(e.target.value)}
+      
+    />
+    </div>
+        <div className='grid grid-cols-2 md:flex-nowrap mb-6 md:mb-0 gap-4'>
+    
+        
+           <Checkbox className='mt-3' isSelected={isSelectedCRM} onValueChange={setIsSelectedCRM}>User Account</Checkbox>
+          &nbsp;
+        </div>
+
+
+        
+
+        <div className='block w-full flex-wrap md:flex-nowrap mb-4 md:mb-0 gap-4 mt-7'>
+         
+        
+        <div className='flex justify-center w-full flex-wrap md:flex-nowrap mb-4 md:mb-0 gap-4 mt-3'>
+          <Button
+            size='sm'
+            color='danger'
+            variant='shadow'
+            className='rounded-xl px-4 py-0 text-left'
+          >
+            <Link to='/emp'>Cancel</Link>
+          </Button>
+          <Button
+            size='sm'
+            color='primary'
+            variant='shadow'
+            className='rounded-xl px-4 py-0 text-left'
+            type='submit'
+          >
+            Register
+          </Button>
+        </div>
+        </div>
+      </form>
+ 
     </div>
   )
 }

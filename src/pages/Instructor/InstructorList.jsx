@@ -45,7 +45,7 @@ export default function Instructor () {
               <CardHeader className='justify-between'>
                 <div></div>
                 <div className='font-semibold text-2xl'>Instructor List</div>
-                <Link to='/emp-add' className=''>
+                <Link to='/instru-add' className=''>
                   <Button
                     endContent={<PlusIcon />}
                     color='primary'
