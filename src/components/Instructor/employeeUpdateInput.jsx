@@ -1,4 +1,4 @@
-import { Checkbox, Input } from '@nextui-org/react'
+import {Input } from '@nextui-org/react'
 import {
 
   Button,
@@ -12,6 +12,7 @@ import { useForm } from 'react-hook-form'
 import { useLocation } from 'react-router-dom';
 import { AnchorIcon } from '../../assets/Icons/AnchorIcon'
 import { Link } from '@nextui-org/react'
+import { getFile } from '../../util/index';
 export default function EmployeeInput() {
   const variant = ['faded']
   const {
@@ -19,23 +20,21 @@ export default function EmployeeInput() {
     handleSubmit,
     formState: { errors }
   } = useForm()
-  const [iList,setIList]=useState([])
+
   const Id = useLocation().pathname.split('/')[2]
 
   const [profileAnchor, setProfileAnchor] = useState('')
   const [name, setName] = useState('')
-    const [username, setUserName] = useState('')
   const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
   const [nrc, setNrc] = useState('')
   const [address, setAddress] = useState('')
   const [phone, setPhone] = useState('')
   const [intro, setIntro] = useState('')
   const [quali, setQuali] = useState('')
-  const [role,setRole]=useState('')
+  // const [role,setRole]=useState('')
   const [workExp, setWorkExp] = useState('')
   const [gender, setGender] = useState('')
-  const [isSelectedCRM, setIsSelectedCRM] = useState(false);
+
 
   const [profile, setProfile] = useState(null)
 
@@ -57,17 +56,12 @@ export default function EmployeeInput() {
     formData.append('experience', workExp)
     formData.append('image', profile)
     formData.append('gender', gender)
-    formData.append('role',role)
+    // formData.append('role',role)
       formData.append('introduction',intro)
         formData.append('qualification',quali)
-    formData.append('createUser', isSelectedCRM)
-if(isSelectedCRM){
-   formData.append('username', username)
-    formData.append('password',password)
-}
-
+console.log(formData)
     apiInstance
-      .post('instructors', formData, {
+      .put('instructors/'+Id, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -89,23 +83,21 @@ if(isSelectedCRM){
     useEffect(()=>{
      const getInstructor = async () => {
       await apiInstance.get(`instructors/${Id}`,).then((res) => {
-        setIList(res.data.data);
+  
         setPhone(res.data.data.phone)
         setName(res.data.data.name)
         setNrc(res.data.data.nrc)
         setQuali(res.data.data.qualification)
         setEmail(res.data.data.email)
-        setUserName(res.data.data.username)
         setIntro(res.data.data.introduction)
         setGender(res.data.data.gender)
-        setRole(res.data.data.role)
+        // setRole(res.data.data.role)
         setAddress(res.data.data.address)
         setWorkExp(res.data.data.experience)
     
              setProfileAnchor(
             res.data.data.image
-              ? 'http://learningportalbackend.kwintechnologies.com:3600/img/instructors/' +
-              res.data.data.image.filename
+              ? getFile({payload: res.data.data.image})
               : ''
           )
         
@@ -121,11 +113,7 @@ if(isSelectedCRM){
         <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
           <Input
             type='text'
-            validationState={
-              errors.name && errors.name.type === 'required'
-                ? 'invalid'
-                : 'valid'
-            }
+        
             label='Name'
             placeholder='Name'
 value={name}
@@ -168,11 +156,11 @@ value={name}
           <Input
             type='email'
             variant={variant}
-            validationState={
-              errors.email && errors.email.type === 'required'
-                ? 'invalid'
-                : 'valid'
-            }
+            // validationState={
+            //   errors.email && errors.email.type === 'required'
+            //     ? 'invalid'
+            //     : 'valid'
+            // }
             label='Personal Email'
             placeholder='example@gmail.com'
             labelPlacement='outside'
@@ -231,7 +219,7 @@ value={name}
 
         <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
   
-          <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+          {/* <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
             <label
               className={`text-sm font-semibold ${errors.position && errors.position.type === 'required'
                 ? 'text-[#f31260]'
@@ -255,19 +243,15 @@ value={name}
                <option value='Supervisor Instructor'>
                 Supervisor Instructor
               </option>
-              {/* {positionList.map(option => (
-                <option key={option} value={option._id}>
-                  {option.name}
-                </option>
-              ))} */}
+        
             </select>
-          </div>
+          </div> */}
             <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
             <label
-              className={`text-sm font-semibold ${errors.gender && errors.gender.type === 'required'
-                ? 'text-[#f31260]'
-                : ''
-                }`}
+              // className={`text-sm font-semibold ${errors.gender && errors.gender.type === 'required'
+              //   ? 'text-[#f31260]'
+              //   : ''
+              //   }`}
             >
               Gender
             </label>
@@ -277,46 +261,14 @@ value={name}
               {...register('gender', { required: true, onChange: (e) => setGender(e.target.value) })}
               className='bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-xl m-0 px-0 py-2 focus:ring-gray-500 focus:border-gray-500 block w-full p-3 dark:bg-default-100 dark:border-gray-600 dark:placeholder-gray-100 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500'
             >
-              <option hidden>
+              <option hidden value={gender}>
                 {gender}
               </option>
-              <option value='Male'>Male</option>
-              <option value='Female'>Female</option>
+              <option value='male'>Male</option>
+              <option value='female'>Female</option>
             </select>
           </div>
-        </div>
-        {isSelectedCRM && (
-    <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
-          <Input
-            type='text'
-            label='User Name'
-            placeholder='user name..'
-            labelPlacement='outside'
-            onChange={(e) => setUserName(e.target.value)}
-            variant={variant}
-          />
-             
-                <Input
-            validationState={
-              errors.password && errors.password.type === 'required'
-                ? 'invalid'
-                : 'valid'
-            }
-            type='password'
-            label='Password'
-            variant={variant}
-            placeholder='Password..'
-            labelPlacement='outside'
-            value={password}
-            {...register('password', { required: true, onChange: (e) => setPassword(e.target.value) })}
-          />
-        
-        </div>
-        )}
-
-          <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
-   
-       <Textarea
+             <Textarea
       label="Introduction"
       labelPlacement="outside"
       placeholder="Enter your info"
@@ -324,13 +276,8 @@ value={name}
       onChange={e=>setIntro(e.target.value)}
       
     />
-    </div>
-        <div className='grid grid-cols-2 md:flex-nowrap mb-6 md:mb-0 gap-4'>
-    
-        
-           <Checkbox className='mt-3' isSelected={isSelectedCRM} onValueChange={setIsSelectedCRM}>User Account</Checkbox>
-          &nbsp;
         </div>
+
 
 
         
@@ -354,7 +301,7 @@ value={name}
             className='rounded-xl px-4 py-0 text-left'
             type='submit'
           >
-            Register
+            Update
           </Button>
         </div>
         </div>

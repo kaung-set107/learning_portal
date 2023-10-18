@@ -23,6 +23,7 @@ import { EditIcon } from "../Table/editicon";
 import { DeleteIcon } from "../Table/deleteicon";
 import { EyeIcon } from "../Table/eyeicon";
 import { Link } from 'react-router-dom';
+import { getFile } from '../../util/index';
 
 export default function EmployeeTable() {
   const [empList, setEmpList] = useState([]);
@@ -144,7 +145,7 @@ export default function EmployeeTable() {
                   avatarProps={{
                     radius: "lg",
                     src:
-                      item.image ? "http://learningportalbackend.kwintechnologies.com:3600/img/instructors/" + item.image.filename : '',
+                      item.image ? getFile({payload:item.image}) : '',
                   }}
                   description={item.email}
                   name={item.name}>

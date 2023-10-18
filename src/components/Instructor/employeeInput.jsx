@@ -190,8 +190,8 @@ export default function EmployeeInput() {
               <option value="" hidden>
                 Choose Role
               </option>
-              <option value="Instructor">Instructor</option>
-              <option value="Supervisor Instructor">
+              <option value="instructor">Instructor</option>
+              <option value="instructorSupervisor">
                 Supervisor Instructor
               </option>
               {/* {positionList.map(option => (
@@ -220,8 +220,8 @@ export default function EmployeeInput() {
               <option hidden value="">
                 Choose Gender
               </option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
             </select>
           </div>
         </div>

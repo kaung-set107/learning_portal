@@ -14,12 +14,12 @@ fields.forEach(field => (fieldsState[field.id] = ''))
 
 export default function Login() {
   const navigate = useNavigate()
-  const emailRef = useRef()
+  const usernameRef = useRef()
   const passRef = useRef()
   const handleSubmit = e => {
     e.preventDefault()
     const data = {
-      email: emailRef.current.value,
+      username: usernameRef.current.value,
       password: passRef.current.value
     }
     apiInstance
@@ -58,9 +58,9 @@ export default function Login() {
       <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
         <Input
           variant={'underlined'}
-          type='email'
-     placeholder="Email"
-          ref={emailRef}
+          type='text'
+     placeholder="username"
+          ref={usernameRef}
           endContent={
             <MailFilledIcon className='text-2xl text-default-400 pointer-events-none flex-shrink-0' />
           }
