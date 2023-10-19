@@ -1,6 +1,6 @@
 import Sidebar from "../../components/Sidebar";
 import { Card, CardHeader, CardBody, CardFooter, Divider } from "@nextui-org/react";
-import AttendanceInput from "../../components/Course/AttendanceInput";
+import AttendanceTable from "../../components/Course/courseList";
 
 export default function Attendance() {
 
@@ -11,12 +11,12 @@ export default function Attendance() {
                 <div className="body">
                     <Card className="rounded-sm shadow-md py-3 min-h-[890px]" >
                         <CardHeader className="flex justify-center">
-                            <label className="font-nunito font-bold text-2xl">
-                                Course Create
+                            <label className="font-semibold font-nunito text-2xl">
+                                Course List
                             </label>
                         </CardHeader>
                         <CardBody>
-                           <AttendanceInput/>
+                            <AttendanceTable></AttendanceTable>
                         </CardBody>
                         <Divider></Divider>
                         <CardFooter>

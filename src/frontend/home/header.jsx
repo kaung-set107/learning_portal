@@ -15,6 +15,7 @@ export default function App() {
     { href: "/class", text: "Class" },
     { href: "/sub", text: "Subjects" },
     { href: "/contact", text: "Contact" },
+    { href: "/about", text: "About" },
     // Add more links as needed
   ];
   //   const menuItems = [

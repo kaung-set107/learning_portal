@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleChevronLeft} from '@fortawesome/free-solid-svg-icons'
 // import {Button} from "@nextui-org/react";
 import { Link } from "react-router-dom";
-import Input from "../../components/Instructor/employeeInput";
+import Input from "../../components/Instructor/instructorInput";
 export default function InstructorAdd() {
   return (
     <div className="flex">

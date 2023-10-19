@@ -8,7 +8,7 @@ import {
   Button
 } from '@nextui-org/react'
 import { PlusIcon } from '../../assets/Icons/PlusIcon'
-import Table from '../../components/Instructor/employeeList'
+import Table from '../../components/Instructor/instructorList'
 import { Link } from 'react-router-dom'
 
 import { useEffect } from 'react'

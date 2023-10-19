@@ -13,16 +13,16 @@ import DepartmentRegister from './pages/Department/DepartmentRegister'
 import DepartmentChart from './pages/Department/DepartmentChart'
 import PositionUpdate from './pages/Subject/PositionUpdate'
 import DepartmentUpdate from './pages/Department/DepartmentUpdate'
-import Attendance from './pages/Course/Attendance'
-import AttendanceAdd from './pages/Course/AttendanceAdd'
-import AttendanceUpdate from './pages/Course/AttendanceUpdate'
+import Course from './pages/Course/Course'
+import CourseAdd from './pages/Course/CourseAdd'
+import CourseUpdate from './pages/Course/CourseUpdate'
 import Leave from './pages/Leave/Leave'
 import LeaveAdd from './pages/Leave/LeaveAdd'
 import LeaveUpdate from './pages/Leave/LeaveUpdate'
 import PayRoll from './pages/PayRoll/payroll'
 import Payslip from './pages/PayRoll/payslip'
 import ExtraPay from './pages/PayRoll/extrapay'
-import AttendanceDetail from './pages/Course/AttendanceDetail'
+import CourseDetail from './pages/Course/AttendanceDetail'
 import FHome from './frontend/home/body'
 import InstructorHome from './frontend/ByInstructor/home'
 import LearningMaterial from './frontend/pages/LearningMaterial/LMAdd'
@@ -41,13 +41,14 @@ export default function RouteFile() {
         </div>
         <Routes >
           <Route path='/login' element={<Login />}></Route>
-          {/* Instructor form */}
+ 
+
+          <Route element={<AuthContainer />}>
+                   {/* Instructor form */}
         <Route path='/instructor' element={<InstructorHome/>}></Route>
         <Route path='/lm' element={<LearningMaterial/>}></Route>
         <Route path='/assign' element={<Assignment/>}></Route>
         <Route path='/exam' element={<Exam/>}></Route>
-
-          <Route element={<AuthContainer />}>
             <Route path='/home' element={<Dashboard />} />
 
             {/* Department */}
@@ -87,10 +88,10 @@ export default function RouteFile() {
             <Route path='/leave/update/:id' element={<LeaveUpdate />} ></Route>
 
             {/* Attendance */}
-            <Route path='/attendance' element={<Attendance />}></Route>
-            <Route path='/att-add' element={<AttendanceAdd />}></Route>
-            <Route path='/att-update/:id' element={<AttendanceUpdate />} ></Route>
-            <Route path='/att-detail' element={<AttendanceDetail />} ></Route>
+            <Route path='/course' element={<Course />}></Route>
+            <Route path='/course-add' element={<CourseAdd />}></Route>
+            <Route path='/course-update/:id' element={<CourseUpdate />} ></Route>
+            <Route path='/course-detail' element={<CourseDetail />} ></Route>
           </Route>
 
           {/* <AuthContainer component={<Dashboard />} path='/home'></AuthContainer> */}

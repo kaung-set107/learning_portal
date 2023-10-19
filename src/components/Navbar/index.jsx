@@ -6,7 +6,7 @@ import {
   DropdownTrigger,
   Dropdown,
   DropdownMenu,
-  Avatar,
+  User,
   NavbarBrand,
   Card,
   CardHeader,
@@ -18,16 +18,18 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDi
 // import { SearchIcon } from './search'
 // import { Link } from 'react-router-dom'
 import ThemeSwitch from '../ThemeSwitch/index'
-import { useLocation } from 'react-router-dom'
+import { useLocation,useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import apiInstance from '../../util/api'
 // import LP from '../../assets/lp.png'
 import { EyeFilledIcon } from './EyeFilledIcon';
 import { EyeSlashFilledIcon } from './EyeSlashFilledIcon';
 import Swal from 'sweetalert2';
+import { getFile } from '../../util/index';
 
 
 export default function NavBar() {
+  const navigate = useNavigate()
   const [imgUrl, setImgUrl] = useState('')
   const [user, setUser] = useState(null)
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -142,8 +144,10 @@ export default function NavBar() {
   }
 
   const logOut = () => {
+
     localStorage.removeItem('token')
-    window.location.reload()
+  navigate('/')
+   
   }
   const location = useLocation()
 
@@ -157,8 +161,8 @@ export default function NavBar() {
           setUser(res.data.data)
           setEmail(res.data.data.email)
           console.log(res.data.data)
-          if (res.data.data.profile[0].imgUrl) {
-            setImgUrl(res.data.data.profile[0].imgUrl)
+          if (res.data.data.image) {
+            setImgUrl(res.data.data)
           }
         })
     }
@@ -195,14 +199,15 @@ export default function NavBar() {
 
             <Dropdown placement='bottom-end mt-1'>
               <DropdownTrigger>
-                <Avatar
-                  as='button'
-                  radius='sm'
-                  className='transition-transform'
-                  color='primary'
-                  size='md'
-                  src={`http://hrmbackend.kwintechnologykw11.com:5000/static/hrm${imgUrl}`}
-                />
+                   <User
+                  avatarProps={{
+                    radius: "lg",
+                    src:
+                      imgUrl ? getFile({payload:imgUrl.image.fileName}) : '',
+                  }}
+               />
+               
+   
               </DropdownTrigger>
               <DropdownMenu aria-label='Profile Actions' variant='flat'>
                 <DropdownItem key='profile' className='h-14 gap-2'>

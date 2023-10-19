@@ -1,7 +1,7 @@
 // import { Accordion} from '@nextui-org/react'
-
+import {useState} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBook, faBuildingUser, faLaptopFile, faCalendarXmark, faHandHoldingDollar, faMoneyCheckDollar, faUsers } from '@fortawesome/free-solid-svg-icons'
+import { faBook, faBuildingUser, faLaptopFile, faCalendarXmark, faUsers } from '@fortawesome/free-solid-svg-icons'
 import {
   Card,
   CardBody,
@@ -9,11 +9,15 @@ import {
   Divider,
 
 } from '@nextui-org/react'
-import { Link } from 'react-router-dom'
+import { Link} from 'react-router-dom'
 
 
 
 export default function Sidebar () {
+  const [isInc,setInc]=useState(false)
+        const [isCou,setCou]=useState(false)
+  
+   
   // const itemClasses = {
   //   base: ' px-2 w-full',
   //   title: 'font-normal text-medium text-left',
@@ -37,21 +41,22 @@ export default function Sidebar () {
               > */}
                 {/* Employee */}
                 {/* <AccordionItem key='1' title='Master'> */}
-                  <Link to='/instru'>
-                    <div className='hover:bg-default-100 px-4 py-3 m-auto'>
+                  <Link to='/instru' >
+             
+                    <div onClick={()=>setInc(true)} className={isInc ?  ' bg-red-200 px-4 py-3 m-auto' : 'hover:bg-default-100 px-4 py-3 m-auto' }>
                       <FontAwesomeIcon icon={faUsers} size='xl' />
                       &nbsp;&nbsp;
                       <span className='ml-3 font-medium'>Instructor</span>
                     </div>
                   </Link>
                   <Divider></Divider>
-                  <Link to='/attendance'>
+                  <Link to='/course' onClick={()=>setCou(true)} >
 
-                    <div className='hover:bg-default-100 px-4 py-3'>
+                    <div onClick={()=>setCou(true)} className={isCou ?  ' bg-red-200 px-4 py-3 m-auto' : 'hover:bg-default-100 px-4 py-3 m-auto' }>
                       <FontAwesomeIcon icon={faLaptopFile} size='xl'/>
 
                       &nbsp;
-                      <span className='ml-4 font-medium'>Courses</span>
+                      <span className='ml-4 font-medium '>Courses</span>
                     </div>
                   </Link>
 
@@ -83,7 +88,7 @@ export default function Sidebar () {
                   </Link>
 
                   <Divider></Divider>
-                  <Link to='/payroll'>
+                  {/* <Link to='/payroll'>
                     <div className='hover:bg-default-100 px-4 py-3'>
                       <FontAwesomeIcon icon={faMoneyCheckDollar} size='xl' />
 
@@ -98,7 +103,7 @@ export default function Sidebar () {
                       &nbsp;&nbsp;
                       <span className='ml-3 font-medium'>Payroll Detail</span>
                     </div>
-                  </Link>
+                  </Link> */}
                 {/* </AccordionItem> */}
 
              

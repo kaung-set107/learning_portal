@@ -107,7 +107,7 @@ export default function EmployeeTable() {
       <Table
         isHeaderSticky
         aria-label="Example table with client side sorting"
-        classNames={{
+        className={{
           base: "max-h-[719px] ",
           table: "min-h-[100px]",
         }} bottomContent={
@@ -131,8 +131,7 @@ export default function EmployeeTable() {
           <TableColumn key="workingFrom">Phone</TableColumn>
           <TableColumn key="workingUntil">NRC</TableColumn>
           <TableColumn key="casualLeaves">Qualification</TableColumn>
-          <TableColumn key="vacationLeaves">Role</TableColumn>
-           <TableColumn key="vacationLeaves">UserName</TableColumn>
+     
           <TableColumn key="actions">Actions</TableColumn>
         </TableHeader>
         <TableBody emptyContent={"No Positions to display."}>
@@ -159,8 +158,7 @@ export default function EmployeeTable() {
               <TableCell>{item?.phone}</TableCell>
               <TableCell>{item.nrc}</TableCell>
               <TableCell>{item.qualification}</TableCell>
-              <TableCell>{item?.role}</TableCell>
-              <TableCell>{item?.username}</TableCell>
+          
           
               <TableCell>
                 <div className="relative flex items-center gap-2">

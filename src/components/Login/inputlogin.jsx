@@ -24,7 +24,7 @@ export default function Login() {
     }
     apiInstance
       .post('auth/login', data)
-      .then(res => {
+      .then((res) => {
         localStorage.setItem('token', res.data.token)
         localStorage.setItem('id', res.data.id)
         Swal.fire({
@@ -34,7 +34,15 @@ export default function Login() {
           confirmButtonText: 'OK',
           confirmButtonColor: '#3085d6'
         })
-        navigate('/home')
+        console.log(res.data.data.roles[0],'data')
+        if(res.data.data.roles[0].includes('instructor')){
+navigate('/instructor')
+        }else if(res.data.data.roles[0].includes('student')){
+navigate('/student')
+        }else{
+navigate('/home')
+        }
+        
       })
       .catch((error) => {
         console.log(error)

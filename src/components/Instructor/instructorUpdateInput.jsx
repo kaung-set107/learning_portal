@@ -18,7 +18,7 @@ export default function EmployeeInput() {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+
   } = useForm()
 
   const Id = useLocation().pathname.split('/')[2]
@@ -203,7 +203,7 @@ value={name}
                 isExternal
                 showAnchorIcon
                 href={profileAnchor}
-                anchorIcon={<AnchorIcon />}
+                anchorIcon={<AnchorIcon/>}
               ></Link>
             ) : (
               ''

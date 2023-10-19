@@ -3,11 +3,11 @@ import { Image, Button } from "@nextui-org/react";
 
 
 import ELP from "./image/el.png";
-import Footer from '../../frontend/home/footer';
+// import Footer from '../../frontend/home/footer';
 export default function body() {
   return (
     <div className='w-full h-full'>
-    <div className='flex justify-between'>
+    <div className='flex justify-between overflow'>
    <Header />
     </div>
    
