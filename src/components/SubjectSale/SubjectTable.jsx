@@ -1,5 +1,5 @@
 import {
-    Tooltip, Table, TableHeader, Modal, Chip, ModalContent, Kbd, Button, ModalFooter, Pagination, ModalHeader, ModalBody, useDisclosure, TableColumn, TableBody, TableRow, TableCell
+    Tooltip, Table, TableHeader, Modal, User, ModalContent, Kbd, Button, ModalFooter, Pagination, ModalHeader, ModalBody, useDisclosure, TableColumn, TableBody, TableRow, TableCell
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import apiInstance from "../../util/api";
@@ -8,9 +8,9 @@ import { DeleteIcon } from "../Table/deleteicon";
 import React from "react";
 import { Link } from "react-router-dom";
 import { PlusIcon } from "../../assets/Icons/PlusIcon";
-
+import {getFile} from '../../util/index.js'
 export default function PositionTable() {
-    const [positionList, setPositionList] = useState([])
+    const [subjectSaleList, setSubjectSaleList] = useState([])
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [delID, setDelID] = useState(null);
 
@@ -20,8 +20,8 @@ export default function PositionTable() {
     const items = React.useMemo(() => {
         const start = (page - 1) * rowsPerPage;
         const end = start + rowsPerPage;
-        return positionList.slice(start, end);
-    }, [page, positionList]);
+        return subjectSaleList.slice(start, end);
+    }, [page, subjectSaleList]);
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter' && isOpen) {
@@ -32,20 +32,21 @@ export default function PositionTable() {
     const onRowsChange = (event) => {
         const newRowsPerPage = parseInt(event.target.value);
         setRowsPerPage(newRowsPerPage);
-        setPages(Math.ceil(positionList.length / newRowsPerPage));
+        setPages(Math.ceil(subjectSaleList.length / newRowsPerPage));
         setPage(1); // Reset the current page to 1 when rows per page changes
     };
 
 
     useEffect(() => {
-        const getPositions = async () => {
-            await apiInstance.get(`positions`, { params: { limit: 80, rowsPerPage: rowsPerPage } })
+        const getSubSale = async () => {
+            await apiInstance.get(`subject-sales`, { params: { limit: 80, rowsPerPage: rowsPerPage } })
                 .then(res => {
-                    setPositionList(res.data.data)
-                    setPages(res.data._metadata.page_count)
+                    console.log(res.data.data,'res')
+                    setSubjectSaleList(res.data.data)
+                    setPages(res.data?._metadata?.page_count)
                 })
         }
-        getPositions()
+        getSubSale()
         document.addEventListener('keydown', handleKeyDown);
 
         return () => {
@@ -66,9 +67,9 @@ export default function PositionTable() {
 
     const handleDelete = async () => {
         console.log(setDelID)
-        await apiInstance.delete('position/' + delID)
+        await apiInstance.delete(`subject-sales/${delID}`)
             .then(() => {
-                setPositionList(positionList.filter(item => item._id !== delID))
+                setSubjectSaleList(subjectSaleList.filter(item => item._id !== delID))
                 onClose()
             })
     }
@@ -76,13 +77,13 @@ export default function PositionTable() {
     return (
         <>
             <div className="flex gap-3 mb-3 justify-end">
-                <Button color="primary" endContent={<PlusIcon />}>
-                    <Link to='/position/register'>Add</Link>
-                </Button>
+              
+                    <Link to='/subject-sale-add'>  <Button color="primary" endContent={<PlusIcon />}>Add</Button></Link>
+                
               
             </div>
             <div className="flex justify-between items-center mb-3">
-                <span className="text-default-400 text-small">Total {positionList.length} Positions</span>
+                <span className="text-default-400 text-small">Total {subjectSaleList.length} Subject Sales</span>
                 <label className="flex items-center text-default-400 text-small">
                     Rows per page:
                     <select
@@ -97,12 +98,8 @@ export default function PositionTable() {
                 </label>
             </div>
             <Table
-                isHeaderSticky
-                aria-label="Example table with client side sorting"
-                classNames={{
-                    base: "max-h-[719px] ",
-                    table: "min-h-[100px]",
-                }}
+            
+                className=''
                 bottomContent={
                     <div className="flex w-full justify-center">
                         <Pagination
@@ -119,15 +116,17 @@ export default function PositionTable() {
             >
                 <TableHeader>
                     <TableColumn key="no">No</TableColumn>
-                    <TableColumn key="name">Name</TableColumn>
-                    <TableColumn key="description">Description</TableColumn>
-                    <TableColumn key="workingDay" className="text-center">Working Days</TableColumn>
-                    <TableColumn key="workingFrom">From</TableColumn>
-                    <TableColumn key="workingUntil">To</TableColumn>
-                    <TableColumn key="casualLeaves">Casual</TableColumn>
-                    <TableColumn key="medicalLeaves">Medical</TableColumn>
-                    <TableColumn key="vacationLeaves">Vacation</TableColumn>
-                    <TableColumn key="basicSalary">Salary</TableColumn>
+                    <TableColumn key="name">Subject Name</TableColumn>
+                    <TableColumn key="description">Instructor</TableColumn>
+                    <TableColumn key="workingDay" className="text-center">Start Date</TableColumn>
+                    <TableColumn key="workingFrom">End Date</TableColumn>
+                    <TableColumn key="workingUntil">Duration</TableColumn>
+                    <TableColumn key="casualLeaves">Student Allowed</TableColumn>
+                    <TableColumn key="medicalLeaves">Current Student</TableColumn>
+                    <TableColumn key="medicalLeaves">Price </TableColumn>
+                    <TableColumn key="vacationLeaves">Installment Times</TableColumn>
+                    <TableColumn key="basicSalary">Image</TableColumn>
+                    <TableColumn key="basicSalary">Description</TableColumn>
                     <TableColumn key="actions">Actions</TableColumn>
                 </TableHeader>
                 <TableBody
@@ -136,30 +135,34 @@ export default function PositionTable() {
                     {items.map((item, index) => (
                         <TableRow key={item._id}>
                             <TableCell>{index + 1}</TableCell>
-                            <TableCell>{item.name}</TableCell>
-                            <TableCell>{item.description}</TableCell>
+                            <TableCell>{item?.subject?.title}</TableCell>
+                            <TableCell>{item?.instructor?.name}</TableCell>
                             <TableCell>
-                                <div className="relative flex items-center gap-2">
-                                    <Chip variant="faded" color={item.workingDay.includes('Mon') ? 'primary' : 'danger'}>Mon</Chip>
-                                    <Chip variant="faded" color={item.workingDay.includes('Tue') ? 'primary' : 'danger'}>Tue</Chip>
-                                    <Chip variant="faded" color={item.workingDay.includes('Wed') ? 'primary' : 'danger'}>Wed</Chip>
-                                    <Chip variant="faded" color={item.workingDay.includes('Thu') ? 'primary' : 'danger'}>Thu</Chip>
-                                    <Chip variant="faded" color={item.workingDay.includes('Fri') ? 'primary' : 'danger'}>Fri</Chip>
-                                    <Chip variant="faded" color={item.workingDay.includes('Sat') ? 'primary' : 'danger'}>Sat</Chip>
-                                    <Chip variant="faded" color={item.workingDay.includes('Sun') ? 'primary' : 'danger'}>Sun</Chip>
-                                </div>
+                              {item?.fromDate?.split('T')[0]}
                             </TableCell>
-                            <TableCell>{item.workingFrom}</TableCell>
-                            <TableCell>{item.workingUntil}</TableCell>
-                            <TableCell>{item.casualLeaves}</TableCell>
-                            <TableCell>{item.medicalLeaves}</TableCell>
-                            <TableCell>{item.vacationLeaves}</TableCell>
-                            <TableCell>{item.basicSalary}</TableCell>
+                            <TableCell>{item?.toDate?.split('T')[0]}</TableCell>
+                            <TableCell>{item?.duration}</TableCell>
+                            <TableCell>{item?.noOfStudentAllow}</TableCell>
+                            <TableCell>{item?.noOfEnrolledStudent}</TableCell>
+                            <TableCell>{item?.fee}</TableCell>
+                            <TableCell>{item?.installmentTime}</TableCell>
+                              <TableCell>    <User
+                  avatarProps={{
+                    radius: "lg",
+                    src:
+                      item.image ? getFile({payload:item.image}) : '',
+                  }}
+               />
+         
+          
+             </TableCell>
+                            <TableCell>{item.description}</TableCell>
+                        
                             <TableCell>
                                 <div className="relative flex items-center gap-2">
 
-                                    <Tooltip content="Edit Position">
-                                        <Link to={`/position/update/${item._id}`}>
+                                    <Tooltip content="Edit Subject">
+                                        <Link to={`/subject-sale/${item._id}`}>
                                             <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                                                 <EditIcon />
                                             </span>

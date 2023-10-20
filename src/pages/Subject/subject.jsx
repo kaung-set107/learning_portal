@@ -1,6 +1,6 @@
 import Sidebar from "../../components/Sidebar";
 import { Card, CardHeader, CardBody, CardFooter, Divider } from "@nextui-org/react";
-import PositionTable from "../../components/Subject/PositionTable";
+import SubjectTable from "../../components/Subject/subjectTable";
 
 export default function Position() {
 
@@ -16,7 +16,7 @@ export default function Position() {
                             </label>
                         </CardHeader>
                         <CardBody>
-                            <PositionTable />
+                            <SubjectTable />
                         </CardBody>
                         <Divider></Divider>
                         <CardFooter>

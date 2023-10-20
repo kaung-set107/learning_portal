@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleChevronLeft} from '@fortawesome/free-solid-svg-icons'
 // import {Button} from "@nextui-org/react";
 import { Link } from "react-router-dom";
-import Input from "../../components/LearningMaterial/LMInput";
+import Input from "../../components/Assignment/AssignInput";
 export default function LMAdd() {
   return (
     <div className="flex">
@@ -20,15 +20,15 @@ export default function LMAdd() {
         <div className="body">
           <Card className="rounded-md">
             <CardHeader className="justify-between">
-              <div
+                        <div
                
                 className="rounded-none px-4 py-0 text-left">
-                <Link to="/emp" className='mr-5'><FontAwesomeIcon icon={faCircleChevronLeft} size="2xl" /></Link>
+                <Link to="/instru" className='mr-5'><FontAwesomeIcon icon={faCircleChevronLeft} size="2xl" /></Link>
               </div>
               <div className="font-semibold text-2xl">Assignment Create</div>
               <div></div>
             </CardHeader>
-            <CardBody>
+            <CardBody className='mx-8'>
               <Input />
             </CardBody>
             <Divider></Divider>

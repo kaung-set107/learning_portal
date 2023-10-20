@@ -26,7 +26,7 @@ export default function LMAdd() {
               <div
                
                 className="rounded-none px-4 py-0 text-left">
-                <Link to="/emp" className='mr-5'><FontAwesomeIcon icon={faCircleChevronLeft} size="2xl" /></Link>
+                <Link to="/lm" className='mr-5'><FontAwesomeIcon icon={faCircleChevronLeft} size="2xl" /></Link>
               </div>
               <div className="font-semibold text-2xl">Learning Material Create</div>
               <div></div>

@@ -1,23 +1,22 @@
 import Sidebar from "../../components/Sidebar";
 import { Card, CardHeader, CardBody, CardFooter, Divider } from "@nextui-org/react";
-import PositionUpdateInputForm from "../../components/Subject/PositionUpdateInput";
+import SubjectTable from "../../components/SubjectSale/SubjectTable";
 
+export default function Position() {
 
-export default function PositionUpdate() {
-    
     return (
         <div className='flex'>
             <div className="sidebar"><Sidebar /></div>
-            <div className="py-3 flex-grow">
-
-                <div className="body  py-1">
-                    <Card className="rounded-sm shadow-md py-3 min-h-[890px]">
-                        <CardHeader className="justify-center">
-                            <div className='font-semibold'>Edit Position</div>
+            <div className="flex-grow">
+                <div className="body">
+                    <Card className="rounded-sm shadow-md py-3 min-h-[890px]" >
+                        <CardHeader className="flex justify-center">
+                            <label className="font-semibold font-nunito text-2xl">
+                              Subject Sale List
+                            </label>
                         </CardHeader>
-                        <Divider></Divider>
                         <CardBody>
-                            <PositionUpdateInputForm />
+                            <SubjectTable />
                         </CardBody>
                         <Divider></Divider>
                         <CardFooter>

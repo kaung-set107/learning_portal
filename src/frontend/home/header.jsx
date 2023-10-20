@@ -74,20 +74,18 @@ export default function App() {
            
           </DropdownItem>
             <DropdownItem key="logout" color="danger">
-            Register
+            Home
           </DropdownItem>
           <DropdownItem key="settings">
-            My Settings
+            Course
           </DropdownItem>
-          <DropdownItem key="team_settings">Team Settings</DropdownItem>
+          <DropdownItem key="team_settings">Class</DropdownItem>
           <DropdownItem key="analytics">
-            Analytics
+      Subjects
           </DropdownItem>
-          <DropdownItem key="system">System</DropdownItem>
-          <DropdownItem key="configurations">Configurations</DropdownItem>
-          <DropdownItem key="help_and_feedback">
-            Help & Feedback
-          </DropdownItem>
+          <DropdownItem key="system">Contact</DropdownItem>
+          <DropdownItem key="configurations">About</DropdownItem>
+     
         
         </DropdownMenu>
       </Dropdown>

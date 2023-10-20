@@ -5,13 +5,13 @@ import Dashboard from './pages/Dashboard/index.jsx'
 import Instructor from './pages/Instructor/InstructorList'
 import InstructorAdd from './pages/Instructor/InstructorAdd'
 import InstructorUpdate from './pages/Instructor/InstructorDetail'
-import Position from './pages/Subject/Position.jsx'
+import SubjectSale from './pages/SubjectSale/Subject.jsx'
 import AuthContainer from './util/AuthContainer.jsx'
-import PositionRegsiter from './pages/Subject/Add'
+import SubjectSaleRegsiter from './pages/SubjectSale/Add'
 import Department from './pages/Department/Department'
 import DepartmentRegister from './pages/Department/DepartmentRegister'
 import DepartmentChart from './pages/Department/DepartmentChart'
-import PositionUpdate from './pages/Subject/PositionUpdate'
+import SubjectSaleUpdate from './pages/SubjectSale/SubjectUpdate'
 import DepartmentUpdate from './pages/Department/DepartmentUpdate'
 import Course from './pages/Course/Course'
 import CourseAdd from './pages/Course/CourseAdd'
@@ -28,6 +28,9 @@ import InstructorHome from './frontend/ByInstructor/home'
 import LearningMaterial from './frontend/pages/LearningMaterial/LMAdd'
 import Assignment from './frontend/components/Assignment/AssignInput'
 import Exam from './frontend/components/Exam/ExamInput'
+import Subject from './pages/Subject/subject'
+import SubjectAdd from './pages/Subject/subjectAdd'
+import SubjectUpdate from './pages/Subject/subjectUpdate'
 export default function RouteFile() {
  
   return (
@@ -76,10 +79,10 @@ export default function RouteFile() {
             <Route path='/payslip/:id' element={<Payslip />} />
             <Route path='/extra-pay/:id' element={<ExtraPay />} />
 
-            {/* Position */}
-            <Route path='/position' element={<Position />} />
-            <Route path='/position/register' element={<PositionRegsiter />} />
-            <Route path='/position/update/:id' element={<PositionUpdate />} />
+            {/* Subject Sale */}
+            <Route path='/subject-sale' element={<SubjectSale />} />
+            <Route path='/subject-sale-add' element={<SubjectSaleRegsiter />} />
+            <Route path='/subject-sale/:id' element={<SubjectSaleUpdate />} />
 
 
             {/* Leave */}
@@ -87,11 +90,17 @@ export default function RouteFile() {
             <Route path='/leave/register' element={<LeaveAdd />} ></Route>
             <Route path='/leave/update/:id' element={<LeaveUpdate />} ></Route>
 
-            {/* Attendance */}
+            {/* Course*/}
             <Route path='/course' element={<Course />}></Route>
             <Route path='/course-add' element={<CourseAdd />}></Route>
             <Route path='/course-update/:id' element={<CourseUpdate />} ></Route>
             <Route path='/course-detail' element={<CourseDetail />} ></Route>
+
+                {/* Subject*/}
+            <Route path='/subject' element={<Subject />}></Route>
+            <Route path='/subject-add' element={<SubjectAdd />}></Route>
+            <Route path='/subject-update/:id' element={<SubjectUpdate />} ></Route>
+            {/* <Route path='/subject-detail' element={<SubjectDetail />} ></Route> */}
           </Route>
 
           {/* <AuthContainer component={<Dashboard />} path='/home'></AuthContainer> */}

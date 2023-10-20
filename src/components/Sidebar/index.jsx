@@ -1,7 +1,7 @@
 // import { Accordion} from '@nextui-org/react'
 import {useState} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBook, faBuildingUser, faLaptopFile, faCalendarXmark, faUsers } from '@fortawesome/free-solid-svg-icons'
+import { faBook, faLaptopFile, faUsers,faWallet } from '@fortawesome/free-solid-svg-icons'
 import {
   Card,
   CardBody,
@@ -58,18 +58,26 @@ export default function Sidebar () {
                       &nbsp;
                       <span className='ml-4 font-medium '>Courses</span>
                     </div>
-                  </Link>
-
                   <Divider></Divider>
-                  <Link to='/position'>
+
+                  </Link>
+ <Link to='/subject'>
                     <div className='hover:bg-default-100 px-4 py-3'>
                       <FontAwesomeIcon icon={faBook} size='xl' />
                       &nbsp;&nbsp;
-                      <span className='ml-4 font-medium'>Subjects</span>
+                      <span className='ml-5 font-medium'>Subjects</span>
                     </div>
                   </Link>
                   <Divider></Divider>
-                  <Link to='/department'>
+                  <Link to='/subject-sale'>
+                    <div className='hover:bg-default-100 px-4 py-3'>
+                      <FontAwesomeIcon icon={faWallet} size='xl'/>
+                      &nbsp;&nbsp;
+                      <span className='ml-4 font-medium'>Subjects Sale</span>
+                    </div>
+                  </Link>
+                  <Divider></Divider>
+                  {/* <Link to='/department'>
                     <div className='hover:bg-default-100 px-4 py-3'>
                       <FontAwesomeIcon icon={faBuildingUser} size='xl' />
                       &nbsp;&nbsp;
@@ -87,7 +95,7 @@ export default function Sidebar () {
                     </div>
                   </Link>
 
-                  <Divider></Divider>
+                  <Divider></Divider> */}
                   {/* <Link to='/payroll'>
                     <div className='hover:bg-default-100 px-4 py-3'>
                       <FontAwesomeIcon icon={faMoneyCheckDollar} size='xl' />
