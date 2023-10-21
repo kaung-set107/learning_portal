@@ -3,16 +3,19 @@ import FormAction from '../../components/Login/formAction'
 import { Input } from '@nextui-org/react'
 import { EyeFilledIcon } from './eyefilledicon'
 import { EyeSlashFilledIcon } from './eyeslashicon'
-import React, { useRef } from 'react'
+import React, { useRef,useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import apiInstance from '../../util/api.js'
 import { MailFilledIcon } from './mailicon'
 import Swal from 'sweetalert2'
+import SideBar from '../Sidebar/index'
 const fields = loginFields
 let fieldsState = {}
 fields.forEach(field => (fieldsState[field.id] = ''))
 
 export default function Login() {
+  const [arr,setArr]=useState([])
+
   const navigate = useNavigate()
   const usernameRef = useRef()
   const passRef = useRef()
@@ -34,13 +37,19 @@ export default function Login() {
           confirmButtonText: 'OK',
           confirmButtonColor: '#3085d6'
         })
-        console.log(res.data.data.roles[0],'data')
+        
+        console.log(res.data.data,'res')
         if(res.data.data.roles[0].includes('instructor')){
+          
 navigate('/instructor')
+
         }else if(res.data.data.roles[0].includes('student')){
+          setArr(res.data.data)
 navigate('/student')
-        }else{
+        }else if(res.data.data.roles[0].includes('admin')){
+          
 navigate('/home')
+return setArr(res.data.data)
         }
         
       })
@@ -57,11 +66,12 @@ navigate('/home')
   }
 
   //Handle Login API Integration here
-
+  console.log(arr,'dat')
   const [isVisible, setIsVisible] = React.useState(false)
 
   const toggleVisibility = () => setIsVisible(!isVisible)
   return (
+    <>
     <form className='' onSubmit={handleSubmit}>
       <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
         <Input
@@ -98,5 +108,11 @@ placeholder="Password"
         <FormAction handleSubmit={() => handleSubmit()} text='Login' />
       </div>
     </form>
+    <div className='hidden'>
+    {  console.log(arr,'dat')}
+<SideBar arr={[arr]} />
+    </div>
+
+</>
   )
 }

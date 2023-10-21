@@ -1,5 +1,6 @@
 // import { Accordion} from '@nextui-org/react'
 import {useState} from 'react'
+import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBook, faLaptopFile, faUsers,faWallet } from '@fortawesome/free-solid-svg-icons'
 import {
@@ -13,7 +14,9 @@ import { Link} from 'react-router-dom'
 
 
 
-export default function Sidebar () {
+ export default function Sidebar (props) {
+  const {arr}=props
+  console.log(arr,'arr')
   const [isInc,setInc]=useState(false)
         const [isCou,setCou]=useState(false)
   
@@ -134,3 +137,9 @@ export default function Sidebar () {
     </>
   )
 }
+
+Sidebar.propTypes = {
+  arr: PropTypes.string,
+
+};
+
