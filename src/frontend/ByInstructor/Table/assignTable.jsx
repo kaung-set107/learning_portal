@@ -15,18 +15,23 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  User,
+  Image,
+
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import apiInstance from "../../util/api";
-import { EditIcon } from "../../components/Table/editicon";
-import { DeleteIcon } from "../../components/Table/deleteicon";
+import apiInstance from "../../../util/api.js";
+import { EditIcon } from "../../../components/Table/editicon";
+import { DeleteIcon } from "../../../components/Table/deleteicon";
 import React from "react";
-import { Link } from "react-router-dom";
-import { getFile } from "../../util/index.js";
+import { Link,useLocation } from "react-router-dom";
+import { getFile } from "../../../util/index.js";
+import ExcelPhoto from '../images/excel.png'
+import PdfPhoto from '../images/pdf.png'
 // import { PlusIcon } from "../../assets/Icons/PlusIcon";
 
-export default function PositionTable() {
+function PositionTable() {
+const Val=useLocation().state
+console.log(Val,'res')
   const [assignList, setAssignList] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [delID, setDelID] = useState(null);
@@ -49,7 +54,7 @@ export default function PositionTable() {
     var element = document.createElement("a");
     var file = new Blob(
       [
-        "https://timesofindia.indiatimes.com/thumb/msid-70238371,imgsize-89579,width-400,resizemode-4/70238371.jpg",
+        "https://timesofindia.indiatimes.com/thumb/msid-70238371,imgsize-89579,width-400,resizemode-4/70238371.jpg"
       ],
       { type: "image/*" }
     );
@@ -57,6 +62,25 @@ export default function PositionTable() {
     element.download = "image.jpg";
     element.click();
   };
+  const downloadPDF = (val) => {
+  // Replace 'your-pdf-file.pdf' with the actual file path or URL
+  const pdfUrl = getFile({payload:val});
+  
+  // Create a link element
+  const link = document.createElement('a');
+  link.href = pdfUrl;
+  link.download = 'downloaded-file.pdf';
+  
+  // Append the link to the document
+  document.body.appendChild(link);
+  
+  // Trigger a click on the link to start the download
+  link.click();
+  
+  // Remove the link from the document
+  document.body.removeChild(link);
+}
+
   const onRowsChange = (event) => {
     const newRowsPerPage = parseInt(event.target.value);
     setRowsPerPage(newRowsPerPage);
@@ -70,9 +94,11 @@ export default function PositionTable() {
         .get(`assignments`, { params: { limit: 80, rowsPerPage: rowsPerPage } })
         .then((res) => {
           console.log(res.data.data, "res");
-          const obj = res.data.data.map((i) => JSON.parse(i.links));
+          console.log(res.data.data.filter(el=>el.subject?.title === Val),'hrr')
+          const FilterList=res.data.data.filter(el=>el.subject?.title === Val)
+          const obj = FilterList.map((i) => JSON.parse(i?.links));
           console.log(obj, "res");
-          setAssignList(res.data.data);
+          setAssignList(FilterList);
           setPages(res.data._metadata.page_count);
         });
     };
@@ -82,7 +108,7 @@ export default function PositionTable() {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isOpen, rowsPerPage]);
+  }, [isOpen, rowsPerPage,Val]);
 
   const handleOpen = (event) => {
     onOpen();
@@ -145,13 +171,13 @@ export default function PositionTable() {
               />
             </div>
           }>
-          <TableHeader className="sticky">
+          <TableHeader className="sticky ">
             <TableColumn key="no">No</TableColumn>
-            <TableColumn key="name">Title</TableColumn>
+            <TableColumn key="name" >Title</TableColumn>
             <TableColumn key="name">Question</TableColumn>
-            <TableColumn key="name">Subject</TableColumn>
-            <TableColumn key="name">Links</TableColumn>
-            <TableColumn key="description">Description</TableColumn>
+            {/* <TableColumn key="name">Subject</TableColumn> */}
+            <TableColumn key="name">Link</TableColumn>
+            {/* <TableColumn key="description">Description</TableColumn> */}
             <TableColumn key="actions">Actions</TableColumn>
           </TableHeader>
           <TableBody
@@ -163,24 +189,40 @@ export default function PositionTable() {
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{item?.title}</TableCell>
                 <TableCell>
-                  {" "}
-                  <a
+                  <div className='sm:flex justify-start gap-5'>
+ <a
                     href={
                       item.question ? getFile({ payload: item.question }) : ""
                     }
-                    download
-                    onClick={() => download()}>
-                    <User
+                    
+                    onClick={item.question.originalname?.split('.')[1] === 'pdf' ? () => downloadPDF(item.question) : () => download()}>
+                    {/* <User
                       avatarProps={{
                         radius: "lg",
                         src: item.question
                           ? getFile({ payload: item.question })
-                          : "",
+                     :''
                       }}
-                    />
+                       name={item.question?.originalname?.split('.')[0]}
+                    /> */}
+                       <Image
+             
+              radius="sm"
+           
+              alt={item.title}
+              className="object-cover w-[40px] h-[40px]"
+              src={ item.question.originalname?.split('.')[1] === 'pdf' ? PdfPhoto : item.question.originalname?.split('.')[1] === 'xls' ? ExcelPhoto : getFile({ payload: item.question }) }
+          
+            
+            />
+            
+          
                   </a>
+                  <b className='mt-3'>{item.question?.originalname}</b>
+                  </div>
+                 
                 </TableCell>
-                <TableCell>{item?.subject?.title}</TableCell>
+                {/* <TableCell>{item?.subject?.title}</TableCell> */}
                 <TableCell>
                   {JSON.parse(item.links).map((e) => (
                     <div key={e} className="text-blue-700 gap-5">
@@ -190,7 +232,7 @@ export default function PositionTable() {
                     </div>
                   ))}
                 </TableCell>
-                <TableCell>{item?.description}</TableCell>
+                {/* <TableCell>{item?.description}</TableCell> */}
 
                 <TableCell>
                   <div className="relative flex items-center gap-2">
@@ -246,3 +288,4 @@ export default function PositionTable() {
     </div>
   );
 }
+export default PositionTable

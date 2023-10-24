@@ -1,12 +1,13 @@
 import { Card, CardBody, Button, CardHeader } from "@nextui-org/react";
-// import { Link } from 'react-router-dom';
+import { Link,useLocation} from 'react-router-dom';
 
-import Table from "./tablelist";
-import AssignTable from "./assignTable";
+import Table from "./Table/learningTable";
+import AssignTable from "./Table/assignTable";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
+
 export default function AddBody() {
+const Val=useLocation().state
   return (
     <div>
       {/* body */}
@@ -14,11 +15,10 @@ export default function AddBody() {
         <>
           <Card className="mx-8">
             <CardHeader>
-              <h2 className="font-semibold text-xl">Learning Material</h2>
+              <h2 className="font-semibold text-xl">{Val} Learning Material</h2>
             </CardHeader>
             <CardBody className="flex-grow">
-              <div>
-                <p className="text-left">Hello</p>
+      
                 <div className="flex gap-2 grid-cols-2 justify-end">
                   <Button
                     color="primary"
@@ -38,7 +38,7 @@ export default function AddBody() {
                   
                   </Button> */}
                 </div>
-              </div>
+         
             </CardBody>
             <Table />
           </Card>
@@ -48,11 +48,10 @@ export default function AddBody() {
         <>
           <Card className="mx-8">
             <CardHeader>
-              <h2 className="font-semibold text-xl">Assignment</h2>
+              
             </CardHeader>
             <CardBody className="flex-grow">
-              <div>
-                <p className="text-left">Hello</p>
+           <h2 className="font-semibold text-xl  px-6">{Val} Assignment</h2>
                 <div className="flex gap-2 grid-cols-2 justify-end">
                   <Button
                     color="primary"
@@ -74,20 +73,19 @@ export default function AddBody() {
                   
                   </Button> */}
                 </div>
-              </div>
+         
             </CardBody>
-            <AssignTable />
+            <AssignTable/>
           </Card>
           <br />
         </>
         <>
           <Card className="mx-8">
             <CardHeader>
-              <h2 className="font-semibold text-xl">Exam</h2>
+              <h2 className="font-semibold text-xl">{Val} Exam</h2>
             </CardHeader>
             <CardBody className="flex-grow">
-              <div>
-                <p className="text-left">Hello Exam</p>
+            
                 <div className="flex gap-2 grid-cols-2 justify-end">
                   <Button
                     color="primary"
@@ -109,7 +107,7 @@ export default function AddBody() {
                   
                   </Button> */}
                 </div>
-              </div>
+            
             </CardBody>
             <Table />
           </Card>

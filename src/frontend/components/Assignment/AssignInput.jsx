@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus,faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default function DepartmentInputForm() {
   const variant = "faded";
@@ -29,6 +29,12 @@ const newData={
 setNewLink([...newLink,newData])
 console.log([...newLink,newData],'res')
 }
+
+ const Delete = async (val) => {
+   
+  console.log(val,'val')
+  setNewLink(newLink.filter(el=>el.links !== val))
+  };
   const handleImage=(e)=>{
     if(e.target.files){
       setImage(e.target.files[0])
@@ -143,6 +149,15 @@ const create = () => {
             variant={variant}
             value={i.links}
             onChange={(e) => setLinks(e.target.value)}
+             endContent={
+                <Button
+                  color="light"
+                  className="rounded-none text-red-700"
+                  onClick={() => Delete(i.links)}>
+                  
+                <FontAwesomeIcon icon={faCircleXmark} />
+                </Button>
+              }
            
           />
             </div>)
@@ -154,7 +169,7 @@ const create = () => {
       </div>
       <div className="flex justify-center gap-5 mt-8">
         <Button color="danger">
-          <Link to="/attendance">Cancel</Link>
+          <Link to="/instructor">Cancel</Link>
         </Button>
         <Button color="primary" type='submit'>
           Register

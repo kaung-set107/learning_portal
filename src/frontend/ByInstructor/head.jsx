@@ -1,7 +1,7 @@
 
 import {Card, CardBody, CardFooter, Image} from "@nextui-org/react";
 import sub from './images/sub.jpg'
-
+import {Link} from 'react-router-dom'
 export default function App() {
   const list = [
     {
@@ -28,6 +28,7 @@ export default function App() {
       {list.map((item, index) => (
         <Card shadow="sm" key={index} isPressable onPress={() => console.log("item pressed")}>
           <CardBody className="overflow-visible ">
+          <Link to='/instructor' state={ item.title }>
             <Image
               shadow="sm"
               radius="sm"
@@ -35,7 +36,10 @@ export default function App() {
               alt={item.title}
               className="w-full object-cover h-[120px] md:h-[150px] sm:h-[240px] "
               src={item.img}
+            
+            
             />
+            </Link>
           </CardBody>
           <CardFooter className="text-small justify-between invisible sm:visible">
             <b>{item.title}</b>

@@ -2,9 +2,9 @@ import {
     Tooltip, Table, TableHeader, Modal, ModalContent, Kbd, Button, ModalFooter, Pagination, ModalHeader, ModalBody, useDisclosure, TableColumn, TableBody, TableRow, TableCell
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import apiInstance from "../../util/api";
-import { EditIcon } from "../../components/Table/editicon";
-import { DeleteIcon } from "../../components/Table/deleteicon";
+import apiInstance from "../../../util/api.js";
+import { EditIcon } from "../../../components/Table/editicon";
+import { DeleteIcon } from "../../../components/Table/deleteicon";
 import React from "react";
 import { Link } from "react-router-dom";
 // import { PlusIcon } from "../../assets/Icons/PlusIcon";
