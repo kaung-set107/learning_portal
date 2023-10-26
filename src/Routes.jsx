@@ -31,8 +31,10 @@ import Exam from './frontend/components/Exam/ExamInput'
 import Subject from './pages/Subject/subject'
 import SubjectAdd from './pages/Subject/subjectAdd'
 import SubjectUpdate from './pages/Subject/subjectUpdate'
+import SubjectDetail from './pages/Subject/subjectDetail'
 //assign update
 import AssignmentUpdate from './frontend/pages/Assignment/AssignmentUpdate'
+
 export default function RouteFile() {
  
   return (
@@ -103,7 +105,9 @@ export default function RouteFile() {
             <Route path='/subject' element={<Subject />}></Route>
             <Route path='/subject-add' element={<SubjectAdd />}></Route>
             <Route path='/subject-update/:id' element={<SubjectUpdate />} ></Route>
-            {/* <Route path='/subject-detail' element={<SubjectDetail />} ></Route> */}
+            <Route path='/subject-detail/:id' element={<SubjectDetail />} ></Route>
+
+   
           </Route>
 
           {/* <AuthContainer component={<Dashboard />} path='/home'></AuthContainer> */}

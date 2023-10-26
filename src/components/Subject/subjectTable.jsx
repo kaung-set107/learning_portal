@@ -23,9 +23,11 @@ import React, { useState } from 'react'
 import { useEffect } from 'react'
 import apiInstance from '../../util/api'
 import { EditIcon } from '../Table/editicon'
+import {EyeIcon} from '../Table/eyeicon'
 import { DeleteIcon } from '../Table/deleteicon'
 import { Link } from 'react-router-dom'
 import { PlusIcon } from '../../assets/Icons/PlusIcon'
+
 import { getFile } from '../../util/index';
 
 export default function AttendanceTable () {
@@ -254,6 +256,13 @@ export default function AttendanceTable () {
 
               <TableCell>
                 <div className='relative flex items-center gap-2'>
+                     <Tooltip content='Edit Position'>
+                    <Link to={'/subject-detail/' + item._id}>
+                      <span className='text-lg text-default-400 cursor-pointer active:opacity-50'>
+                        <EyeIcon />
+                      </span>
+                    </Link>
+                  </Tooltip>
                   <Tooltip content='Edit Position'>
                     <Link to={'/subject-update/' + item._id}>
                       <span className='text-lg text-default-400 cursor-pointer active:opacity-50'>

@@ -80,6 +80,14 @@ import { Link} from 'react-router-dom'
                     </div>
                   </Link>
                   <Divider></Divider>
+                   {/* <Link to='/subject-section'>
+                    <div className='hover:bg-default-100 px-4 py-3'>
+                   <FontAwesomeIcon icon={faSection} size='xl' />
+                      &nbsp;&nbsp;
+                      <span className='font-medium' style={{ marginLeft:'1em' }}>Subjects Section</span>
+                    </div>
+                  </Link>
+                  <Divider></Divider> */}
                   {/* <Link to='/department'>
                     <div className='hover:bg-default-100 px-4 py-3'>
                       <FontAwesomeIcon icon={faBuildingUser} size='xl' />
