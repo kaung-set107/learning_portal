@@ -30,8 +30,22 @@ import PdfPhoto from '../images/pdf.png'
 // import { PlusIcon } from "../../assets/Icons/PlusIcon";
 
 function PositionTable() {
-const Val=useLocation().state
-console.log(Val,'res')
+const location=useLocation()
+
+     const Val=location.state ? location.state :'English'
+    //  const [dataValue,setDataValue]=useState('English')
+    //      if(location.pathname === '/instructor'){
+    //   setDataValue(Val)
+    // }
+//   const [Val,setVal]=useState('English')
+
+//   if(DataState){
+  
+// setVal(DataState)
+//   }else{
+//     setVal('English')
+//   }
+
   const [assignList, setAssignList] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [delID, setDelID] = useState(null);
@@ -89,6 +103,7 @@ console.log(Val,'res')
   };
 
   useEffect(() => {
+
     const getAssign = async () => {
       await apiInstance
         .get(`assignments`, { params: { limit: 80, rowsPerPage: rowsPerPage } })

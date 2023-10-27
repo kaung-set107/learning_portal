@@ -1,13 +1,21 @@
 import { Card, CardBody, Button, CardHeader } from "@nextui-org/react";
 import { Link,useLocation} from 'react-router-dom';
-
+// import {useEffect,useState} from 'react'
 import Table from "./Table/learningTable";
 import AssignTable from "./Table/assignTable";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function AddBody() {
-const Val=useLocation().state
+const location=useLocation()
+
+     const Val=location.state ? location.state :'English'
+  //    const [dataValue,setDataValue]=useState('English')
+  //      useEffect(() => {
+  //   if(location.pathname === '/instructor'){
+  //     setDataValue(Val)
+  //   }
+  // },[])
   return (
     <div>
       {/* body */}

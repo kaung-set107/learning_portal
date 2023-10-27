@@ -20,8 +20,8 @@ export default function LMAdd() {
        <Head/>
       </div> */}
       <div className="flex-grow">
-        <div className="body">
-          <Card className="rounded-md">
+        <div className="body ">
+          <Card className="rounded-md py-10 px-10">
             <CardHeader className="justify-between">
               <div
                
