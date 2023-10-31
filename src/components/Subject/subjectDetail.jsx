@@ -3,7 +3,7 @@ import apiInstance from "../../util/api";
 import { useState,useEffect } from "react";
 import Swal from "sweetalert2";
 import { Link,useLocation} from "react-router-dom";
-
+import SubSection from './subjectsectiontable'
 
 
 export default function SubjectInputForm() {
@@ -15,6 +15,7 @@ export default function SubjectInputForm() {
   const [title,setTitle]=useState('')
   const [desc,setDesc]=useState('')
 const [subject,setSubject]=useState([])
+const [subName,setSubName]=useState('')
 
 
   const create =async () => {
@@ -36,6 +37,8 @@ const [subject,setSubject]=useState([])
           confirmButtonColor: "#3085d6",
         });
 
+     
+window.location.reload()
       })
       await apiInstance.get("subjects",data).then(function(){})
       .catch((error) => {
@@ -49,6 +52,7 @@ const [subject,setSubject]=useState([])
                     // setCourseList(res.data.data)
                     const filter=res.data.data.filter(el=>el._id === Id)
                     setSubject(filter)
+                    setSubName(filter[0].title)
                 console.log(filter,'res')
                 })
         }
@@ -79,7 +83,7 @@ const [subject,setSubject]=useState([])
         
               label="Subject"
               placeholder="... "
-              value={subject[0]?.title}
+              value={subName}
               labelPlacement="outside"
               variant={variant}
             />
@@ -114,6 +118,7 @@ const [subject,setSubject]=useState([])
               Register
             </Button>
       </div>
+      <SubSection Id={Id} subject={subName}/>
    
     </div>
   );
