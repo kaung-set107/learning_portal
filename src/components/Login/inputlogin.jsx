@@ -9,11 +9,13 @@ import apiInstance from '../../util/api.js'
 import { MailFilledIcon } from './mailicon'
 import Swal from 'sweetalert2'
 import SideBar from '../Sidebar/index'
+import {Spinner} from '../../util/Spinner.jsx'
 const fields = loginFields
 let fieldsState = {}
 fields.forEach(field => (fieldsState[field.id] = ''))
 
 export default function Login() {
+  const [loading,setLoading]=useState('')
   const [arr,setArr]=useState([])
 
   const navigate = useNavigate()
@@ -30,25 +32,30 @@ export default function Login() {
       .then((res) => {
         localStorage.setItem('token', res.data.token)
         localStorage.setItem('id', res.data.id)
-        Swal.fire({
-          icon: 'success',
-          title: 'Login Successful',
-          text: 'Welcome back!',
-          confirmButtonText: 'OK',
-          confirmButtonColor: '#3085d6'
-        })
+       setLoading('login')
+        // Swal.fire({
+        //   icon: 'success',
+        //   title: 'Login Successful',
+        //   text: 'Welcome back!',
+        //   confirmButtonText: 'OK',
+        //   confirmButtonColor: '#3085d6'
+        // })
         
         console.log(res.data.data,'res')
         if(res.data.data.roles[0].includes('instructor')){
           
 navigate('/instructor')
+setLoading(false)
 
         }else if(res.data.data.roles[0].includes('student')){
+          const rol = res.data.data.roles[0]
           setArr(res.data.data)
-navigate('/student')
+navigate('/student',{state:{rol}})
+
         }else if(res.data.data.roles[0].includes('admin')){
           
 navigate('/home')
+setLoading(false)
 return setArr(res.data.data)
         }
         
@@ -72,6 +79,9 @@ return setArr(res.data.data)
   const toggleVisibility = () => setIsVisible(!isVisible)
   return (
     <>
+
+  {loading === 'login' ? <Spinner/> : ''}
+  
     <form className='' onSubmit={handleSubmit}>
       <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
         <Input

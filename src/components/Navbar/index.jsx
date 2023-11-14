@@ -171,7 +171,7 @@ export default function NavBar() {
   // const NavCheck = location.pathname === '/'
   return (
     <>
-      {location.pathname !== '/' && location.pathname !== '/login' && (
+      {location.pathname !== '/' && location.pathname !== '/login' && location.pathname !=='/student' && location.pathname !== '/instructor' && (
         <Navbar maxWidth='full' isBordered isBlurred={false} className='py-4 sticky-top'>
           {/* <h3>Hello</h3> */}
 

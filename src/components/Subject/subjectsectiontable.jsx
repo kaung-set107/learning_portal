@@ -244,7 +244,7 @@ export default function AttendanceTable (props) {
               <TableCell>
                 <div className='relative flex items-center gap-2'>
                      <Tooltip content='Create Learning Material'>
-                    <Link to={'/learn-mat/' + item._id}>
+                    <Link to={ '/learn-mat/'+item._id } >
                       <span className='text-lg text-default-400 cursor-pointer active:opacity-50'>
                         <PlusIcon />
                       </span>

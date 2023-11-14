@@ -194,6 +194,8 @@ export default function EmployeeInput() {
               <option value="instructorSupervisor">
                 Supervisor Instructor
               </option>
+              <option value="student">Student</option>
+              <option value="admin">Admin</option>
               {/* {positionList.map(option => (
                 <option key={option} value={option._id}>
                   {option.name}

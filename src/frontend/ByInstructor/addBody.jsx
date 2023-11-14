@@ -5,11 +5,14 @@ import Table from "./Table/learningTable";
 import AssignTable from "./Table/assignTable";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Spinner from '../../assets/loading.gif'
 
 export default function AddBody() {
 const location=useLocation()
 
-     const Val=location.state ? location.state :'English'
+     const Val=location.state ? location.state.title :'English'
+     const Id =location.state?.id
+    //  console.log(Val.title,'vallll')
   //    const [dataValue,setDataValue]=useState('English')
   //      useEffect(() => {
   //   if(location.pathname === '/instructor'){
@@ -19,6 +22,9 @@ const location=useLocation()
   return (
     <div>
       {/* body */}
+      {location.pathanme === 'instructor' && (
+        <img src={Spinner}/>
+      )}
       <div>
         <>
           <Card className="mx-8">
@@ -33,7 +39,7 @@ const location=useLocation()
                     variant="flat"
                     className="mt-8"
                     size="sm">
-                    <Link to="/lm" className="lg:text-md md:text-sm sm:text-sm">
+                    <Link to={'/subject-detail/'+Id} className="lg:text-md md:text-sm sm:text-sm">
                       Add
                     </Link>
                     <FontAwesomeIcon icon={faPlus} />

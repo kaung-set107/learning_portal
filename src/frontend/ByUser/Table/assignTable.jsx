@@ -2,14 +2,7 @@ import {
   Tooltip,
   Table,
   TableHeader,
-  Modal,
-  ModalContent,
-  Kbd,
-  Button,
-  ModalFooter,
   Pagination,
-  ModalHeader,
-  ModalBody,
   useDisclosure,
   TableColumn,
   TableBody,
@@ -20,20 +13,19 @@ import {
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import apiInstance from "../../../util/api.js";
-import { EditIcon } from "../../../components/Table/editicon";
-import { DeleteIcon } from "../../../components/Table/deleteicon";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {faCircleInfo } from '@fortawesome/free-solid-svg-icons'
 import React from "react";
 import { Link,useLocation } from "react-router-dom";
 import { getFile } from "../../../util/index.js";
-import ExcelPhoto from '../images/excel.png'
-import PdfPhoto from '../images/pdf.png'
+import ExcelPhoto from '../../ByInstructor/images/excel.png'
+import PdfPhoto from '../../ByInstructor/images/pdf.png'
 // import { PlusIcon } from "../../assets/Icons/PlusIcon";
 
 function PositionTable() {
 const location=useLocation()
-
-     const Val=location.state ? location.state.title :'English'
-    //  console.log(location.state,'subbbbb')
+const {state}=useLocation()
+     const Val=location.state ? location.state :'English'
     //  const [dataValue,setDataValue]=useState('English')
     //      if(location.pathname === '/instructor'){
     //   setDataValue(Val)
@@ -109,11 +101,11 @@ const location=useLocation()
       await apiInstance
         .get(`assignments`, { params: { limit: 80, rowsPerPage: rowsPerPage } })
         .then((res) => {
-          console.log(res.data.data, "res asss");
-          console.log(res.data.data.filter(el=>el.subject?.title === Val),'hrr ass')
-          const FilterList=res.data.data.filter(el=>el.subject?.title === Val)
+          console.log(res.data.data, "assign res");
+          console.log(res.data.data.filter(el=>el.subject?._id === state?.val),'hrr')
+          const FilterList=res.data.data.filter(el=>el.subject?._id === state?.val)
           const obj = FilterList.map((i) => JSON.parse(i?.links));
-          console.log(obj, "res ass11");
+          console.log(obj, "res");
           setAssignList(FilterList);
           setPages(res.data._metadata.page_count);
         });
@@ -252,21 +244,14 @@ const location=useLocation()
 
                 <TableCell>
                   <div className="relative flex items-center gap-2">
-                    <Tooltip content="Edit Assignment">
-                      <Link to={`/assign/${item._id}`}>
+                    <Tooltip content="Detail Assignment">
+                      <Link to={`/sub-detail/${item._id}`}>
                         <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                          <EditIcon />
+                          <FontAwesomeIcon icon={faCircleInfo} size='xl' />
                         </span>
                       </Link>
                     </Tooltip>
-                    <Tooltip color="danger" content="Delete user">
-                      <span
-                        data-key={item._id}
-                        className="text-lg text-danger cursor-pointer active:opacity-50"
-                        onClick={(e) => handleOpen(e)}>
-                        <DeleteIcon />
-                      </span>
-                    </Tooltip>
+                 
                   </div>
                 </TableCell>
               </TableRow>
@@ -275,32 +260,7 @@ const location=useLocation()
         </Table>
       </div>
 
-      <Modal backdrop="blur" isOpen={isOpen} onClose={handleClose}>
-        <ModalContent>
-          {(handleClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Delete Position
-              </ModalHeader>
-              <ModalBody>
-                <p>Are you sure you want to delete this position?</p>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="default" variant="light" onClick={handleClose}>
-                  No, Cancel
-                </Button>
-                <Button
-                  color="danger"
-                  onPress={() => handleDelete()}
-                  onKeyDown={handleKeyDown}>
-                  Yes, I am sure
-                  <Kbd className="bg-danger-500" keys={["enter"]}></Kbd>
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+ 
     </div>
   );
 }

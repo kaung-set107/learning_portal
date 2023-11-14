@@ -19,9 +19,9 @@ import CourseUpdate from './pages/Course/CourseUpdate'
 import Leave from './pages/Leave/Leave'
 import LeaveAdd from './pages/Leave/LeaveAdd'
 import LeaveUpdate from './pages/Leave/LeaveUpdate'
-import PayRoll from './pages/PayRoll/payroll'
-import Payslip from './pages/PayRoll/payslip'
-import ExtraPay from './pages/PayRoll/extrapay'
+import Student from './frontend/ByUser/index'
+import StudentAssign from './frontend/ByUser/studentAssign'
+// import ExtraPay from './pages/PayRoll/extrapay'
 import CourseDetail from './pages/Course/AttendanceDetail'
 import FHome from './frontend/home/body'
 import InstructorHome from './frontend/ByInstructor/home'
@@ -32,6 +32,7 @@ import Subject from './pages/Subject/subject'
 import SubjectAdd from './pages/Subject/subjectAdd'
 import SubjectUpdate from './pages/Subject/subjectUpdate'
 import SubjectDetail from './pages/Subject/subjectDetail'
+import LMDetail from './frontend/pages/LearningMaterial/LMDetail'
 import LearningMaterialAdmin from './components/Subject/learnigMaterialInput'
 //assign update
 import AssignmentUpdate from './frontend/pages/Assignment/AssignmentUpdate'
@@ -80,10 +81,10 @@ export default function RouteFile() {
             <Route path='/instru-add' element={<InstructorAdd />} />
             <Route path='/instru-update/:id' element={<InstructorUpdate />} />
 
-            {/* Pay Roll */}
-            <Route path='/payroll' element={<PayRoll />} />
-            <Route path='/payslip/:id' element={<Payslip />} />
-            <Route path='/extra-pay/:id' element={<ExtraPay />} />
+            {/* Student */}
+            <Route path='/student' element={<Student />} />
+            <Route path='/student-assign' element={<StudentAssign />} />
+            {/* <Route path='/extra-pay/:id' element={<ExtraPay />} /> */}
 
             {/* Subject Sale */}
             <Route path='/subject-sale' element={<SubjectSale />} />
@@ -110,6 +111,8 @@ export default function RouteFile() {
             <Route path='/learn-mat/:id' element={<LearningMaterialAdmin/>} ></Route>
 
    
+    {/* LmDetail */}
+            <Route path='/sub-detail/:id' element={<LMDetail />} ></Route>
           </Route>
 
           {/* <AuthContainer component={<Dashboard />} path='/home'></AuthContainer> */}

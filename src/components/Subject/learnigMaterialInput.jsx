@@ -17,11 +17,10 @@ export default function DepartmentInputForm() {
     handleSubmit,
   
   } = useForm();
-  const [subjectList,setSubjectList]=useState([])
+  const [subjectSectionName,setSubjectSectionName]=useState('')
 const [title,setTitle]=useState('')
 const [desc,setDesc]=useState('')
 const [image,setImage]=useState([])
-const [subject,setSubject]=useState('')
 const [links,setLinks]=useState('')
 const [newLink,setNewLink]=useState([])
 const [videoLinks,setVideoLinks]=useState('')
@@ -69,11 +68,14 @@ const create = () => {
     const formData = new FormData();
 
     formData.append("title", title);
-    formData.append("subjectSection", subject);
+    formData.append("subjectSection", SSId);
     formData.append("description", desc);
-    formData.append("assets", image);
+    // formData.append("assets", image);
      formData.append("links", JSON.stringify(newLink));
      formData.append("video", JSON.stringify(newVideoLink));
+    image.forEach(item => {
+      formData.append('assets', item) // Assuming 'item' is a File object
+    })
 
     apiInstance
       .post("learning-materials", formData, {
@@ -97,17 +99,17 @@ const create = () => {
 
 
   useEffect(() => {
-    // const getDepartmentList = async () => {
-    //   await apiInstance
-    //     .get("departments")
-    //     .then((res) => setDepartmentList(res.data.data));
-    // };
-
-    const getSubjectList = async () => {
-      await apiInstance.get("subjects").then((res) => setSubjectList(res.data.data));
+    const getSubSection = async () => {
+      await apiInstance
+        .get("subject-sections/"+SSId)
+        .then((res) => {setSubjectSectionName(res.data.data.title,'re')});
     };
-    getSubjectList();
-    // getDepartmentList();
+
+    // const getSubjectList = async () => {
+    //   await apiInstance.get("subjects").then((res) => setSubjectList(res.data.data));
+    // };
+    // getSubjectList();
+    getSubSection()
   }, []);
 
   return (
@@ -145,12 +147,10 @@ const create = () => {
         <div className="block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
           <label className="text-sm font-semibold">Subject Section</label>
           <select
-            onChange={(e) => setSubject(e.target.value)}
+      
             className="bg-gray-100 border mt-2 border-gray-300 text-gray-900 text-sm rounded-xl m-0 px-0 py-2 focus:ring-gray-500 focus:border-gray-500 block w-full p-3 dark:bg-default-100 dark:border-gray-600 dark:placeholder-gray-100 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500">
-            <option hidden>Choose Subject</option>
-{subjectList.map((i)=>(
- <option key={i._id} value={i._id}>{i.title}</option>
-))}
+            <option value={SSId}>{subjectSectionName}</option>
+
            
    
           </select>

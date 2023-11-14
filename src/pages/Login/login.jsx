@@ -1,13 +1,15 @@
 import { Card } from '@nextui-org/react'
 import Header from '../../components/Login/header'
 import Login from '../../components/Login/inputlogin'
-
+import Head from '../../frontend/home/header'
 
 export default function LoginPage() {
 
   return (
     <>
+     <Head/>
       <div className='flex justify-center'>
+     
         <Card
           isFooterBlurred
           radius='sm'

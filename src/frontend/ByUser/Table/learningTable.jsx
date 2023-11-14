@@ -16,36 +16,37 @@ import {
   TableRow,
   TableCell,
   Image,
-
 } from "@nextui-org/react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {faCircleInfo } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from "react";
 import apiInstance from "../../../util/api.js";
 import { EditIcon } from "../../../components/Table/editicon";
 import { DeleteIcon } from "../../../components/Table/deleteicon";
 import React from "react";
-import { Link,useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { getFile } from "../../../util/index.js";
-import ExcelPhoto from '../images/excel.png'
-import PdfPhoto from '../images/pdf.png'
+import ExcelPhoto from "../../ByInstructor/images/excel.png";
+import PdfPhoto from "../../ByInstructor/images/pdf.png";
 // import { PlusIcon } from "../../assets/Icons/PlusIcon";
 
 function PositionTable() {
-const location=useLocation()
+  const location = useLocation();
+const {state}=useLocation()
+  const Val = location.state ? location.state : "English";
+ 
+  //  const [dataValue,setDataValue]=useState('English')
+  //      if(location.pathname === '/instructor'){
+  //   setDataValue(Val)
+  // }
+  //   const [Val,setVal]=useState('English')
 
-     const Val=location.state ? location.state.title :'English'
-    //  console.log(location.state,'subbbbb')
-    //  const [dataValue,setDataValue]=useState('English')
-    //      if(location.pathname === '/instructor'){
-    //   setDataValue(Val)
-    // }
-//   const [Val,setVal]=useState('English')
+  //   if(DataState){
 
-//   if(DataState){
-  
-// setVal(DataState)
-//   }else{
-//     setVal('English')
-//   }
+  // setVal(DataState)
+  //   }else{
+  //     setVal('English')
+  //   }
 
   const [assignList, setAssignList] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -65,11 +66,12 @@ const location=useLocation()
       handleDelete();
     }
   };
+
   const download = () => {
     var element = document.createElement("a");
     var file = new Blob(
       [
-        "https://timesofindia.indiatimes.com/thumb/msid-70238371,imgsize-89579,width-400,resizemode-4/70238371.jpg"
+        "https://timesofindia.indiatimes.com/thumb/msid-70238371,imgsize-89579,width-400,resizemode-4/70238371.jpg",
       ],
       { type: "image/*" }
     );
@@ -78,23 +80,23 @@ const location=useLocation()
     element.click();
   };
   const downloadPDF = (val) => {
-  // Replace 'your-pdf-file.pdf' with the actual file path or URL
-  const pdfUrl = getFile({payload:val});
-  
-  // Create a link element
-  const link = document.createElement('a');
-  link.href = pdfUrl;
-  link.download = 'downloaded-file.pdf';
-  
-  // Append the link to the document
-  document.body.appendChild(link);
-  
-  // Trigger a click on the link to start the download
-  link.click();
-  
-  // Remove the link from the document
-  document.body.removeChild(link);
-}
+    // Replace 'your-pdf-file.pdf' with the actual file path or URL
+    const pdfUrl = getFile({ payload: val });
+
+    // Create a link element
+    const link = document.createElement("a");
+    link.href = pdfUrl;
+    link.download = "downloaded-file.pdf";
+
+    // Append the link to the document
+    document.body.appendChild(link);
+
+    // Trigger a click on the link to start the download
+    link.click();
+
+    // Remove the link from the document
+    document.body.removeChild(link);
+  };
 
   const onRowsChange = (event) => {
     const newRowsPerPage = parseInt(event.target.value);
@@ -104,16 +106,22 @@ const location=useLocation()
   };
 
   useEffect(() => {
-
     const getAssign = async () => {
       await apiInstance
-        .get(`assignments`, { params: { limit: 80, rowsPerPage: rowsPerPage } })
+        .get(`learning-materials`, {
+          params: { limit: 80, rowsPerPage: rowsPerPage },
+        })
         .then((res) => {
-          console.log(res.data.data, "res asss");
-          console.log(res.data.data.filter(el=>el.subject?.title === Val),'hrr ass')
-          const FilterList=res.data.data.filter(el=>el.subject?.title === Val)
+          console.log(res.data.data, "res");
+          console.log(
+            res.data.data.filter((el) => el.subjectSection?.subject=== state?.val),
+            "hrr"
+          );
+          const FilterList = res.data.data.filter(
+            (el) => el.subjectSection?.subject === state?.val
+          );
           const obj = FilterList.map((i) => JSON.parse(i?.links));
-          console.log(obj, "res ass11");
+          console.log(obj, "res");
           setAssignList(FilterList);
           setPages(res.data._metadata.page_count);
         });
@@ -124,7 +132,7 @@ const location=useLocation()
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isOpen, rowsPerPage,Val]);
+  }, [isOpen, rowsPerPage, Val]);
 
   const handleOpen = (event) => {
     onOpen();
@@ -138,8 +146,8 @@ const location=useLocation()
   };
 
   const handleDelete = async () => {
-    console.log(setDelID);
-    await apiInstance.delete("assignments/" + delID).then(() => {
+    console.log(setDelID,'deli');
+    await apiInstance.delete("learning-materials/" + delID).then(() => {
       setAssignList(assignList.filter((item) => item._id !== delID));
       onClose();
     });
@@ -154,7 +162,7 @@ const location=useLocation()
       </div>
       <div className="flex justify-between items-center mb-3">
         <span className="text-default-400 text-small">
-          Total {assignList.length} Assignments
+          Total {assignList.length} Learning Material
         </span>
         <label className="flex items-center text-default-400 text-small">
           Rows per page:
@@ -189,84 +197,89 @@ const location=useLocation()
           }>
           <TableHeader className="sticky ">
             <TableColumn key="no">No</TableColumn>
-            <TableColumn key="name" >Title</TableColumn>
-            <TableColumn key="name">Question</TableColumn>
+            <TableColumn key="title">Title</TableColumn>
+            <TableColumn key="que">Assets Files</TableColumn>
             {/* <TableColumn key="name">Subject</TableColumn> */}
-            <TableColumn key="name">Link</TableColumn>
-            {/* <TableColumn key="description">Description</TableColumn> */}
+            <TableColumn key="weblink">Website Link</TableColumn>
+            <TableColumn key="videolink">Video Link</TableColumn>
             <TableColumn key="actions">Actions</TableColumn>
           </TableHeader>
           <TableBody
             emptyContent={"No Positions to display."}
             className="overflow-y-scroll">
             {items.map((item, index) => (
-              <TableRow key={item._id}>
+              <TableRow key={item._id} style={{ height:'100px' }}>
                 {/* {console.log(JSON.parse(items.links),'reeee')} */}
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{item?.title}</TableCell>
                 <TableCell>
-                  <div className='sm:flex justify-start gap-5'>
- <a
-                    href={
-                      item.question ? getFile({ payload: item.question }) : ""
-                    }
-                    
-                    onClick={item.question.originalname?.split('.')[1] === 'pdf' ? () => downloadPDF(item.question) : () => download()}>
-                    {/* <User
-                      avatarProps={{
-                        radius: "lg",
-                        src: item.question
-                          ? getFile({ payload: item.question })
-                     :''
-                      }}
-                       name={item.question?.originalname?.split('.')[0]}
-                    /> */}
-                       <Image
-             
-              radius="sm"
-           
-              alt={item.title}
-              className="object-cover w-[40px] h-[40px]"
-              src={ item.question.originalname?.split('.')[1] === 'pdf' ? PdfPhoto : item.question.originalname?.split('.')[1] === 'xls' ? ExcelPhoto : getFile({ payload: item.question }) }
-          
-            
-            />
-            
-          
-                  </a>
-                  <b className='mt-3'>{item.question?.originalname}</b>
-                  </div>
-                 
+                  {item.assets.map((i) => (
+                    <>
+                      {console.log(i, "asse")}
+                      <div className="sm:flex justify-start gap-5" key={i._id}>
+                        <a
+                          href={getFile({ payload: i })}
+                          onClick={
+                            i.originalname?.split(".")[1] === "pdf"
+                              ? () => downloadPDF(i)
+                              : () => download()
+                          }>
+                          <Image
+                            radius="sm"
+                            alt={i.title}
+                            className="object-cover w-[40px] h-[40px]"
+                            src={
+                              i.originalname?.split(".")[1] === "pdf"
+                                ? PdfPhoto
+                                : i.originalname?.split(".")[1] === "xlsx"
+                                ? ExcelPhoto
+                                : getFile({ payload: i })
+                            }
+                          />
+                        </a>
+                        <b className="mt-3">{i?.originalname}</b>
+                      </div>
+                    </>
+                  ))}
                 </TableCell>
-                {/* <TableCell>{item?.subject?.title}</TableCell> */}
+
                 <TableCell>
-                  {JSON.parse(item.links).map((e) => (
+                   {JSON.parse(item.links).map((e) => (
+                    <>
+                    {console.log(e,'e')}
                     <div key={e} className="text-blue-700 gap-5">
                       <a target="_blank" rel='noreferrer' href={e.links}>
                         {e.links}
                       </a>
                     </div>
+                    </>
                   ))}
                 </TableCell>
-                {/* <TableCell>{item?.description}</TableCell> */}
+  <TableCell>
+                   {JSON.parse(item.video).map((e) => (
+                    <>
+                    {console.log(e,'e')}
+                    <div key={e} className="text-blue-700 gap-5">
+                      <a target="_blank" rel='noreferrer' href={e.links}>
+                        {e.links}
+                      </a>
+                    </div>
+                    </>
+                  ))}
+                </TableCell>
 
-                <TableCell>
+               
+
+           <TableCell>
                   <div className="relative flex items-center gap-2">
-                    <Tooltip content="Edit Assignment">
-                      <Link to={`/assign/${item._id}`}>
+                    <Tooltip content="Detail Learning Material">
+                      <Link to={`/sub-detail/${item._id}`}>
                         <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                          <EditIcon />
+                          <FontAwesomeIcon icon={faCircleInfo} size='xl' />
                         </span>
                       </Link>
                     </Tooltip>
-                    <Tooltip color="danger" content="Delete user">
-                      <span
-                        data-key={item._id}
-                        className="text-lg text-danger cursor-pointer active:opacity-50"
-                        onClick={(e) => handleOpen(e)}>
-                        <DeleteIcon />
-                      </span>
-                    </Tooltip>
+                 
                   </div>
                 </TableCell>
               </TableRow>
@@ -275,33 +288,8 @@ const location=useLocation()
         </Table>
       </div>
 
-      <Modal backdrop="blur" isOpen={isOpen} onClose={handleClose}>
-        <ModalContent>
-          {(handleClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Delete Position
-              </ModalHeader>
-              <ModalBody>
-                <p>Are you sure you want to delete this position?</p>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="default" variant="light" onClick={handleClose}>
-                  No, Cancel
-                </Button>
-                <Button
-                  color="danger"
-                  onPress={() => handleDelete()}
-                  onKeyDown={handleKeyDown}>
-                  Yes, I am sure
-                  <Kbd className="bg-danger-500" keys={["enter"]}></Kbd>
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+    
     </div>
   );
 }
-export default PositionTable
+export default PositionTable;
