@@ -118,7 +118,7 @@ const {state}=useLocation()
             "hrr"
           );
           const FilterList = res.data.data.filter(
-            (el) => el.subjectSection?.subject === state?.val
+            (el) => el.subjectSection?.subject === (state.val ? state.val : '6541db4ceef974bf5476db1e')
           );
           const obj = FilterList.map((i) => JSON.parse(i?.links));
           console.log(obj, "res");

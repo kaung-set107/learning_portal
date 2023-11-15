@@ -102,8 +102,8 @@ const {state}=useLocation()
         .get(`assignments`, { params: { limit: 80, rowsPerPage: rowsPerPage } })
         .then((res) => {
           console.log(res.data.data, "assign res");
-          console.log(res.data.data.filter(el=>el.subject?._id === state?.val),'hrr')
-          const FilterList=res.data.data.filter(el=>el.subject?._id === state?.val)
+          console.log(res.data.data.filter(el=>el.subject?._id === (state.val ? state.val : '6541db4ceef974bf5476db1e')),'hrr')
+          const FilterList=res.data.data.filter(el=>el.subject?._id === (state.val ? state.val : '6541db4ceef974bf5476db1e'))
           const obj = FilterList.map((i) => JSON.parse(i?.links));
           console.log(obj, "res");
           setAssignList(FilterList);

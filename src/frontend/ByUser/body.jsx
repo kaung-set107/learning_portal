@@ -25,8 +25,8 @@ const [list,setList]=useState([])
   useEffect(() => {
     const getAssign = async () => {
       await apiInstance.get(`subjects`).then((res) => {
-        console.log(res.data.data.filter(el=>el._id === state.val), "sub");
-        setList(res.data.data.filter(el=>el._id === state.val));
+        console.log(res.data.data.filter(el=>el._id === (state.val)), "sub");
+        setList(res.data.data.filter(el=>el._id === (state.val ? state.val : "6541db4ceef974bf5476db1e")));
       });
     };
 
@@ -42,7 +42,7 @@ const [list,setList]=useState([])
              
             </CardHeader>
             <CardBody className="flex-grow">
-       <h2 className="font-semibold text-xl px-6">{list[0]?.title} Learning Material</h2>
+       <h2 className="font-semibold text-xl px-6">{list[0] ? list[0].title : 'English'} Learning Material</h2>
                 <div className="flex gap-2 grid-cols-2 justify-end">
              
                   {/* <Button color="primary" variant="light" className="mt-5">
@@ -66,7 +66,7 @@ const [list,setList]=useState([])
               
             </CardHeader>
             <CardBody className="flex-grow">
-           <h2 className="font-semibold text-xl  px-6">{list[0]?.title} Assignment</h2>
+           <h2 className="font-semibold text-xl  px-6">{list[0] ? list[0].title : 'English'} Assignment</h2>
                 <div className="flex gap-2 grid-cols-2 justify-end">
              
                   {/* <Button color="primary" variant="light" className="mt-5">
@@ -89,7 +89,7 @@ const [list,setList]=useState([])
             
             </CardHeader>
             <CardBody className="flex-grow">
-              <h2 className="font-semibold text-xl px-6">{Val} Exam</h2>
+              <h2 className="font-semibold text-xl px-6">{list[0] ? list[0].title : 'English'} Exam</h2>
                 <div className="flex gap-2 grid-cols-2 justify-end">
             
                   {/* <Button color="primary" variant="light" className="mt-5">

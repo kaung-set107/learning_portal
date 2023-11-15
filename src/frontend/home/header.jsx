@@ -2,7 +2,7 @@ import {
   Navbar,
   NavbarContent,
   NavbarItem,
-  Link,
+  
   Button,
 } from "@nextui-org/react";
 // import AcmeLogo from "../../assets/lp.png";
@@ -10,6 +10,7 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { getFile } from '../../util/index';
+import Theme from '../../components/ThemeSwitch/index'
 import {
   Dropdown,
   DropdownTrigger,
@@ -19,8 +20,11 @@ import {
   User,
 } from "@nextui-org/react";
 import { useEffect } from "react";
+import {Link} from 'react-router-dom'
 import apiInstance from "../../util/api";
 import { useNavigate } from "react-router-dom";
+import Swal  from 'sweetalert2';
+
 export default function App() {
   const [activeLink, setActiveLink] = useState("/home");
   const navigate = useNavigate();
@@ -83,46 +87,53 @@ export default function App() {
 
   const logout = () => {
     localStorage.removeItem("token");
+       Swal.fire({
+          icon: 'success',
+          title: 'Logout Successful',
+          text: 'Welcome Home!',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#3085d6'
+        })
     navigate("/");
   };
 
   return (
     <>
-      <Navbar className="bg-slate-100  py-3">
+      <Navbar className="flex justify-items-center py-3">
         <div className="">
           {/* <img src={AcmeLogo} style={{width:'180px',marginTop:'1em'}}/> */}
           <h3 className="text-3xl font-semibold sm:text-2xl">E-Learning</h3>
         </div>
-        <div className="hidden sm:flex gap-4 ">
+        <div className="grid grid-cols-4 gap-4 sm:flex  ">
           {/* {links.map((link) => ( */}
           <NavbarItem key="link.href">
             <Link
-              href="#"
-              className="hover:bg-neutral-300 hover:rounded-lg"
+              to="#"
+              className="hover:bg-neutral-300 hover:rounded hover:p-2"
               onClick={() => setActiveLink()}>
-              <span className="text-black font-semibold py-2 px-2">Home</span>
+              <span className=" font-semibold py-2 px-2">Home</span>
             </Link>
           </NavbarItem>
           <NavbarItem key="link.href">
             <Link
               href="#"
-              className="hover:bg-neutral-300 hover:rounded-lg"
+              className="hover:bg-neutral-300 hover:rounded hover:p-2"
               onClick={() => setActiveLink()}>
-              <span className="text-black font-semibold py-2 px-2">Course</span>
+              <span className=" font-semibold py-2 px-2">Course</span>
             </Link>
           </NavbarItem>
           <NavbarItem key="link.href">
             <Link
               href="#"
-              className="hover:bg-neutral-300 hover:rounded-lg"
+              className="hover:bg-neutral-300 hover:rounded hover:p-2"
               onClick={() => setActiveLink()}>
-              <span className="text-black font-semibold py-2 px-2">Class</span>
+              <span className=" font-semibold py-2 px-2">Class</span>
             </Link>
           </NavbarItem>
 
           <NavbarItem key="link.href" className="font-semibold">
-          {location.pathname !== '/instructor' ? (<select
-              className="form-control border-none mt-3"
+          {location.pathname !== '/instructor' && location.pathname !== '/' && location.pathname !== '/login' ? (<select
+              className="form-control border-none"
               aria-label="Default select example"
               onClick={e=>handleSelect(e.target.value)}
               >
@@ -134,18 +145,18 @@ export default function App() {
               ))}
             </select>) : ( <Link
               href="#"
-              className="hover:bg-neutral-300 hover:rounded-lg"
+              className="hover:bg-neutral-300 hover:rounded hover:p-2"
               onClick={() => setActiveLink()}>
-              <span className="text-black font-semibold py-2 px-2">Something</span>
+              <span className=" font-semibold py-2 px-2">Something</span>
             </Link>)}
             
           </NavbarItem>
           <NavbarItem key="link.href">
             <Link
               href="#"
-              className="hover:bg-neutral-300 hover:rounded-lg"
+              className="hover:bg-neutral-300 hover:rounded hover:p-2"
               onClick={() => setActiveLink()}>
-              <span className="text-black font-semibold py-2 px-2">About</span>
+              <span className=" font-semibold py-2 px-2">About</span>
             </Link>
           </NavbarItem>
           {/* ))} */}
@@ -168,10 +179,13 @@ export default function App() {
                   }}
                />
                 </NavbarItem>
+                <NavbarItem>
+<Theme/>
+                </NavbarItem>
                 </>
           ) : (
-            <NavbarItem className="hidden sm:flex">
-              <Link color="primary" href="/login">
+            <NavbarItem className="hidden sm:flex mt-2 rounded hover:font-semibold">
+              <Link  to="/login">
                 Login
               </Link>
             </NavbarItem>

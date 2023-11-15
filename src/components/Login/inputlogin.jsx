@@ -43,17 +43,36 @@ export default function Login() {
         
         console.log(res.data.data,'res')
         if(res.data.data.roles[0].includes('instructor')){
-          
+              Swal.fire({
+          icon: 'success',
+          title: 'Login Successful',
+          text: 'Welcome Instructor!',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#3085d6'
+        })
 navigate('/instructor')
 setLoading(false)
 
         }else if(res.data.data.roles[0].includes('student')){
           const rol = res.data.data.roles[0]
           setArr(res.data.data)
+              Swal.fire({
+          icon: 'success',
+          title: 'Login Successful',
+          text: 'Welcome Student!',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#3085d6'
+        })
 navigate('/student',{state:{rol}})
 
         }else if(res.data.data.roles[0].includes('admin')){
-          
+              Swal.fire({
+          icon: 'success',
+          title: 'Login Successful',
+          text: 'Welcome Admin!',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#3085d6'
+        })
 navigate('/home')
 setLoading(false)
 return setArr(res.data.data)
