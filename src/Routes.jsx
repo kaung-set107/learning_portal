@@ -36,7 +36,8 @@ import LMDetail from './frontend/pages/LearningMaterial/LMDetail'
 import LearningMaterialAdmin from './components/Subject/learnigMaterialInput'
 //assign update
 import AssignmentUpdate from './frontend/pages/Assignment/AssignmentUpdate'
-
+import LMUpdate from './frontend/components/LearningMaterial/LMUpdateInput'
+import LMUpdateDetail from './frontend/pages/LearningMaterial/lmupdatedetail'
 export default function RouteFile() {
  
   return (
@@ -113,6 +114,8 @@ export default function RouteFile() {
    
     {/* LmDetail */}
             <Route path='/sub-detail/:id' element={<LMDetail />} ></Route>
+            <Route path='/lm-update/:id/:valid' element={<LMUpdate />} ></Route>
+            <Route path='/lm-updatedetail/:id/:lmid' element={<LMUpdateDetail />} ></Route>
           </Route>
 
           {/* <AuthContainer component={<Dashboard />} path='/home'></AuthContainer> */}

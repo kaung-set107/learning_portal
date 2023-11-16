@@ -1,6 +1,6 @@
 import Header from "./header";
 import { Image, Button } from "@nextui-org/react";
-
+import {Link} from  '@nextui-org/react'
 
 import ELP from "./image/el.png";
 // import Footer from '../../frontend/home/footer';
@@ -51,9 +51,12 @@ export default function body() {
           </div>
           <div className="md:grid grid-cols-6 gap-2 sm:grid-cols-6">
             <Button color="primary" variant="ghost" className="mt-5">
+            <Link href='/login'>
               <span className="lg:text-lg md:text-md sm:text-sm">
                 Get Started ?
               </span>
+            </Link>
+              
             </Button>
             <Button
               color="primary"

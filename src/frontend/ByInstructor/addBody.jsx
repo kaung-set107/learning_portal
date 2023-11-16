@@ -11,7 +11,7 @@ export default function AddBody() {
 const location=useLocation()
 
      const Val=location.state ? location.state.title :'English'
-     const Id =location.state?.id
+     const Id =location.state ? location.state.id : '6541db4ceef974bf5476db1e'
     //  console.log(Val.title,'vallll')
   //    const [dataValue,setDataValue]=useState('English')
   //      useEffect(() => {

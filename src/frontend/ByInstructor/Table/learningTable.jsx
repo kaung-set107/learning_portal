@@ -32,7 +32,8 @@ import PdfPhoto from "../images/pdf.png";
 function PositionTable() {
   const location = useLocation();
 
-  const Val = location.state ? location.state : "English";
+  const Val = location.state ? location.state.id : "6541db4ceef974bf5476db1e";
+  console.log(location.state?.id,'lm id')
   //  const [dataValue,setDataValue]=useState('English')
   //      if(location.pathname === '/instructor'){
   //   setDataValue(Val)
@@ -112,15 +113,15 @@ function PositionTable() {
         .then((res) => {
           console.log(res.data.data, "res");
           console.log(
-            res.data.data.filter((el) => el.subject?.title === Val),
+            res.data.data.filter((el) => el.subjectSection?.subject === (Val ? Val : '6541db4ceef974bf5476db1e') ),
             "hrr"
           );
           const FilterList = res.data.data.filter(
-            (el) => el.subject?.title === Val
+            (el) => el.subjectSection?.subject === (Val)
           );
           const obj = FilterList.map((i) => JSON.parse(i?.links));
           console.log(obj, "res");
-          setAssignList(res.data.data);
+          setAssignList(FilterList);
           setPages(res.data._metadata.page_count);
         });
     };
@@ -271,7 +272,7 @@ function PositionTable() {
                 <TableCell>
                   <div className="relative flex items-center gap-2">
                     <Tooltip content="Edit Assignment">
-                      <Link to={`/assign/${item._id}`}>
+                      <Link to={`/lm-update/${Val}/${item._id}`}>
                         <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                           <EditIcon />
                         </span>

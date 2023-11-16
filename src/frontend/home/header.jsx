@@ -91,8 +91,9 @@ export default function App() {
           icon: 'success',
           title: 'Logout Successful',
           text: 'Welcome Home!',
-          confirmButtonText: 'OK',
-          confirmButtonColor: '#3085d6'
+                  showCancelButton: false,
+  showConfirmButton: false,
+          timer:2000
         })
     navigate("/");
   };

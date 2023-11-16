@@ -250,13 +250,13 @@ export default function AttendanceTable (props) {
                       </span>
                     </Link>
                   </Tooltip>
-                  {/* <Tooltip content='Edit Position'>
-                    <Link to={'/subject-update/' + item._id}>
+                  <Tooltip content='Edit Learning Material'>
+                    <Link to={`/lm-updatedetail/${item._id}/${props.LMId}`}>
                       <span className='text-lg text-default-400 cursor-pointer active:opacity-50'>
                         <EditIcon />
                       </span>
                     </Link>
-                  </Tooltip> */}
+                  </Tooltip>
                   <Tooltip color='danger' content='Delete user'>
                     <span
                       data-key={item._id}
