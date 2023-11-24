@@ -28,6 +28,7 @@ import { getFile } from "../../../util/index.js";
 import ExcelPhoto from "../images/excel.png";
 import PdfPhoto from "../images/pdf.png";
 // import { PlusIcon } from "../../assets/Icons/PlusIcon";
+import { PlusIcon } from '../../../assets/Icons/PlusIcon';
 
 function PositionTable() {
   const location = useLocation();
@@ -271,6 +272,13 @@ function PositionTable() {
 
                 <TableCell>
                   <div className="relative flex items-center gap-2">
+                   <Tooltip content="Create Quiz">
+                      <Link to={'/quiz-create/'+item._id}>
+                        <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                          <PlusIcon />
+                        </span>
+                      </Link>
+                    </Tooltip>
                     <Tooltip content="Edit Assignment">
                       <Link to={`/lm-update/${Val}/${item._id}`}>
                         <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
