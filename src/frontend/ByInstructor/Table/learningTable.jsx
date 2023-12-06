@@ -112,16 +112,16 @@ function PositionTable() {
           params: { limit: 80, rowsPerPage: rowsPerPage },
         })
         .then((res) => {
-          console.log(res.data.data, "res");
-          console.log(
-            res.data.data.filter((el) => el.subjectSection?.subject === (Val ? Val : '6541db4ceef974bf5476db1e') ),
-            "hrr"
-          );
+          // console.log(res.data.data, "res");
+          // console.log(
+          //   res.data.data.filter((el) => el.subjectSection?.subject === (Val ? Val : '6541db4ceef974bf5476db1e') ),
+          //   "hrr"
+          // );
           const FilterList = res.data.data.filter(
             (el) => el.subjectSection?.subject === (Val)
           );
-          const obj = FilterList.map((i) => JSON.parse(i?.links));
-          console.log(obj, "res");
+          // const obj = FilterList.map((i) => JSON.parse(i?.links));
+          // console.log(obj, "res");
           setAssignList(FilterList);
           setPages(res.data._metadata.page_count);
         });
@@ -146,7 +146,7 @@ function PositionTable() {
   };
 
   const handleDelete = async () => {
-    console.log(setDelID,'deli');
+    // console.log(setDelID,'deli');
     await apiInstance.delete("learning-materials/" + delID).then(() => {
       setAssignList(assignList.filter((item) => item._id !== delID));
       onClose();
@@ -162,7 +162,7 @@ function PositionTable() {
       </div>
       <div className="flex justify-between items-center mb-3">
         <span className="text-default-400 text-small">
-          Total {assignList.length} Assignments
+          Total {assignList.length} Learning Material
         </span>
         <label className="flex items-center text-default-400 text-small">
           Rows per page:
@@ -279,14 +279,14 @@ function PositionTable() {
                         </span>
                       </Link>
                     </Tooltip>
-                    <Tooltip content="Edit Assignment">
+                    <Tooltip content="Edit">
                       <Link to={`/lm-update/${Val}/${item._id}`}>
                         <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                           <EditIcon />
                         </span>
                       </Link>
                     </Tooltip>
-                    <Tooltip color="danger" content="Delete user">
+                    <Tooltip color="danger" content="Delete">
                       <span
                         data-key={item._id}
                         className="text-lg text-danger cursor-pointer active:opacity-50"

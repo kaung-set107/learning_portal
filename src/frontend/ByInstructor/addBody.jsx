@@ -3,20 +3,28 @@ import { Link,useLocation} from 'react-router-dom';
 // import {useEffect,useState} from 'react'
 import Table from "./Table/learningTable";
 import AssignTable from "./Table/assignTable";
+import Exam from './Table/examTable'
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Spinner from '../../assets/loading.gif'
+import { useEffect } from "react";
 
 export default function AddBody() {
 const location=useLocation()
 
      const Val=location.state ? location.state.title :'English'
      const Id =location.state ? location.state.id : '6541db4ceef974bf5476db1e'
+    //  const PathName =useLocation().pathname.split('/')[1]
+   
+   
     //  console.log(Val.title,'vallll')
   //    const [dataValue,setDataValue]=useState('English')
   //      useEffect(() => {
-  //   if(location.pathname === '/instructor'){
-  //     setDataValue(Val)
+  //   //     const storedSubmissions = localStorage.getItem('formSubmission');
+  //   // console.log(storedSubmissions,'hohoheehee')
+  //   console.log(PathName === 'instructor','io')
+  //   if(PathName === 'insructor'){
+  //     localStorage.removeItem('formSubmission');
   //   }
   // },[])
   return (
@@ -29,7 +37,7 @@ const location=useLocation()
         <>
           <Card className="mx-8">
             <CardHeader>
-              <h2 className="font-semibold text-xl">{Val} Learning Material</h2>
+              <h2 className="font-semibold text-xl px-6">{Val} Learning Material</h2>
             </CardHeader>
             <CardBody className="flex-grow">
       
@@ -96,7 +104,7 @@ const location=useLocation()
         <>
           <Card className="mx-8">
             <CardHeader>
-              <h2 className="font-semibold text-xl">{Val} Exam</h2>
+              <h2 className="font-semibold text-xl px-6">{Val} Exam</h2>
             </CardHeader>
             <CardBody className="flex-grow">
             
@@ -123,7 +131,7 @@ const location=useLocation()
                 </div>
             
             </CardBody>
-            <Table />
+            <Exam />
           </Card>
           <br />
         </>

@@ -1,45 +1,52 @@
 import React,{ useState, useEffect } from "react";
 // import apiInstance from '../../../util/api';
-import { Card, Button, Input,Modal, ModalContent, ModalHeader, ModalBody, CardBody, useDisclosure,CardHeader } from "@nextui-org/react";
+import { Card, Button, Input,Modal, ModalContent, ModalHeader, ModalBody, CardBody, useDisclosure,CardHeader, Tooltip,
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  Pagination,
+  Kbd,
+  ModalFooter,
+  TableCell } from "@nextui-org/react";
+  import { EditIcon } from '../../../components/Table/editicon'
+import { DeleteIcon } from '../../../components/Table/deleteicon'
+import { Link } from 'react-router-dom'
+import { PlusIcon } from '../../../assets/Icons/PlusIcon'
 import { faPlus, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { FileUploader } from "react-drag-drop-files";
 import Swal from "sweetalert2";
-import { v4 as uuidv4 } from "uuid";
+
 import apiInstance from "../../../util/api";
 // import { StepDescription } from "@chakra-ui/react";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router-dom";
 export default function Quizcreate() {
-
+const navigate = useNavigate()
   const ID = useLocation().pathname.split('/')[2]
+
   const [modalPlacement, setModalPlacement] = React.useState("center");
   const [scrollBehavior, setScrollBehavior] = React.useState("outside");
-  const {isOpen, onOpen, onOpenChange} = useDisclosure();
-  const [list, setList] = useState([]);
+  const {isOpen, onOpen, onOpenChange,onClose} = useDisclosure();
+  const {isOpen:isDelOpen, onOpen:delOnOpen, onOpenChange:delOnOpenChange,onClose:delClose} = useDisclosure();
   const [modalData, setModalData] = useState([]);
   const [questionData,setQuestionData]=useState([])
-  const [quizData,setQuizData]=useState([])
 
   const [answerList, setAnswerList] = useState([]);
   const [answer, setAnswer] = useState([]);
-  const [optionList, setOptionList] = useState([]);
-  const [option, setOption] = useState([]);
   const [question, setQuestion] = useState('');
   const [questionNo, setQuestionNo] = useState("");
   const [type, setType] = useState("");
-  const [image, setImage] = useState([]);
-  const [correctSMS, setCorrectSMS] = useState("");
-  const [inCorrectSMS, setInCorrectSMS] = useState("");
+
+
   const [correctAns, setCorrectAns] = useState("");
   const [marks, setMarks] = useState("");
-  const [show,setShow]=useState(false)
+  const [showQuestion,setShowQuestion]=useState(true)
   const [answerType,setAnswerType]=useState('')
   // console.log(list, "res list");
-  const [finalQuizList, setFinalQuizList] = useState("");
-
   //Quiz Data
   const [title,setTitle]=useState('')
-  const [quizType,setQuizType]=useState('')
   const [examDate,setExamDate]=useState('')
   const [duration,setDuration]=useState('')
   const [noOfQuestion,setNoOfQuestion]=useState('')
@@ -49,6 +56,35 @@ export default function Quizcreate() {
   const [diMark,setDiMark]=useState('')
   const [desc,setDesc]=useState('')
   const [typeName,setTypeName]=useState('')
+
+  const [delID, setDelID] = useState(null)
+  const [page, setPage] = React.useState(1)
+  const [pages, setPages] = React.useState(1)
+  const [rowsPerPage, setRowsPerPage] = React.useState(15)
+  const [subjectList, setSubjectList] = React.useState([])
+
+  const items = React.useMemo(() => {
+    const start = (page - 1) * rowsPerPage
+    const end = start + rowsPerPage
+    return questionData.slice(start, end)
+  }, [page, questionData])
+
+
+
+  const handleKeyDown = event => {
+    if (event.key === 'Enter' && isOpen) {
+      handleDelete()
+    }
+  }
+
+  const onRowsChange = event => {
+    const newRowsPerPage = parseInt(event.target.value)
+    setRowsPerPage(newRowsPerPage)
+    setPages(Math.ceil(questionData.length / newRowsPerPage))
+    setPage(1) // Reset the current page to 1 when rows per page changes
+  }
+
+
 
   // console.log(finalQuizList,'finalQuiz')
   const Add = (val) => {
@@ -64,46 +100,11 @@ export default function Quizcreate() {
     setAnswerList(answerList.filter((el, i) => i !== val));
   };
 
-  //option
-  const AddOption = (val) => {
-    console.log(val, "val");
-    const newData = {
-      option: val,
-    };
-    setOptionList([...optionList, newData]);
-    console.log([...optionList, newData], "res");
-  };
-  const DeleteOption = async (val) => {
-    console.log(val, "val");
-    setOptionList(optionList.filter((el, i) => i !== val));
-  };
 
-  //   const handleType=(val)=>{
-  //     setType(val)
-  //   }
-  const handleInput=(e)=>{
-    const { name, value } = e.target;
-    setQuizData({
-      ...quizData,
-      [name]: value
-    });
-    console.log(
-      {
-        ...quizData,
-      [name]: value
-      },
-      "form"
-    );
-  }
   const handleModalInput = (e) => {
   
     const { name, value } = e.target;
-    // const opt = {
-    //   options:optionList.map((i)=>{
-    //     i.option
-    //   })
-    // }
-    // console.log(opt,'opt')
+
     setModalData({
       ...modalData,
       [name]: value
@@ -117,13 +118,6 @@ export default function Quizcreate() {
     );
   };
 
-  const handleChange = (e) => {
-    let array = [];
-    for (const item of e) {
-      array.push(item);
-    }
-    setImage(array);
-  };
 
 
   const handleRemoveSubmission = (index) => {
@@ -165,9 +159,9 @@ export default function Quizcreate() {
     //   email: '',
     // });
 
-console.log(newFormSubmissions,'fix')
+// console.log(newFormSubmissions,'fix')
 // Clear the input field
-
+setAnswerList([])
 // setModalData([...modalData,...questionData])
 // console.log([...modalData,...questionData],'quesDat')
 
@@ -195,6 +189,10 @@ if(typeName === 'Learning Material'){
   data.type='learningMaterial'
   data.learningMaterial=ID
 }
+if(typeName === 'Exam'){
+  data.type='exam'
+  data.exam=ID
+}
 // console.log(data,'quiz data')
 apiInstance
   .post("quizzes", data
@@ -207,6 +205,10 @@ apiInstance
       confirmButtonText: "OK",
       confirmButtonColor: "#3085d6",
     });
+    navigate('/instructor')
+    localStorage.removeItem('formSubmission');
+    setShowQuestion(false)
+ 
   })
   .catch((error) => {
     alert(error);
@@ -215,7 +217,7 @@ apiInstance
   // useEffect to retrieve data from localStorage on component mount
   useEffect(() => {
     const storedSubmissions = localStorage.getItem('formSubmission');
-    console.log(storedSubmissions,'sub')
+    // console.log(storedSubmissions,'sub')
     if (storedSubmissions) {
       setQuestionData(JSON.parse(storedSubmissions));
     }
@@ -224,7 +226,7 @@ apiInstance
       await apiInstance
         .get("learning-materials")
         .then((res) => {
-            console.log(res.data.data.filter(el=>el._id === ID) ? 'LM' : '','ss da')
+            // console.log(res.data.data.filter(el=>el._id) ,'ss da')
 setTypeName(res.data.data.filter(el=>el._id === ID) ? 'Learning Material' : '')
           
         });
@@ -233,248 +235,413 @@ setTypeName(res.data.data.filter(el=>el._id === ID) ? 'Learning Material' : '')
       await apiInstance
         .get("exams")
         .then((res) => {
-            console.log(res.data.data.filter(el=>el._id === ID),'ss da')
+            // console.log(res.data.data.filter(el=>el._id),'ss da')
 setTypeName(res.data.data.filter(el=>el._id === ID) ? 'Exam' : '')
           
         });
     };
     getExam()
     getLM()
-  }, []);
+  
+    document.addEventListener('keydown', handleKeyDown)
 
-  const handleClearLocalStorage = () => {
-    // Remove the item from localStorage
-    localStorage.removeItem('formSubmission');
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+ 
+  }, [setTypeName,isOpen, rowsPerPage]);
 
-    // Update the state to clear the form submissions
-    setQuestionData([]);
-  };
+  // const handleClearLocalStorage = () => {
+  //   // Remove the item from localStorage
+  //   localStorage.removeItem('formSubmission');
+
+  //   // Update the state to clear the form submissions
+  //   setQuestionData([]);
+  // };
+  const handleDelOpen = event => {
+    delOnOpen()
+    console.log(event.currentTarget.getAttribute('data-key'))
+    setDelID(event.currentTarget.getAttribute('data-key'))
+  }
+
+  const handleDelClose = () => {
+    delClose()
+    setDelID(null)
+  }
+
+  const handleDelete = () => {
+    handleRemoveSubmission()
+    delClose()
+  }
   return (
     <div className="mx-8 py-5">
-      <Card>
-        <CardHeader className='font-semibold bg-cyan-300 py-5'><span className='text-2xl'>Quizz Create</span></CardHeader>
-        <CardBody>
-          {/* 1 */}
-        <div className="grid grid-cols-2 gap-3 mt-10">
-          <div>
-          <Input
-              type="text"
-              className=""
-              placeholder="Enter your title"
-              label="Title"
-              labelPlacement="outside"
-              onChange={(e)=>setTitle(e.target.value)}
-            />
-          </div>
-           
-            <div className='mt-1'>
-            <label>Date</label>
-            <Input
-              type="date"
-              className=""
-            
-        
-              // defaultValue={formData.questionNo}
-              name="examDate"
-              onChange={(e)=>setExamDate(e.target.value)}
-            />
-            </div>
-           
-          </div>
-          <div className="grid grid-cols-2 gap-3 mt-10">
-          <div>
-          <Input
-              type="number"
-              className=""
-              placeholder="Enter duration"
-              label="Quiz Duration"
-              labelPlacement="outside"
-        
-              onChange={(e)=>setDuration(e.target.value)}
-            />
-          </div>
-           
-            <div className='mt-1'>
-         
-            <Input
-              type="number"
-              className=""
-              placeholder="Total questions"
-        defaultValue=''
-              label="Total Questions"
-              labelPlacement="outside"
+  
+   <Card>
+   <CardHeader className='font-semibold bg-cyan-400 py-5'><span className='text-2xl'>Quizz Create</span></CardHeader>
+   <CardBody>
+     {/* 1 */}
+   <div className="grid grid-cols-2 gap-3 mt-10">
+     <div>
+     <Input
+         type="text"
+         className=""
+         placeholder="Enter your title"
+         label="Title"
+         labelPlacement="outside"
+         onChange={(e)=>setTitle(e.target.value)}
+       />
+     </div>
+      
+       <div className='mt-1'>
+       <label>Date</label>
+       <Input
+         type="date"
+         className=""
        
-              onChange={(e)=>setNoOfQuestion(e.target.value)}
-            />
-            </div>
-           
-          </div>
-          {/* 2 */}
-          {/* <div className="grid grid-cols-2 gap-3 mt-10">
-          <div>
-          <Input
-              type="number"
-              className=""
-              placeholder="Enter duration"
-              label="Quiz Duration"
-              labelPlacement="outside"
-        
-              onChange={handleInput}
-            />
-          </div>
-           
-            <div className='mt-1'>
-         
-            <Input
-              type="number"
-              className=""
-              placeholder="Total questions"
-        defaultValue=''
-              label="Total Questions"
-              labelPlacement="outside"
-        
-              // defaultValue={formData.questionNo}
-              name="questionNo"
-              onChange={handleInput}
-            />
-            </div>
-           
-          </div> */}
+   
+         // defaultValue={formData.questionNo}
+         name="examDate"
+         onChange={(e)=>setExamDate(e.target.value)}
+       />
+       </div>
+      
+     </div>
+     <div className="grid grid-cols-2 gap-3 mt-10">
+     <div>
+     <Input
+         type="number"
+         className=""
+         placeholder="Enter duration"
+         label="Quiz Duration"
+         labelPlacement="outside"
+   
+         onChange={(e)=>setDuration(e.target.value)}
+       />
+     </div>
+      
+       <div className='mt-1'>
+    
+       <Input
+         type="number"
+         className=""
+         placeholder="Total questions"
+   defaultValue=''
+         label="Total Questions"
+         labelPlacement="outside"
+  
+         onChange={(e)=>setNoOfQuestion(e.target.value)}
+       />
+       </div>
+      
+     </div>
+     {/* 2 */}
+     {/* <div className="grid grid-cols-2 gap-3 mt-10">
+     <div>
+     <Input
+         type="number"
+         className=""
+         placeholder="Enter duration"
+         label="Quiz Duration"
+         labelPlacement="outside"
+   
+         onChange={handleInput}
+       />
+     </div>
+      
+       <div className='mt-1'>
+    
+       <Input
+         type="number"
+         className=""
+         placeholder="Total questions"
+   defaultValue=''
+         label="Total Questions"
+         labelPlacement="outside"
+   
+         // defaultValue={formData.questionNo}
+         name="questionNo"
+         onChange={handleInput}
+       />
+       </div>
+      
+     </div> */}
 
-          {/* 3 */}
-          <div className="grid grid-cols-2 gap-3 mt-10">
-          <div>
-          <Input
-              type="number"
-              className=""
-              placeholder="Enter mark"
-              label="Total Mark"
-              labelPlacement="outside"
-           
-              onChange={(e)=>setTotalMark(e.target.value)}
-            />
-          </div>
-           
-            <div className='mt-1'>
-         
-            <Input
-              type="number"
-              className=""
-              placeholder="Pass Mark"
-        defaultValue=''
-              label="Pass Mark"
-              labelPlacement="outside"
-       
-              onChange={(e)=>setPassMark(e.target.value)}
-            />
-            </div>
-           
-          </div>
-          {/* 4 */}
-          <div className="grid grid-cols-2 gap-3 mt-10">
-          <div>
-          <Input
-              type="number"
-              className=""
-              placeholder="Enter credit mark"
-              label="Credit Mark"
-              labelPlacement="outside"
+     {/* 3 */}
+     <div className="grid grid-cols-2 gap-3 mt-10">
+     <div>
+     <Input
+         type="number"
+         className=""
+         placeholder="Enter mark"
+         label="Total Mark"
+         labelPlacement="outside"
+      
+         onChange={(e)=>setTotalMark(e.target.value)}
+       />
+     </div>
+      
+       <div className='mt-1'>
+    
+       <Input
+         type="number"
+         className=""
+         placeholder="Pass Mark"
+   defaultValue=''
+         label="Pass Mark"
+         labelPlacement="outside"
+  
+         onChange={(e)=>setPassMark(e.target.value)}
+       />
+       </div>
+      
+     </div>
+     {/* 4 */}
+     <div className="grid grid-cols-2 gap-3 mt-10">
+     <div>
+     <Input
+         type="number"
+         className=""
+         placeholder="Enter credit mark"
+         label="Credit Mark"
+         labelPlacement="outside"
+
+         onChange={(e)=>setCreditMark(e.target.value)}
+       />
+     </div>
+      
+       <div className='mt-1'>
+    
+       <Input
+         type="number"
+         className=""
+         placeholder="D mark"  
+   defaultValue=''
+         label="Distinction Mark "
+         labelPlacement="outside"
+ 
+         onChange={(e)=>setDiMark(e.target.value)}
+       />
+       </div>
+      
+     </div>
+     {/* 5 */}
+     <div className="grid grid-cols-2 gap-3 mt-10">
+     <div>
+     <Input
+         type="text"
+         className=""
+         placeholder="Enter description"
+         label="Description"
+         labelPlacement="outside"
+  
+         onChange={(e)=>setDesc(e.target.value)}
+       />
+     </div>
+      
+     <div className="flex flex-col">
+         <label>Type</label>
+         <select
+           className="form-control form-group h-11 rounded-lg mt-1"
+       >
+           {/* <option hidden>Choose</option> */}
+           {typeName === 'Learning Material' && (<option value="learningMaterial">Learning Material</option>)}
+           {typeName === 'Exam' && (<option value="exam">Exam</option>) }
+           {/* <option value="entrance">Entrance</option>
+           <option value="exam">Exam</option>
+           <option value="test">Test</option> */}
+         </select>
+       </div>
+      
+     </div>
+     <div className="mt-10">
+     <div className="grid grid-cols-2 gap-3 mt-10">
+       <div>
+       <Button onPress={onOpen} className='bg-cyan-400'> Questions Add  <FontAwesomeIcon icon={faPlus} color='black' /> </Button> &nbsp;
+       {/* <Button onClick={handleShowQuestion} className='bg-cyan-400'> Show Questions </Button> */}
+       </div>
+ 
+       </div>
+   
+       </div>
+    
+       <div className="flex justify-center mt-10">
+       <Button className='bg-cyan-400' size="md" onClick={createQuiz}> 
+         Create
+       </Button>{" "}
+       &nbsp;
+       <Button color="danger" variant="light">
+             Close
+           </Button>
+          
+     </div>
+     {/* {console.log(questionData.map((i)=>i.question),'con')} */}
+
      
-              onChange={(e)=>setCreditMark(e.target.value)}
-            />
-          </div>
-           
-            <div className='mt-1'>
-         
-            <Input
-              type="number"
-              className=""
-              placeholder="D mark"  
-        defaultValue=''
-              label="Distinction Mark "
-              labelPlacement="outside"
-      
-              onChange={(e)=>setDiMark(e.target.value)}
-            />
-            </div>
-           
-          </div>
-          {/* 5 */}
-          <div className="grid grid-cols-2 gap-3 mt-10">
-          <div>
-          <Input
-              type="text"
-              className=""
-              placeholder="Enter description"
-              label="Description"
-              labelPlacement="outside"
-       
-              onChange={(e)=>setDesc(e.target.value)}
-            />
-          </div>
-           
-          <div className="flex flex-col">
-              <label>Type</label>
-              <select
-                className="form-control form-group h-11 rounded-lg mt-1"
-                onChange={(e) => setQuizType(e.target.value)}>
-                {/* <option hidden>Choose</option> */}
-                {typeName === 'Learning Material' ? (<option value="learningMaterial">Learning Material</option>) : ''}
-                {typeName === 'Exam' ? (<option value="exam">Exam</option>) : ''}
-                {/* <option value="entrance">Entrance</option>
-                <option value="exam">Exam</option>
-                <option value="test">Test</option> */}
-              </select>
-            </div>
-           
-          </div>
-          <div className="mt-10">
-          <div className="grid grid-cols-2 gap-3 mt-10">
-            <div>
-            <Button onPress={onOpen} className='bg-cyan-300'> Questions Add  <FontAwesomeIcon icon={faPlus} color='black' /> </Button> &nbsp;
-            <Button onClick={()=>setShow(!show)} className='bg-cyan-300'> Show Questions </Button>
-            </div>
-      
-            </div>
-        
-            </div>
-         
-            <div className="flex justify-center mt-10">
-            <Button className='bg-cyan-300' size="md" onClick={createQuiz}> 
-              Create
-            </Button>{" "}
-            &nbsp;
-            <Button color="danger" variant="light">
-                  Close
-                </Button>
-               
-          </div>
-          {/* {console.log(questionData.map((i)=>i.question),'con')} */}
-         {show && (
- <div>
- {questionData.map((i)=>
-   <div key={i}>
+   </CardBody>
+ </Card>
+   
+   {questionData[0] ? (
+ <Card className='mt-5'>
+ {/* <CardHeader className='font-semibold bg-cyan-400 py-5'><span className='text-2xl'>Questions Detail</span></CardHeader> */}
+<CardBody>
+{/* <div>
+{questionData.map((i)=>
+<div key={i}>
 {i.question}
 <Button color="danger" variant="light" onClick={handleRemoveSubmission}>
-       Remove
-     </Button>
-  </div>
- )}
-    <Button color="danger" variant="light" onClick={handleClearLocalStorage }>
-       All Clear
-     </Button>
+Remove
+</Button>
 </div>
-         )}
-         
+)}
+
+</div> */}
+<>
+      <div className='flex flex-row gap-5 justify-between'>
+        <div className='flex gap-4 mb-3 flex-row'>
+       
+        </div>
+        <div className='flex gap-2 mb-3 flex-row'>
+ 
+          {/* <Link to='/subject-add'>
+            <Button endContent={<PlusIcon />} color='primary'>
+              Add
+            </Button>
+          </Link> */}
+        </div>
+      </div>
+      <div className='flex justify-between items-center mb-3'>
+        <span className='text-default-400 text-small'>
+          Total {questionData.length} Questions
+        </span>
+        <label className='flex items-center text-default-400 text-small'>
+          Rows per page:
+          <select
+            className='bg-transparent outline-none text-default-400 text-small'
+            onChange={e => onRowsChange(e)}
+          >
+            <option value='5'>5</option>
+            <option value='10'>10</option>
+            <option value='15'>15</option>
+          </select>
+        </label>
+      </div>
+      <Table
+        isHeaderSticky
+        aria-label='Example table with client side sorting'
+        classNames={{
+          base: 'max-h-[719px] ',
+          table: 'min-h-[100px]'
+        }}
+        bottomContent={
+          <div className='flex w-full justify-center'>
+            <Pagination
+              isCompact
+              showControls
+              showShadow
+              color='primary'
+              page={page}
+              total={pages}
+              onChange={page => setPage(page)}
+            />
+          </div>
+        }
+      >
+        <TableHeader>
+          <TableColumn>No</TableColumn>
+                <TableColumn>Code</TableColumn>
+          <TableColumn>Title</TableColumn>
           
-        </CardBody>
-      </Card>
+             <TableColumn>Description</TableColumn>
+
+          <TableColumn key='action'>Action</TableColumn>
+        </TableHeader>
+        <TableBody emptyContent={'No Positions to display.'}>
+          {items.map((item, index) => (
+            <TableRow key={item._id}>
+              <TableCell>{index + 1}</TableCell>
+                 <TableCell>
+                {item?.code}
+              </TableCell>
+              <TableCell>
+                {item?.question}
+              </TableCell>
+                 
+          
+           
+              <TableCell>{item?.description}</TableCell>
+     
+
+              <TableCell>
+                <div className='relative flex items-center gap-2'>
+                     {/* <Tooltip content='Create Learning Material'>
+                    <Link to={ '/learn-mat/'+item._id } >
+                      <span className='text-lg text-default-400 cursor-pointer active:opacity-50'>
+                        <PlusIcon />
+                      </span>
+                    </Link>
+                  </Tooltip> */}
+                  <Tooltip content='Edit'>
+                    <Link to=''>
+                      <span className='text-lg text-default-400 cursor-pointer active:opacity-50'>
+                        <EditIcon />
+                      </span>
+                    </Link>
+                  </Tooltip>  
+                  <Tooltip color='danger' content='Delete'>
+                    <span
+                      data-key={item._id}
+                      className='text-lg text-danger cursor-pointer active:opacity-50'
+                      onClick={e => handleDelOpen(e)}
+                    >
+                      <DeleteIcon />
+                    </span>
+                  </Tooltip>
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+      <Modal backdrop='blur' isOpen={isDelOpen} onClose={handleDelClose}>
+        <ModalContent>
+          {handleDelClose => (
+            <>
+              <ModalHeader className='flex flex-col gap-1'>
+                Delete Course
+              </ModalHeader>
+              <ModalBody>
+                <p>Are you sure you want to delete this position?</p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color='default' variant='light' onClick={handleDelClose}>
+                  No, Cancel
+                </Button>
+                <Button
+                  color='danger'
+                  onPress={() => handleDelete()}
+                  onKeyDown={handleKeyDown}
+                >
+                  Yes, I am sure
+                  <Kbd className='bg-danger-500' keys={['enter']}></Kbd>
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+    </>
+</CardBody>
+</Card>
+
+   ) : ''}
     
+       
+         
     <Modal backdrop='blur' style={{width:'100%'}} isOpen={isOpen} placement={modalPlacement} scrollBehavior={scrollBehavior} onOpenChange={onOpenChange} isDismissable={false} size='4xl'>
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1 font-semibold bg-cyan-300 border-r-3"> Quiz Question Create</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1 font-semibold bg-cyan-300"> Quiz Question Create</ModalHeader>
               <ModalBody>
              
  

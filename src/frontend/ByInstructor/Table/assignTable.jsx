@@ -141,6 +141,7 @@ const location=useLocation()
     console.log(setDelID);
     await apiInstance.delete("assignments/" + delID).then(() => {
       setAssignList(assignList.filter((item) => item._id !== delID));
+     
       onClose();
     });
   };
