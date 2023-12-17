@@ -31,7 +31,7 @@ export default function Login() {
       .post("auth/login", data)
       .then((res) => {
         localStorage.setItem("token", res.data.token);
-        localStorage.setItem("id", res.data.id);
+        localStorage.setItem("id", res.data.data.student);
         setLoading("login");
         // Swal.fire({
         //   icon: 'success',
@@ -41,7 +41,7 @@ export default function Login() {
         //   confirmButtonColor: '#3085d6'
         // })
 
-        console.log(res.data.data, "res");
+        console.log(res.data, "login res");
         if (res.data.data.roles[0].includes("instructor")) {
           Swal.fire({
             icon: "success",

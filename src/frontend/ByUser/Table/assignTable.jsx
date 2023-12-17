@@ -14,30 +14,30 @@ import {
 import { useEffect, useState } from "react";
 import apiInstance from "../../../util/api.js";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faCircleInfo } from '@fortawesome/free-solid-svg-icons'
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'
 import React from "react";
-import { Link,useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { getFile } from "../../../util/index.js";
 import ExcelPhoto from '../../ByInstructor/images/excel.png'
 import PdfPhoto from '../../ByInstructor/images/pdf.png'
 // import { PlusIcon } from "../../assets/Icons/PlusIcon";
 
 function PositionTable() {
-const location=useLocation()
-const {state}=useLocation()
-     const Val=location.state ? location.state :'English'
-    //  const [dataValue,setDataValue]=useState('English')
-    //      if(location.pathname === '/instructor'){
-    //   setDataValue(Val)
-    // }
-//   const [Val,setVal]=useState('English')
+  const location = useLocation()
+  const { state } = useLocation()
+  const Val = location.state ? location.state : 'English'
+  //  const [dataValue,setDataValue]=useState('English')
+  //      if(location.pathname === '/instructor'){
+  //   setDataValue(Val)
+  // }
+  //   const [Val,setVal]=useState('English')
 
-//   if(DataState){
-  
-// setVal(DataState)
-//   }else{
-//     setVal('English')
-//   }
+  //   if(DataState){
+
+  // setVal(DataState)
+  //   }else{
+  //     setVal('English')
+  //   }
 
   const [assignList, setAssignList] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -70,23 +70,23 @@ const {state}=useLocation()
     element.click();
   };
   const downloadPDF = (val) => {
-  // Replace 'your-pdf-file.pdf' with the actual file path or URL
-  const pdfUrl = getFile({payload:val});
-  
-  // Create a link element
-  const link = document.createElement('a');
-  link.href = pdfUrl;
-  link.download = 'downloaded-file.pdf';
-  
-  // Append the link to the document
-  document.body.appendChild(link);
-  
-  // Trigger a click on the link to start the download
-  link.click();
-  
-  // Remove the link from the document
-  document.body.removeChild(link);
-}
+    // Replace 'your-pdf-file.pdf' with the actual file path or URL
+    const pdfUrl = getFile({ payload: val });
+
+    // Create a link element
+    const link = document.createElement('a');
+    link.href = pdfUrl;
+    link.download = 'downloaded-file.pdf';
+
+    // Append the link to the document
+    document.body.appendChild(link);
+
+    // Trigger a click on the link to start the download
+    link.click();
+
+    // Remove the link from the document
+    document.body.removeChild(link);
+  }
 
   const onRowsChange = (event) => {
     const newRowsPerPage = parseInt(event.target.value);
@@ -102,8 +102,8 @@ const {state}=useLocation()
         .get(`assignments`, { params: { limit: 80, rowsPerPage: rowsPerPage } })
         .then((res) => {
           console.log(res.data.data, "assign res");
-          console.log(res.data.data.filter(el=>el.subject?._id === (state.val ? state.val : '6541db4ceef974bf5476db1e')),'hrr')
-          const FilterList=res.data.data.filter(el=>el.subject?._id === (state.val ? state.val : '6541db4ceef974bf5476db1e'))
+          console.log(res.data.data.filter(el => el.subject?._id === (state.val ? state.val : '6541db4ceef974bf5476db1e')), 'hrr')
+          const FilterList = res.data.data.filter(el => el.subject?._id === (state.val ? state.val : '6541db4ceef974bf5476db1e'))
           const obj = FilterList.map((i) => JSON.parse(i?.links));
           console.log(obj, "res");
           setAssignList(FilterList);
@@ -116,7 +116,7 @@ const {state}=useLocation()
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isOpen, rowsPerPage,Val]);
+  }, [isOpen, rowsPerPage, Val]);
 
   const handleOpen = (event) => {
     onOpen();
@@ -198,13 +198,13 @@ const {state}=useLocation()
                 <TableCell>{item?.title}</TableCell>
                 <TableCell>
                   <div className='sm:flex justify-start gap-5'>
- <a
-                    href={
-                      item.question ? getFile({ payload: item.question }) : ""
-                    }
-                    
-                    onClick={item.question.originalname?.split('.')[1] === 'pdf' ? () => downloadPDF(item.question) : () => download()}>
-                    {/* <User
+                    <a
+                      href={
+                        item.question ? getFile({ payload: item.question }) : ""
+                      }
+
+                      onClick={item.question.originalname?.split('.')[1] === 'pdf' ? () => downloadPDF(item.question) : () => download()}>
+                      {/* <User
                       avatarProps={{
                         radius: "lg",
                         src: item.question
@@ -213,22 +213,22 @@ const {state}=useLocation()
                       }}
                        name={item.question?.originalname?.split('.')[0]}
                     /> */}
-                       <Image
-             
-              radius="sm"
-           
-              alt={item.title}
-              className="object-cover w-[40px] h-[40px]"
-              src={ item.question.originalname?.split('.')[1] === 'pdf' ? PdfPhoto : item.question.originalname?.split('.')[1] === 'xls' ? ExcelPhoto : getFile({ payload: item.question }) }
-          
-            
-            />
-            
-          
-                  </a>
-                  <b className='mt-3'>{item.question?.originalname}</b>
+                      <Image
+
+                        radius="sm"
+
+                        alt={item.title}
+                        className="object-cover w-[40px] h-[40px]"
+                        src={item.question.originalname?.split('.')[1] === 'pdf' ? PdfPhoto : item.question.originalname?.split('.')[1] === 'xls' ? ExcelPhoto : getFile({ payload: item.question })}
+
+
+                      />
+
+
+                    </a>
+                    <b className='mt-3'>{item.question?.originalname}</b>
                   </div>
-                 
+
                 </TableCell>
                 {/* <TableCell>{item?.subject?.title}</TableCell> */}
                 <TableCell>
@@ -251,7 +251,7 @@ const {state}=useLocation()
                         </span>
                       </Link>
                     </Tooltip>
-                 
+
                   </div>
                 </TableCell>
               </TableRow>
@@ -260,7 +260,7 @@ const {state}=useLocation()
         </Table>
       </div>
 
- 
+
     </div>
   );
 }

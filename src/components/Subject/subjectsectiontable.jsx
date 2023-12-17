@@ -1,8 +1,6 @@
 import {
 
-  Tooltip,
-  Table,
-  TableHeader,
+
   Modal,
 
   ModalContent,
@@ -13,6 +11,9 @@ import {
   ModalHeader,
   ModalBody,
   useDisclosure,
+  Tooltip,
+  Table,
+  TableHeader,
   TableColumn,
   TableBody,
   TableRow,
@@ -105,68 +106,7 @@ export default function AttendanceTable (props) {
     <>
       <div className='flex flex-row gap-5 justify-between'>
         <div className='flex gap-4 mb-3 flex-row'>
-          {/* <Dropdown>
-            <DropdownTrigger className='hidden sm:flex'>
-              <Button
-                endContent={<ChevronDownIcon className='text-small' />}
-                variant='flat'
-              >
-                Department
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-              disallowEmptySelection
-              aria-label='Table Columns'
-              closeOnSelect={false}
-              selectionMode='single'
-            >
-              {departmentList.map(item => (
-                <DropdownItem
-                  key={item._id}
-                  value={item._id}
-                  className='capitalize'
-                >
-                  {item.name}
-                </DropdownItem>
-              ))}
-            </DropdownMenu>
-          </Dropdown> */}
-          {/* <Dropdown>
-            <DropdownTrigger className='hidden sm:flex'>
-              <Button
-                endContent={<ChevronDownIcon className='text-small' />}
-                variant='flat'
-              >
-                Type
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu
-              disallowEmptySelection
-              aria-label='Table Columns'
-              closeOnSelect={false}
-              selectionMode='single'
-            >
-              <DropdownItem key='M-F' value='M-F' className='capitalize'>
-                All
-              </DropdownItem>
-              <DropdownItem key='M-S' value='M-S' className='capitalize'>
-                IELTs
-              </DropdownItem>
-              <DropdownItem
-                key='All Day'
-                value='All Day'
-                className='capitalize'
-              >
-               GED
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown> */}
-          {/* <Button
-            color='primary'
-            endContent={<SearchIcon className='w-5 h-4' />}
-          >
-            Search
-          </Button> */}
+       
         </div>
         <div className='flex gap-2 mb-3 flex-row'>
  

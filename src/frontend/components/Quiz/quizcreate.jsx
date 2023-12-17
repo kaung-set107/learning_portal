@@ -86,7 +86,7 @@ const navigate = useNavigate()
 
 
 
-  // console.log(finalQuizList,'finalQuiz')
+  console.log(questionData,'finalQuiz')
   const Add = (val) => {
     console.log(val, "val");
     const newData = {
@@ -227,7 +227,7 @@ apiInstance
         .get("learning-materials")
         .then((res) => {
             // console.log(res.data.data.filter(el=>el._id) ,'ss da')
-setTypeName(res.data.data.filter(el=>el._id === ID) ? 'Learning Material' : '')
+setTypeName(res.data.data.filter(el=>el._id === ID) && 'Learning Material')
           
         });
     };
@@ -236,7 +236,7 @@ setTypeName(res.data.data.filter(el=>el._id === ID) ? 'Learning Material' : '')
         .get("exams")
         .then((res) => {
             // console.log(res.data.data.filter(el=>el._id),'ss da')
-setTypeName(res.data.data.filter(el=>el._id === ID) ? 'Exam' : '')
+setTypeName(res.data.data.filter(el=>el._id === ID) && 'Exam')
           
         });
     };
@@ -548,10 +548,12 @@ Remove
       >
         <TableHeader>
           <TableColumn>No</TableColumn>
-                <TableColumn>Code</TableColumn>
           <TableColumn>Title</TableColumn>
+                <TableColumn>Question Type</TableColumn>
           
-             <TableColumn>Description</TableColumn>
+          
+             <TableColumn>Answer Type</TableColumn>
+             <TableColumn>Mark</TableColumn>
 
           <TableColumn key='action'>Action</TableColumn>
         </TableHeader>
@@ -559,16 +561,19 @@ Remove
           {items.map((item, index) => (
             <TableRow key={item._id}>
               <TableCell>{index + 1}</TableCell>
-                 <TableCell>
-                {item?.code}
-              </TableCell>
               <TableCell>
                 {item?.question}
+              </TableCell>
+                 <TableCell>
+                {item?.type}
+              </TableCell>
+              <TableCell>
+                {item?.answerType}
               </TableCell>
                  
           
            
-              <TableCell>{item?.description}</TableCell>
+              <TableCell>{item?.mark}</TableCell>
      
 
               <TableCell>

@@ -18,7 +18,7 @@ import {
   Image,
 } from "@nextui-org/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faCircleInfo } from '@fortawesome/free-solid-svg-icons'
+import {faCircleInfo,faListCheck } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from "react";
 import apiInstance from "../../../util/api.js";
 import { EditIcon } from "../../../components/Table/editicon";
@@ -271,11 +271,21 @@ const {state}=useLocation()
                
 
            <TableCell>
-                  <div className="relative flex items-center gap-2">
+                  <div className="relative flex items-center gap-3">
                     <Tooltip content="Detail Learning Material">
                       <Link to={`/sub-detail/${item._id}`}>
-                        <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                        <span className="text-lg  cursor-pointer active:opacity-50" style={{marginTop:'0.2em'}}>
                           <FontAwesomeIcon icon={faCircleInfo} size='xl' />
+                        </span>
+                      </Link>
+                    </Tooltip>
+                    <Tooltip content="Check Quizz">
+                      <Link to={`/quiz-page/${item._id}`}>
+                        <span className="text-lg cursor-pointer active:opacity-50">
+                          {/* <FontAwesomeIcon icon={faCircleInfo} size='xl' /> */}
+                          <FontAwesomeIcon icon={faListCheck} size='xl'/>
+                       
+                      
                         </span>
                       </Link>
                     </Tooltip>

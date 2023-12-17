@@ -41,6 +41,8 @@ import LMUpdateDetail from './frontend/pages/LearningMaterial/lmupdatedetail'
 import Quiz from './frontend/components/Quiz/index'
 import QuizCreate from './frontend/components/Quiz/quizcreate'
 import './quiz.css'
+import QuizPage from './frontend/ByUser/Quiz/quizpage.jsx'
+import QuizResult from './frontend/ByUser/Quiz/result.jsx'
 export default function RouteFile() {
  
   return (
@@ -120,9 +122,13 @@ export default function RouteFile() {
             <Route path='/lm-update/:id/:valid' element={<LMUpdate />} ></Route>
             <Route path='/lm-updatedetail/:id/:lmid' element={<LMUpdateDetail />} ></Route>
 
-            {/* Quiz */}
+            {/* Quiz Instructor */}
              <Route path='/quiz' element={<Quiz />} ></Route>
              <Route path='/quiz-create/:id' element={<QuizCreate />} ></Route>
+
+             {/* Quiz Student */}
+             <Route path='/quiz-page/:id' element={<QuizPage />} ></Route>
+             <Route path='/quiz-result' element={<QuizResult />} ></Route>
           </Route>
 
           {/* <AuthContainer component={<Dashboard />} path='/home'></AuthContainer> */}
