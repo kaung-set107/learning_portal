@@ -1,8 +1,8 @@
 // import { Accordion} from '@nextui-org/react'
-import {useState} from 'react'
+import { useState } from 'react'
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBook, faLaptopFile, faUsers,faWallet } from '@fortawesome/free-solid-svg-icons'
+import { faBook, faLaptopFile, faUsers, faWallet } from '@fortawesome/free-solid-svg-icons'
 import {
   Card,
   CardBody,
@@ -10,17 +10,17 @@ import {
   Divider,
 
 } from '@nextui-org/react'
-import { Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 
 
- export default function Sidebar (props) {
-  const {arr}=props
-  console.log(arr,'arr')
-  const [isInc,setInc]=useState(false)
-        const [isCou,setCou]=useState(false)
-  
-   
+export default function Sidebar(props) {
+  const { arr } = props
+  console.log(arr, 'arr')
+  const [isInc, setInc] = useState(false)
+  const [isCou, setCou] = useState(false)
+
+
   // const itemClasses = {
   //   base: ' px-2 w-full',
   //   title: 'font-normal text-medium text-left',
@@ -33,7 +33,7 @@ import { Link} from 'react-router-dom'
       <div className='sidebar w-full px-1'>
         <div className='nav-bar flex-grow'>
           <Card className='w-[250px] max-h rounded-sm'>
-  
+
             <CardBody className='px-1 py-1 m-0'>
               {/* <Accordion
                 isCompact={true}
@@ -42,45 +42,45 @@ import { Link} from 'react-router-dom'
                 itemClasses={itemClasses}
                 defaultExpandedKeys={['1', '2', '3', '4', '5', '6']}
               > */}
-                {/* Employee */}
-                {/* <AccordionItem key='1' title='Master'> */}
-                  <Link to='/instru' >
-             
-                    <div onClick={()=>setInc(true)} className={isInc ?  ' bg-red-200 px-4 py-3 m-auto' : 'hover:bg-default-100 px-4 py-3 m-auto' }>
-                      <FontAwesomeIcon icon={faUsers} size='xl' />
-                      &nbsp;&nbsp;
-                      <span className='ml-3 font-medium'>Instructor</span>
-                    </div>
-                  </Link>
-                  <Divider></Divider>
-                  <Link to='/course' onClick={()=>setCou(true)} >
+              {/* Employee */}
+              {/* <AccordionItem key='1' title='Master'> */}
+              <Link to='/instru' >
 
-                    <div onClick={()=>setCou(true)} className={isCou ?  ' bg-red-200 px-4 py-3 m-auto' : 'hover:bg-default-100 px-4 py-3 m-auto' }>
-                      <FontAwesomeIcon icon={faLaptopFile} size='xl'/>
+                <div onClick={() => setInc(true)} className={isInc ? ' bg-red-200 px-4 py-3 m-auto' : 'hover:bg-default-100 px-4 py-3 m-auto'}>
+                  <FontAwesomeIcon icon={faUsers} size='xl' />
+                  &nbsp;&nbsp;
+                  <span className='ml-3 font-medium'>Instructor</span>
+                </div>
+              </Link>
+              <Divider></Divider>
+              <Link to='/course' onClick={() => setCou(true)} >
 
-                      &nbsp;
-                      <span className='ml-4 font-medium '>Courses</span>
-                    </div>
-                  <Divider></Divider>
+                <div onClick={() => setCou(true)} className={isCou ? ' bg-red-200 px-4 py-3 m-auto' : 'hover:bg-default-100 px-4 py-3 m-auto'}>
+                  <FontAwesomeIcon icon={faLaptopFile} size='xl' />
 
-                  </Link>
- <Link to='/subject'>
-                    <div className='hover:bg-default-100 px-4 py-3'>
-                      <FontAwesomeIcon icon={faBook} size='xl' />
-                      &nbsp;&nbsp;
-                      <span className='ml-5 font-medium'>Subjects</span>
-                    </div>
-                  </Link>
-                  <Divider></Divider>
-                  <Link to='/subject-sale'>
+                  &nbsp;
+                  <span className='ml-4 font-medium '>Courses</span>
+                </div>
+                <Divider></Divider>
+
+              </Link>
+              <Link to='/subject'>
+                <div className='hover:bg-default-100 px-4 py-3'>
+                  <FontAwesomeIcon icon={faBook} size='xl' />
+                  &nbsp;&nbsp;
+                  <span className='ml-5 font-medium'>Subjects</span>
+                </div>
+              </Link>
+              <Divider></Divider>
+              {/* <Link to='/subject-sale'>
                     <div className='hover:bg-default-100 px-4 py-3'>
                       <FontAwesomeIcon icon={faWallet} size='xl'/>
                       &nbsp;&nbsp;
                       <span className='ml-4 font-medium'>Subjects Sale</span>
                     </div>
                   </Link>
-                  <Divider></Divider>
-                   {/* <Link to='/subject-section'>
+                  <Divider></Divider> */}
+              {/* <Link to='/subject-section'>
                     <div className='hover:bg-default-100 px-4 py-3'>
                    <FontAwesomeIcon icon={faSection} size='xl' />
                       &nbsp;&nbsp;
@@ -88,7 +88,7 @@ import { Link} from 'react-router-dom'
                     </div>
                   </Link>
                   <Divider></Divider> */}
-                  {/* <Link to='/department'>
+              {/* <Link to='/department'>
                     <div className='hover:bg-default-100 px-4 py-3'>
                       <FontAwesomeIcon icon={faBuildingUser} size='xl' />
                       &nbsp;&nbsp;
@@ -107,7 +107,7 @@ import { Link} from 'react-router-dom'
                   </Link>
 
                   <Divider></Divider> */}
-                  {/* <Link to='/payroll'>
+              {/* <Link to='/payroll'>
                     <div className='hover:bg-default-100 px-4 py-3'>
                       <FontAwesomeIcon icon={faMoneyCheckDollar} size='xl' />
 
@@ -123,13 +123,13 @@ import { Link} from 'react-router-dom'
                       <span className='ml-3 font-medium'>Payroll Detail</span>
                     </div>
                   </Link> */}
-                {/* </AccordionItem> */}
+              {/* </AccordionItem> */}
 
-             
+
               {/* </Accordion> */}
-       
+
             </CardBody>
-        
+
             <CardFooter>
               {/* <User
                 name='Alice'

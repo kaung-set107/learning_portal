@@ -142,25 +142,45 @@ export default function QuizPage() {
 
       // }
       // console.log(objectData, 'newObj')
-      const objectDataArray = studentAnswerList.map((item, index) => {
-        console.log(`Object ${index + 1}:`, item.studentAnswer);
-        return { ...item };
-      });
+      // const objectDataArray = studentAnswerList.map((item, index) => {
+      //   console.log(`Object ${index + 1}:`, item.studentAnswer);
+      //   return { ...item };
+      // });
 
       // Now you can access the array of new objects
       // const Ans = studentAnswerList.map((i) => (i.id))
       // console.log(Ans, 'Aaaa')
       // console.log((quizList.questions.map((i) => (i._id))), 'quiLis')
-      // console.log('Array of new objects:', (quizList.questions.map((i) => (i._id === Ans))));
+      console.log('Array of new objects:', quizList.questions.map((i, ind) => {
+        return {
+
+          question: i.question,
+          type: i.type,
+          mark: i.mark,
+
+          options: i.options,
+          answerType: i.answerType,
+          correctAnswer: i.correctAnswer,
+          studentAnswer: studentAnswerList.filter(el => el.id === i._id)[0].studentAnswer
+        }
+      }));
       const data = {
         quiz: quizList._id,
         student: studentID,
         answerDate: Date.now(),
-        updatedQuestions: (quizList.questions.map((item) => (
-          {
-            ...item, studentAnswer: studentAnswer
+        updatedQuestions: (quizList.questions.map((i) => {
+          return {
+
+            question: i.question,
+            type: i.type,
+            mark: i.mark,
+
+            options: i.options,
+            answerType: i.answerType,
+            correctAnswer: i.correctAnswer,
+            studentAnswer: studentAnswerList.filter(el => el.id === i._id)[0].studentAnswer
           }
-        ))),
+        })),
         totalMark: TotalMark,
         status: ((TotalMark >= quizList.passMark) ? 'pass' : 'fail')
 
