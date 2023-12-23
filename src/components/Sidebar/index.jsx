@@ -1,25 +1,32 @@
 // import { Accordion} from '@nextui-org/react'
-import { useState } from 'react'
-import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBook, faLaptopFile, faUsers, faWallet } from '@fortawesome/free-solid-svg-icons'
+import { useState } from "react";
+import PropTypes from "prop-types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBook,
+  faLaptopFile,
+  faUsers,
+  faDesktop,
+  faCircleQuestion,
+  faUserGraduate,
+  faUserGroup,
+  faUserGear,
+} from "@fortawesome/free-solid-svg-icons";
 import {
   Card,
   CardBody,
   CardFooter,
   Divider,
-
-} from '@nextui-org/react'
-import { Link } from 'react-router-dom'
-
-
+  Accordion,
+  AccordionItem,
+} from "@nextui-org/react";
+import { Link } from "react-router-dom";
 
 export default function Sidebar(props) {
-  const { arr } = props
-  console.log(arr, 'arr')
-  const [isInc, setInc] = useState(false)
-  const [isCou, setCou] = useState(false)
-
+  const { arr } = props;
+  console.log(arr, "arr");
+  const [isInc, setInc] = useState(false);
+  const [isCou, setCou] = useState(false);
 
   // const itemClasses = {
   //   base: ' px-2 w-full',
@@ -32,46 +39,149 @@ export default function Sidebar(props) {
     <>
       <div className='sidebar w-full px-1'>
         <div className='nav-bar flex-grow'>
-          <Card className='w-[250px] max-h rounded-sm'>
-
-            <CardBody className='px-1 py-1 m-0'>
-              {/* <Accordion
-                isCompact={true}
-                selectionMode='multiple'
-                variant='splited'
-                itemClasses={itemClasses}
-                defaultExpandedKeys={['1', '2', '3', '4', '5', '6']}
-              > */}
-              {/* Employee */}
-              {/* <AccordionItem key='1' title='Master'> */}
-              <Link to='/instru' >
-
-                <div onClick={() => setInc(true)} className={isInc ? ' bg-red-200 px-4 py-3 m-auto' : 'hover:bg-default-100 px-4 py-3 m-auto'}>
+          <Card className='w-[270px] max-h rounded-sm '>
+            <CardBody className='px-5 py-1 m-0 h-[680px] text-md'>
+              <Accordion>
+                <AccordionItem
+                  key='1'
+                  aria-label='Accordion 1'
+                  title='Dashboard'
+                  startContent={<FontAwesomeIcon icon={faDesktop} size='xl' />}
+                >
+                  <Divider></Divider>
+                  <Link to='/instru'>
+                    <div
+                      onClick={() => setInc(true)}
+                      className='hover:bg-blue-200 px-4 py-3 m-auto text-sm '
+                    >
+                      {/* <FontAwesomeIcon icon={faCircleQuestion} size='xl' /> */}
+                      &nbsp;&nbsp;
+                      <span className='ml-3 font-medium'>Something</span>
+                    </div>
+                  </Link>
+                </AccordionItem>
+              </Accordion>
+              <Divider></Divider>
+              <Accordion>
+                <AccordionItem
+                  key='1'
+                  aria-label='Accordion 1'
+                  title='Student'
+                  className='cil-line-spacing'
+                  startContent={
+                    <FontAwesomeIcon icon={faUserGraduate} size='xl' />
+                  }
+                >
+                  <Divider></Divider>
+                  <Link to='/reg'>
+                    <div
+                      onClick={() => setInc(true)}
+                      className='hover:bg-blue-200 px-4 py-3 m-auto text-sm '
+                    >
+                      {/* <FontAwesomeIcon icon={faCircleQuestion} size='xl' /> */}
+                      &nbsp;&nbsp;
+                      <span className='ml-3 font-medium'>
+                        Registration List
+                      </span>
+                    </div>
+                  </Link>
+                  <Divider></Divider>
+                  <Link to='/instru'>
+                    <div
+                      onClick={() => setInc(true)}
+                      className='hover:bg-blue-200 px-4 py-3 m-auto text-sm '
+                    >
+                      {/* <FontAwesomeIcon icon={faCircleQuestion} size='xl' /> */}
+                      &nbsp;&nbsp;
+                      <span className='ml-3 font-medium'>Enrollment List</span>
+                    </div>
+                  </Link>
+                  <Divider></Divider>
+                  <Link to='/email-recovery'>
+                    <div
+                      onClick={() => setInc(true)}
+                      className='hover:bg-blue-200 px-4 py-3 m-auto text-sm '
+                    >
+                      {/* <FontAwesomeIcon icon={faCircleQuestion} size='xl' /> */}
+                      &nbsp;&nbsp;
+                      <span className='ml-3 font-medium'>Email Recovery</span>
+                    </div>
+                  </Link>
+                  <Divider></Divider>
+                  <Link to='/placement'>
+                    <div
+                      onClick={() => setInc(true)}
+                      className='hover:bg-blue-200 px-4 py-3 m-auto text-sm '
+                    >
+                      {/* <FontAwesomeIcon icon={faCircleQuestion} size='xl' /> */}
+                      &nbsp;&nbsp;
+                      <span className='ml-3 font-medium'>Placement Test</span>
+                    </div>
+                  </Link>
+                </AccordionItem>
+              </Accordion>
+              <Divider></Divider>
+              <Accordion>
+                <AccordionItem
+                  key='1'
+                  aria-label='Accordion 1'
+                  title='Teacher'
+                  startContent={
+                    <FontAwesomeIcon icon={faUserGroup} size='xl' />
+                  }
+                >
+                  <Divider></Divider>
+                  <Link to='/instru'>
+                    <div
+                      onClick={() => setInc(true)}
+                      className='hover:bg-blue-200 px-4 py-3 m-auto text-sm '
+                    >
+                      {/* <FontAwesomeIcon icon={faCircleQuestion} size='xl' /> */}
+                      &nbsp;&nbsp;
+                      <span className='ml-3 font-medium'>Instructor</span>
+                    </div>
+                  </Link>
+                </AccordionItem>
+              </Accordion>
+              <Divider></Divider>
+              <Accordion>
+                <AccordionItem
+                  key='1'
+                  aria-label='Accordion 1'
+                  title='Master'
+                  startContent={<FontAwesomeIcon icon={faUserGear} size='xl' />}
+                >
+                  <Divider></Divider>
+                  <Link to='/course' onClick={() => setCou(true)}>
+                    <div className='hover:bg-blue-200 px-4 py-3 m-auto text-sm '>
+                      {/* <FontAwesomeIcon icon={faLaptopFile} size='xl' /> */}
+                      &nbsp;
+                      <span className='ml-4 font-medium '>Courses</span>
+                    </div>
+                    <Divider></Divider>
+                  </Link>
+                  <Link to='/subject'>
+                    <div className='hover:bg-blue-200 px-4 py-3 m-auto text-sm'>
+                      {/* <FontAwesomeIcon icon={faBook} size='xl' /> */}
+                      &nbsp;&nbsp;
+                      <span className='ml-4 font-medium'>Subjects</span>
+                    </div>
+                  </Link>
+                </AccordionItem>
+              </Accordion>
+              <Divider></Divider>
+              {/* <Link to='/instru'>
+                <div
+                  onClick={() => setInc(true)}
+                  className='hover:bg-blue-200 px-4 py-3 m-auto text-sm '
+                >
                   <FontAwesomeIcon icon={faUsers} size='xl' />
                   &nbsp;&nbsp;
                   <span className='ml-3 font-medium'>Instructor</span>
                 </div>
               </Link>
-              <Divider></Divider>
-              <Link to='/course' onClick={() => setCou(true)} >
+              <Divider></Divider> */}
 
-                <div onClick={() => setCou(true)} className={isCou ? ' bg-red-200 px-4 py-3 m-auto' : 'hover:bg-default-100 px-4 py-3 m-auto'}>
-                  <FontAwesomeIcon icon={faLaptopFile} size='xl' />
-
-                  &nbsp;
-                  <span className='ml-4 font-medium '>Courses</span>
-                </div>
-                <Divider></Divider>
-
-              </Link>
-              <Link to='/subject'>
-                <div className='hover:bg-default-100 px-4 py-3'>
-                  <FontAwesomeIcon icon={faBook} size='xl' />
-                  &nbsp;&nbsp;
-                  <span className='ml-5 font-medium'>Subjects</span>
-                </div>
-              </Link>
-              <Divider></Divider>
               {/* <Link to='/subject-sale'>
                     <div className='hover:bg-default-100 px-4 py-3'>
                       <FontAwesomeIcon icon={faWallet} size='xl'/>
@@ -125,9 +235,7 @@ export default function Sidebar(props) {
                   </Link> */}
               {/* </AccordionItem> */}
 
-
               {/* </Accordion> */}
-
             </CardBody>
 
             <CardFooter>
@@ -143,11 +251,9 @@ export default function Sidebar(props) {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 Sidebar.propTypes = {
   arr: PropTypes.string,
-
 };
-
