@@ -52,7 +52,7 @@ export default function Sidebar(props) {
                   <Link to='/instru'>
                     <div
                       onClick={() => setInc(true)}
-                      className='hover:bg-blue-200 px-4 py-3 m-auto text-sm '
+                      className='hover:bg-blue-100 px-4 py-3 m-auto text-sm '
                     >
                       {/* <FontAwesomeIcon icon={faCircleQuestion} size='xl' /> */}
                       &nbsp;&nbsp;
@@ -73,10 +73,10 @@ export default function Sidebar(props) {
                   }
                 >
                   <Divider></Divider>
-                  <Link to='/reg'>
+                  <Link to='/register-list'>
                     <div
                       onClick={() => setInc(true)}
-                      className='hover:bg-blue-200 px-4 py-3 m-auto text-sm '
+                      className='hover:bg-blue-100 px-4 py-3 m-auto text-sm '
                     >
                       {/* <FontAwesomeIcon icon={faCircleQuestion} size='xl' /> */}
                       &nbsp;&nbsp;
@@ -89,7 +89,7 @@ export default function Sidebar(props) {
                   <Link to='/instru'>
                     <div
                       onClick={() => setInc(true)}
-                      className='hover:bg-blue-200 px-4 py-3 m-auto text-sm '
+                      className='hover:bg-blue-100 px-4 py-3 m-auto text-sm '
                     >
                       {/* <FontAwesomeIcon icon={faCircleQuestion} size='xl' /> */}
                       &nbsp;&nbsp;
@@ -100,7 +100,7 @@ export default function Sidebar(props) {
                   <Link to='/email-recovery'>
                     <div
                       onClick={() => setInc(true)}
-                      className='hover:bg-blue-200 px-4 py-3 m-auto text-sm '
+                      className='hover:bg-blue-100 px-4 py-3 m-auto text-sm '
                     >
                       {/* <FontAwesomeIcon icon={faCircleQuestion} size='xl' /> */}
                       &nbsp;&nbsp;
@@ -111,7 +111,7 @@ export default function Sidebar(props) {
                   <Link to='/placement'>
                     <div
                       onClick={() => setInc(true)}
-                      className='hover:bg-blue-200 px-4 py-3 m-auto text-sm '
+                      className='hover:bg-blue-100 px-4 py-3 m-auto text-sm '
                     >
                       {/* <FontAwesomeIcon icon={faCircleQuestion} size='xl' /> */}
                       &nbsp;&nbsp;
@@ -134,7 +134,7 @@ export default function Sidebar(props) {
                   <Link to='/instru'>
                     <div
                       onClick={() => setInc(true)}
-                      className='hover:bg-blue-200 px-4 py-3 m-auto text-sm '
+                      className='hover:bg-blue-100 px-4 py-3 m-auto text-sm '
                     >
                       {/* <FontAwesomeIcon icon={faCircleQuestion} size='xl' /> */}
                       &nbsp;&nbsp;
@@ -153,7 +153,7 @@ export default function Sidebar(props) {
                 >
                   <Divider></Divider>
                   <Link to='/course' onClick={() => setCou(true)}>
-                    <div className='hover:bg-blue-200 px-4 py-3 m-auto text-sm '>
+                    <div className='hover:bg-blue-100 px-4 py-3 m-auto text-sm'>
                       {/* <FontAwesomeIcon icon={faLaptopFile} size='xl' /> */}
                       &nbsp;
                       <span className='ml-4 font-medium '>Courses</span>
@@ -161,7 +161,7 @@ export default function Sidebar(props) {
                     <Divider></Divider>
                   </Link>
                   <Link to='/subject'>
-                    <div className='hover:bg-blue-200 px-4 py-3 m-auto text-sm'>
+                    <div className='hover:bg-blue-100 px-4 py-3 m-auto text-sm'>
                       {/* <FontAwesomeIcon icon={faBook} size='xl' /> */}
                       &nbsp;&nbsp;
                       <span className='ml-4 font-medium'>Subjects</span>
@@ -173,7 +173,7 @@ export default function Sidebar(props) {
               {/* <Link to='/instru'>
                 <div
                   onClick={() => setInc(true)}
-                  className='hover:bg-blue-200 px-4 py-3 m-auto text-sm '
+                  className='hover:bg-blue-100 px-4 py-3 m-auto text-sm '
                 >
                   <FontAwesomeIcon icon={faUsers} size='xl' />
                   &nbsp;&nbsp;
