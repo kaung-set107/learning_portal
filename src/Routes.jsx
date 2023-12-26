@@ -41,6 +41,7 @@ import QuizCreate from "./frontend/components/Quiz/quizcreate";
 import "./quiz.css";
 import QuizPage from "./frontend/ByUser/Quiz/quizpage.jsx";
 import QuizResult from "./frontend/ByUser/Quiz/result.jsx";
+import ExamUpdate from "./frontend/components/Exam/ExamUpdate.jsx";
 export default function RouteFile() {
   return (
     <div>
@@ -60,7 +61,7 @@ export default function RouteFile() {
             <Route path='/lm' element={<LearningMaterial />}></Route>
             <Route path='/assign' element={<Assignment />}></Route>
             <Route path='/assign/:id' element={<AssignmentUpdate />}></Route>
-            <Route path='/exam' element={<Exam />}></Route>
+
             <Route path='/home' element={<Dashboard />} />
 
             {/* Department */}
@@ -130,6 +131,9 @@ export default function RouteFile() {
             <Route path='/quiz-result' element={<QuizResult />}></Route>
           </Route>
 
+          {/* Exam */}
+          <Route path='/exam' element={<Exam />}></Route>
+          <Route path='/exam-update/:id' element={<ExamUpdate />}></Route>
           {/* <AuthContainer component={<Dashboard />} path='/home'></AuthContainer> */}
         </Routes>
       </BrowserRouter>

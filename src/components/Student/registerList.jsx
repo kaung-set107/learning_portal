@@ -122,25 +122,45 @@ export default function DepartmentTable() {
 
   return (
     <>
+      <div className='grid grid-cols-3 gap-2'>
+        <div className='bg-red-700 p-10 flex justify-center'>
+          <div className='text-white text-center'>
+            <p className='text-3xl '>24</p>
+            <b>Student Registered</b>
+          </div>
+        </div>
+        <div className='bg-red-700 p-10 flex justify-center'>
+          <div className='text-white text-center'>
+            <p className='text-3xl '>24</p>
+            <b>Approved</b>
+          </div>
+        </div>
+        <div className='bg-red-700 p-10 flex justify-center'>
+          <div className='text-white text-center'>
+            <p className='text-3xl '>24</p>
+            <b>Rejected</b>
+          </div>
+        </div>
+      </div>
       <div className='flex flex-row gap-3 justify-between py-10'>
         <div className='ml-10 grid grid-cols-3 gap-20'>
           <Button color='primary' variant='light'>
             Pending List &nbsp;
-            <Badge content='9+' shape='circle' color='danger'>
+            {/* <Badge content='9+' shape='circle' color='danger'>
               <NotificationIcon size={24} />
-            </Badge>
+            </Badge> */}
           </Button>
           <Button color='primary' variant='light'>
             Approve List &nbsp;
-            <Badge content='9+' shape='circle' color='danger'>
+            {/* <Badge content='9+' shape='circle' color='danger'>
               <NotificationIcon size={24} />
-            </Badge>
+            </Badge> */}
           </Button>
           <Button color='primary' variant='light'>
             Reject List &nbsp;
-            <Badge content='9+' shape='circle' color='danger'>
+            {/* <Badge content='9+' shape='circle' color='danger'>
               <NotificationIcon size={24} />
-            </Badge>
+            </Badge> */}
           </Button>
         </div>
         <div className='flex gap-3 mb-3'>

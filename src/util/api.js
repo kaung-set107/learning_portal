@@ -5,9 +5,9 @@ const storeToken = localStorage.getItem('token')
 
 const apiInstance = axios.create({
   baseURL: url,
-  headers: {
-    Authorization: `Bearer ${storeToken}`
-  }
+  // headers: {
+  //   Authorization: `Bearer ${storeToken}`
+  // }
 })
 
 apiInstance.interceptors.request.use(

@@ -17,8 +17,8 @@ import {
   TableCell,
   Image,
 } from "@nextui-org/react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircleInfo, faListCheck } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleInfo, faListCheck } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import apiInstance from "../../../util/api.js";
 import { EditIcon } from "../../../components/Table/editicon";
@@ -32,7 +32,7 @@ import PdfPhoto from "../../ByInstructor/images/pdf.png";
 
 function PositionTable() {
   const location = useLocation();
-  const { state } = useLocation()
+  const { state } = useLocation();
   const Val = location.state ? location.state : "English";
 
   //  const [dataValue,setDataValue]=useState('English')
@@ -49,7 +49,7 @@ function PositionTable() {
   //   }
 
   const [assignList, setAssignList] = useState([]);
-  console.log(assignList, 'exam list')
+  console.log(assignList, "exam list");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [delID, setDelID] = useState(null);
 
@@ -116,11 +116,16 @@ function PositionTable() {
           console.log(res.data.data, "exam res");
           console.log(
             res.data.data.filter(
-              (el) => el.subject?._id === (state.val ? state.val : '6541db4ceef974bf5476db1e')
+              (el) =>
+                el.subject?._id ===
+                (state.val ? state.val : "657fc6ea6a43245f02d0b7fc")
             ),
             "hrr"
           );
-          const FilterList = res.data.data.filter((el) => el.subject?._id === (state.val ? state.val : '6541db4ceef974bf5476db1e')
+          const FilterList = res.data.data.filter(
+            (el) =>
+              el.subject?._id ===
+              (state.val ? state.val : "657fc6ea6a43245f02d0b7fc")
           );
           const obj = FilterList.map((i) => JSON.parse(i?.links));
           console.log(FilterList, "exam res");
@@ -149,7 +154,7 @@ function PositionTable() {
   };
 
   const handleDelete = async () => {
-    console.log(setDelID, 'deli');
+    console.log(setDelID, "deli");
     await apiInstance.delete("learning-materials/" + delID).then(() => {
       setAssignList(assignList.filter((item) => item._id !== delID));
       onClose();
@@ -157,91 +162,94 @@ function PositionTable() {
   };
 
   return (
-    <div className="mx-8 mb-10">
-      <div className="flex gap-3 mb-3 justify-end">
+    <div className='mx-8 mb-10'>
+      <div className='flex gap-3 mb-3 justify-end'>
         {/* <Button color="primary" endContent={<PlusIcon />}>
                     <Link to='/position/register'>Add</Link>
                 </Button> */}
       </div>
-      <div className="flex justify-between items-center mb-3">
-        <span className="text-default-400 text-small">
+      <div className='flex justify-between items-center mb-3'>
+        <span className='text-default-400 text-small'>
           Total {assignList.length} Learning Material
         </span>
-        <label className="flex items-center text-default-400 text-small">
+        <label className='flex items-center text-default-400 text-small'>
           Rows per page:
           <select
-            className="bg-transparent outline-none text-default-400 text-small"
-            onChange={(e) => onRowsChange(e)}>
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
+            className='bg-transparent outline-none text-default-400 text-small'
+            onChange={(e) => onRowsChange(e)}
+          >
+            <option value='5'>5</option>
+            <option value='10'>10</option>
+            <option value='15'>15</option>
           </select>
         </label>
       </div>
       <div>
         <Table
-          aria-label="Example table with client side sorting"
+          aria-label='Example table with client side sorting'
           classNames={{
             base: "max-h-[719px] ",
             table: "min-h-[100px]",
           }}
           bottomContent={
-            <div className="flex w-full justify-center">
+            <div className='flex w-full justify-center'>
               <Pagination
                 isCompact
                 showControls
                 showShadow
-                color="primary"
+                color='primary'
                 page={page}
                 total={pages}
                 onChange={(page) => setPage(page)}
               />
             </div>
-          }>
-          <TableHeader className="sticky ">
-            <TableColumn key="no">No</TableColumn>
-            <TableColumn key="title">Title</TableColumn>
-            <TableColumn key="que">Assets Files</TableColumn>
+          }
+        >
+          <TableHeader className='sticky '>
+            <TableColumn key='no'>No</TableColumn>
+            <TableColumn key='title'>Title</TableColumn>
+            <TableColumn key='que'>Assets Files</TableColumn>
             {/* <TableColumn key="name">Subject</TableColumn> */}
-            <TableColumn key="weblink">Website Link</TableColumn>
-            <TableColumn key="videolink">Video Link</TableColumn>
-            <TableColumn key="actions">Actions</TableColumn>
+            <TableColumn key='weblink'>Website Link</TableColumn>
+            {/* <TableColumn key='videolink'>Video Link</TableColumn> */}
+            <TableColumn key='actions'>Actions</TableColumn>
           </TableHeader>
           <TableBody
             emptyContent={"No Positions to display."}
-            className="overflow-y-scroll">
-            {console.log(items, 'items')}
+            className='overflow-y-scroll'
+          >
+            {console.log(items, "items")}
             {items.map((item, index) => (
-              <TableRow key={item._id} style={{ height: '100px' }}>
+              <TableRow key={item._id} style={{ height: "100px" }}>
                 {/* {console.log(JSON.parse(items.links),'reeee')} */}
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{item?.title}</TableCell>
                 <TableCell>
                   {item?.assets.map((i) => (
                     <>
-                      {console.log(i, "asse")}
-                      <div className="sm:flex justify-start gap-5" key={i._id}>
+                      <div className='sm:flex justify-start gap-5' key={i._id}>
                         <a
                           href={getFile({ payload: i })}
                           onClick={
                             i.originalname?.split(".")[1] === "pdf"
                               ? () => downloadPDF(i)
                               : () => download()
-                          }>
+                          }
+                        >
                           <Image
-                            radius="sm"
+                            radius='sm'
                             alt={i.title}
-                            className="object-cover w-[40px] h-[40px]"
+                            className='object-cover w-[40px] h-[40px]'
                             src={
                               i.originalname?.split(".")[1] === "pdf"
                                 ? PdfPhoto
                                 : i.originalname?.split(".")[1] === "xlsx"
-                                  ? ExcelPhoto
-                                  : getFile({ payload: i })
+                                ? ExcelPhoto
+                                : getFile({ payload: i })
                             }
                           />
                         </a>
-                        <b className="mt-3">{i?.originalname}</b>
+                        <b className='mt-3'>{i?.originalname}</b>
                       </div>
                     </>
                   ))}
@@ -250,21 +258,8 @@ function PositionTable() {
                 <TableCell>
                   {JSON.parse(item.links).map((e) => (
                     <>
-                      {console.log(e, 'e')}
-                      <div key={e} className="text-blue-700 gap-5">
-                        <a target="_blank" rel='noreferrer' href={e.links}>
-                          {e.links}
-                        </a>
-                      </div>
-                    </>
-                  ))}
-                </TableCell>
-                <TableCell>
-                  {JSON.parse(item.video).map((e) => (
-                    <>
-                      {console.log(e, 'e')}
-                      <div key={e} className="text-blue-700 gap-5">
-                        <a target="_blank" rel='noreferrer' href={e.links}>
+                      <div key={e} className='text-blue-700 gap-5'>
+                        <a target='_blank' rel='noreferrer' href={e.links}>
                           {e.links}
                         </a>
                       </div>
@@ -272,28 +267,26 @@ function PositionTable() {
                   ))}
                 </TableCell>
 
-
-
                 <TableCell>
-                  <div className="relative flex items-center gap-3">
-                    <Tooltip content="Detail Learning Material">
+                  <div className='relative flex items-center gap-3'>
+                    <Tooltip content='Detail Learning Material'>
                       <Link to={`/sub-detail/${item._id}`}>
-                        <span className="text-lg  cursor-pointer active:opacity-50" style={{ marginTop: '0.2em' }}>
+                        <span
+                          className='text-lg  cursor-pointer active:opacity-50'
+                          style={{ marginTop: "0.2em" }}
+                        >
                           <FontAwesomeIcon icon={faCircleInfo} size='xl' />
                         </span>
                       </Link>
                     </Tooltip>
-                    <Tooltip content="Check Quizz">
+                    <Tooltip content='Check Quizz'>
                       <Link to={`/quiz-page/${item._id}`}>
-                        <span className="text-lg cursor-pointer active:opacity-50">
+                        <span className='text-lg cursor-pointer active:opacity-50'>
                           {/* <FontAwesomeIcon icon={faCircleInfo} size='xl' /> */}
                           <FontAwesomeIcon icon={faListCheck} size='xl' />
-
-
                         </span>
                       </Link>
                     </Tooltip>
-
                   </div>
                 </TableCell>
               </TableRow>
@@ -301,8 +294,6 @@ function PositionTable() {
           </TableBody>
         </Table>
       </div>
-
-
     </div>
   );
 }
