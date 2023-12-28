@@ -1,5 +1,5 @@
 // import { Accordion} from '@nextui-org/react'
-import { useState } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -11,6 +11,8 @@ import {
   faUserGraduate,
   faUserGroup,
   faUserGear,
+  faGear,
+  faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   Card,
@@ -19,15 +21,31 @@ import {
   Divider,
   Accordion,
   AccordionItem,
+  Button,
 } from "@nextui-org/react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function Sidebar(props) {
   const { arr } = props;
+  const navigate = useNavigate();
   console.log(arr, "arr");
   const [isInc, setInc] = useState(false);
   const [isCou, setCou] = useState(false);
 
+  const logOut = () => {
+    localStorage.removeItem("token");
+    Swal.fire({
+      icon: "success",
+      title: "Logout Successful",
+      text: "See You!",
+      showCancelButton: false,
+      showConfirmButton: false,
+      timer: 2000,
+    });
+    navigate("/");
+  };
+  const location = useLocation();
   // const itemClasses = {
   //   base: ' px-2 w-full',
   //   title: 'font-normal text-medium text-left',
@@ -40,7 +58,7 @@ export default function Sidebar(props) {
       <div className='sidebar w-full px-1'>
         <div className='nav-bar flex-grow'>
           <Card className='w-[270px] max-h rounded-sm '>
-            <CardBody className='px-5 py-1 m-0 h-[680px] text-md'>
+            <CardBody className='px-5 py-1 m-0 h-[800px] text-md'>
               <Accordion>
                 <AccordionItem
                   key='1'
@@ -170,72 +188,42 @@ export default function Sidebar(props) {
                 </AccordionItem>
               </Accordion>
               <Divider></Divider>
-              {/* <Link to='/instru'>
-                <div
-                  onClick={() => setInc(true)}
-                  className='hover:bg-blue-100 px-4 py-3 m-auto text-sm '
+              <Accordion>
+                <AccordionItem
+                  key='1'
+                  aria-label='Accordion 1'
+                  title='System Setting'
+                  startContent={<FontAwesomeIcon icon={faGear} size='xl' />}
                 >
-                  <FontAwesomeIcon icon={faUsers} size='xl' />
-                  &nbsp;&nbsp;
-                  <span className='ml-3 font-medium'>Instructor</span>
-                </div>
-              </Link>
-              <Divider></Divider> */}
-
-              {/* <Link to='/subject-sale'>
-                    <div className='hover:bg-default-100 px-4 py-3'>
-                      <FontAwesomeIcon icon={faWallet} size='xl'/>
-                      &nbsp;&nbsp;
-                      <span className='ml-4 font-medium'>Subjects Sale</span>
-                    </div>
-                  </Link>
-                  <Divider></Divider> */}
-              {/* <Link to='/subject-section'>
-                    <div className='hover:bg-default-100 px-4 py-3'>
-                   <FontAwesomeIcon icon={faSection} size='xl' />
-                      &nbsp;&nbsp;
-                      <span className='font-medium' style={{ marginLeft:'1em' }}>Subjects Section</span>
-                    </div>
-                  </Link>
-                  <Divider></Divider> */}
-              {/* <Link to='/department'>
-                    <div className='hover:bg-default-100 px-4 py-3'>
-                      <FontAwesomeIcon icon={faBuildingUser} size='xl' />
-                      &nbsp;&nbsp;
-                      <span className='ml-2 font-medium'>Department</span>
-                    </div>
-                  </Link>
-
                   <Divider></Divider>
-                  <Link to='/leave'>
-                    <div className='hover:bg-default-100 px-4 py-3'>
-                      <FontAwesomeIcon icon={faCalendarXmark} size='xl' />
-
-                      &nbsp;&nbsp;
-                      <span className='ml-3 font-medium'>Leave</span>
+                  <Link to='/some' onClick={() => setCou(true)}>
+                    <div className='hover:bg-blue-100 px-4 py-3 m-auto text-sm'>
+                      {/* <FontAwesomeIcon icon={faLaptopFile} size='xl' /> */}
+                      &nbsp;
+                      <span className='ml-4 font-medium '>Something</span>
                     </div>
+                    {/* <Divider></Divider> */}
                   </Link>
+                </AccordionItem>
+              </Accordion>
+              <Divider></Divider>
 
-                  <Divider></Divider> */}
-              {/* <Link to='/payroll'>
-                    <div className='hover:bg-default-100 px-4 py-3'>
-                      <FontAwesomeIcon icon={faMoneyCheckDollar} size='xl' />
-
-                      &nbsp;&nbsp;
-                      <span className='ml-3 font-medium'>Pay Roll</span>
-                    </div>
-                  </Link>
-                         <Divider></Divider>
-                   <Link to='/att-detail'>
-                    <div className='hover:bg-default-100 px-4 py-2'>
-                    <FontAwesomeIcon icon={faHandHoldingDollar} size='xl' />
-                      &nbsp;&nbsp;
-                      <span className='ml-3 font-medium'>Payroll Detail</span>
-                    </div>
-                  </Link> */}
-              {/* </AccordionItem> */}
-
-              {/* </Accordion> */}
+              <Button
+                color='light'
+                onClick={logOut}
+                className='ml-3 rounded-lg hover:bg-red-600 hover:text-white'
+                style={{
+                  marginTop: "450px",
+                  border: "1px solid",
+                  padding: "18px",
+                }}
+              >
+                <FontAwesomeIcon icon={faRightFromBracket} size='xl' /> &nbsp;
+                Log Out
+                {/* <Badge content='9+' shape='circle' color='danger'>
+              <NotificationIcon size={24} />
+            </Badge> */}
+              </Button>
             </CardBody>
 
             <CardFooter>

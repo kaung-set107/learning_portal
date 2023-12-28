@@ -13,6 +13,8 @@ import {
   CardBody,
   CardFooter,
 } from "@nextui-org/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBell } from "@fortawesome/free-solid-svg-icons";
 import {
   Modal,
   ModalContent,
@@ -22,19 +24,19 @@ import {
   Button,
   useDisclosure,
 } from "@nextui-org/react";
-// import { Image } from '@nextui-org/react'
+import { Image } from "@nextui-org/react";
 // import { SearchIcon } from './search'
 // import { Link } from 'react-router-dom'
 import ThemeSwitch from "../ThemeSwitch/index";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import apiInstance from "../../util/api";
-// import LP from '../../assets/lp.png'
+
 import { EyeFilledIcon } from "./EyeFilledIcon";
 import { EyeSlashFilledIcon } from "./EyeSlashFilledIcon";
 import Swal from "sweetalert2";
 import { getFile } from "../../util/index";
-
+import MSI from "../../assets/img/MSI.png";
 export default function NavBar() {
   const navigate = useNavigate();
   const [imgUrl, setImgUrl] = useState("");
@@ -158,13 +160,14 @@ export default function NavBar() {
   const location = useLocation();
 
   useEffect(() => {
-    const userID = localStorage.getItem("id");
+    const userID = localStorage.getItem("user");
+    console.log(userID, "what");
     const getUser = async () => {
       console.log(userID);
       await apiInstance.get("user/" + userID).then((res) => {
         setUser(res.data.data);
         setEmail(res.data.data.email);
-        console.log(res.data.data);
+        console.log(res.data.data, "user");
         if (res.data.data.image) {
           setImgUrl(res.data.data);
         }
@@ -188,9 +191,7 @@ export default function NavBar() {
             {/* <h3>Hello</h3> */}
 
             <NavbarBrand>
-              <h3 className='text-3xl text-dark-900 font-semibold'>
-                E-Learning
-              </h3>
+              <Image src={MSI} width={200} height={60} />
             </NavbarBrand>
 
             <NavbarContent
@@ -210,7 +211,9 @@ export default function NavBar() {
               startContent={<SearchIcon size={20} />}
               type='search'
             /> */}
-
+              <div>
+                <FontAwesomeIcon icon={faBell} size='xl' />
+              </div>
               <Dropdown placement='bottom-end mt-1'>
                 <DropdownTrigger>
                   <User
@@ -234,13 +237,17 @@ export default function NavBar() {
                   >
                     System Settings
                   </DropdownItem>
-                  <DropdownItem key='logout' color='danger' onClick={logOut}>
-                    Log Out
+                  <DropdownItem key='system' color='primary'>
+                    Theme &nbsp;
+                    <ThemeSwitch />
                   </DropdownItem>
+                  {/* <DropdownItem key='logout' color='danger' onClick={logOut}>
+                    Log Out
+                  </DropdownItem> */}
                 </DropdownMenu>
               </Dropdown>
             </NavbarContent>
-            <ThemeSwitch />
+
             <Modal
               isOpen={isOpen}
               onOpenChange={onOpenChange}

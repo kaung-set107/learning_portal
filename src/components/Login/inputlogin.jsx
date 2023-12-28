@@ -32,6 +32,7 @@ export default function Login() {
       .then((res) => {
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("id", res.data.data.student);
+        localStorage.setItem("user", res.data.data);
         setLoading("login");
         // Swal.fire({
         //   icon: 'success',
@@ -47,7 +48,7 @@ export default function Login() {
             icon: "success",
             title: "Login Successful",
             text: "Welcome Instructor!",
-              showCancelButton: false,
+            showCancelButton: false,
             showConfirmButton: false,
             timer: 3000,
           });
@@ -103,42 +104,43 @@ export default function Login() {
     <>
       {loading === "login" ? <Spinner /> : ""}
 
-      <form className="" onSubmit={handleSubmit}>
-        <div className="block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+      <form className='' onSubmit={handleSubmit}>
+        <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
           <Input
             variant={"underlined"}
-            type="text"
-            placeholder="username"
+            type='text'
+            placeholder='username'
             ref={usernameRef}
             endContent={
-              <MailFilledIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+              <MailFilledIcon className='text-2xl text-default-400 pointer-events-none flex-shrink-0' />
             }
           />
           <Input
             variant={"underlined"}
             ref={passRef}
             type={isVisible ? "text" : "password"}
-            placeholder="Password"
+            placeholder='Password'
             endContent={
               <button
-                className="focus:outline-none"
-                type="button"
-                onClick={toggleVisibility}>
+                className='focus:outline-none'
+                type='button'
+                onClick={toggleVisibility}
+              >
                 {isVisible ? (
-                  <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  <EyeSlashFilledIcon className='text-2xl text-default-400 pointer-events-none' />
                 ) : (
-                  <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                  <EyeFilledIcon className='text-2xl text-default-400 pointer-events-none' />
                 )}
               </button>
             }
           />
         </div>
 
-        <div className="mt-3">
-          <FormAction handleSubmit={() => handleSubmit()} text="Login" />
+        <div className='mt-3'>
+          <FormAction handleSubmit={() => handleSubmit()} text='Login' />
         </div>
       </form>
-      <div className="hidden">
+      <div className='hidden'>
         {console.log(arr, "dat")}
         <SideBar arr={[arr]} />
       </div>

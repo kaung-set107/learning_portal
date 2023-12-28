@@ -16,7 +16,7 @@ export default function Attendance() {
       </div>
       <div className='flex-grow'>
         <div className='body'>
-          <Card className='rounded-sm shadow-md py-3 min-h-[890px]'>
+          <Card className='rounded-sm shadow-md py-3 min-h-[800px]'>
             <CardHeader className='flex justify-center'>
               <label className='font-semibold font-nunito text-2xl'>
                 Course List
