@@ -58,7 +58,7 @@ export default function Sidebar(props) {
       <div className='sidebar w-full px-1'>
         <div className='nav-bar flex-grow'>
           <Card className='w-[270px] max-h rounded-sm '>
-            <CardBody className='px-5 py-1 m-0 h-[800px] text-md'>
+            <CardBody className='px-5 py-1 m-0 h-[950px] text-md'>
               <Accordion>
                 <AccordionItem
                   key='1'
@@ -213,7 +213,7 @@ export default function Sidebar(props) {
                 onClick={logOut}
                 className='ml-3 rounded-lg hover:bg-red-600 hover:text-white'
                 style={{
-                  marginTop: "450px",
+                  marginTop: "600px",
                   border: "1px solid",
                   padding: "18px",
                 }}

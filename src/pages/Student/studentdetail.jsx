@@ -6,8 +6,8 @@ import {
   Divider,
 } from "@nextui-org/react";
 import Sidebar from "../../components/Sidebar";
-import DepartmentUpdateInput from "../../components/Student/studentDetail";
-
+import StudentDetail from "../../components/Student/studentDetail";
+import Footer from "../../components/Navbar/footer";
 export default function DepartmentUpdate() {
   return (
     <div className='flex'>
@@ -17,19 +17,15 @@ export default function DepartmentUpdate() {
       <div className=' flex-grow'>
         <div className=''>
           <Card className='rounded-md shadow-md py-3 min-h-[890px]'>
-            <CardHeader className='flex justify-center'>
-              <div className='font-semibold font-nunito'>Department List</div>
+            <CardHeader className='flex text-2xl'>
+              <div className='font-semibold font-nunito'>Student Profile</div>
             </CardHeader>
             <Divider></Divider>
             <CardBody>
-              <DepartmentUpdateInput></DepartmentUpdateInput>
+              <StudentDetail />
             </CardBody>
             <Divider></Divider>
-            <CardFooter>
-              Copyright © 2023-2024{" "}
-              <b className='text-cyan-600'>K-win Technology</b> .All rights
-              reserved.
-            </CardFooter>
+            <Footer />
           </Card>
         </div>
       </div>

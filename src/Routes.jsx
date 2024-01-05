@@ -32,6 +32,7 @@ import SubjectUpdate from "./pages/Subject/subjectUpdate";
 import SubjectDetail from "./pages/Subject/subjectDetail";
 import LMDetail from "./frontend/pages/LearningMaterial/LMDetail";
 import LearningMaterialAdmin from "./components/Subject/learnigMaterialInput";
+import Chart from "./frontend/ByUser/PieChart.jsx";
 //assign update
 import AssignmentUpdate from "./frontend/pages/Assignment/AssignmentUpdate";
 import LMUpdate from "./frontend/components/LearningMaterial/LMUpdateInput";
@@ -42,6 +43,7 @@ import "./quiz.css";
 import QuizPage from "./frontend/ByUser/Quiz/quizpage.jsx";
 import QuizResult from "./frontend/ByUser/Quiz/result.jsx";
 import ExamUpdate from "./frontend/components/Exam/ExamUpdate.jsx";
+
 export default function RouteFile() {
   return (
     <div>
@@ -135,6 +137,7 @@ export default function RouteFile() {
           <Route path='/exam' element={<Exam />}></Route>
           <Route path='/exam-update/:id' element={<ExamUpdate />}></Route>
           {/* <AuthContainer component={<Dashboard />} path='/home'></AuthContainer> */}
+          <Route path='/chart' element={<Chart />}></Route>
         </Routes>
       </BrowserRouter>
     </div>

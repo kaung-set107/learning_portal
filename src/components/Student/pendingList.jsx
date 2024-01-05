@@ -26,13 +26,14 @@ import {
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import apiInstance from "../../util/api";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { EditIcon } from "../Table/editicon";
 import { DeleteIcon } from "../Table/deleteicon";
 import { getFile } from "../../util";
 
 export default function PendingList() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
 
   const [pendingList, setPendingList] = useState([]);
 
@@ -126,6 +127,7 @@ export default function PendingList() {
   };
   const handleRoute = (id) => {
     console.log(id, "id");
+    navigate(`/student-detail/${id}`);
   };
   return (
     <>
