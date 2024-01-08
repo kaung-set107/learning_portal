@@ -18,14 +18,16 @@ import {
   Card,
   CardBody,
   CardFooter,
+  CardHeader,
   Divider,
   Accordion,
   AccordionItem,
   Button,
+  Image,
 } from "@nextui-org/react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-
+import MSI from "../../assets/img/MSI.png";
 export default function Sidebar(props) {
   const { arr } = props;
   const navigate = useNavigate();
@@ -57,8 +59,14 @@ export default function Sidebar(props) {
     <>
       <div className='sidebar w-full px-1'>
         <div className='nav-bar flex-grow'>
-          <Card className='w-[270px] max-h rounded-sm '>
-            <CardBody className='px-5 py-1 m-0 h-[950px] text-md'>
+          <Card className='w-[270px] rounded-sm '>
+            <CardHeader>
+              <Image src={MSI} width={200} height={60} />
+            </CardHeader>
+            <CardBody
+              className='px-5 py-1 m-0 max-h-[900px] text-md'
+              style={{ height: "800px", overflowY: "scroll" }}
+            >
               <Accordion>
                 <AccordionItem
                   key='1'
@@ -207,15 +215,17 @@ export default function Sidebar(props) {
                 </AccordionItem>
               </Accordion>
               <Divider></Divider>
+            </CardBody>
 
+            <CardFooter>
               <Button
                 color='light'
                 onClick={logOut}
                 className='ml-3 rounded-lg hover:bg-red-600 hover:text-white'
                 style={{
-                  marginTop: "600px",
+                  marginTop: "60px",
                   border: "1px solid",
-                  padding: "18px",
+                  padding: "16px",
                 }}
               >
                 <FontAwesomeIcon icon={faRightFromBracket} size='xl' /> &nbsp;
@@ -224,16 +234,6 @@ export default function Sidebar(props) {
               <NotificationIcon size={24} />
             </Badge> */}
               </Button>
-            </CardBody>
-
-            <CardFooter>
-              {/* <User
-                name='Alice'
-                description='Product Designer'
-                avatarProps={{
-                  src: 'https://i.pravatar.cc/150?u=a04258114e29026702d'
-                }}
-              /> */}
             </CardFooter>
           </Card>
         </div>

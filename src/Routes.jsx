@@ -51,9 +51,9 @@ export default function RouteFile() {
         <Routes>
           <Route path='/' element={<FHome />}></Route>
         </Routes>
-        <div className='flex-grow'>
+        {/* <div className='flex-grow'>
           <Nav />
-        </div>
+        </div> */}
         <Routes>
           <Route path='/login' element={<Login />}></Route>
 

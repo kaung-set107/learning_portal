@@ -5,9 +5,11 @@ import {
   CardFooter,
   Divider,
 } from "@nextui-org/react";
+import StickyBox from "react-sticky-box";
 import Sidebar from "../../components/Sidebar";
 import StudentDetail from "../../components/Student/studentDetail";
 import Footer from "../../components/Navbar/footer";
+import Nav from "../../components/Navbar/index";
 export default function DepartmentUpdate() {
   return (
     <div className='flex'>
@@ -16,16 +18,19 @@ export default function DepartmentUpdate() {
       </div>
       <div className=' flex-grow'>
         <div className=''>
-          <Card className='rounded-md shadow-md py-3 min-h-[890px]'>
-            <CardHeader className='flex text-2xl'>
-              <div className='font-semibold font-nunito'>Student Profile</div>
-            </CardHeader>
+          <Card className='rounded-md shadow-md py-3 min-h-[600px]'>
+            <div className='flex justify-between'>
+              <div className='font-semibold text-2xl font-nunito mt-10 px-2'>
+                Student Profile
+              </div>
+              <div>
+                <Nav />
+              </div>
+            </div>
             <Divider></Divider>
             <CardBody>
               <StudentDetail />
             </CardBody>
-            <Divider></Divider>
-            <Footer />
           </Card>
         </div>
       </div>

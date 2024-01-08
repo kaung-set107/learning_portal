@@ -27,6 +27,8 @@ import React, { useState, useEffect } from "react";
 import { SearchIcon } from "../Navbar/search";
 import { ChevronDownIcon } from "../../assets/Icons/ChevronDownIcon";
 import PendingList from "./pendingList";
+import ApproveList from "./approveList";
+import RejectList from "./rejectList";
 import apiInstance from "../../util/api";
 export default function PendingTable() {
   const [waitListCount, setWaitListCount] = useState("");
@@ -55,7 +57,7 @@ export default function PendingTable() {
   return (
     <>
       <div className='bg-red-700 grid grid-cols-3 rounded-md'>
-        <div className='p-10 flex justify-center'>
+        <div className='p-10 flex justify-center '>
           <div className='text-white text-center'>
             <p style={{ fontSize: "46px" }}>{waitListCount}</p>
             <b>Student Registered</b>
@@ -75,12 +77,12 @@ export default function PendingTable() {
         </div>
       </div>
       <div className='flex flex-row gap-3 justify-between py-10 text-base leading-6'>
-        <div className='flex justify-center grid grid-cols-3 gap-10'>
+        <div className='flex justify-center grid grid-cols-3'>
           <div
             className={
               activeTab === 1
-                ? "border-b-4 text-blue-800 bg-blue-100 py-3 border-indigo-500/75 w-60 text-center font-semibold duration-500"
-                : "w-60 text-center font-semibold py-3"
+                ? "border-b-4 text-blue-800 bg-blue-100 py-3 border-indigo-500/75 w-48 text-center font-semibold duration-500"
+                : "w-48 text-center font-semibold py-3"
             }
             onClick={() => handleTabClick(1)}
           >
@@ -92,8 +94,8 @@ export default function PendingTable() {
           <div
             className={
               activeTab === 2
-                ? "border-b-4 text-blue-800 bg-blue-100 py-3 border-indigo-500/75 w-60 text-center font-semibold duration-500"
-                : "w-60 text-center font-semibold py-3"
+                ? "border-b-4 text-blue-800 bg-blue-100 py-3 border-indigo-500/75 w-48 text-center font-semibold duration-500"
+                : "w-48 text-center font-semibold py-3"
             }
             onClick={() => handleTabClick(2)}
           >
@@ -105,8 +107,8 @@ export default function PendingTable() {
           <div
             className={
               activeTab === 3
-                ? "border-b-4 text-blue-800 bg-blue-100 py-3 border-indigo-500/75 w-60 text-center font-semibold duration-500"
-                : "w-60 text-center font-semibold py-3"
+                ? "border-b-4 text-blue-800 bg-blue-100 py-3 border-indigo-500/75 w-48 text-center font-semibold duration-500"
+                : "w-48 text-center font-semibold py-3"
             }
             onClick={() => handleTabClick(3)}
           >
@@ -162,6 +164,8 @@ export default function PendingTable() {
         </div>
       </div>
       <div> {activeTab === 1 && <PendingList />}</div>
+      <div> {activeTab === 2 && <ApproveList />}</div>
+      <div> {activeTab === 3 && <RejectList />}</div>
     </>
   );
 }

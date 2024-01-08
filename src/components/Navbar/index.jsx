@@ -190,9 +190,9 @@ export default function NavBar() {
           >
             {/* <h3>Hello</h3> */}
 
-            <NavbarBrand>
+            {/* <NavbarBrand>
               <Image src={MSI} width={200} height={60} />
-            </NavbarBrand>
+            </NavbarBrand> */}
 
             <NavbarContent
               as='div'
@@ -237,10 +237,10 @@ export default function NavBar() {
                   >
                     System Settings
                   </DropdownItem>
-                  <DropdownItem key='system' color='primary'>
+                  {/* <DropdownItem key='system' color='primary'>
                     Theme &nbsp;
                     <ThemeSwitch />
-                  </DropdownItem>
+                  </DropdownItem> */}
                   {/* <DropdownItem key='logout' color='danger' onClick={logOut}>
                     Log Out
                   </DropdownItem> */}
