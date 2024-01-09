@@ -43,7 +43,8 @@ import "./quiz.css";
 import QuizPage from "./frontend/ByUser/Quiz/quizpage.jsx";
 import QuizResult from "./frontend/ByUser/Quiz/result.jsx";
 import ExamUpdate from "./frontend/components/Exam/ExamUpdate.jsx";
-
+import ApproveDetail from "./pages/Student/approvedetail.jsx";
+import RejectDetail from "./pages/Student/rejectdetail.jsx";
 export default function RouteFile() {
   return (
     <div>
@@ -73,6 +74,11 @@ export default function RouteFile() {
               path='/student-detail/:id'
               element={<StudentDetail />}
             ></Route>
+            <Route
+              path='/approve-detail/:id'
+              element={<ApproveDetail />}
+            ></Route>
+            <Route path='/reject-detail/:id' element={<RejectDetail />}></Route>
 
             {/* Instructor or user create from admin */}
             <Route path='/instru' element={<Instructor />} />

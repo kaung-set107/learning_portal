@@ -63,9 +63,8 @@ export default function PendingList() {
     setPages(
       dataCount.registerRejectListCount % rowsPerPage === 0
         ? Math.round(dataCount.registerRejectListCount / rowsPerPage)
-        : Math.round(dataCount.registerRejectListCount / rowsPerPage) >
-          dataCount.registerRejectListCount / rowsPerPage
-        ? Math.round(dataCount.registerRejectListCount / rowsPerPage)
+        : Math.round(dataCount.registerRejectListCount / rowsPerPage)
+        ? dataCount.registerRejectListCount / rowsPerPage + 1
         : dataCount.registerRejectListCount / rowsPerPage
     );
 
@@ -90,11 +89,8 @@ export default function PendingList() {
                 )
               : Math.round(
                   res.data.counts.registerRejectListCount / rowsPerPage
-                ) >
-                res.data.counts.registerRejectListCount / rowsPerPage
-              ? Math.round(
-                  res.data.counts.registerRejectListCount / rowsPerPage
                 )
+              ? res.data.counts.registerRejectListCount / rowsPerPage + 1
               : res.data.counts.registerRejectListCount / rowsPerPage
           );
         });
@@ -127,7 +123,7 @@ export default function PendingList() {
   };
   const handleRoute = (id) => {
     console.log(id, "id");
-    navigate(`/student-detail/${id}`);
+    navigate(`/reject-detail/${id}`);
   };
   return (
     <>
@@ -205,7 +201,7 @@ export default function PendingList() {
                   <b className='py-3 px-1'>{item.name}</b>
                 </div>
               </TableCell>
-              <TableCell>{item.subject}</TableCell>
+              <TableCell>{item.subject?.title}</TableCell>
               <TableCell>{item.createAt?.split("T")[0]}</TableCell>
               <TableCell>{item.phone}</TableCell>
               <TableCell>{item.email}</TableCell>

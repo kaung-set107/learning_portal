@@ -7,9 +7,7 @@ import {
   Divider,
 } from "@nextui-org/react";
 import AttendanceInput from "../../components/Course/courseInput";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import Nav from "../../components/Navbar/index";
 import Footer from "../../components/Navbar/footer";
 export default function Attendance() {
   return (
@@ -20,18 +18,16 @@ export default function Attendance() {
       <div className='flex-grow'>
         <div className='body'>
           <Card className='rounded-sm shadow-md py-3 min-h-[700px]'>
-            <CardHeader className='justify-between'>
-              <div className='rounded-none px-4 py-0 text-left'>
-                <Link to='/course' className='mr-5'>
-                  <FontAwesomeIcon icon={faCircleChevronLeft} size='2xl' />
-                </Link>
+            <div className='flex justify-between'>
+              <div className='font-semibold font-nunito text-2xl mt-10 px-2'>
+                Course Create
               </div>
-              <div className='flex justify-center'>
-                <label className='text-2xl font-semibold'>Course Create</label>
+              <div>
+                <Nav />
               </div>
-              <div></div>
-            </CardHeader>
-            <CardBody>
+            </div>
+            <Divider></Divider>
+            <CardBody className='p-10'>
               <AttendanceInput />
             </CardBody>
             <Divider></Divider>

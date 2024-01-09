@@ -63,9 +63,8 @@ export default function PendingList() {
     setPages(
       dataCount.studentCount % rowsPerPage === 0
         ? Math.round(dataCount.studentCount / rowsPerPage)
-        : Math.round(dataCount.studentCount / rowsPerPage) >
-          dataCount.studentCount / rowsPerPage
-        ? Math.round(dataCount.studentCount / rowsPerPage)
+        : Math.round(dataCount.studentCount / rowsPerPage)
+        ? dataCount.studentCount / rowsPerPage + 1
         : dataCount.studentCount / rowsPerPage
     );
 
@@ -86,9 +85,8 @@ export default function PendingList() {
           setPages(
             res.data.counts.studentCount % rowsPerPage === 0
               ? Math.round(res.data.counts.studentCount / rowsPerPage)
-              : Math.round(res.data.counts.studentCount / rowsPerPage) >
-                res.data.counts.studentCount / rowsPerPage
-              ? Math.round(res.data.counts.studentCount / rowsPerPage)
+              : Math.round(res.data.counts.studentCount / rowsPerPage)
+              ? res.data.counts.studentCount / rowsPerPage + 1
               : res.data.counts.studentCount / rowsPerPage
           );
         });
@@ -121,7 +119,7 @@ export default function PendingList() {
   };
   const handleRoute = (id) => {
     console.log(id, "id");
-    navigate(`/student-detail/${id}`);
+    navigate(`/approve-detail/${id}`);
   };
   return (
     <>

@@ -64,7 +64,7 @@ export default function Sidebar(props) {
               <Image src={MSI} width={200} height={60} />
             </CardHeader>
             <CardBody
-              className='px-5 py-1 m-0 max-h-[900px] text-md'
+              className='px-5 py-1 m-0 min-h-[200px] text-md'
               style={{ height: "800px", overflowY: "scroll" }}
             >
               <Accordion>
@@ -223,7 +223,7 @@ export default function Sidebar(props) {
                 onClick={logOut}
                 className='ml-3 rounded-lg hover:bg-red-600 hover:text-white'
                 style={{
-                  marginTop: "60px",
+                  marginTop: "10px",
                   border: "1px solid",
                   padding: "16px",
                 }}

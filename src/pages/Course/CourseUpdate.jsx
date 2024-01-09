@@ -10,6 +10,7 @@ import AttendanceUpdateInput from "../../components/Course/courseUpdate";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import Nav from "../../components/Navbar/index";
 import Footer from "../../components/Navbar/footer";
 export default function Attendance() {
   return (
@@ -20,17 +21,14 @@ export default function Attendance() {
       <div className='flex-grow'>
         <div className='body'>
           <Card className='rounded-sm shadow-md py-3 min-h-[890px]'>
-            <CardHeader className='flex justify-between'>
-              <div className='rounded-none px-4 py-0 text-left'>
-                <Link to='/course' className='mr-5'>
-                  <FontAwesomeIcon icon={faCircleChevronLeft} size='2xl' />
-                </Link>
+            <div className='flex justify-between'>
+              <div className='font-semibold font-nunito text-2xl mt-10 px-2'>
+                Course Create
               </div>
               <div>
-                <label className='font-nunito font-bold'>Course Update</label>
+                <Nav />
               </div>
-              <div></div>
-            </CardHeader>
+            </div>
             <CardBody>
               <AttendanceUpdateInput />
             </CardBody>

@@ -47,25 +47,38 @@ export default function DepartmentUpdateInput() {
   const [description, setDescription] = useState("");
 
   useEffect(() => {
-    const getOverAllStudentDetail = async () => {
+    const getApprove = async () => {
       console.log(Id);
-      await apiInstance
-        .get(`overall-students`, { params: { status: "waiting" } })
-        .then((res) => {
-          console.log(
-            res.data.data.filter((el) => el._id === Id)[0],
-            "overall"
-          );
-          setStudent(res.data.data.filter((el) => el._id === Id)[0]);
-          const Img = getFile({
-            payload: res.data.data.filter((el) => el._id === Id)[0]?.image,
-          });
-          console.log(Img, "ii");
-          setImg(Img);
+      await apiInstance.get(`overall-students`).then((res) => {
+        // console.log(
+        //   res.data.data.filter((el) => el._id === Id)[0],
+        //   "overall"
+        // );
+        setStudent(res.data.data.filter((el) => el._id === Id)[0]);
+        const Img = getFile({
+          payload: res.data.data.filter((el) => el._id === Id)[0]?.image,
         });
+        console.log(Img, "ii");
+        setImg(Img);
+      });
     };
+    // const getReject = async () => {
+    //   console.log(Id);
+    //   await apiInstance
+    //     .get(`overall-students`, { params: { status: "reject" } })
+    //     .then((res) => {
+    //       //  console.log(res.data.data.filter((el) => el._id === Id)[0], "overall");
+    //       setStudent(res.data.data.filter((el) => el._id === Id)[0]);
 
-    getOverAllStudentDetail();
+    //       const Img = getFile({
+    //         payload: res.data.data.filter((el) => el._id === Id)[0]?.image,
+    //       });
+    //       console.log(Img, "ii");
+    //       setImg(Img);
+    //     });
+    // };
+    // getReject();
+    getApprove();
   }, [setImg]);
 
   const handleSend = async () => {
@@ -289,163 +302,6 @@ export default function DepartmentUpdateInput() {
           </div>
         </div>
       </div>
-
-      {(!studentAppr || !studentRej) && (
-        <div className='flex justify-end py-3'>
-          <Button
-            className='bg-red-600 text-white hover:bg-red-700'
-            onPress={onRejOpen}
-          >
-            Reject
-          </Button>
-          &nbsp;
-          <Button
-            className='bg-blue-600 text-white hover:bg-blue-700'
-            onPress={onOpen}
-          >
-            Approve
-          </Button>
-        </div>
-      )}
-
-      <Modal
-        size='xl'
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        scrollBehavior={scrollBehavior}
-      >
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className='flex mt-5'>
-                {" "}
-                <div style={{ fontWeight: "700px", fontSize: "24px" }}>
-                  Registration Approved
-                </div>{" "}
-                &nbsp;
-                <div className='text-green-500' style={{ marginTop: "0.1em" }}>
-                  <FontAwesomeIcon icon={faCircleCheck} size='xl' />
-                </div>
-              </ModalHeader>
-              <ModalBody>
-                <div style={{ fontWeight: "500px", fontSize: "16px" }}>
-                  Congratulations! Your registration with MSI Academy is now
-                  approved.
-                </div>
-                <div className='py-5'>
-                  <div className='py-1'>
-                    {" "}
-                    <Input
-                      type='text'
-                      variant='bordered'
-                      placeholder='User Name'
-                      className='form-control'
-                      onChange={(e) => setUserName(e.target.value)}
-                      endContent={<div className='text-red-500'>*</div>}
-                    />
-                  </div>
-                  <div className='py-1'>
-                    <Input
-                      type='password'
-                      variant='bordered'
-                      placeholder='Password'
-                      className='form-control'
-                      onChange={(e) => setPassword(e.target.value)}
-                      endContent={<div className='text-red-500'>*</div>}
-                    />
-                  </div>
-                  <div className='py-1'>
-                    <Textarea
-                      variant='bordered'
-                      placeholder='Message'
-                      disableAnimation
-                      disableAutosize
-                      onChange={(e) => setDescription(e.target.value)}
-                      endContent={<div className='text-red-500'>*</div>}
-                    />
-                  </div>
-                </div>
-              </ModalBody>
-              <ModalFooter>
-                <Button color='danger' variant='light' onPress={onClose}>
-                  Close
-                </Button>
-                <Button
-                  color='primary'
-                  onPress={onClose}
-                  onClick={() => handleSend()}
-                >
-                  Send
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
-      <Modal
-        size='xl'
-        isOpen={isRejOpen}
-        onOpenChange={onRejOpenChange}
-        scrollBehavior={scrollBehavior}
-      >
-        <ModalContent>
-          {(onRejClose) => (
-            <>
-              <ModalHeader className='flex mt-5'>
-                {" "}
-                <div
-                  style={{
-                    fontWeight: "700px",
-                    fontSize: "24px",
-                    marginTop: "0.2em",
-                  }}
-                >
-                  Registration Rejected
-                </div>{" "}
-                &nbsp;
-                <div className='text-green-500'>
-                  <img src={Reject} style={{ width: "35px" }} />
-                </div>
-              </ModalHeader>
-              <ModalBody>
-                <div style={{ fontWeight: "500px", fontSize: "16px" }}>
-                  <p>
-                    Thank you for your interest in MSI Academy. After careful
-                    review, we regret to inform you that your recent
-                    registration has not been approved at this time.
-                  </p>
-                </div>
-                <div className='py-5'>
-                  <div className='py-1'>
-                    <Textarea
-                      variant='bordered'
-                      placeholder='Reason for Rejection:'
-                      disableAnimation
-                      disableAutosize
-                      classNames={{
-                        base: "form-control",
-                        input: "resize-y min-h-[40px]",
-                      }}
-                    />
-                  </div>
-                </div>
-              </ModalBody>
-              <ModalFooter>
-                <Button color='danger' variant='light' onPress={onRejClose}>
-                  Close
-                </Button>
-                <Button
-                  color='primary'
-                  onPress={onRejClose}
-                  onClick={() => handleRejectSend()}
-                >
-                  Send
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
     </div>
   );
 }

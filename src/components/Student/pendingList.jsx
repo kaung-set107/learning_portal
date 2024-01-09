@@ -63,9 +63,8 @@ export default function PendingList() {
     setPages(
       dataCount.registerWaitingListCount % rowsPerPage === 0
         ? Math.round(dataCount.registerWaitingListCount / rowsPerPage)
-        : Math.round(dataCount.registerWaitingListCount / rowsPerPage) >
-          dataCount.registerWaitingListCount / rowsPerPage
-        ? Math.round(dataCount.registerWaitingListCount / rowsPerPage)
+        : Math.round(dataCount.registerWaitingListCount / rowsPerPage)
+        ? res.data.counts.registerWaitingListCount / rowsPerPage + 1
         : dataCount.registerWaitingListCount / rowsPerPage
     );
 
@@ -79,7 +78,7 @@ export default function PendingList() {
           params: { status: "waiting" },
         })
         .then((res) => {
-          console.log(res.data.data, "stu wait");
+          console.log(res.data, "stu wait");
           setPendingList(res.data.data);
 
           setDataCount(res.data.counts);
@@ -90,11 +89,8 @@ export default function PendingList() {
                 )
               : Math.round(
                   res.data.counts.registerWaitingListCount / rowsPerPage
-                ) >
-                res.data.counts.registerWaitingListCount / rowsPerPage
-              ? Math.round(
-                  res.data.counts.registerWaitingListCount / rowsPerPage
                 )
+              ? res.data.counts.registerWaitingListCount / rowsPerPage + 1
               : res.data.counts.registerWaitingListCount / rowsPerPage
           );
         });
@@ -133,7 +129,7 @@ export default function PendingList() {
     <>
       <div className='flex justify-between items-center mb-3'>
         <span className='text-default-400 text-small'>
-          Total {pendingList.length} Departments
+          Total {pendingList.length} Waiting List
         </span>
         <label className='flex items-center text-default-400 text-small'>
           Rows per page:
@@ -205,7 +201,7 @@ export default function PendingList() {
                   <b className='py-3 px-1'>{item.name}</b>
                 </div>
               </TableCell>
-              <TableCell>{item.subject.title}</TableCell>
+              <TableCell>{item.subject?.title}</TableCell>
               <TableCell>{item.createAt?.split("T")[0]}</TableCell>
               <TableCell>{item.phone}</TableCell>
               <TableCell>{item.email}</TableCell>
