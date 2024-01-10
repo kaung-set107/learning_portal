@@ -59,13 +59,14 @@ export default function PendingList() {
   const onRowsChange = (event) => {
     const newRowsPerPage = parseInt(event.target.value);
     setRowsPerPage(newRowsPerPage);
-
+    console.log(
+      res.data.counts.registerWaitingListCount / rowsPerPage,
+      "rrreer"
+    );
     setPages(
       dataCount.registerWaitingListCount % rowsPerPage === 0
-        ? Math.round(dataCount.registerWaitingListCount / rowsPerPage)
-        : Math.round(dataCount.registerWaitingListCount / rowsPerPage)
-        ? res.data.counts.registerWaitingListCount / rowsPerPage + 1
-        : dataCount.registerWaitingListCount / rowsPerPage
+        ? dataCount.registerWaitingListCount / rowsPerPage
+        : Math.round(res.data.counts.registerWaitingListCount / rowsPerPage) + 1
     );
 
     setPage(1); // Reset the current page to 1 when rows per page changes
@@ -84,14 +85,10 @@ export default function PendingList() {
           setDataCount(res.data.counts);
           setPages(
             res.data.counts.registerWaitingListCount % rowsPerPage === 0
-              ? Math.round(
+              ? res.data.counts.registerWaitingListCount / rowsPerPage
+              : Math.floor(
                   res.data.counts.registerWaitingListCount / rowsPerPage
-                )
-              : Math.round(
-                  res.data.counts.registerWaitingListCount / rowsPerPage
-                )
-              ? res.data.counts.registerWaitingListCount / rowsPerPage + 1
-              : res.data.counts.registerWaitingListCount / rowsPerPage
+                ) + 1
           );
         });
     };

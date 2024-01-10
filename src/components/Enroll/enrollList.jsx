@@ -3,16 +3,32 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
+  Badge,
+  Tooltip,
+  Table,
+  TableHeader,
+  Kbd,
+  Modal,
+  Pagination,
+  ModalContent,
   Button,
+  ModalFooter,
+  ModalHeader,
+  ModalBody,
+  useDisclosure,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
   Input,
 } from "@nextui-org/react";
 
 import React, { useState, useEffect } from "react";
 import { SearchIcon } from "../Navbar/search";
 import { ChevronDownIcon } from "../../assets/Icons/ChevronDownIcon";
-import PendingList from "./pendingList";
-import ApproveList from "./approveList";
-import RejectList from "./rejectList";
+import PendingList from "./enrollWaiting";
+import ApproveList from "./enrollApprove";
+import RejectList from "./enrollReject";
 import apiInstance from "../../util/api";
 export default function PendingTable() {
   const [waitListCount, setWaitListCount] = useState("");
@@ -26,14 +42,14 @@ export default function PendingTable() {
   useEffect(() => {
     const getDepartments = async () => {
       await apiInstance
-        .get(`overall-students`, {
+        .get(`overall-enrollments`, {
           params: { status: "waiting" },
         })
         .then((res) => {
-          setWaitListCount(res.data.counts.registerWaitingListCount);
-          setRejectCount(res.data.counts.registerRejectListCount);
-          setStudentCounts(res.data.counts.studentCount);
-          console.log(res.data.counts, "reg");
+          setWaitListCount(res.data.counts.enrollmentWaitingListCount);
+          setRejectCount(res.data.counts.enrollmentRejectListCount);
+          setStudentCounts(res.data.counts.enrollmentCount);
+          console.log(res.data, "reg");
         });
     };
     getDepartments();
@@ -44,19 +60,19 @@ export default function PendingTable() {
         <div className='p-10 flex justify-center '>
           <div className='text-white text-center'>
             <p style={{ fontSize: "46px" }}>{waitListCount}</p>
-            <b>Student Registered</b>
+            <b>Student Enrollments</b>
           </div>
         </div>
         <div className=' p-10 flex justify-center'>
           <div className='text-white text-center'>
             <p style={{ fontSize: "46px" }}>{studentCounts}</p>
-            <b>Student Approved</b>
+            <b>Enrollments Approved</b>
           </div>
         </div>
         <div className=' p-10 flex justify-center'>
           <div className='text-white text-center'>
             <p style={{ fontSize: "46px" }}>{rejectCount}</p>
-            <b>Students Rejected</b>
+            <b>Enrollments Rejected</b>
           </div>
         </div>
       </div>

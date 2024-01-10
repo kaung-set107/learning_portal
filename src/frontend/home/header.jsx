@@ -2,15 +2,17 @@ import {
   Navbar,
   NavbarContent,
   NavbarItem,
-  
   Button,
+  Image,
+  Input,
 } from "@nextui-org/react";
+import { SearchIcon } from "../../components/Navbar/SearchIcon";
 // import AcmeLogo from "../../assets/lp.png";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { getFile } from '../../util/index';
-import Theme from '../../components/ThemeSwitch/index'
+import { faBars, faGear } from "@fortawesome/free-solid-svg-icons";
+import { getFile } from "../../util/index";
+import Theme from "../../components/ThemeSwitch/index";
 import {
   Dropdown,
   DropdownTrigger,
@@ -20,11 +22,11 @@ import {
   User,
 } from "@nextui-org/react";
 import { useEffect } from "react";
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
 import apiInstance from "../../util/api";
 import { useNavigate } from "react-router-dom";
-import Swal  from 'sweetalert2';
-
+import Swal from "sweetalert2";
+import MSI from "../../assets/img/MSI.png";
 export default function App() {
   const [activeLink, setActiveLink] = useState("/home");
   const navigate = useNavigate();
@@ -53,13 +55,13 @@ export default function App() {
   // ];
 
   const [list, setList] = useState([]);
-    const [imgUrl, setImgUrl] = useState('')
-  const [user, setUser] = useState(null)
-    const [email, setEmail] = useState('');
+  const [imgUrl, setImgUrl] = useState("");
+  const [user, setUser] = useState(null);
+  const [email, setEmail] = useState("");
 
-    const handleSelect=val=>{
-      navigate('/student',{state:{val}})
-    }
+  const handleSelect = (val) => {
+    navigate("/student", { state: { val } });
+  };
 
   useEffect(() => {
     const getAssign = async () => {
@@ -68,160 +70,134 @@ export default function App() {
         setList(res.data.data);
       });
     };
-     const userID = localStorage.getItem('id')
+    const userID = localStorage.getItem("id");
     const getUser = async () => {
-      console.log(userID)
-      await apiInstance.get('user/' + userID)
-        .then(res => {
-          setUser(res.data.data)
-          setEmail(res.data.data.email)
-          console.log(res.data.data)
-          if (res.data.data.image) {
-            setImgUrl(res.data.data)
-          }
-        })
-    }
-    getUser()
+      console.log(userID);
+      await apiInstance.get("user/" + userID).then((res) => {
+        setUser(res.data.data);
+        setEmail(res.data.data.email);
+        console.log(res.data.data);
+        if (res.data.data.image) {
+          setImgUrl(res.data.data);
+        }
+      });
+    };
+    getUser();
     getAssign();
   }, []);
 
   const logout = () => {
     localStorage.removeItem("token");
-       Swal.fire({
-          icon: 'success',
-          title: 'Logout Successful',
-          text: 'Welcome Home!',
-                  showCancelButton: false,
-  showConfirmButton: false,
-          timer:2000
-        })
+    Swal.fire({
+      icon: "success",
+      title: "Logout Successful",
+      text: "Welcome Home!",
+      showCancelButton: false,
+      showConfirmButton: false,
+      timer: 2000,
+    });
     navigate("/");
   };
 
   return (
     <>
-      <Navbar className="flex justify-items-center py-3">
-        <div className="">
-          {/* <img src={AcmeLogo} style={{width:'180px',marginTop:'1em'}}/> */}
-          <h3 className="text-3xl font-semibold sm:text-2xl">E-Learning</h3>
-        </div>
-        <div className="grid grid-cols-4 gap-4 sm:flex  ">
-          {/* {links.map((link) => ( */}
-          <NavbarItem key="link.href">
-            <Link
-              to="#"
-              className="hover:bg-neutral-300 hover:rounded hover:p-2"
-              onClick={() => setActiveLink()}>
-              <span className=" font-semibold py-2 px-2">Home</span>
-            </Link>
-          </NavbarItem>
-          <NavbarItem key="link.href">
-            <Link
-              href="#"
-              className="hover:bg-neutral-300 hover:rounded hover:p-2"
-              onClick={() => setActiveLink()}>
-              <span className=" font-semibold py-2 px-2">Course</span>
-            </Link>
-          </NavbarItem>
-          <NavbarItem key="link.href">
-            <Link
-              href="#"
-              className="hover:bg-neutral-300 hover:rounded hover:p-2"
-              onClick={() => setActiveLink()}>
-              <span className=" font-semibold py-2 px-2">Class</span>
-            </Link>
-          </NavbarItem>
+      <div className='mt-5 mx-4'>
+        <div className='flex justify-between' style={{ padding: "24px 40px" }}>
+          <div className='align-left'>
+            <Image src={MSI} width={180} height={60} />
+          </div>
+          <div
+            className='w-96 mt-5'
+            style={{ borderRadius: "200px", width: "486px", padding: "12px" }}
+          >
+            <Input
+              isClearable
+              radius='lg'
+              placeholder='Type to search...'
+              startContent={
+                <SearchIcon className='text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0' />
+              }
+            />
+          </div>
+          <div className='flex gap-4 mt-5'>
+            <div>
+              <Dropdown placement='bottom-end'>
+                <DropdownTrigger className='mt-2'>
+                  <FontAwesomeIcon icon={faGear} size='xl' />
+                </DropdownTrigger>
+                <DropdownMenu aria-label='Profile Actions' variant='flat'>
+                  <DropdownItem key='profile' className=' gap-2'>
+                    {location.pathname === "/student" ||
+                    location.pathname === "/instructor" ? (
+                      <>
+                        <div className='hidden sm:flex' onClick={logout}>
+                          Logout
+                        </div>
+                      </>
+                    ) : (
+                      <div className='hidden sm:flex mt-2 rounded hover:font-semibold'>
+                        <Link to='/login'>Login</Link>
+                      </div>
+                    )}
 
-          <NavbarItem key="link.href" className="font-semibold">
-          {location.pathname !== '/instructor' && location.pathname !== '/' && location.pathname !== '/login' ? (<select
-              className="form-control border-none"
-              aria-label="Default select example"
-              onClick={e=>handleSelect(e.target.value)}
-              >
-              <option hidden>Subject</option>
-              {list.map((i) => (
-                <option value={i._id} key={i._id}>
-                  {i.title}
-                </option>
-              ))}
-            </select>) : ( <Link
-              href="#"
-              className="hover:bg-neutral-300 hover:rounded hover:p-2"
-              onClick={() => setActiveLink()}>
-              <span className=" font-semibold py-2 px-2">Something</span>
-            </Link>)}
-            
-          </NavbarItem>
-          <NavbarItem key="link.href">
-            <Link
-              href="#"
-              className="hover:bg-neutral-300 hover:rounded hover:p-2"
-              onClick={() => setActiveLink()}>
-              <span className=" font-semibold py-2 px-2">About</span>
-            </Link>
-          </NavbarItem>
-          {/* ))} */}
-        </div>
-        <div className="flex gap-4">
-          {location.pathname === "/student" ||
-          location.pathname === "/instructor" ? (
-            <>
-            <NavbarItem className="hidden sm:flex">
-              <Button className="" onClick={logout}>
-                Logout
-              </Button>
-            </NavbarItem>
-              <NavbarItem className="hidden sm:flex">
-             <User
+                    {location.pathname === "/" ||
+                    location.pathname === "/login" ? (
+                      <div className='hidden sm:flex'>
+                        <Button
+                          as={Link}
+                          color='primary'
+                          href='#'
+                          variant='flat'
+                        >
+                          Register
+                        </Button>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </div>
+
+            <div>
+              <div className='hidden sm:flex '>
+                <User
                   avatarProps={{
-                    radius: "lg",
-                    src:
-                      imgUrl ? getFile({payload:imgUrl.image.fileName}) : '',
+                    radius: "xl",
+                    src: imgUrl
+                      ? getFile({ payload: imgUrl.image.fileName })
+                      : "",
                   }}
-               />
-                </NavbarItem>
-                <NavbarItem>
-<Theme/>
-                </NavbarItem>
-                </>
-          ) : (
-            <NavbarItem className="hidden sm:flex mt-2 rounded hover:font-semibold">
-              <Link  to="/login">
-                Login
-              </Link>
-            </NavbarItem>
-          )}
-
-{location.pathname === '/' || location.pathname === '/login' ? ( <NavbarItem className="hidden sm:flex">
-            <Button as={Link} color="primary" href="#" variant="flat">
-              Register
-            </Button>
-          </NavbarItem>) : ('')}
-         
+                />
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="sm:hidden">
-          <Dropdown placement="bottom-end">
+
+        <div className='sm:hidden'>
+          <Dropdown placement='bottom-end'>
             <DropdownTrigger>
-              <FontAwesomeIcon icon={faBars} size="xl" />
+              <FontAwesomeIcon icon={faBars} size='xl' />
             </DropdownTrigger>
-            <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownItem key="profile" className="h-14 gap-2">
-                <Link href="/login" className="font-semibold">
+            <DropdownMenu aria-label='Profile Actions' variant='flat'>
+              <DropdownItem key='profile' className='h-14 gap-2'>
+                <Link href='/login' className='font-semibold'>
                   Login
                 </Link>
               </DropdownItem>
-              <DropdownItem key="logout" color="danger">
+              <DropdownItem key='logout' color='danger'>
                 Home
               </DropdownItem>
-              <DropdownItem key="settings">Course</DropdownItem>
-              <DropdownItem key="team_settings">Class</DropdownItem>
-              <DropdownItem key="analytics">Subjects</DropdownItem>
-              <DropdownItem key="system">Contact</DropdownItem>
-              <DropdownItem key="configurations">About</DropdownItem>
+              <DropdownItem key='settings'>Course</DropdownItem>
+              <DropdownItem key='team_settings'>Class</DropdownItem>
+              <DropdownItem key='analytics'>Subjects</DropdownItem>
+              <DropdownItem key='system'>Contact</DropdownItem>
+              <DropdownItem key='configurations'>About</DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </div>
-      </Navbar>
+      </div>
     </>
   );
 }

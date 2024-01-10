@@ -62,10 +62,8 @@ export default function PendingList() {
 
     setPages(
       dataCount.studentCount % rowsPerPage === 0
-        ? Math.round(dataCount.studentCount / rowsPerPage)
-        : Math.round(dataCount.studentCount / rowsPerPage)
-        ? dataCount.studentCount / rowsPerPage + 1
-        : dataCount.studentCount / rowsPerPage
+        ? dataCount.studentCount / rowsPerPage
+        : Math.floor(dataCount.studentCount / rowsPerPage) + 1
     );
 
     setPage(1); // Reset the current page to 1 when rows per page changes
@@ -84,10 +82,8 @@ export default function PendingList() {
           setDataCount(res.data.counts);
           setPages(
             res.data.counts.studentCount % rowsPerPage === 0
-              ? Math.round(res.data.counts.studentCount / rowsPerPage)
-              : Math.round(res.data.counts.studentCount / rowsPerPage)
-              ? res.data.counts.studentCount / rowsPerPage + 1
-              : res.data.counts.studentCount / rowsPerPage
+              ? res.data.counts.studentCount / rowsPerPage
+              : Math.floor(res.data.counts.studentCount / rowsPerPage) + 1
           );
         });
     };

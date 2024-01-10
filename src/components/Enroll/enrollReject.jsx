@@ -31,7 +31,7 @@ import { EditIcon } from "../Table/editicon";
 import { DeleteIcon } from "../Table/deleteicon";
 import { getFile } from "../../util";
 
-export default function PendingList() {
+export default function RejectList() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
 
@@ -61,9 +61,9 @@ export default function PendingList() {
     setRowsPerPage(newRowsPerPage);
 
     setPages(
-      dataCount.registerRejectListCount % rowsPerPage === 0
-        ? dataCount.registerRejectListCount / rowsPerPage
-        : Math.floor(dataCount.registerRejectListCount / rowsPerPage) + 1
+      dataCount.enrollmentRejectListCount % rowsPerPage === 0
+        ? dataCount.enrollmentRejectListCount / rowsPerPage
+        : Math.round(dataCount.enrollmentRejectListCount / rowsPerPage) + 1
     );
 
     setPage(1); // Reset the current page to 1 when rows per page changes
@@ -72,19 +72,17 @@ export default function PendingList() {
   useEffect(() => {
     const getDepartments = async () => {
       await apiInstance
-        .get(`overall-students`, {
-          params: { status: "reject" },
-        })
+        .get(`overall-enrollments`, { params: { status: "reject" } })
         .then((res) => {
-          console.log(res.data, "stu rej");
+          console.log(res.data, "stu wait");
           setPendingList(res.data.data);
 
           setDataCount(res.data.counts);
           setPages(
-            res.data.counts.registerRejectListCount % rowsPerPage === 0
-              ? res.data.counts.registerRejectListCount / rowsPerPage
+            res.data.counts.enrollmentRejectListCount % rowsPerPage === 0
+              ? res.data.counts.enrollmentRejectListCount / rowsPerPage
               : Math.floor(
-                  res.data.counts.registerRejectListCount / rowsPerPage
+                  res.data.counts.enrollmentRejectListCount / rowsPerPage
                 ) + 1
           );
         });
@@ -97,33 +95,15 @@ export default function PendingList() {
     };
   }, [isOpen, rowsPerPage]);
 
-  const handleOpen = (event) => {
-    onOpen();
-    console.log(event.currentTarget.getAttribute("data-key"));
-    setDelID(event.currentTarget.getAttribute("data-key"));
-  };
-
-  const handleClose = () => {
-    onClose();
-    setDelID(null);
-  };
-
-  const handleDelete = async () => {
-    console.log(setDelID);
-    await apiInstance.delete("department/" + delID).then(() => {
-      setDepartmentList(departmentList.filter((item) => item._id !== delID));
-      onClose();
-    });
-  };
   const handleRoute = (id) => {
     console.log(id, "id");
-    navigate(`/reject-detail/${id}`);
+    navigate(`/enroll-reject-detail/${id}`);
   };
   return (
     <>
       <div className='flex justify-between items-center mb-3'>
         <span className='text-default-400 text-small'>
-          Total {pendingList.length} Departments
+          Total {pendingList.length} Reject List
         </span>
         <label className='flex items-center text-default-400 text-small'>
           Rows per page:
@@ -160,6 +140,7 @@ export default function PendingList() {
       >
         <TableHeader>
           <TableColumn className='bg-blue-900 text-white'>No</TableColumn>
+          <TableColumn className='bg-blue-900 text-white'>Code</TableColumn>
           <TableColumn className='bg-blue-900 text-white'>
             Student Name
           </TableColumn>
@@ -184,23 +165,14 @@ export default function PendingList() {
               onClick={() => handleRoute(item._id)}
             >
               <TableCell>{index + 1}</TableCell>
-              <TableCell>
-                <div className='flex '>
-                  <Image
-                    radius='sm'
-                    alt={item.image.originalname}
-                    className='object-cover w-[40px] h-[40px] rounded-lg border-2 border-blue-900'
-                    src={getFile({ payload: item.image })}
-                  />
-                  <b className='py-3 px-1'>{item.name}</b>
-                </div>
-              </TableCell>
+              <TableCell>{item?.code}</TableCell>
+              <TableCell>{item.student?.name}</TableCell>
               <TableCell>{item.subject?.title}</TableCell>
-              <TableCell>{item.createAt?.split("T")[0]}</TableCell>
-              <TableCell>{item.phone}</TableCell>
-              <TableCell>{item.email}</TableCell>
-              <TableCell>{item.gender}</TableCell>
-              <TableCell>{item.address}</TableCell>
+              <TableCell>{item.date?.split("T")[0]}</TableCell>
+              <TableCell>{item.student?.phone}</TableCell>
+              <TableCell>{item.student?.email}</TableCell>
+              <TableCell>{item.student?.gender}</TableCell>
+              <TableCell>{item.student?.address}</TableCell>
               {/* <TableCell>
                 <div className='relative flex items-center gap-2'>
                   <Tooltip content='Edit Department'>
@@ -225,12 +197,12 @@ export default function PendingList() {
           ))}
         </TableBody>
       </Table>
-      <Modal backdrop='blur' isOpen={isOpen} onClose={handleClose}>
+      {/* <Modal backdrop='blur' isOpen={isOpen} onClose={handleClose}>
         <ModalContent>
           {(handleClose) => (
             <>
               <ModalHeader className='flex flex-col gap-1'>
-                Delete Department
+                Delete Enroll
               </ModalHeader>
               <ModalBody>
                 <p>Are you sure you want to delete this position?</p>
@@ -251,7 +223,7 @@ export default function PendingList() {
             </>
           )}
         </ModalContent>
-      </Modal>
+      </Modal> */}
     </>
   );
 }

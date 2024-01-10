@@ -112,7 +112,7 @@ export default function Sidebar(props) {
                     </div>
                   </Link>
                   <Divider></Divider>
-                  <Link to='/instru'>
+                  <Link to='/enroll-list'>
                     <div
                       onClick={() => setInc(true)}
                       className='hover:bg-blue-100 px-4 py-3 m-auto text-sm '

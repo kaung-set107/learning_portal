@@ -45,6 +45,11 @@ import QuizResult from "./frontend/ByUser/Quiz/result.jsx";
 import ExamUpdate from "./frontend/components/Exam/ExamUpdate.jsx";
 import ApproveDetail from "./pages/Student/approvedetail.jsx";
 import RejectDetail from "./pages/Student/rejectdetail.jsx";
+//Enrollment
+import Enrollment from "./pages/Enroll/enrolllist.jsx";
+import EnrollDetail from "./pages/Enroll/enrollDetail.jsx";
+import EnrollApproveDetail from "./pages/Enroll/enrollApproveDetail.jsx";
+import EnrollRejectDetail from "./pages/Enroll/enrollRejectDetail.jsx";
 export default function RouteFile() {
   return (
     <div>
@@ -67,7 +72,7 @@ export default function RouteFile() {
 
             <Route path='/home' element={<Dashboard />} />
 
-            {/* Department */}
+            {/* Start Student Register and Detail */}
             <Route path='/register-list' element={<StudentReg />}></Route>
 
             <Route
@@ -79,7 +84,20 @@ export default function RouteFile() {
               element={<ApproveDetail />}
             ></Route>
             <Route path='/reject-detail/:id' element={<RejectDetail />}></Route>
+            {/*End Student Register and Detail */}
 
+            {/*Start Student Enroll */}
+            <Route path='/enroll-list' element={<Enrollment />}></Route>
+            <Route path='/enroll-detail/:id' element={<EnrollDetail />}></Route>
+            <Route
+              path='/enroll-approve-detail/:id'
+              element={<EnrollApproveDetail />}
+            ></Route>
+            <Route
+              path='/enroll-reject-detail/:id'
+              element={<EnrollRejectDetail />}
+            ></Route>
+            {/*End Student Enroll */}
             {/* Instructor or user create from admin */}
             <Route path='/instru' element={<Instructor />} />
             <Route path='/instru-add' element={<InstructorAdd />} />
