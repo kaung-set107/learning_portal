@@ -139,18 +139,19 @@ export default function App() {
                         <Link to='/login'>Login</Link>
                       </div>
                     )}
-
+                  </DropdownItem>
+                  <DropdownItem>
                     {location.pathname === "/" ||
                     location.pathname === "/login" ? (
-                      <div className='hidden sm:flex'>
-                        <Button
-                          as={Link}
+                      <div className='hidden sm:flex hover:font-semibold'>
+                        <Link
+                          to='/register'
                           color='primary'
                           href='#'
                           variant='flat'
                         >
                           Register
-                        </Button>
+                        </Link>
                       </div>
                     ) : (
                       ""

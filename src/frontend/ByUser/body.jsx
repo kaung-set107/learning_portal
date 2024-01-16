@@ -1,4 +1,4 @@
-import { Card, CardBody, Button, CardHeader } from "@nextui-org/react";
+import { Card, CardBody, Button, CardHeader, Image } from "@nextui-org/react";
 import { Link, useLocation } from "react-router-dom";
 // import {useEffect,useState} from 'react'
 import Table from "./Table/learningTable";
@@ -8,6 +8,10 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import apiInstance from "../../util/api";
+import Home from "./Tabs/homeTab";
+import MyprofileTab from "./Tabs/myprofileTab";
+import LearningProgress from "./Tabs/learningProgress";
+
 export default function AddBody() {
   const [activeTab, setActiveTab] = useState(1);
   const handleTabClick = (tabNumber) => {
@@ -15,38 +19,11 @@ export default function AddBody() {
   };
   const location = useLocation();
   const { state } = useLocation();
-  const [coursesList, setCoursesList] = useState([]);
+
   const [list, setList] = useState([]);
   // console.log(useLocation().state.rol,'lllll')
 
   const Val = location.state ? location.state.title : "English";
-  //    const [dataValue,setDataValue]=useState('English')
-  useEffect(() => {
-    const getAssign = async () => {
-      await apiInstance.get(`courses`).then((res) => {
-        console.log(res.data.data, "exam res");
-        setCoursesList(res.data.data);
-        // setPages(res.data._metadata.page_count);
-      });
-    };
-    const subject = async () => {
-      await apiInstance.get(`subjects`).then((res) => {
-        console.log(
-          res.data.data.filter((el) => el._id === state.val),
-          "sub"
-        );
-        setList(
-          res.data.data.filter(
-            (el) =>
-              el._id === (state.val ? state.val : "6541db4ceef974bf5476db1e")
-          )
-        );
-      });
-    };
-
-    subject();
-    getAssign();
-  }, []);
 
   return (
     <div>
@@ -109,27 +86,9 @@ export default function AddBody() {
             </Badge> */}
           </div>
         </div>
-        <div></div>
-      </div>
-
-      <div className='block'>
-        {coursesList.map((item, index) => (
-          <div className=''>
-            <div style={{ padding: "32px 40px" }}>
-              <div
-                style={{
-                  color: "#000",
-                  fontSize: "40px",
-                  fontWeight: "600px",
-                  wordSpacing: "-1.6px",
-                }}
-              >
-                {item?.title} Courses
-              </div>
-              <div></div>
-            </div>
-          </div>
-        ))}
+        <div>{activeTab === 1 && <Home />}</div>
+        <div>{activeTab === 2 && <MyprofileTab />}</div>
+        <div>{activeTab === 3 && <LearningProgress />}</div>
       </div>
     </div>
   );

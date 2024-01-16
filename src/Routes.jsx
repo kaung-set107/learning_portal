@@ -149,7 +149,7 @@ export default function RouteFile() {
             ></Route>
 
             {/* Quiz Instructor */}
-            <Route path='/quiz' element={<Quiz />}></Route>
+            {/* <Route path='/quiz' element={<Quiz />}></Route> */}
             <Route path='/quiz-create/:id' element={<QuizCreate />}></Route>
 
             {/* Quiz Student */}
