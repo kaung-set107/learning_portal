@@ -1,15 +1,12 @@
-import { Card } from '@nextui-org/react'
-import Header from '../../components/Login/header'
-import Login from '../../components/Login/inputlogin'
-import Head from '../../frontend/home/header'
+import { Card } from "@nextui-org/react";
+import Header from "../../components/Login/header";
+import Login from "../../components/Login/inputlogin";
+import Head from "../../frontend/home/header";
 
 export default function LoginPage() {
-
   return (
     <>
-     <Head/>
       <div className='flex justify-center'>
-     
         <Card
           isFooterBlurred
           radius='sm'
@@ -17,12 +14,11 @@ export default function LoginPage() {
         >
           <Header
             heading='Login to your account'
-            paragraph="Welcome To MSI Learning Portal"
-
+            paragraph='Welcome To MSI Learning Portal'
           />
           <Login />
         </Card>
       </div>
     </>
-  )
+  );
 }

@@ -7,7 +7,6 @@ export default function App() {
   // console.log(useLocation().state.rol,'lllll')
   return (
     <div className=''>
-      <Nav />
       {/* three card */}
       {/* <Head /> */}
       <Body />

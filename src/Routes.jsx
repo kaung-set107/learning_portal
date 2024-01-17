@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login/login";
-import Nav from "./components/Navbar/index";
+
 import Dashboard from "./pages/Dashboard/index.jsx";
 import Instructor from "./pages/Instructor/InstructorList";
 import InstructorAdd from "./pages/Instructor/InstructorAdd";
@@ -17,8 +17,10 @@ import CourseUpdate from "./pages/Course/CourseUpdate";
 import Leave from "./pages/Leave/Leave";
 import LeaveAdd from "./pages/Leave/LeaveAdd";
 import LeaveUpdate from "./pages/Leave/LeaveUpdate";
+//Student
 import Student from "./frontend/ByUser/index";
 import StudentAssign from "./frontend/ByUser/studentAssign";
+import StudentCourseDetail from "./frontend/ByUser/CourseDetail/courseDetail.jsx";
 // import ExtraPay from './pages/PayRoll/extrapay'
 import CourseDetail from "./pages/Course/AttendanceDetail";
 import FHome from "./frontend/home/body";
@@ -50,6 +52,7 @@ import Enrollment from "./pages/Enroll/enrolllist.jsx";
 import EnrollDetail from "./pages/Enroll/enrollDetail.jsx";
 import EnrollApproveDetail from "./pages/Enroll/enrollApproveDetail.jsx";
 import EnrollRejectDetail from "./pages/Enroll/enrollRejectDetail.jsx";
+import Nav from "./frontend/home/header.jsx";
 export default function RouteFile() {
   return (
     <div>
@@ -57,9 +60,9 @@ export default function RouteFile() {
         <Routes>
           <Route path='/' element={<FHome />}></Route>
         </Routes>
-        {/* <div className='flex-grow'>
+        <div className='flex-grow'>
           <Nav />
-        </div> */}
+        </div>
         <Routes>
           <Route path='/login' element={<Login />}></Route>
 
@@ -106,7 +109,7 @@ export default function RouteFile() {
             {/* Student */}
             <Route path='/student' element={<Student />} />
             <Route path='/student-assign' element={<StudentAssign />} />
-            {/* <Route path='/extra-pay/:id' element={<ExtraPay />} /> */}
+            <Route path='/course-detail' element={<StudentCourseDetail />} />
 
             {/* Subject Sale */}
             <Route path='/subject-sale' element={<SubjectSale />} />
