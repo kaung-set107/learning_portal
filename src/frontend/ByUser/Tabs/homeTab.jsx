@@ -6,6 +6,7 @@ import {
   Image,
   Progress,
 } from "@nextui-org/react";
+import ReactStars from "react-rating-stars-component";
 import React, { useEffect, useState } from "react";
 import apiInstance from "../../../util/api";
 import { getFile } from "../../../util";
@@ -20,9 +21,15 @@ export default function Home() {
   };
   const StudentId = localStorage.getItem("id");
   const [coursesList, setCoursesList] = useState([]);
+  const [catList, setCatList] = useState([]);
   const [myCourseList, setMyCourseList] = useState([]);
   const [value, setValue] = useState("");
 
+  const firstExample = {
+    size: 30,
+    value: 2,
+    edit: false,
+  };
   //handle progress value
   const handleRoute = (value) => {
     setValue(value);
@@ -30,8 +37,17 @@ export default function Home() {
   useEffect(() => {
     const getAssign = async () => {
       await apiInstance.get(`courses`).then((res) => {
-        console.log(res.data.data, "exam res");
+        console.log(res.data.data, "course res");
+        console.log(catList, "cat");
         setCoursesList(res.data.data);
+        // const count = res.data.data.filter((el) => el.subjects.length);
+        // console.log(count, "count");
+      });
+    };
+    const getCat = async () => {
+      await apiInstance.get(`categories`).then((res) => {
+        console.log(res.data.data, "cat res");
+        setCatList(res.data.data);
         // const count = res.data.data.filter((el) => el.subjects.length);
         // console.log(count, "count");
       });
@@ -53,11 +69,16 @@ export default function Home() {
         });
     };
 
+    getCat();
     getEnrollment();
 
     getAssign();
   }, []);
 
+  // Rating Handle
+  const ratingChanged = (newRating) => {
+    console.log(newRating);
+  };
   return (
     <div>
       {/* Home Page Wrap */}
@@ -186,10 +207,10 @@ export default function Home() {
               </div>
             </div>
           </div>
-          {coursesList.map((item, index) => (
+          {catList.map((item, index) => (
             <Fade>
-              <div className='flex flex-col gap-6'>
-                <div className='pt-32 pr-40'>
+              <div className='flex gap-6'>
+                <div className='pt-32'>
                   <div
                     style={{
                       color: "#000",
@@ -200,61 +221,82 @@ export default function Home() {
                   >
                     {item?.title} Courses
                   </div>
-                  <div className='grid grid-cols-3 gap-2 py-10'>
-                    {item.subjects?.map((e, index) => (
-                      <div onClick={() => handleRoute("detail")}>
-                        <div>
-                          <Image
-                            width={420}
-                            height={280}
-                            alt={e.image?.originalname}
-                            src={getFile({ payload: e.image })}
-                          />
-                          <div className='flex p-5 flex-col justify-start'>
-                            <span
-                              style={{
-                                fontFamily: "Inter",
-                                fontWeight: "600px",
-                                fontSize: "24px",
-                                letterSpacing: "-0.96px",
-                              }}
-                            >
-                              {e.title}
-                            </span>
-                            <div
-                              style={{
-                                fontSize: "16px",
-                                fontWeight: "400px",
-                              }}
-                              className='flex flex-col justify-stretch'
-                            >
-                              {e?.description}
-                            </div>
-                            <div
-                              className='py-10'
-                              style={{
-                                width: "388px",
-                                height: "19px",
-                                fontSize: "14px",
-                                fontWeight: "400px",
-                              }}
-                            >
-                              Duration -{" "}
-                              <span style={{ color: "#262FD9" }}>
-                                {e.duration} months
+                  <div
+                    className='flex gap-24'
+                    style={{ width: "1440px", height: "auto" }}
+                  >
+                    {coursesList
+                      .filter((el) => el.category._id === item._id)
+                      .map((e) => (
+                        <div
+                          onClick={() => handleRoute("detail")}
+                          style={{ width: "1360px", height: "470px" }}
+                        >
+                          <div>
+                            <Image
+                              style={{ width: "500px", height: "280px" }}
+                              alt={e.image?.originalname}
+                              src={getFile({ payload: e.image })}
+                            />
+                            <div className='flex p-5 flex-col justify-start flex-grow'>
+                              <span
+                                style={{
+                                  fontFamily: "Inter",
+                                  fontWeight: "600px",
+                                  fontSize: "24px",
+                                  letterSpacing: "-0.96px",
+                                }}
+                              >
+                                {e.title}
                               </span>
-                              <br></br>
-                              Price -{" "}
-                              <span style={{ color: "#262FD9" }}>
-                                {e.fee} MMK
-                              </span>
+                              <div
+                                style={{
+                                  fontSize: "16px",
+                                  fontWeight: "400px",
+                                  width: "500px",
+                                  height: "auto",
+                                }}
+                              >
+                                {e?.description}
+                              </div>
+                              {/* card footer */}
+                              <div
+                                className='py-10'
+                                style={{
+                                  width: "388px",
+                                  height: "19px",
+                                  fontSize: "14px",
+                                  fontWeight: "400px",
+                                }}
+                              >
+                                Duration -{" "}
+                                <span style={{ color: "#262FD9" }}>
+                                  3 months
+                                </span>
+                                <br></br>
+                                Price -{" "}
+                                <span style={{ color: "#262FD9" }}>
+                                  50000 MMK
+                                </span>
+                              </div>
+
+                              {/* rating state */}
+                              {/* <div
+                                style={{
+                                  width: "388px",
+                                  height: "19px",
+                                  fontSize: "14px",
+                                  fontWeight: "400px",
+                                }}
+                              >
+                                <ReactStars {...firstExample} />
+                              </div> */}
                             </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
 
-                    {item.subjects?.length > 3 && (
+                    {/* {item.subjects?.length > 3 && (
                       <div className='py-10'>
                         <button
                           style={{
@@ -280,7 +322,7 @@ export default function Home() {
                           </span>
                         </button>
                       </div>
-                    )}
+                    )} */}
                   </div>
                 </div>
               </div>

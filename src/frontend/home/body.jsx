@@ -1,14 +1,13 @@
 import Header from "./header";
 import { Image, Button } from "@nextui-org/react";
 import { Link } from "@nextui-org/react";
-
+import Nav from "./header";
 import ELP from "./image/el.png";
 // import Footer from '../../frontend/home/footer';
 export default function body() {
   return (
     <div className=''>
-      <Header />
-
+      <Nav />
       <div className='grid grid-cols-6 md:grid-cols-12 gap-6 md:gap-4 items-center justify-center mb-5 mx-8 md:block '>
         <div className='relative col-span-6 md:col-span-4 flex justify-center md:mt-5'>
           <Image

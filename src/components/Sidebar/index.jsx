@@ -178,7 +178,16 @@ export default function Sidebar(props) {
                   startContent={<FontAwesomeIcon icon={faUserGear} size='xl' />}
                 >
                   <Divider></Divider>
-                  <Link to='/course' onClick={() => setCou(true)}>
+                  <Link to='/category'>
+                    <div className='hover:bg-blue-100 px-4 py-3 m-auto text-sm'>
+                      {/* <FontAwesomeIcon icon={faLaptopFile} size='xl' /> */}
+                      &nbsp;
+                      <span className='ml-4 font-medium '>Category</span>
+                    </div>
+                    <Divider></Divider>
+                  </Link>
+
+                  <Link to='/course'>
                     <div className='hover:bg-blue-100 px-4 py-3 m-auto text-sm'>
                       {/* <FontAwesomeIcon icon={faLaptopFile} size='xl' /> */}
                       &nbsp;

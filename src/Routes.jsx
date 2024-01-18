@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Login from "./pages/Login/login";
 
 import Dashboard from "./pages/Dashboard/index.jsx";
@@ -11,6 +11,9 @@ import SubjectSaleRegsiter from "./pages/SubjectSale/Add";
 import StudentReg from "./pages/Student/studentregkist.jsx";
 import SubjectSaleUpdate from "./pages/SubjectSale/SubjectUpdate";
 import StudentDetail from "./pages/Student/studentdetail.jsx";
+//Category
+import CategoryInput from "./pages/Category/categoryInput.jsx";
+import CategoryList from "./pages/Category/categoryList.jsx";
 import Course from "./pages/Course/Course";
 import CourseAdd from "./pages/Course/CourseAdd";
 import CourseUpdate from "./pages/Course/CourseUpdate";
@@ -54,30 +57,27 @@ import EnrollApproveDetail from "./pages/Enroll/enrollApproveDetail.jsx";
 import EnrollRejectDetail from "./pages/Enroll/enrollRejectDetail.jsx";
 import Nav from "./frontend/home/header.jsx";
 export default function RouteFile() {
+  console.log(localStorage.getItem("user"), "local use");
   return (
     <div>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<FHome />}></Route>
-        </Routes>
-        <div className='flex-grow'>
+      <Router>
+        {/* <div>
           <Nav />
-        </div>
+          <ul>
+            <li>
+              <Link to='/' />
+            </li>
+          </ul>
+        </div> */}
         <Routes>
           <Route path='/login' element={<Login />}></Route>
+          <Route path='/' element={<FHome />}></Route>
 
           <Route element={<AuthContainer />}>
-            {/* Instructor form */}
-            <Route path='/instructor' element={<InstructorHome />}></Route>
-            <Route path='/lm' element={<LearningMaterial />}></Route>
-            <Route path='/assign' element={<Assignment />}></Route>
-            <Route path='/assign/:id' element={<AssignmentUpdate />}></Route>
-
-            <Route path='/home' element={<Dashboard />} />
-
+            {/* Admin Panel */}
             {/* Start Student Register and Detail */}
+            <Route path='/home' element={<Dashboard />}></Route>
             <Route path='/register-list' element={<StudentReg />}></Route>
-
             <Route
               path='/student-detail/:id'
               element={<StudentDetail />}
@@ -101,26 +101,10 @@ export default function RouteFile() {
               element={<EnrollRejectDetail />}
             ></Route>
             {/*End Student Enroll */}
-            {/* Instructor or user create from admin */}
-            <Route path='/instru' element={<Instructor />} />
-            <Route path='/instru-add' element={<InstructorAdd />} />
-            <Route path='/instru-update/:id' element={<InstructorUpdate />} />
 
-            {/* Student */}
-            <Route path='/student' element={<Student />} />
-            <Route path='/student-assign' element={<StudentAssign />} />
-            <Route path='/course-detail' element={<StudentCourseDetail />} />
-
-            {/* Subject Sale */}
-            <Route path='/subject-sale' element={<SubjectSale />} />
-            <Route path='/subject-sale-add' element={<SubjectSaleRegsiter />} />
-            <Route path='/subject-sale/:id' element={<SubjectSaleUpdate />} />
-
-            {/* Leave */}
-            <Route path='/leave' element={<Leave />}></Route>
-            <Route path='/leave/register' element={<LeaveAdd />}></Route>
-            <Route path='/leave/update/:id' element={<LeaveUpdate />}></Route>
-
+            {/* Category */}
+            <Route path='/category' element={<CategoryList />}></Route>
+            <Route path='/category-input' element={<CategoryInput />}></Route>
             {/* Course*/}
             <Route path='/course' element={<Course />}></Route>
             <Route path='/course-add' element={<CourseAdd />}></Route>
@@ -142,6 +126,28 @@ export default function RouteFile() {
               path='/learn-mat/:id'
               element={<LearningMaterialAdmin />}
             ></Route>
+
+            {/* End Admin Panel */}
+            {/* Instructor form */}
+            <Route path='/instructor' element={<InstructorHome />}></Route>
+            <Route path='/lm' element={<LearningMaterial />}></Route>
+            <Route path='/assign' element={<Assignment />}></Route>
+            <Route path='/assign/:id' element={<AssignmentUpdate />}></Route>
+
+            {/* Instructor or user create from admin */}
+            <Route path='/instru' element={<Instructor />} />
+            <Route path='/instru-add' element={<InstructorAdd />} />
+            <Route path='/instru-update/:id' element={<InstructorUpdate />} />
+
+            {/* Student */}
+            <Route path='/student' element={<Student />} />
+            <Route path='/student-assign' element={<StudentAssign />} />
+            <Route path='/course-detail' element={<StudentCourseDetail />} />
+
+            {/* Subject Sale */}
+            <Route path='/subject-sale' element={<SubjectSale />} />
+            <Route path='/subject-sale-add' element={<SubjectSaleRegsiter />} />
+            <Route path='/subject-sale/:id' element={<SubjectSaleUpdate />} />
 
             {/* LmDetail */}
             <Route path='/sub-detail/:id' element={<LMDetail />}></Route>
@@ -166,7 +172,7 @@ export default function RouteFile() {
           {/* <AuthContainer component={<Dashboard />} path='/home'></AuthContainer> */}
           <Route path='/chart' element={<Chart />}></Route>
         </Routes>
-      </BrowserRouter>
+      </Router>
     </div>
   );
 }

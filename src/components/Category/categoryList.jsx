@@ -32,7 +32,7 @@ import { SearchIcon } from "../Navbar/search";
 import { PlusIcon } from "../../assets/Icons/PlusIcon";
 import { getFile } from "../../util/index";
 
-export default function AttendanceTable() {
+export default function CategoryTable() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [delID, setDelID] = useState(null);
   const [page, setPage] = React.useState(1);
@@ -62,7 +62,7 @@ export default function AttendanceTable() {
   useEffect(() => {
     const getCourses = async () => {
       await apiInstance
-        .get(`courses`, { params: { limit: 80, rowsPerPage: rowsPerPage } })
+        .get(`categories`, { params: { limit: 80, rowsPerPage: rowsPerPage } })
         .then((res) => {
           setCourseList(res.data.data);
           // console.log(res.data.data, 'att')
@@ -91,7 +91,7 @@ export default function AttendanceTable() {
 
   const handleDelete = async () => {
     console.log(setDelID);
-    await apiInstance.delete("courses/" + delID).then(() => {
+    await apiInstance.delete("categories/" + delID).then(() => {
       setCourseList(courseList.filter((item) => item._id !== delID));
       onClose();
     });
@@ -127,7 +127,7 @@ export default function AttendanceTable() {
               ))}
             </DropdownMenu>
           </Dropdown> */}
-          <Dropdown>
+          {/* <Dropdown>
             <DropdownTrigger className='hidden sm:flex'>
               <Button
                 endContent={<ChevronDownIcon className='text-small' />}
@@ -156,16 +156,16 @@ export default function AttendanceTable() {
                 GED
               </DropdownItem>
             </DropdownMenu>
-          </Dropdown>
-          <Button
+          </Dropdown> */}
+          {/* <Button
             color='primary'
             endContent={<SearchIcon className='w-5 h-4' />}
           >
             Search
-          </Button>
+          </Button> */}
         </div>
         <div className='flex gap-2 mb-3 flex-row'>
-          <Link to='/course-add'>
+          <Link to='/category-input'>
             <Button endContent={<PlusIcon />} color='primary'>
               Add
             </Button>
@@ -174,7 +174,7 @@ export default function AttendanceTable() {
       </div>
       <div className='flex justify-between items-center mb-3'>
         <span className='text-default-400 text-small'>
-          Total {courseList.length} Attendances
+          Total {courseList.length} Categories
         </span>
         <label className='flex items-center text-default-400 text-small'>
           Rows per page:
@@ -213,8 +213,7 @@ export default function AttendanceTable() {
           <TableColumn>No</TableColumn>
           <TableColumn>Code</TableColumn>
           <TableColumn>Title</TableColumn>
-          <TableColumn>Field</TableColumn>
-          <TableColumn>Image</TableColumn>
+
           <TableColumn>Description</TableColumn>
 
           <TableColumn key='action'>Action</TableColumn>
@@ -226,16 +225,6 @@ export default function AttendanceTable() {
               <TableCell>{item?.code}</TableCell>
               <TableCell>{item?.title}</TableCell>
 
-              <TableCell>{item?.field}</TableCell>
-              <TableCell>
-                {" "}
-                <User
-                  avatarProps={{
-                    radius: "lg",
-                    src: item.image ? getFile({ payload: item.image }) : "",
-                  }}
-                />
-              </TableCell>
               <TableCell>
                 {item?.description?.split(" ").slice(0, 10).join(" ")} ....
               </TableCell>

@@ -1,6 +1,6 @@
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input, Textarea } from "@nextui-org/react";
 import apiInstance from "../../util/api";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -10,11 +10,12 @@ import { faCircleChevronLeft } from "@fortawesome/free-solid-svg-icons";
 export default function DepartmentInputForm() {
   const variant = "faded";
   const { handleSubmit } = useForm();
+  const [catList, setCatList] = useState([]);
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [field, setField] = useState("");
   const [image, setImage] = useState("");
-
+  const [category, setCategory] = useState("");
   const handleImage = (e) => {
     if (e.target.files) {
       setImage(e.target.files[0]);
@@ -29,6 +30,7 @@ export default function DepartmentInputForm() {
     formData.append("field", field);
     formData.append("description", desc);
     formData.append("image", image);
+    formData.append("category", category);
 
     apiInstance
       .post("courses", formData, {
@@ -39,8 +41,8 @@ export default function DepartmentInputForm() {
       .then(function () {
         Swal.fire({
           icon: "success",
-          title: "Login Successful",
-          text: "Welcome back!",
+          title: "Course Create Successful",
+          text: "",
           confirmButtonText: "OK",
           confirmButtonColor: "#3085d6",
         });
@@ -50,14 +52,40 @@ export default function DepartmentInputForm() {
       });
   };
 
+  useEffect(() => {
+    const getCat = async () => {
+      await apiInstance.get(`categories`).then((res) => {
+        // console.log(res.data.data, "cat res");
+        setCatList(res.data.data);
+        // const count = res.data.data.filter((el) => el.subjects.length);
+        // console.log(count, "count");
+      });
+    };
+    getCat();
+  }, []);
   return (
-    <div className='gap-3'>
+    <div className=' gap-3'>
       <div className='rounded-none py-3 text-left'>
         <Link to='/course' className=''>
           <FontAwesomeIcon icon={faCircleChevronLeft} size='2xl' />
         </Link>
       </div>
-      <form onSubmit={handleSubmit(create)} className='py-5'>
+      <form
+        onSubmit={handleSubmit(create)}
+        className='py-5 flex flex-col justify-center gap-5'
+      >
+        <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+          <label className='text-sm font-semibold'>Category</label>
+          <select
+            onChange={(e) => setCategory(e.target.value)}
+            className='bg-gray-100 border mt-2 border-gray-300 text-gray-900 text-sm rounded-xl m-0 px-0 py-2 focus:ring-gray-500 focus:border-gray-500 block w-full p-3 dark:bg-default-100 dark:border-gray-600 dark:placeholder-gray-100 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500'
+          >
+            <option hidden>Choose Category</option>
+            {catList.map((item) => (
+              <option value={item._id}>{item.title}</option>
+            ))}
+          </select>
+        </div>
         <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
           <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
             <label className='text-sm font-semibold'>Course Title</label>
@@ -69,6 +97,7 @@ export default function DepartmentInputForm() {
             />
           </div>
         </div>
+
         <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
           <label className='text-sm font-semibold'>Field</label>
           <select
@@ -93,7 +122,7 @@ export default function DepartmentInputForm() {
         </div>
         <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
           <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-            <Input
+            <Textarea
               type='text'
               label='Description'
               placeholder='description'

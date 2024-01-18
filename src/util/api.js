@@ -4,6 +4,7 @@ const url = 'http://learningportalbackend.kwintechnologies.com:3600/api/'
 const storeToken = localStorage.getItem('token')
 
 const apiInstance = axios.create({
+  withCredentials:true,
   baseURL: url,
   // headers: {
   //   Authorization: `Bearer ${storeToken}`
