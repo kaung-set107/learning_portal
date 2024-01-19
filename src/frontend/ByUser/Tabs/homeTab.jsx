@@ -6,6 +6,7 @@ import {
   Image,
   Progress,
 } from "@nextui-org/react";
+
 import ReactStars from "react-rating-stars-component";
 import React, { useEffect, useState } from "react";
 import apiInstance from "../../../util/api";
@@ -19,6 +20,7 @@ export default function Home() {
   const handleTabClick = (tabNumber) => {
     setActiveTab(tabNumber);
   };
+  const [id, setId] = useState("");
   const StudentId = localStorage.getItem("id");
   const [coursesList, setCoursesList] = useState([]);
   const [catList, setCatList] = useState([]);
@@ -31,7 +33,8 @@ export default function Home() {
     edit: false,
   };
   //handle progress value
-  const handleRoute = (value) => {
+  const handleRoute = (value, id) => {
+    setId(id);
     setValue(value);
   };
   useEffect(() => {
@@ -83,7 +86,7 @@ export default function Home() {
     <div>
       {/* Home Page Wrap */}
       {value === "detail" ? (
-        <CourseDetail />
+        <CourseDetail id={id} />
       ) : (
         <div className='flex flex-col pt-16 pr-0' id='home'>
           <div>
@@ -149,7 +152,6 @@ export default function Home() {
                 </div>
               </div>
             </div>
-
             <div
               className='flex rounded-md pt-16'
               style={{ width: "1080px", height: "200px" }}
@@ -229,7 +231,7 @@ export default function Home() {
                       .filter((el) => el.category._id === item._id)
                       .map((e) => (
                         <div
-                          onClick={() => handleRoute("detail")}
+                          onClick={() => handleRoute("detail", e._id)}
                           style={{ width: "1360px", height: "470px" }}
                         >
                           <div>
