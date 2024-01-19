@@ -12,6 +12,9 @@ export default {
         custom: ['Roboto Mono', 'monospace'],
         nunito:['Nunito Sans','sans-serif']
       },
+        rotate: {
+        '17': '65deg',
+      }
     }
   },
   darkMode: 'class',

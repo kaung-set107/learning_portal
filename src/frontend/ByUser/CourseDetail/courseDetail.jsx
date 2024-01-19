@@ -44,7 +44,7 @@ export default function CourseDetail(props) {
 
   return (
     <>
-      <div className='flex flex-col gap-32'>
+      <div className='flex flex-col'>
         <div className='flex gap-32 pt-20' style={{ height: "370px" }}>
           <div style={{ width: "900px" }}>
             <iframe
@@ -113,13 +113,14 @@ export default function CourseDetail(props) {
           style={{
             backgroundImage: `url(${Earth})`,
             backgroundPosition: "right",
-            backgroundSize: "994px 994px",
-
+            backgroundSize: "70% 100%",
+            backgroundAttachment: "scroll",
             backgroundRepeat: "no-repeat",
+            padding: "64px 0px -180px 0px",
           }}
-          className='flex flex-col gap-20'
+          className='flex flex-col mt-20'
         >
-          <div style={{ height: "272px" }} className='flex flex-col'>
+          <div style={{ height: "272px" }}>
             <div style={{ width: "468px", height: "120px" }}>
               <span style={{ fontSize: "40px", fontWeight: "600" }}>
                 Not sure where to start?
@@ -144,7 +145,7 @@ export default function CourseDetail(props) {
           </div>
 
           {/* Subjects Section Start */}
-          <div className=''>
+          <div style={{ height: "619px" }}>
             <span style={{ fontSize: "40px", fontWeight: "600" }}>
               Subjects
             </span>
@@ -242,7 +243,7 @@ export default function CourseDetail(props) {
           {/* Subject Section End */}
 
           {/* Teacher Section End */}
-          <div className=''>
+          <div className='mt-20'>
             <span style={{ fontSize: "40px", fontWeight: "600" }}>
               Teachers
             </span>
@@ -257,6 +258,7 @@ export default function CourseDetail(props) {
                       width: "490px",
                       height: "463px",
                       padding: "14px 13px",
+                      backgroundColor: "white",
                     }}
                   >
                     <Image
@@ -353,12 +355,12 @@ export default function CourseDetail(props) {
           style={{
             height: "629px",
             backgroundColor: "#215887",
-            padding: "32px 0px 32px 0px",
+            padding: "32px 0px",
           }}
-          className='flex justify-center'
+          className='flex justify-center mt-20'
         >
           <div
-            className='grid grid-cols-2 gap-10'
+            className='grid grid-cols-2 gap-52'
             style={{
               height: "629px",
               padding: "32px 0px 32px 0px",
@@ -417,7 +419,7 @@ export default function CourseDetail(props) {
       </div>
       {/* Info Section Start */}
       <div
-        className='flex justify-between'
+        className='flex'
         style={{
           height: "327px",
         }}
@@ -426,7 +428,6 @@ export default function CourseDetail(props) {
           style={{
             width: "455px",
             height: "327px",
-
             backgroundColor: "#215887",
             padding: "64px 0px 89px 40px",
             position: "absolute",
@@ -464,6 +465,18 @@ export default function CourseDetail(props) {
             course from MSI Academy.
           </p>
         </div>
+        <div
+          style={{
+            width: "370px",
+            height: "140px",
+            backgroundColor: "#FFF",
+
+            position: "absolute",
+            left: "296px",
+            marginTop: "8rem",
+          }}
+          className='-rotate-17'
+        ></div>
         <div
           style={{
             height: "180px",
