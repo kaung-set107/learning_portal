@@ -16,7 +16,16 @@ import TV from "../../../assets/img/tv.svg";
 import Certi from "../../../assets/img/certi.svg";
 import Earth from "../../../assets/img/earth.svg";
 import apiInstance from "../../../util/api";
+import EarthAni from "../../../assets/img/earthanimate.gif";
 export default function CourseDetail(props) {
+  const containerStyle = {
+    transition: "transform 0.5s ease-in-out", // Adjust duration and easing function as needed
+  };
+
+  const hoverContainerStyle = {
+    transform: "rotate(12deg)",
+  };
+
   console.log(props.id, "id");
   const [subjectList, setSubjectList] = useState([]);
   const [subjectAndTeacherList, setSubjectAndTeacherList] = useState([]);
@@ -44,7 +53,7 @@ export default function CourseDetail(props) {
 
   return (
     <>
-      <div className='flex flex-col'>
+      <div className='flex flex-col flex-grow'>
         <div className='flex gap-32 pt-20' style={{ height: "370px" }}>
           <div style={{ width: "900px" }}>
             <iframe
@@ -118,7 +127,7 @@ export default function CourseDetail(props) {
             backgroundRepeat: "no-repeat",
             padding: "64px 0px -180px 0px",
           }}
-          className='flex flex-col mt-20'
+          className='flex flex-col mt-20 md:bg-right md:bg-contain'
         >
           <div style={{ height: "272px" }}>
             <div style={{ width: "468px", height: "120px" }}>
@@ -137,7 +146,7 @@ export default function CourseDetail(props) {
                   backgroundColor: "#053CFF",
                   color: "white",
                 }}
-                className='mt-10'
+                className='mt-10 hover:-translate-x-1 hover:scale-110 duration-700'
               >
                 <span className='p-2'>Take Quiz</span>
               </Button>
@@ -149,7 +158,7 @@ export default function CourseDetail(props) {
             <span style={{ fontSize: "40px", fontWeight: "600" }}>
               Subjects
             </span>
-            <div className='grid grid-cols-3 pt-10'>
+            <div className='grid grid-cols-2 gap-10 pt-10 md:grid-cols-3'>
               {subjectList.slice(0, 3).map((e) => (
                 <>
                   <div
@@ -157,11 +166,11 @@ export default function CourseDetail(props) {
                       backgroundColor: "#215887",
                       borderRadius: "14px",
                       boxShadow: "0px 4px 15px 0px rgba(0, 0, 0, 0.10)",
-                      width: "490px",
+                      // width: "490px",
                       height: "463px",
                       padding: "14px 13px",
                     }}
-                    className='flex flex-col gap-2'
+                    className='min-w:[490px]  flex flex-col gap-3 hover:-translate-y-2 hover:rotate-1 hover:scale-110 hover:bg-indigo-500 duration-500'
                   >
                     <Image
                       radius='sm'
@@ -187,13 +196,15 @@ export default function CourseDetail(props) {
                         fontSize: "16px",
                         fontWeight: "400",
                         color: "#FFF",
-                        width: "464px",
-                        height: "auto",
                       }}
+                      className='min-w:[464px] min-h:[auto]'
                     >
                       {e.description}
                     </p>
-                    <div style={{ padding: "80px 28px 0px 132px" }}>
+                    <div
+                      // style={{ padding: "70px 28px 0px 120px" }}
+                      className='2xl:pt-unit-18 2xl:pl-unit-28 xl:pt-16 xl:pl-16'
+                    >
                       <Button
                         style={{
                           fontSize: "16px",
@@ -247,7 +258,7 @@ export default function CourseDetail(props) {
             <span style={{ fontSize: "40px", fontWeight: "600" }}>
               Teachers
             </span>
-            <div className='grid grid-cols-3 pt-10'>
+            <div className='grid grid-cols-3 gap-10 pt-10'>
               {subjectAndTeacherList.slice(0, 3).map((e) => (
                 <>
                   <div
@@ -255,11 +266,12 @@ export default function CourseDetail(props) {
                       border: "2px solid red",
                       borderRadius: "14px",
                       boxShadow: "0px 4px 25px 0px rgba(0, 0, 0, 0.10)",
-                      width: "490px",
-                      height: "463px",
+                      // width: "490px",
+                      // height: "463px",
                       padding: "14px 13px",
                       backgroundColor: "white",
                     }}
+                    className='min-w:[490px] min-h:[463px] flex flex-col gap-3 hover:-translate-y-2 hover:rotate-1 hover:scale-110 hover:bg-indigo-500 duration-500'
                   >
                     <Image
                       radius='sm'
@@ -296,9 +308,10 @@ export default function CourseDetail(props) {
                         fontSize: "18px",
                         fontWeight: "400",
                         color: "#ACACAC",
-                        width: "464px",
-                        height: "auto",
+                        // width: "464px",
+                        // height: "auto",
                       }}
+                      className='min-w:[464px] min-h:[auto]'
                     >
                       {e.instructor?.introduction}
                     </p>
@@ -403,6 +416,7 @@ export default function CourseDetail(props) {
                 style={{
                   padding: "50.35px 0px 107.35px 13.038px",
                 }}
+                className='hover:cursor-pointer hover:-translate-y-2 hover:rotate-1 hover:scale-110 duration-500'
               >
                 <Image
                   src={Certi}
@@ -500,6 +514,7 @@ export default function CourseDetail(props) {
                 color: "white",
                 padding: "10px 20px",
               }}
+              className='hover:-translate-x-1 hover:scale-110 duration-700'
             >
               Request more information
             </Button>
