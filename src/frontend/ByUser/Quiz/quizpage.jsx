@@ -10,6 +10,7 @@ import apiInstance from "../../../util/api";
 // import Swal from 'sweetalert2';
 // import Result from './result'
 export default function QuizPage() {
+  const [timeLeft, setTimeLeft] = useState(60);
   const [clicked, setClicked] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -86,9 +87,22 @@ export default function QuizPage() {
   };
   const handleStart = () => {
     setShowTimer(true);
-    setOneHour(
-      new Date(new Date().setHours(new Date().getHours() + 1)).toISOString()
-    );
+    // setOneHour(
+    //   new Date(new Date().setHours(new Date().getHours() + 1)).toISOString()
+    // );
+    const timerInterval = setInterval(() => {
+      setTimeLeft((prevTime) => {
+        if (prevTime === 0) {
+          clearInterval(timerInterval);
+          nextQuestion();
+          return 30; // Reset timer for the next question
+        }
+        return prevTime - 1;
+      });
+    }, 1000);
+
+    // Clear interval when the component unmounts or when moving to the next question
+    return () => clearInterval(timerInterval);
   };
 
   const nextQuestion = (studentAnswer, cas, ind) => {
@@ -277,6 +291,7 @@ export default function QuizPage() {
         //   setPages(res.data._metadata.page_count)
       });
     };
+    getQuiz();
     const dataFromLocalStorage = localStorage.getItem("id");
     // console.log(dataFromLocalStorage,'local')
 
@@ -284,8 +299,6 @@ export default function QuizPage() {
     // console.log((dataFromLocalStorage),'hello')
     setStudentID(dataFromLocalStorage);
     //   setPages(res.data._metadata.page_count)
-
-    getQuiz();
   }, []);
 
   return (
@@ -319,8 +332,8 @@ export default function QuizPage() {
           {showTimer && (
             <>
               <div>
-                <Countdown date={Date.now() + 10000} />
-                {console.log(quizList.duration * 60, "hi")}
+                Time : {timeLeft} s
+                {/* {console.log(quizList.duration * 60, "hi")} */}
               </div>
               <div>
                 {/* {quizList.questions[counter].map((item, index) => ( */}
