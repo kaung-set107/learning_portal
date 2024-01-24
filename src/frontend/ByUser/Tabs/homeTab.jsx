@@ -13,9 +13,10 @@ import apiInstance from "../../../util/api";
 import { getFile } from "../../../util";
 import Course from "../../../assets/img/course.jpg";
 import { Fade } from "react-awesome-reveal";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CourseDetail from "../CourseDetail/courseDetail";
 export default function Home() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(1);
   const handleTabClick = (tabNumber) => {
     setActiveTab(tabNumber);
@@ -33,9 +34,10 @@ export default function Home() {
     edit: false,
   };
   //handle progress value
-  const handleRoute = (value, id) => {
+  const handleRoute = (data) => {
     setId(id);
     setValue(value);
+    navigate("/course-detail", { state: { data: data } });
   };
   useEffect(() => {
     const getAssign = async () => {
@@ -224,15 +226,16 @@ export default function Home() {
                     {item?.title} Courses
                   </div>
                   <div
-                    className='flex gap-24'
+                    className='grid grid-cols-2 gap-10 pt-10 md:grid-cols-3'
                     style={{ width: "1440px", height: "auto" }}
                   >
                     {coursesList
                       .filter((el) => el.category._id === item._id)
                       .map((e) => (
                         <div
-                          onClick={() => handleRoute("detail", e._id)}
-                          style={{ width: "1360px", height: "470px" }}
+                          onClick={() => handleRoute(e)}
+                          style={{ height: "470px" }}
+                          className='min-w:[490px]  flex flex-col gap-3 hover:-translate-y-1 hover:rotate-1 hover:scale-110 duration-500'
                         >
                           <div>
                             <Image

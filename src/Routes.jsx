@@ -24,6 +24,8 @@ import LeaveUpdate from "./pages/Leave/LeaveUpdate";
 import Student from "./frontend/ByUser/index";
 import StudentAssign from "./frontend/ByUser/studentAssign";
 import StudentCourseDetail from "./frontend/ByUser/CourseDetail/courseDetail.jsx";
+import StudentSubjectDetail from "./frontend/ByUser/CourseDetail/SubjectDetail/subjectDetail.jsx";
+import StudentNo from "./frontend/ByUser/index";
 // import ExtraPay from './pages/PayRoll/extrapay'
 import CourseDetail from "./pages/Course/AttendanceDetail";
 import FHome from "./frontend/home/body";
@@ -109,7 +111,6 @@ export default function RouteFile() {
             <Route path='/course' element={<Course />}></Route>
             <Route path='/course-add' element={<CourseAdd />}></Route>
             <Route path='/course-update/:id' element={<CourseUpdate />}></Route>
-            <Route path='/course-detail' element={<CourseDetail />}></Route>
 
             {/* Subject*/}
             <Route path='/subject' element={<Subject />}></Route>
@@ -141,8 +142,11 @@ export default function RouteFile() {
 
             {/* Student */}
             <Route path='/student' element={<Student />} />
+            <Route path='/student/:id' element={<StudentNo />} />
+
             <Route path='/student-assign' element={<StudentAssign />} />
             <Route path='/course-detail' element={<StudentCourseDetail />} />
+            <Route path='/sub-detail' element={<StudentSubjectDetail />} />
 
             {/* Subject Sale */}
             <Route path='/subject-sale' element={<SubjectSale />} />

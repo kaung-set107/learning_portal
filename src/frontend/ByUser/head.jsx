@@ -1,6 +1,7 @@
 import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+// import { Link } from "@nextui-org/react";
 const TabValueComponent = ({ activeTabValue }) => {
   const [activeTab, setActiveTab] = useState(1);
   const handleTabClick = (tabNumber) => {
@@ -19,7 +20,7 @@ const TabValueComponent = ({ activeTabValue }) => {
           }
           onClick={() => handleTabClick(1)}
         >
-          Home &nbsp;
+          <Link to='/student'>Home</Link> &nbsp;
           {/* <Badge content='9+' shape='circle' color='danger'>
               <NotificationIcon size={24} />
             </Badge> */}
@@ -32,7 +33,7 @@ const TabValueComponent = ({ activeTabValue }) => {
           }
           onClick={() => handleTabClick(2)}
         >
-          My Profile &nbsp;
+          <Link to='/student/2'>My Profile</Link> &nbsp;
           {/* <Badge content='9+' shape='circle' color='danger'>
               <NotificationIcon size={24} />
             </Badge> */}

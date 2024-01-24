@@ -22,7 +22,7 @@ export default function AddBody() {
   const { state } = useLocation();
 
   const [list, setList] = useState([]);
-  // console.log(useLocation().state.rol,'lllll')
+  console.log(location.pathname, "lllll");
 
   const Val = location.state ? location.state.title : "English";
 
@@ -35,8 +35,10 @@ export default function AddBody() {
       >
         <TabValueComponent activeTabValue={handleTabClick} />
 
-        <div>{activeTab === 1 && <Home />}</div>
-        <div>{activeTab === 2 && <MyprofileTab />}</div>
+        <div id='home'>{location.pathname === "/student" && <Home />}</div>
+        <div id='profile'>
+          {location.pathname === "/student/2" && <MyprofileTab />}
+        </div>
         <div>{activeTab === 3 && <LearningProgress />}</div>
       </div>
     </div>

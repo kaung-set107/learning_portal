@@ -10,7 +10,7 @@ import apiInstance from "../../../util/api";
 // import Swal from 'sweetalert2';
 // import Result from './result'
 export default function QuizPage() {
-  const [timeLeft, setTimeLeft] = useState(60);
+  const [timeLeft, setTimeLeft] = useState(10);
   const [clicked, setClicked] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -90,12 +90,14 @@ export default function QuizPage() {
     // setOneHour(
     //   new Date(new Date().setHours(new Date().getHours() + 1)).toISOString()
     // );
+    console.log(studentAnswerList, "answer lIst");
     const timerInterval = setInterval(() => {
       setTimeLeft((prevTime) => {
         if (prevTime === 0) {
           clearInterval(timerInterval);
+          handleResult();
           nextQuestion();
-          return 30; // Reset timer for the next question
+          return 10; // Reset timer for the next question
         }
         return prevTime - 1;
       });
@@ -114,7 +116,8 @@ export default function QuizPage() {
     }
 
     let answerObj =
-      quizList.questions.filter((ans, i) => i === ind)[0].correctAnswer === cas;
+      quizList.questions.filter((ans, i) => i === ind)[0]?.correctAnswer ===
+      cas;
     //console.log(answerObj, 'answerobj')
     let updated_points = answerObj ? points + 1 : points;
     //console.log(updated_points, 'point');
@@ -123,105 +126,62 @@ export default function QuizPage() {
 
     if (nextQuestion < quizList.questions.length) {
       setCounter(nextQuestion);
-      // console.log(nextQuestion, 'next')
     } else {
       setCounter(0);
-
-      // setTrueAnswer([...trueAnswer.length])
-      // console.log('hello')
-
-      // console.log(quizList.questions.map((item) => (
-      //   {
-      //     ...item, studentAnswer: studentAnswer
-      //   }
-      // )), 'questions')
       console.log(TotalMark, "in next");
-      // console.log(studentAnswer, 'anasLasts')
-      // let objectData = null;
-      // for (let i = 0; i < studentAnswerList.length; i++) {
 
-      //   if (i < studentAnswerList.length) {
-      //     // If it's the first iteration, create a new object
-      //     objectData = { ...studentAnswerList[i] };
-      //     console.log('Updating objectData:', objectData);
-      //   }
-      //   // studentAnswerList[i].studentAnswer
-      //   // console.log(studentAnswerList[i].studentAnswer, 'ans');
-
-      // }
-      // console.log(objectData, 'newObj')
-      // const objectDataArray = studentAnswerList.map((item, index) => {
-      //   console.log(`Object ${index + 1}:`, item.studentAnswer);
-      //   return { ...item };
-      // });
-
-      // Now you can access the array of new objects
-      // const Ans = studentAnswerList.map((i) => (i.id))
-      // console.log(Ans, 'Aaaa')
-      // console.log((quizList.questions.map((i) => (i._id))), 'quiLis')
-      console.log(
-        "Array of new objects:",
-        quizList.questions.map((i, ind) => {
-          return {
-            question: i.question,
-            type: i.type,
-            mark: i.mark,
-
-            options: i.options,
-            answerType: i.answerType,
-            correctAnswer: i.correctAnswer,
-            studentAnswer: studentAnswerList.filter((el) => el.id === i._id)[0]
-              .studentAnswer,
-          };
-        })
-      );
-      const data = {
-        quiz: quizList._id,
-        student: studentID,
-        answerDate: Date.now(),
-        updatedQuestions: quizList.questions.map((i) => {
-          return {
-            question: i.question,
-            type: i.type,
-            mark: i.mark,
-
-            options: i.options,
-            answerType: i.answerType,
-            correctAnswer: i.correctAnswer,
-            studentAnswer: studentAnswerList.filter((el) => el.id === i._id)[0]
-              .studentAnswer,
-          };
-        }),
-        totalMark: TotalMark,
-        status: TotalMark >= quizList.passMark ? "pass" : "fail",
-      };
-      apiInstance
-        .post("quiz-results", data)
-        .then(function () {
-          // Swal.fire({
-          //   icon: "success",
-          //   title: "Created Quiz Successful",
-          //   text: "Nice!",
-          //   confirmButtonText: "OK",
-          //   confirmButtonColor: "#3085d6",
-          // });
-          navigate("/quiz-result");
-        })
-        .catch((error) => {
-          alert(error);
-        });
-
-      localStorage.removeItem("formSubmission");
-
-      setShowOrigin(false);
-
+      handleResult();
       // console.log(TotalMark >= quizList.passMark,'passmark')
       // console.log(TotalMark,'mark')
     }
+
     // handleAns()
     displayCorrect(answerObj);
   };
 
+  const handleResult = () => {
+    //Quiz-Result Create
+    const data = {
+      quiz: quizList._id,
+      student: studentID,
+      answerDate: Date.now(),
+      updatedQuestions: quizList.questions.map((i) => {
+        return {
+          question: i.question,
+          type: i.type,
+          mark: i.mark,
+
+          options: i.options,
+          answerType: i.answerType,
+          correctAnswer: i.correctAnswer,
+          studentAnswer: studentAnswerList.filter((el) => el.id === i._id)[0]
+            ?.studentAnswer,
+        };
+      }),
+      totalMark: TotalMark,
+      status: TotalMark >= quizList.passMark ? "pass" : "fail",
+    };
+
+    apiInstance
+      .post("quiz-results", data)
+      .then(function () {
+        // Swal.fire({
+        //   icon: "success",
+        //   title: "Created Quiz Successful",
+        //   text: "Nice!",
+        //   confirmButtonText: "OK",
+        //   confirmButtonColor: "#3085d6",
+        // });
+        navigate("/quiz-result");
+      })
+      .catch((error) => {
+        alert(error);
+      });
+
+    localStorage.removeItem("formSubmission");
+
+    setShowOrigin(false);
+  };
   const handleAns = (val, ca, index, mark, id) => {
     setClicked(true);
     setShowAlert(true);
