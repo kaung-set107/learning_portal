@@ -101,7 +101,7 @@ export default function App() {
 
   return (
     <>
-      <div className='mt-5 mx-4'>
+      <div className='mt-5' style={{ width: "1440px" }}>
         <div className='flex justify-between' style={{ padding: "24px 40px" }}>
           <div className='align-left'>
             <Image src={MSI} width={180} height={60} />

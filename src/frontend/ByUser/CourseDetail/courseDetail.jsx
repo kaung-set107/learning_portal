@@ -397,7 +397,7 @@ export default function CourseDetail(props) {
                   style={{
                     width: "642px",
                     height: "304px",
-                    padding: "107.35px 15.212px 107.35px 13.038px",
+                    padding: "107.35px 15.212px 107.35px 30.038px",
                   }}
                 >
                   <span
@@ -436,7 +436,7 @@ export default function CourseDetail(props) {
                     <Image
                       src={Certi}
                       style={{
-                        width: "516.905px",
+                        width: "416.905px",
                         height: "346.011px",
                       }}
                     />

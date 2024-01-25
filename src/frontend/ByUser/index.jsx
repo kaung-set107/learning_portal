@@ -7,7 +7,7 @@ export default function App() {
   // const {state}=useLocation()
   // console.log(useLocation().state.rol,'lllll')
   return (
-    <div className='flex flex-col gap-4'>
+    <div className=' flex flex-col gap-4'>
       {/* three card */}
       <Nav />
       <Body />

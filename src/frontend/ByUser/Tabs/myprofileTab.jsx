@@ -78,10 +78,11 @@ export default function MyprofileTab() {
                     fontWeight: "500",
                     fontSize: "18px",
                   }}
-                  className=''
+                  className='flex gap-8'
                 >
                   <FontAwesomeIcon icon={faEnvelope} size='xl' />
-                  &nbsp; {student?.email}
+                  &nbsp;
+                  {student?.email}
                 </span>
               </div>
               <div className='py-4'>
@@ -90,7 +91,7 @@ export default function MyprofileTab() {
                     fontWeight: "500",
                     fontSize: "18px",
                   }}
-                  className=''
+                  className='flex gap-8'
                 >
                   <FontAwesomeIcon icon={faPhoneVolume} size='xl' />
                   &nbsp; {student?.phone}
@@ -102,7 +103,7 @@ export default function MyprofileTab() {
                     fontWeight: "500",
                     fontSize: "18px",
                   }}
-                  className=''
+                  className='flex gap-8'
                 >
                   <FontAwesomeIcon icon={faClock} size='xl' />
                   &nbsp;
@@ -119,7 +120,7 @@ export default function MyprofileTab() {
                     fontWeight: "500",
                     fontSize: "18px",
                   }}
-                  className=''
+                  className='flex gap-8'
                 >
                   <FontAwesomeIcon icon={faUser} size='xl' />
                   &nbsp;{student?.code}

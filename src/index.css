@@ -35,3 +35,12 @@ body{
   align-items: center;
   cursor: pointer;
 } */
+.container{
+  width:100%
+}
+
+@media(max-width:1440px){
+  .container{
+    max-width:1440px;
+  }
+}

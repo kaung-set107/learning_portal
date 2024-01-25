@@ -18,6 +18,7 @@ import Book from "../../../../assets/img/book.svg";
 import Date from "../../../../assets/img/date.svg";
 import Person from "../../../../assets/img/person.svg";
 import Time from "../../../../assets/img/time.svg";
+import WhiteTime from "../../../../assets/img/whitetime.svg";
 import Certi from "../../../../assets/img/certi.svg";
 import Nav from "../../../home/header";
 import Head from "../../head";
@@ -28,11 +29,13 @@ import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 export default function CourseDetail(props) {
   const location = useLocation();
   const navigate = useNavigate();
-  console.log(location.state.courseData, "sub ii");
+  const SubData = location.state.data;
+  // console.log(location.state.data, "sub ii");
   const courseData = location.state.courseData;
-  console.log(props.id, "id");
+  // console.log(props.id, "id");
   const [subjectList, setSubjectList] = useState([]);
-  const [subjectAndTeacherList, setSubjectAndTeacherList] = useState([]);
+  const [teacherName, setTeacherName] = useState([]);
+  const [teacherImage, setTeacherImage] = useState([]);
   useEffect(() => {
     const getCourseDetail = async () => {
       await apiInstance.get("courses/" + props.id).then((res) => {
@@ -43,12 +46,15 @@ export default function CourseDetail(props) {
     const getSubjects = async () => {
       await apiInstance.get("subjects").then((res) => {
         console.log(
-          res.data.data.filter((el) => el.course._id === props.id),
+          res.data.data.filter((el) => el._id === SubData._id)[0],
           "c subject"
         );
-        setSubjectAndTeacherList(
-          res.data.data.filter((el) => el.course._id === props.id)
-        );
+        const Filter = res.data.data.filter((el) => el._id === SubData._id)[0];
+        setTeacherName(Filter);
+        const Img = getFile({
+          payload: Filter.instructor.image,
+        });
+        setTeacherImage(Img);
       });
     };
     getSubjects();
@@ -61,12 +67,12 @@ export default function CourseDetail(props) {
   return (
     <>
       <Nav />
-      <div style={{ padding: "24px 40px" }}>
+      <div style={{ padding: "24px 20px 100px 40px" }}>
         <Head />
 
         <div className='flex flex-col flex-grow gap-10 duration-100'>
           {/* Video Section */}
-          <div className='flex gap-32 pt-20'>
+          <div className='flex gap-56 pt-20'>
             <div style={{ width: "900px" }} className='flex gap-2'>
               <div>
                 <Button
@@ -77,7 +83,7 @@ export default function CourseDetail(props) {
                   className='flex hove:cursor-pointer'
                 >
                   <FontAwesomeIcon icon={faAngleLeft} size='2xl' />
-                  <span className='mt-1 font-semibold'>Back</span>
+                  {/* <span className='mt-1 font-semibold'>Back</span> */}
                 </Button>
               </div>
               <div>
@@ -147,7 +153,6 @@ export default function CourseDetail(props) {
               </div>
             </div>
           </div>
-
           {/* Detail Section */}
           <div style={{ height: "241px" }}>
             <div className='grid grid-cols-4 gap-10'>
@@ -171,11 +176,13 @@ export default function CourseDetail(props) {
                   style={{
                     fontSize: "24px",
                     fontWeight: "700",
-                    width: "98px",
+                    paddingLeft: "40px",
+                    width: "298px",
                     height: "29px",
                   }}
                 >
-                  6 Weeks
+                  {parseInt((teacherName?.duration * 30) / 7)} Weeks &{" "}
+                  {(teacherName?.duration * 30) % 7} Days
                 </span>
               </div>
               <div
@@ -202,7 +209,7 @@ export default function CourseDetail(props) {
                     height: "29px",
                   }}
                 >
-                  Tr.Jenny
+                  Tr.{teacherName.instructor?.name}
                 </span>
               </div>
               <div
@@ -235,7 +242,7 @@ export default function CourseDetail(props) {
                     height: "29px",
                   }}
                 >
-                  15 Students
+                  {teacherName?.noOfEnrolledStudent} Students
                 </span>
               </div>
               <div
@@ -267,7 +274,6 @@ export default function CourseDetail(props) {
               </div>
             </div>
           </div>
-
           {/* About Section */}
           <div className='flex'>
             <div style={{ width: "946px", padding: "24px" }}>
@@ -317,6 +323,398 @@ export default function CourseDetail(props) {
               }}
             >
               <Image src={ReadBook} />
+            </div>
+          </div>
+          {/* Meet Teacher */}
+          <div style={{ height: "693px" }} className='flex flex-col gap-10'>
+            {" "}
+            <span style={{ fontSize: "40px", fontWeight: "700" }}>
+              Meet Your Teacher
+            </span>
+            <div
+              style={{ width: "1360px", height: "565px" }}
+              className='flex gap-20'
+            >
+              <div>
+                <Image
+                  style={{ width: "565px", height: "565px" }}
+                  // alt={teacherName.instructor.image?.originalname}
+                  src={teacherImage}
+                />
+              </div>
+              <div
+                style={{
+                  width: "718px",
+                  height: "365px",
+                  padding: "80px 10px 40px 20px",
+                }}
+              >
+                {/* Info */}
+                <div className='flex flex-col gap-2'>
+                  <span style={{ fontSize: "40px", fontWeight: "700" }}>
+                    {teacherName.instructor?.name}
+                  </span>
+                  <span style={{ fontSize: "24px", fontWeight: "500" }}>
+                    {teacherName.course?.title} Teacher
+                  </span>
+                  {/* Email & Phone */}
+                  <div className=''>
+                    <span
+                      style={{
+                        fontSize: "14px",
+                        fontWeight: "800",
+                        backgroundColor: "#4AACFF",
+                        borderRadius: "12px",
+                        width: "73px",
+                        height: "33px",
+                        padding: "8px",
+                        color: "#ED1A00",
+                      }}
+                    >
+                      Email : {teacherName.instructor?.email}
+                    </span>{" "}
+                    &nbsp;
+                    <span
+                      style={{
+                        fontSize: "14px",
+                        fontWeight: "800",
+                        backgroundColor: "#4AACFF",
+                        borderRadius: "12px",
+                        width: "73px",
+                        height: "33px",
+                        padding: "8px",
+                        color: "#ED1D25",
+                      }}
+                    >
+                      Phone : {teacherName.instructor?.phone}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Description */}
+                <div
+                  style={{
+                    width: "718px",
+                    height: "auto",
+                    paddingTop: "20px",
+                  }}
+                >
+                  <p
+                    style={{
+                      fontSize: "24px",
+                      fontWeight: "500",
+                    }}
+                  >
+                    Hello, I'm [Teacher's Name], your dedicated IELTS
+                    instructor. With [X] years of teaching experience and a
+                    [Your Degree] in [Your Field], I'm committed to guiding you
+                    to success in the IELTS exam. My classes focus on
+                    interactive learning and personalized feedback to enhance
+                    your skills. Let's work together to achieve your IELTS
+                    goals!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Course Curriculum Section */}
+          <div className=' flex flex-col gap-5'>
+            <span style={{ fontSize: "40px", fontWeight: "700" }}>
+              Course Curriculum
+            </span>
+            <div className='flex flex-col gap-10'>
+              <div
+                style={{
+                  width: "auto",
+                  height: "220px",
+                  backgroundColor: "#215887",
+                  borderLeft: "5px solid #F00",
+                  padding: "40px",
+                  alignItems: "center",
+                }}
+              >
+                <div className='flex gap-52 justify-between'>
+                  {/* Left */}
+                  <div
+                    className='flex flex-col gap-6'
+                    style={{
+                      width: "86px",
+                      height: "96px",
+                      alignItems: "center",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: "24px",
+                        fontWeight: "600",
+                        color: "#FFF",
+                        paddingTop: "10px",
+                      }}
+                    >
+                      Module
+                    </span>
+                    <span
+                      style={{
+                        fontSize: "64px",
+                        fontWeight: "600",
+                        color: "#FFF",
+                      }}
+                    >
+                      1
+                    </span>
+                  </div>
+                  {/* Center */}
+                  <div className='flex flex-col gap-6'>
+                    <span
+                      style={{
+                        fontSize: "32px",
+                        fontWeight: "600",
+                        color: "#FFF",
+                      }}
+                    >
+                      Introduction to IELTS
+                    </span>
+                    <p
+                      style={{
+                        width: "674px",
+
+                        fontSize: "16px",
+                        fontWeight: "500",
+                        color: "#FFF",
+                      }}
+                    >
+                      Get ready to enhance your listening skills! I'm [Your
+                      Name], your guide through the IELTS Listening module.
+                      Let's dive into interactive activities to sharpen your
+                      ability to understand spoken English
+                    </p>
+                  </div>
+                  {/* Mins */}
+                  <div style={{ color: "#FFF" }} className='flex gap-2'>
+                    <Image src={WhiteTime} />
+                    <span className='mt-1'>15 mins</span>
+                  </div>
+                </div>
+              </div>
+              <div
+                style={{
+                  width: "auto",
+                  height: "220px",
+                  backgroundColor: "#7ECDC6",
+                  borderLeft: "5px solid #0047FF",
+                  padding: "40px",
+                  alignItems: "center",
+                }}
+              >
+                <div className='flex gap-52 justify-between'>
+                  {/* Left */}
+                  <div
+                    className='flex flex-col gap-6'
+                    style={{
+                      width: "86px",
+                      height: "96px",
+                      alignItems: "center",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: "24px",
+                        fontWeight: "600",
+                        color: "#FFF",
+                        paddingTop: "10px",
+                      }}
+                    >
+                      Module
+                    </span>
+                    <span
+                      style={{
+                        fontSize: "64px",
+                        fontWeight: "600",
+                        color: "#FFF",
+                      }}
+                    >
+                      2
+                    </span>
+                  </div>
+                  {/* Center */}
+                  <div className='flex flex-col gap-6'>
+                    <span
+                      style={{
+                        fontSize: "32px",
+                        fontWeight: "600",
+                        color: "#FFF",
+                      }}
+                    >
+                      Introduction to IELTS
+                    </span>
+                    <p
+                      style={{
+                        width: "674px",
+
+                        fontSize: "16px",
+                        fontWeight: "500",
+                        color: "#FFF",
+                      }}
+                    >
+                      Get ready to enhance your listening skills! I'm [Your
+                      Name], your guide through the IELTS Listening module.
+                      Let's dive into interactive activities to sharpen your
+                      ability to understand spoken English
+                    </p>
+                  </div>
+                  {/* Mins */}
+                  <div style={{ color: "#FFF" }} className='flex gap-2'>
+                    <Image src={WhiteTime} />
+                    <span className='mt-1'>15 mins</span>
+                  </div>
+                </div>
+              </div>
+              <div
+                style={{
+                  width: "auto",
+                  height: "220px",
+                  backgroundColor: "#FFB700",
+                  borderLeft: "5px solid #B20015",
+                  padding: "40px",
+                  alignItems: "center",
+                }}
+              >
+                <div className='flex gap-52 justify-between'>
+                  {/* Left */}
+                  <div
+                    className='flex flex-col gap-6'
+                    style={{
+                      width: "86px",
+                      height: "96px",
+                      alignItems: "center",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: "24px",
+                        fontWeight: "600",
+                        color: "#FFF",
+                        paddingTop: "10px",
+                      }}
+                    >
+                      Module
+                    </span>
+                    <span
+                      style={{
+                        fontSize: "64px",
+                        fontWeight: "600",
+                        color: "#FFF",
+                      }}
+                    >
+                      3
+                    </span>
+                  </div>
+                  {/* Center */}
+                  <div className='flex flex-col gap-6'>
+                    <span
+                      style={{
+                        fontSize: "32px",
+                        fontWeight: "600",
+                        color: "#FFF",
+                      }}
+                    >
+                      Introduction to IELTS
+                    </span>
+                    <p
+                      style={{
+                        width: "674px",
+
+                        fontSize: "16px",
+                        fontWeight: "500",
+                        color: "#FFF",
+                      }}
+                    >
+                      Get ready to enhance your listening skills! I'm [Your
+                      Name], your guide through the IELTS Listening module.
+                      Let's dive into interactive activities to sharpen your
+                      ability to understand spoken English
+                    </p>
+                  </div>
+                  {/* Mins */}
+                  <div style={{ color: "#FFF" }} className='flex gap-2'>
+                    <Image src={WhiteTime} />
+                    <span className='mt-1'>15 mins</span>
+                  </div>
+                </div>
+              </div>
+              <div
+                style={{
+                  width: "auto",
+                  height: "220px",
+                  backgroundColor: "#ED1D25",
+                  borderLeft: "5px solid #215887",
+                  padding: "40px",
+                  alignItems: "center",
+                }}
+              >
+                <div className='flex gap-52 justify-between'>
+                  {/* Left */}
+                  <div
+                    className='flex flex-col gap-6'
+                    style={{
+                      width: "86px",
+                      height: "96px",
+                      alignItems: "center",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: "24px",
+                        fontWeight: "600",
+                        color: "#FFF",
+                        paddingTop: "10px",
+                      }}
+                    >
+                      Module
+                    </span>
+                    <span
+                      style={{
+                        fontSize: "64px",
+                        fontWeight: "600",
+                        color: "#FFF",
+                      }}
+                    >
+                      4
+                    </span>
+                  </div>
+                  {/* Center */}
+                  <div className='flex flex-col gap-6'>
+                    <span
+                      style={{
+                        fontSize: "32px",
+                        fontWeight: "600",
+                        color: "#FFF",
+                      }}
+                    >
+                      Introduction to IELTS
+                    </span>
+                    <p
+                      style={{
+                        width: "674px",
+
+                        fontSize: "16px",
+                        fontWeight: "500",
+                        color: "#FFF",
+                      }}
+                    >
+                      Get ready to enhance your listening skills! I'm [Your
+                      Name], your guide through the IELTS Listening module.
+                      Let's dive into interactive activities to sharpen your
+                      ability to understand spoken English
+                    </p>
+                  </div>
+                  {/* Mins */}
+                  <div style={{ color: "#FFF" }} className='flex gap-2'>
+                    <Image src={WhiteTime} />
+                    <span className='mt-1'>15 mins</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
