@@ -1,18 +1,19 @@
-import { useState, useEffect } from "react";
-import { Image, Button } from "@nextui-org/react";
+import { ReactElement, useState, useEffect } from "react";
+import { Image, Button, Card } from "@nextui-org/react";
 import { Link } from "@nextui-org/react";
 import MSINav from "./msinav";
-import Testimonials from "./testimonials";
+import { Testimonials } from "./Testimonials";
 import Welcome from "../../assets/img/welcomeTeam.jpg";
 import EHome from "../../assets/img/EllipseHome.png";
 import EHalf from "../../assets/img/EllipseHalf.png";
 import EBlue from "../../assets/img/EllipseHalf-blue.png";
 import ELP from "./image/el.png";
+import Footer from "./footer";
 import apiInstance from "../../util/api";
 import { getFile } from "../../util";
 import { Fade } from "react-awesome-reveal";
 // import Footer from '../../frontend/home/footer';
-export default function body() {
+const Body = () => {
   const [courseList, setCourseList] = useState([]);
   const [catList, setCatList] = useState([]);
   const [events, setEvents] = useState([
@@ -21,7 +22,6 @@ export default function body() {
       title: "MSI Academy Education Center - Graduration Ceremony",
       createdAt: "November 12, 2022",
       shortDescription: "GRADUATION CEREMONY",
-      coverPic: "/assets/images/welcomeTeam.jpg",
     },
   ]);
 
@@ -51,130 +51,107 @@ export default function body() {
   return (
     <div className=''>
       <MSINav />
-      <>
-        <div className='flex items-center justify-around flex-wrap relative mb-10 py-[100px]'>
-          <img
-            src={EHome}
-            className='absolute top-0 left-0 z-0 w-[150px] md:w-[250px]'
-            alt=''
-          />
 
-          <div className='w-full px-5 md:m-0 lg:w-[490px] leading-[60px] static z-10'>
-            <h1
-              className='text-[50px] font-[semibold]'
-              style={{ color: "#BC1F40", fontWeight: "900" }}
-            >
-              Welcome to MSI Academy
-            </h1>
-            <p className='font-[regular] text-xl'>
-              MSI Academy, Myanmar Scholastic Innovation Academy, is fulfilling
-              the educational and language requirements for Myanmar young
-              leaners' dreams of international education in U.S.A,UK,Europe and
-              Asia countries as well as kindly consulting in choosing the
-              appropriate specializations and engaging the career life style in
-              accordance with students' apptitude.
-            </p>
-          </div>
-          <div className='px-5 py-10 z-0'>
-            <Image src={Welcome} />
-          </div>
+      <div className='flex items-center justify-around flex-wrap relative mb-10 py-[100px]'>
+        <img
+          src={EHome}
+          className='absolute top-0 left-0 z-0 w-[150px] md:w-[250px]'
+          alt=''
+        />
 
-          <img
-            src={EHalf}
-            className='absolute bottom-0 right-0 z-10 w-[100px] md:w-[150px]'
-            alt=''
-          />
-        </div>
-
-        <div className='p-5 md:p-10 relative'>
-          <img
-            src={EBlue}
-            className='absolute bottom-0 left-0 z-0 w-[150px] md:w-[250px]'
-            alt=''
-          />
+        <div className='w-full px-5 md:m-0 lg:w-[490px] leading-[60px] static z-10'>
           <h1
-            className='text-[40px] font-[semibold]  ml-5 py-10'
+            className='text-[50px] text-secondary font-[semibold]'
             style={{ color: "#BC1F40", fontWeight: "900" }}
           >
-            Courses We Offer
+            Welcome to MSI Academy
           </h1>
+          <p className='font-[regular] text-xl w-full md:w-[90%]'>
+            MSI Academy, Myanmar Scholastic Innovation Academy, is fulfilling
+            the educational and language requirements for Myanmar young leaners'
+            dreams of international education in U.S.A,UK,Europe and Asia
+            countries as well as kindly consulting in choosing the appropriate
+            specializations and engaging the career life style in accordance
+            with students' apptitude.
+          </p>
+        </div>
+        <div className='px-5 py-10 z-0'>
+          <Image src={Welcome} />
+        </div>
 
-          {catList.map((item, index) => (
-            <Fade>
-              <div className='flex gap-6'>
-                <div className='pt-32'>
-                  {/* <div
+        <img
+          src={EHalf}
+          className='absolute bottom-0 right-0 z-10 w-[100px] md:w-[150px]'
+          alt=''
+        />
+      </div>
+
+      <div className='p-5 md:p-10 relative'>
+        <img
+          src={EBlue}
+          className='absolute bottom-0 left-0 z-0 w-[150px] md:w-[250px]'
+          alt=''
+        />
+        <h1
+          className='text-[40px] font-[semibold] py-5'
+          style={{ color: "#BC1F40", fontWeight: "900" }}
+        >
+          Courses We Offer
+        </h1>
+
+        <div className='flex gap-2 items-center justify-center lg:justify-between flex-wrap py-10'>
+          {courseList.map((e) => (
+            <div
+              onClick={() => handleRoute(e)}
+              style={{ height: "470px" }}
+              className='w-full hover:-translate-y-1 hover:scale-110 hover:rotate-1 hover:duration-500 md:w-[390px] h-full md:h-[610px]'
+            >
+              <div>
+                <Image
+                  // style={{ width: "500px", height: "280px" }}
+                  alt={e.image?.originalname}
+                  src={getFile({ payload: e.image })}
+                  className='w-full h-full md:w-[500px] md:h-[280px]'
+                />
+                <div className='flex p-5 flex-col justify-start flex-grow '>
+                  <span
                     style={{
-                      color: "#000",
-                      fontSize: "40px",
+                      fontFamily: "Inter",
                       fontWeight: "600px",
-                      wordSpacing: "-1.6px",
+                      fontSize: "24px",
+                      letterSpacing: "-0.96px",
                     }}
                   >
-                    {item?.title} Courses
-                  </div> */}
+                    {e.title}
+                  </span>
                   <div
-                    className='grid grid-cols-2 gap-10 pt-10 md:grid-cols-3'
-                    style={{ width: "1440px", height: "auto" }}
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: "400px",
+                      width: "400px",
+                      height: "auto",
+                    }}
                   >
-                    {courseList
-                      .filter((el) => el.category._id === item._id)
-                      .map((e) => (
-                        <div
-                          onClick={() => handleRoute(e)}
-                          style={{ height: "470px" }}
-                          className='min-w:[490px]  flex flex-col gap-3 hover:-translate-y-1 hover:rotate-1 hover:scale-110 duration-500'
-                        >
-                          <div>
-                            <Image
-                              style={{ width: "500px", height: "280px" }}
-                              alt={e.image?.originalname}
-                              src={getFile({ payload: e.image })}
-                            />
-                            <div className='flex p-5 flex-col justify-start flex-grow'>
-                              <span
-                                style={{
-                                  fontFamily: "Inter",
-                                  fontWeight: "600px",
-                                  fontSize: "24px",
-                                  letterSpacing: "-0.96px",
-                                }}
-                              >
-                                {e.title}
-                              </span>
-                              <div
-                                style={{
-                                  fontSize: "16px",
-                                  fontWeight: "400px",
-                                  width: "500px",
-                                  height: "auto",
-                                }}
-                              >
-                                {e?.description}
-                              </div>
-                              {/* card footer */}
-                              <div
-                                className='py-10'
-                                style={{
-                                  width: "388px",
-                                  height: "19px",
-                                  fontSize: "14px",
-                                  fontWeight: "400px",
-                                }}
-                              >
-                                Duration -{" "}
-                                <span style={{ color: "#262FD9" }}>
-                                  3 months
-                                </span>
-                                <br></br>
-                                Price -{" "}
-                                <span style={{ color: "#262FD9" }}>
-                                  50000 MMK
-                                </span>
-                              </div>
+                    {e?.description.substring(0, 50)}...
+                  </div>
+                  {/* card footer */}
+                  <div
+                    className='py-10'
+                    style={{
+                      width: "388px",
+                      height: "19px",
+                      fontSize: "14px",
+                      fontWeight: "400px",
+                    }}
+                  >
+                    Duration -{" "}
+                    <span style={{ color: "#262FD9" }}>3 months</span>
+                    <br></br>
+                    Price - <span style={{ color: "#262FD9" }}>50000 MMK</span>
+                  </div>
 
-                              {/* rating state */}
-                              {/* <div
+                  {/* rating state */}
+                  {/* <div
                                 style={{
                                   width: "388px",
                                   height: "19px",
@@ -184,12 +161,12 @@ export default function body() {
                               >
                                 <ReactStars {...firstExample} />
                               </div> */}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
+                </div>
+              </div>
+            </div>
+          ))}
 
-                    {/* {item.subjects?.length > 3 && (
+          {/* {item.subjects?.length > 3 && (
                       <div className='py-10'>
                         <button
                           style={{
@@ -216,65 +193,64 @@ export default function body() {
                         </button>
                       </div>
                     )} */}
-                  </div>
-                </div>
-              </div>
-            </Fade>
-          ))}
+        </div>
 
-          <Link href='/courses'>
-            <h1 className='text-2xl py-10 text-primary hover:text-secondary font-[semibold] text-center cursor-pointer'>
-              See All
-            </h1>
+        <Link href='/courses' className='flex justify-center py-10'>
+          <h1 className='text-2xl py-10 text-secondary hover:text-danger font-semibold text-center cursor-pointer'>
+            See All
+          </h1>
+        </Link>
+      </div>
+
+      <div
+        className='p-5 md:p-10 min-w[768px]'
+        style={{ backgroundColor: `rgb(188, 31, 64)` }}
+      >
+        <div className='flex items-center flex-wrap justify-between md:px-[135px] my-10'>
+          <h3 className='text-white text-[40px] leading-[50px] font-semibold'>
+            Our Events
+          </h3>
+          <Link href='/events'>
+            <button className='text-white text-[20px] hover:text-primary font-semibold'>
+              View All
+            </button>
           </Link>
         </div>
-
-        <div className='p-5 md:p-10 bg-secondary'>
-          <div className='flex items-center flex-wrap justify-between md:px-[135px] my-10'>
-            <h3 className='text-white text-[40px] leading-[50px] font-[semibold]'>
-              Our Events
-            </h3>
-            <button className='text-white text-[20px] hover:text-primary font-[semibold]'>
-              <Link href='/events'>View all</Link>
-            </button>
-          </div>
-          <div className='flex items-center justify-around flex-wrap'>
-            {events?.map((b, index) => {
-              return (
-                <Link href={`/events/${b._id}`} key={index}>
-                  <div className='relative cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 my-10'>
-                    <Image
-                      src={b.coverPic}
-                      className='absolute object-cover w-full h-full z-10 rounded-[24px]'
-                      width={320}
-                      height={354}
-                    ></Image>
-                    <div
-                      className='h-[200px] flex flex-col items-start justify-center absolute bottom-1 w-full p-5 z-20 rounded-[24px]'
-                      style={{
-                        background:
-                          "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 125.65%)",
-                      }}
-                    >
-                      <h3 className='font-[semibold] text-[20px] ] text-white '>
-                        {b.title}
-                      </h3>
-                      <p className='font-[light] text-[15px] text-white'>
-                        {b.createdAt}
-                      </p>
-                    </div>
+        <div className='flex items-center justify-around flex-wrap'>
+          {events?.map((b, index) => {
+            return (
+              <Link href={`/events/${b._id}`} key={index}>
+                <div className='relative cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 my-10'>
+                  <Image
+                    src={Welcome}
+                    className='object-cover w-full h-full z-10 rounded-[24px]'
+                    width={320}
+                    height={354}
+                  />
+                  <div
+                    className='h-[200px] flex flex-col items-start justify-center absolute bottom-1 w-full p-5 z-20 rounded-[24px]'
+                    style={{
+                      background:
+                        "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 125.65%)",
+                    }}
+                  >
+                    <h3 className=' text-[20px]  text-white font-semibold '>
+                      {b.title}
+                    </h3>
+                    <p className='font-[light] text-[15px] text-white'>
+                      {b.createdAt}
+                    </p>
                   </div>
-                </Link>
-              );
-            })}
-          </div>
+                </div>
+              </Link>
+            );
+          })}
         </div>
-        <Testimonials />
-      </>
-
-      {/* <div className='bg-slate-900 h-32 py-4 px-5 flex items-end'>
-   <Footer/>
-     </div> */}
+      </div>
+      <Testimonials />
+      <Footer />
     </div>
   );
-}
+};
+
+export default Body;

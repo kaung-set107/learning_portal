@@ -9,10 +9,11 @@ import {
 import { SearchIcon } from "../../components/Navbar/SearchIcon";
 // import AcmeLogo from "../../assets/lp.png";
 import { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faGear } from "@fortawesome/free-solid-svg-icons";
+
 import { getFile } from "../../util/index";
 import Theme from "../../components/ThemeSwitch/index";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars, faGear } from "@fortawesome/free-solid-svg-icons";
 import {
   Dropdown,
   DropdownTrigger,

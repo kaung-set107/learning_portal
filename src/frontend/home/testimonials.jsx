@@ -3,8 +3,8 @@ import st1 from "../../assets/img/st1.jpeg";
 import st2 from "../../assets/img/st2.jpeg";
 import st3 from "../../assets/img/st3.jpg";
 import { Image } from "@nextui-org/react";
-
-const Testimonials = () => {
+import Swiper from "react-id-swiper";
+export const Testimonials = () => {
   const images = [
     {
       img: st1,
@@ -22,29 +22,36 @@ const Testimonials = () => {
       rev: "I attended GED at MSI Academy for 4 months and it is one of the best choice I've ever made.Teachers are not only excellent at teaching but also very patience. Plus, the staff members are also very kind they often check on students to see if they need anything.So i big recommend MSI.",
     },
   ];
-
+  const params = {
+    effect: "cube",
+    grabCursor: true,
+    cubeEffect: {
+      shadow: true,
+      slideShadows: true,
+      shadowOffset: 20,
+      shadowScale: 0.94,
+    },
+    pagination: {
+      el: ".swiper-pagination",
+    },
+  };
   return (
-    <div className='bg-primary md:bg-white p-0 lg:p-20'>
-      <h2 className='text-white md:text-primary font-[semibold] pt-10 text-4xl ml-9 mb-9 mt-12'>
+    <div className='md:text-[#26496a] text-white md:bg-white p-0 lg:p-20 bg-[#26496a]'>
+      <h2
+        className='text-4xl font-semibold ml-9 py-5'
+        style={{ fontWeight: "900" }}
+      >
         Testimonials
       </h2>
-      <Carousel
-        interval={3000}
-        showIndicators={false}
-        autoPlay={true}
-        infiniteLoop={true}
-        transitionTime={1000}
-        showStatus={false}
-        showThumbs={false}
-      >
+      <div>
         {images.map((st, index) => (
           <div
             key={index}
-            className='bg-primary flex flex-col lg:flex-row justify-center md:py-10 px-5'
+            className='bg-primary flex flex-col gap-10 lg:flex-row justify-center md:py-10 px-5 bg-[#26496a]'
           >
             <div className='flex flex-col justify-center w-full lg:w-2/4 px-10  py-10 text-white text-start'>
-              <h2 className='font-[semibold] text-4xl my-3'>{st.name}</h2>
-              <span className='font-[regular]'>{st.rev}</span>
+              <h2 className='font-semibold text-4xl my-3'>{st.name}</h2>
+              <span className='font-regular'>{st.rev}</span>
             </div>
             <Image
               src={st.img}
@@ -53,10 +60,10 @@ const Testimonials = () => {
               className='object-cover'
               alt='testimonal participant'
             />
+            <div className='border-b-1'></div>
           </div>
         ))}
-      </Carousel>
+      </div>
     </div>
   );
 };
-export default Testimonials;
