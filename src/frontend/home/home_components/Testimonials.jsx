@@ -1,8 +1,9 @@
 import { Carousel } from "react-responsive-carousel";
-import st1 from "../../assets/img/st1.jpeg";
-import st2 from "../../assets/img/st2.jpeg";
-import st3 from "../../assets/img/st3.jpg";
+import st1 from "../../../assets/img/st1.jpeg";
+import st2 from "../../../assets/img/st2.jpeg";
+import st3 from "../../../assets/img/st3.jpg";
 import { Image } from "@nextui-org/react";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Swiper from "react-id-swiper";
 export const Testimonials = () => {
   const images = [
@@ -43,11 +44,19 @@ export const Testimonials = () => {
       >
         Testimonials
       </h2>
-      <div>
+      <Carousel
+        interval={3000}
+        showIndicators={false}
+        autoPlay={true}
+        infiniteLoop={true}
+        transitionTime={1000}
+        showStatus={false}
+        showThumbs={false}
+      >
         {images.map((st, index) => (
           <div
             key={index}
-            className='bg-primary flex flex-col gap-10 lg:flex-row justify-center md:py-10 px-5 bg-[#26496a]'
+            className='bg-[#224362] w-full h-full flex flex-col gap-10 lg:flex-row justify-center md:py-10 px-5 bg-[#26496a]'
           >
             <div className='flex flex-col justify-center w-full lg:w-2/4 px-10  py-10 text-white text-start'>
               <h2 className='font-semibold text-4xl my-3'>{st.name}</h2>
@@ -55,15 +64,13 @@ export const Testimonials = () => {
             </div>
             <Image
               src={st.img}
-              width='370'
-              height='470'
+              style={{ width: "370px", height: "470px" }}
               className='object-cover'
               alt='testimonal participant'
             />
-            <div className='border-b-1'></div>
           </div>
         ))}
-      </div>
+      </Carousel>
     </div>
   );
 };

@@ -1,11 +1,4 @@
-import {
-  Navbar,
-  NavbarContent,
-  NavbarItem,
-  Button,
-  Image,
-  Input,
-} from "@nextui-org/react";
+import { Button, Image, Input } from "@nextui-org/react";
 import { SearchIcon } from "../../components/Navbar/SearchIcon";
 // import AcmeLogo from "../../assets/lp.png";
 import { useState } from "react";
@@ -98,29 +91,55 @@ export default function App() {
               color: "#224362",
             }}
           >
-            <span
-              onClick={() => handleTab(1)}
-              className={activeTab === 1 ? "font-semibold text-lg" : "text-lg"}
-            >
-              Home
+            <span>
+              <Link
+                to='/'
+                className={
+                  location.pathname === "/"
+                    ? "font-semibold text-lg"
+                    : "text-lg"
+                }
+              >
+                Home
+              </Link>
             </span>
-            <span
-              onClick={() => handleTab(2)}
-              className={activeTab === 2 ? "font-semibold text-lg" : "text-lg"}
-            >
-              Courses
+            <span>
+              <Link
+                to='/home-course'
+                className={
+                  location.pathname === "/home-course" ||
+                  location.pathname === "/home-course-detail"
+                    ? "font-semibold text-lg"
+                    : "text-lg"
+                }
+              >
+                {" "}
+                Courses
+              </Link>
             </span>
-            <span
-              onClick={() => handleTab(3)}
-              className={activeTab === 3 ? "font-semibold text-lg" : "text-lg"}
-            >
-              Events
+            <span>
+              <Link
+                to='/event'
+                // className={
+                //   location.pathname === "/home-course"
+                //     ? "font-semibold text-lg"
+                //     : "text-lg"
+                // }
+              >
+                Events
+              </Link>
             </span>
-            <span
-              onClick={() => handleTab(4)}
-              className={activeTab === 4 ? "font-semibold text-lg" : "text-lg"}
-            >
-              About
+            <span>
+              <Link
+                to='/about'
+                className={
+                  location.pathname === "/about"
+                    ? "font-semibold text-lg"
+                    : "text-lg"
+                }
+              >
+                About
+              </Link>
             </span>
             <span
               onClick={() => handleTab(5)}
@@ -138,19 +157,19 @@ export default function App() {
                 <FontAwesomeIcon icon={faBars} size='xl' />
               </DropdownTrigger>
               <DropdownMenu aria-label='Profile Actions' variant='flat'>
+                <DropdownItem key='logout' color='danger'>
+                  Home
+                </DropdownItem>
+                <DropdownItem key='settings'>Courses</DropdownItem>
+                <DropdownItem key='team_settings'>Events</DropdownItem>
+                <DropdownItem key='analytics'>About</DropdownItem>
+                <DropdownItem key='system'>Contact</DropdownItem>
+
                 <DropdownItem key='profile' className='h-14 gap-2'>
                   <span>
                     <Link to='/login'>Login</Link>
                   </span>
                 </DropdownItem>
-                <DropdownItem key='logout' color='danger'>
-                  Home
-                </DropdownItem>
-                <DropdownItem key='settings'>Course</DropdownItem>
-                <DropdownItem key='team_settings'>Class</DropdownItem>
-                <DropdownItem key='analytics'>Subjects</DropdownItem>
-                <DropdownItem key='system'>Contact</DropdownItem>
-                <DropdownItem key='configurations'>About</DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>

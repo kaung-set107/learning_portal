@@ -1,5 +1,10 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Login from "./pages/Login/login";
+// Home Web Page
+import FHome from "./frontend/home/body";
+import About from "./frontend/home/about.jsx";
+import HomeCourse from "./frontend/home/home-course/home-course.jsx";
+import HomeCourseDetail from "./frontend/home/home-course/course-detail.jsx";
 
 import Dashboard from "./pages/Dashboard/index.jsx";
 import Instructor from "./pages/Instructor/InstructorList";
@@ -28,7 +33,7 @@ import StudentSubjectDetail from "./frontend/ByUser/CourseDetail/SubjectDetail/s
 import StudentNo from "./frontend/ByUser/index";
 // import ExtraPay from './pages/PayRoll/extrapay'
 import CourseDetail from "./pages/Course/AttendanceDetail";
-import FHome from "./frontend/home/body";
+
 import InstructorHome from "./frontend/ByInstructor/home";
 import LearningMaterial from "./frontend/pages/LearningMaterial/LMAdd";
 import Assignment from "./frontend/components/Assignment/AssignInput";
@@ -75,6 +80,12 @@ export default function RouteFile() {
           <Route path='/login' element={<Login />}></Route>
           <Route path='/' element={<FHome />}></Route>
 
+          <Route path='/about' element={<About />}></Route>
+          <Route path='/home-course' element={<HomeCourse />}></Route>
+          <Route
+            path='/home-course-detail'
+            element={<HomeCourseDetail />}
+          ></Route>
           <Route element={<AuthContainer />}>
             {/* Admin Panel */}
             {/* Start Student Register and Detail */}
