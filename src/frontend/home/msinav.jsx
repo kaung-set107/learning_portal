@@ -76,13 +76,13 @@ export default function App() {
 
   return (
     <>
-      <div className='sticky top-0 bg-white z-50 shadow-lg'>
-        <div className='flex justify-between items-center mx-auto w-full lg:w-[90%]'>
+      <div className='sticky top-0 bg-white z-50 shadow-lg mx-auto  w-[375px] sm:w-[100%]'>
+        <div className='flex gap-10 justify-between sm:justify-around items-center '>
           <div className='align-left'>
-            <Image src={MSI} className='w-[300px]' />
+            <Image src={MSI} className=' w-[200px] sm:w-[300px] ' />
           </div>
           <div
-            className='hidden sm:flex justify-evenly gap-10'
+            className='hidden md:flex justify-evenly gap-10'
             style={{
               borderRadius: "200px",
               width: "486px",
@@ -108,7 +108,8 @@ export default function App() {
                 to='/home-course'
                 className={
                   location.pathname === "/home-course" ||
-                  location.pathname === "/home-course-detail"
+                  location.pathname === "/home-course-detail" ||
+                  location.pathname === "/home-sub-detail"
                     ? "font-semibold text-lg"
                     : "text-lg"
                 }
@@ -151,7 +152,7 @@ export default function App() {
               <Link to='/login'>Login</Link>
             </span>
           </div>
-          <div className='sm:hidden mr-5'>
+          <div className='flex  md:hidden gap-10 pr-5'>
             <Dropdown placement='bottom-end'>
               <DropdownTrigger>
                 <FontAwesomeIcon icon={faBars} size='xl' />

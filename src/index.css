@@ -2,14 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-
+/* 
 .example-container div {
   background: white;
   border-radius: 20px;
   width: 100px;
   height: 100px;
   opacity: initial;
-}
+} */
 
 @font-face {
   font-family: 'Inter';
@@ -35,7 +35,7 @@ body{
   align-items: center;
   cursor: pointer;
 } */
-.container{
+/* .container{
   padding:0px 2rem 2rem 1rem;
-}
+} */
 

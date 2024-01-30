@@ -28,7 +28,9 @@ export default function CourseDetail(props) {
   const [value, setValue] = useState("");
   const handleSubjectDetail = (data, value) => {
     setValue(value);
-    navigate("/sub-detail", { state: { data: data, courseData: courseData } });
+    navigate("/home-sub-detail", {
+      state: { data: data, courseData: courseData },
+    });
     console.log(data, "sub");
   };
   const [subjectList, setSubjectList] = useState([]);

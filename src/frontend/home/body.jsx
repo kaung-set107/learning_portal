@@ -1,6 +1,6 @@
 import { ReactElement, useState, useEffect } from "react";
 import { Image, Button, Card } from "@nextui-org/react";
-import { Link } from "@nextui-org/react";
+import { Link } from "react-router-dom";
 import MSINav from "./msinav";
 import { Testimonials } from "./home_components/Testimonials";
 import Welcome from "../../assets/img/welcomeTeam.jpg";
@@ -12,10 +12,14 @@ import Footer from "./footer";
 import apiInstance from "../../util/api";
 import { getFile } from "../../util";
 import { Fade } from "react-awesome-reveal";
+import { useNavigate } from "react-router";
 // import Footer from '../../frontend/home/footer';
 const Body = () => {
+  const navigate = useNavigate();
   const [courseList, setCourseList] = useState([]);
   const [catList, setCatList] = useState([]);
+  const [value, setValue] = useState("");
+  const [id, setId] = useState("");
   const [events, setEvents] = useState([
     {
       _id: "1",
@@ -48,18 +52,24 @@ const Body = () => {
 
     getAssign();
   }, []);
+  const handleRoute = (data) => {
+    console.log(data, "da");
+    setId(id);
+    setValue(value);
+    navigate("/home-course-detail", { state: { data: data } });
+  };
   return (
     <div className=''>
       <MSINav />
 
-      <div className='flex items-center justify-around flex-wrap relative mb-10 py-[100px]'>
+      <div className='flex items-center justify-around  flex-wrap relative mb-10 py-[100px]'>
         <img
           src={EHome}
           className='absolute top-0 left-0 z-0 w-[150px] md:w-[250px]'
           alt=''
         />
 
-        <div className='w-full px-5 md:m-0 lg:w-[490px] leading-[60px] static z-10'>
+        <div className='w-full px-5 md:m-0 lg:w-[490px] leading-[60px] static z-40'>
           <h1
             className='text-[50px] text-secondary font-[semibold]'
             style={{ color: "#BC1F40", fontWeight: "900" }}
@@ -99,7 +109,7 @@ const Body = () => {
           Courses We Offer
         </h1>
 
-        <div className='flex gap-2 items-center justify-center lg:gap-32 flex-wrap py-10'>
+        <div className='flex flex-col gap-32 items-center justify-center md:flex-row flex-wrap py-10'>
           {courseList.map((e) => (
             <div
               onClick={() => handleRoute(e)}
@@ -128,9 +138,10 @@ const Body = () => {
                     style={{
                       fontSize: "16px",
                       fontWeight: "400px",
-                      width: "400px",
-                      height: "auto",
+                      // width: "400px",
+                      // height: "auto",
                     }}
+                    className='w-full md:w-[400px] md:h-[auto]'
                   >
                     {e?.description.substring(0, 50)}...
                   </div>
@@ -195,7 +206,7 @@ const Body = () => {
                     )} */}
         </div>
 
-        <Link href='/courses' className='flex justify-center py-10'>
+        <Link to='/home-course' className='flex justify-center py-10'>
           <h1 className='text-2xl py-10 text-secondary hover:text-danger font-semibold text-center cursor-pointer'>
             See All
           </h1>

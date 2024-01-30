@@ -5,6 +5,7 @@ import FHome from "./frontend/home/body";
 import About from "./frontend/home/about.jsx";
 import HomeCourse from "./frontend/home/home-course/home-course.jsx";
 import HomeCourseDetail from "./frontend/home/home-course/course-detail.jsx";
+import HomeSubjectDetail from "./frontend/home/home-course/home_subject_detail.jsx";
 
 import Dashboard from "./pages/Dashboard/index.jsx";
 import Instructor from "./pages/Instructor/InstructorList";
@@ -85,6 +86,10 @@ export default function RouteFile() {
           <Route
             path='/home-course-detail'
             element={<HomeCourseDetail />}
+          ></Route>
+          <Route
+            path='/home-sub-detail'
+            element={<HomeSubjectDetail />}
           ></Route>
           <Route element={<AuthContainer />}>
             {/* Admin Panel */}
