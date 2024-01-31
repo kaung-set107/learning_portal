@@ -21,7 +21,7 @@ import { Link } from "react-router-dom";
 import apiInstance from "../../util/api";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import MSI from "../../assets/img/MSI.png";
+import MSI from "../../assets/img/MSI.svg";
 export default function App() {
   const [activeTab, setActiveTab] = useState(1);
   const navigate = useNavigate();
@@ -82,7 +82,7 @@ export default function App() {
             <Image src={MSI} className=' w-[200px] sm:w-[300px] ' />
           </div>
           <div
-            className='hidden md:flex justify-evenly gap-10'
+            className='hidden lg:flex justify-evenly gap-10'
             style={{
               borderRadius: "200px",
               width: "486px",
@@ -152,7 +152,7 @@ export default function App() {
               <Link to='/login'>Login</Link>
             </span>
           </div>
-          <div className='flex  md:hidden gap-10 pr-5'>
+          <div className='flex  lg:hidden gap-10 pr-5'>
             <Dropdown placement='bottom-end'>
               <DropdownTrigger>
                 <FontAwesomeIcon icon={faBars} size='xl' />

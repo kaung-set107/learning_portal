@@ -27,7 +27,7 @@ import {
 } from "@nextui-org/react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import MSI from "../../assets/img/MSI.png";
+import MSI from "../../assets/img/MSI.svg";
 export default function Sidebar(props) {
   const { arr } = props;
   const navigate = useNavigate();

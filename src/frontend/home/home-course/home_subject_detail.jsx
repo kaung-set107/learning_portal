@@ -67,12 +67,12 @@ const SubjectDetail = (props) => {
   return (
     <>
       <MSINav />
-      <div className=' sm:p-[24 20 100 40]'>
-        <div className='flex flex-col gap-10 sm:gap-20 duration-100'>
+      <div className=' md:p-[24 20 100 40]'>
+        <div className='flex flex-col gap-10 md:gap-20 duration-100'>
           {/* Video Section */}
-          <div className='flex flex-col gap-10 sm:gap-56 pt-5 sm:pt-20 sm:flex-row'>
-            <div className='flex w-full gap-2 sm:w-[900px] '>
-              <div className='hidden sm:flex'>
+          <div className='flex flex-col gap-10 md:gap-56 pt-5 md:pt-20 md:flex-row'>
+            <div className='flex w-full gap-2 md:w-[900px] '>
+              <div className='hidden md:flex'>
                 <Button
                   color='primary'
                   variant='light'
@@ -90,7 +90,7 @@ const SubjectDetail = (props) => {
                   allowfullscreen=''
                   //   width='911'
                   //   height='306'
-                  className='border w-[375px] h-[136px] sm:w-[911px] sm:h-[306px]'
+                  className='border w-[375px] h-[136px] md:w-[911px] md:h-[306px]'
                 ></iframe>
               </div>
             </div>
@@ -100,19 +100,19 @@ const SubjectDetail = (props) => {
                   border: "1px solid red",
                   borderRadius: "12px",
                 }}
-                className='flex items-center mx-4 sm:mx-0 sm:pr-[24] w-[345px] h-[134px] sm:w-[275px] sm:h-[306px]'
+                className='flex items-center mx-4 md:mx-0 md:pr-[24] w-[345px] h-[134px] md:w-[275px] md:h-[306px]'
               >
                 <div className='flex flex-col gap-5 p-5'>
                   <h1 style={{ fontSize: "20px", fontWeight: "700" }}>
                     This Subject Include
                   </h1>
-                  <div className='grid grid-cols-3 gap-4 align-middle sm:grid-cols-1'>
+                  <div className='grid grid-cols-3 gap-4 align-middle md:grid-cols-1'>
                     <div className='flex gap-2'>
                       <img
                         src={Module}
                         style={{ width: "16px", height: "16px" }}
                       />{" "}
-                      <span className='text-[8px] font-normal sm:text-[14px]'>
+                      <span className='text-[8px] font-normal md:text-[14px]'>
                         4 modules
                       </span>
                     </div>
@@ -121,7 +121,7 @@ const SubjectDetail = (props) => {
                         src={Chapter}
                         style={{ width: "16px", height: "16px" }}
                       />{" "}
-                      <span className='text-[8px] font-normal sm:text-[14px]'>
+                      <span className='text-[8px] font-normal md:text-[14px]'>
                         26 chapters
                       </span>
                     </div>
@@ -130,19 +130,19 @@ const SubjectDetail = (props) => {
                         src={Download}
                         style={{ width: "16px", height: "16px" }}
                       />{" "}
-                      <span className='text-[8px] font-normal sm:text-[14px]'>
+                      <span className='text-[8px] font-normal md:text-[14px]'>
                         64 downloadable resources
                       </span>
                     </div>
                     <div className='flex gap-2'>
                       <img src={TV} style={{ width: "16px", height: "16px" }} />{" "}
-                      <span className='text-[8px] font-normal sm:text-[14px]'>
+                      <span className='text-[8px] font-normal md:text-[14px]'>
                         Full lifetime access
                       </span>
                     </div>
                     <div className='flex gap-2'>
                       <img src={TV} style={{ width: "16px", height: "16px" }} />{" "}
-                      <span className='text-[8px] font-normal sm:text-[14px]'>
+                      <span className='text-[8px] font-normal md:text-[14px]'>
                         Certificate of completion
                       </span>
                     </div>
@@ -164,13 +164,13 @@ const SubjectDetail = (props) => {
                   backgroundColor: "#FFF",
                   boxShadow: "0px 2px 12px 0px rgba(0, 0, 0, 0.10)",
                 }}
-                className='flex flex-col w-[160px] h-[119px] sm:w-[305px] sm:h-[177px] sm:p-[24px 120px 50px 120px]'
+                className='flex flex-col w-[160px] h-[119px] md:w-[305px] md:h-[177px] md:p-[24px 120px 50px 120px]'
               >
                 <Image
                   src={Time}
-                  className='w-[40px] h-[40px] sm:w-[64px] sm:h-[64px]'
+                  className='w-[40px] h-[40px] md:w-[64px] md:h-[64px]'
                 />
-                <span className='text-[16px] sm:text-[20px] font-medium'>
+                <span className='text-[16px] md:text-[20px] font-medium'>
                   Duration
                 </span>
                 <span
@@ -181,7 +181,7 @@ const SubjectDetail = (props) => {
                     // width: "298px",
                     // height: "29px",
                   }}
-                  className='text-[14px] w-[200px]  h-[24px] sm:text-[24px] font-medium sm:w-[298px] sm:h-[29px]'
+                  className='text-[14px] w-[200px]  h-[24px] md:text-[24px] font-medium md:w-[298px] md:h-[29px]'
                 >
                   {parseInt((teacherName?.duration * 30) / 7)} Weeks &{" "}
                   {(teacherName?.duration * 30) % 7} Days
@@ -197,16 +197,16 @@ const SubjectDetail = (props) => {
                   backgroundColor: "#FFF",
                   boxShadow: "0px 2px 12px 0px rgba(0, 0, 0, 0.10)",
                 }}
-                className='flex flex-col w-[160px] h-[119px] sm:w-[305px] sm:h-[177px] sm:p-[24px 120px 50px 120px]'
+                className='flex flex-col w-[160px] h-[119px] md:w-[305px] md:h-[177px] md:p-[24px 120px 50px 120px]'
               >
                 <Image
                   src={Person}
-                  className='w-[40px] h-[40px] sm:w-[64px] sm:h-[64px]'
+                  className='w-[40px] h-[40px] md:w-[64px] md:h-[64px]'
                 />
-                <span className='text-[16px] sm:text-[20px] font-medium'>
+                <span className='text-[16px] md:text-[20px] font-medium'>
                   Instructor
                 </span>
-                <span className='text-[16px] pl-4 sm:pl-0 sm:text-[24px] font-bold w-[98px] h-[29px]'>
+                <span className='text-[16px] pl-4 md:pl-0 md:text-[24px] font-bold w-[98px] h-[29px]'>
                   Tr.{teacherName.instructor?.name}
                 </span>
               </div>
@@ -220,16 +220,16 @@ const SubjectDetail = (props) => {
                   backgroundColor: "#FFF",
                   boxShadow: "0px 2px 12px 0px rgba(0, 0, 0, 0.10)",
                 }}
-                className='flex flex-col w-[160px] h-[119px] sm:w-[305px] sm:h-[177px] sm:p-[24px 120px 50px 120px]'
+                className='flex flex-col w-[160px] h-[119px] md:w-[305px] md:h-[177px] md:p-[24px 120px 50px 120px]'
               >
                 <Image
                   src={Book}
-                  className='w-[40px] h-[40px] sm:w-[64px] sm:h-[64px]'
+                  className='w-[40px] h-[40px] md:w-[64px] md:h-[64px]'
                 />
-                <span className='text-[16px] sm:text-[20px] font-medium'>
+                <span className='text-[16px] md:text-[20px] font-medium'>
                   Batch 10
                 </span>
-                <span className='text-[16px] pl-8 sm:pl-0 sm:text-[24px] font-bold w-[158px] h-[29px]'>
+                <span className='text-[16px] pl-8 md:pl-0 md:text-[24px] font-bold w-[158px] h-[29px]'>
                   {teacherName?.noOfEnrolledStudent} Students
                 </span>
               </div>
@@ -243,16 +243,16 @@ const SubjectDetail = (props) => {
                   backgroundColor: "#FFF",
                   boxShadow: "0px 2px 12px 0px rgba(0, 0, 0, 0.10)",
                 }}
-                className='flex flex-col w-[160px] h-[119px] sm:w-[305px] sm:h-[177px] sm:p-[24px 120px 50px 120px]'
+                className='flex flex-col w-[160px] h-[119px] md:w-[305px] md:h-[177px] md:p-[24px 120px 50px 120px]'
               >
                 <Image
                   src={Date}
-                  className='w-[40px] h-[40px] sm:w-[64px] sm:h-[64px]'
+                  className='w-[40px] h-[40px] md:w-[64px] md:h-[64px]'
                 />
-                <span className='text-[16px] sm:text-[20px] font-medium'>
+                <span className='text-[16px] md:text-[20px] font-medium'>
                   Exam
                 </span>
-                <span className='text-[16px] pl-6 sm:pl-0 sm:text-[24px] font-bold w-[128px] h-[29px]'>
+                <span className='text-[16px] pl-6 md:pl-0 md:text-[24px] font-bold w-[128px] h-[29px]'>
                   Mid + Final
                 </span>
               </div>
@@ -260,12 +260,12 @@ const SubjectDetail = (props) => {
           </div>
           {/* About Section */}
           <div className='flex'>
-            <div className='w-[375px] h-[426px] pt-[24px] sm:w-[946px] sm:h-[426px] sm:p-[24px] mx-4 sm:mx-0'>
+            <div className='w-[375px] h-[426px] pt-[24px] md:w-[946px] md:h-[426px] md:p-[24px] mx-4 md:mx-0'>
               <div className='flex flex-col gap-10'>
-                <span className='text-[20px] sm:text-[40px] font-bold '>
+                <span className='text-[20px] md:text-[40px] font-bold '>
                   About This Course
                 </span>
-                <p className='text-[8px] pt-0 sm:text-[16px] font-medium'>
+                <p className='text-[8px] pt-0 md:text-[16px] font-medium'>
                   Embark on a comprehensive IELTS preparation journey with our
                   meticulously designed course, offering in-depth insights into
                   each section of the test, expert strategies, and personalized
@@ -299,20 +299,20 @@ const SubjectDetail = (props) => {
                 </p>
               </div>
             </div>
-            <div className='hidden sm:flex sm:w-[565px] sm:h-[565px] p-[66.79 4.442 81.946 3.637]'>
+            <div className='hidden md:flex md:w-[565px] md:h-[565px] p-[66.79 4.442 81.946 3.637]'>
               <Image src={ReadBook} />
             </div>
           </div>
           {/* Meet Teacher */}
-          <div className='flex flex-col gap-10 p-0 w-[355px] h-[550px] sm:w-[693px] sm:p-[24px] mx-4 sm:mx-0'>
+          <div className='flex flex-col gap-10 p-0 w-[355px] h-[550px] md:w-[693px] md:p-[24px] mx-4 md:mx-0'>
             {" "}
             <span
               //   style={{ fontSize: "40px", fontWeight: "700" }}
-              className='text-[20px] sm:text-[40px] font-bold'
+              className='text-[20px] md:text-[40px] font-bold'
             >
               Meet Your Teacher
             </span>
-            <div className='flex flex-col gap-0 md:gap-20 sm:flex-row w-[345px] h-full sm:w-[1360px] sm:h-[565px]'>
+            <div className='flex flex-col gap-0 md:gap-20 md:flex-row w-[345px] h-full md:w-[1360px] md:h-[565px]'>
               <div>
                 <Image
                   //   style={{ width: "565px", height: "565px" }}
@@ -329,10 +329,10 @@ const SubjectDetail = (props) => {
               >
                 {/* Info */}
                 <div className='flex flex-col gap-2'>
-                  <span className='text-[16px] sm:text-[40px] font-bold'>
+                  <span className='text-[16px] md:text-[40px] font-bold'>
                     Tr.{teacherName.instructor?.name}
                   </span>
-                  <span className='text-[16px] sm:text-[24px] font-medium'>
+                  <span className='text-[16px] md:text-[24px] font-medium'>
                     {teacherName.course?.title} Teacher
                   </span>
                 </div>
@@ -351,7 +351,7 @@ const SubjectDetail = (props) => {
                     //   fontSize: "24px",
                     //   fontWeight: "500",
                     // }}
-                    className='text-[8px] sm:text-[24px] font-medium'
+                    className='text-[8px] md:text-[24px] font-medium'
                   >
                     Hello, I'm [Teacher's Name], your dedicated IELTS
                     instructor. With [X] years of teaching experience and a
@@ -367,7 +367,7 @@ const SubjectDetail = (props) => {
                       style={{
                         color: "#FFF",
                       }}
-                      className='text-[8px] sm:p-[8px] sm:text-[14px] font-medium bg-[#215887] rounded-[12px] w-[35px] h-[16px] sm:w-[73px] sm:h-[33px]'
+                      className='text-[8px] md:p-[8px] md:text-[14px] font-medium bg-[#215887] rounded-[12px] w-[35px] h-[16px] md:w-[73px] md:h-[33px]'
                     >
                       Email : {teacherName.instructor?.email}
                     </span>{" "}
@@ -376,7 +376,7 @@ const SubjectDetail = (props) => {
                       style={{
                         color: "#FFF",
                       }}
-                      className='text-[8px] sm:p-[8px] sm:text-[14px] font-medium bg-[#215887] rounded-[12px] w-[35px] h-[16px] sm:w-[73px] sm:h-[33px]'
+                      className='text-[8px] md:p-[8px] md:text-[14px] font-medium bg-[#215887] rounded-[12px] w-[35px] h-[16px] md:w-[73px] md:h-[33px]'
                     >
                       Phone : {teacherName.instructor?.phone}
                     </span>
@@ -386,8 +386,8 @@ const SubjectDetail = (props) => {
             </div>
           </div>
           {/* Course Curriculum Section */}
-          <div className=' flex flex-col w-[345px] pt-[64px] pb-[24px]  gap-5 sm:w-[100%] sm:p-[24px] sm:pt-[150px] mx-4 sm:mx-0'>
-            <span className='text-[20px] sm:text-[40px] font-bold'>
+          <div className=' flex flex-col w-[345px] pt-[64px] pb-[24px]  gap-5 md:w-[100%] md:p-[24px] md:pt-[150px] mx-4 md:mx-0'>
+            <span className='text-[20px] md:text-[40px] font-bold'>
               Course Curriculum
             </span>
             <div className='flex flex-col gap-10'>
@@ -400,12 +400,12 @@ const SubjectDetail = (props) => {
                   //   padding: "40px",
                   alignItems: "center",
                 }}
-                className='w-[335px] h-[110px] p-[16px] sm:w-[auto] sm:h-[auto] sm:p-[40px]'
+                className='w-[335px] h-[110px] p-[16px] md:w-[auto] md:h-[auto] md:p-[40px]'
               >
-                <div className='flex gap-5 sm:gap-52 justify-between'>
+                <div className='flex gap-5 md:gap-52 justify-between'>
                   {/* Left */}
                   <div
-                    className='flex flex-col gap-0 sm:gap-6 w-[57px] h-[56px] sm:w-[86px] sm:h-[96px]'
+                    className='flex flex-col gap-0 md:gap-6 w-[57px] h-[56px] md:w-[86px] md:h-[96px]'
                     style={{
                       //   width: "86px",
                       //   height: "96px",
@@ -416,29 +416,29 @@ const SubjectDetail = (props) => {
                       style={{
                         paddingTop: "10px",
                       }}
-                      className='text-[16px] text-white sm:text-[24px] font-semibold'
+                      className='text-[16px] text-white md:text-[24px] font-semibold'
                     >
                       Module
                     </span>
-                    <span className='text-[24px] text-white sm:text-[64px] font-semibold'>
+                    <span className='text-[24px] text-white md:text-[64px] font-semibold'>
                       1
                     </span>
                   </div>
                   {/* Center */}
-                  <div className='flex flex-col gap-0 sm:gap-6'>
-                    <span className='hidden sm:flex  text-white text-[32px] font-medium w-[158px]'>
+                  <div className='flex flex-col gap-0 md:gap-6'>
+                    <span className='hidden md:flex  text-white text-[32px] font-medium w-[158px]'>
                       Introduction to IELTS
                     </span>
-                    <div className='flex flex-row gap-1 sm:hidden'>
-                      <span className='text-[16px] text-white sm:text-[32px] font-medium w-[158px]'>
+                    <div className='flex flex-row gap-1 md:hidden'>
+                      <span className='text-[16px] text-white md:text-[32px] font-medium w-[158px]'>
                         Introduction to IELTS
                       </span>
                       <span
                         // style={{ color: "#FFF" }}
-                        className='flex flex-row justify-between text-white sm:gap-2 mt-1'
+                        className='flex flex-row justify-between text-white md:gap-2 mt-1'
                       >
                         <Image src={WhiteTime} className='w-[27px]  h-[10px]' />
-                        <span className=' text-[8px] sm:text-[16px] w-[40px]'>
+                        <span className=' text-[8px] md:text-[16px] w-[40px]'>
                           15 mins
                         </span>
                       </span>
@@ -448,7 +448,7 @@ const SubjectDetail = (props) => {
                       //   style={{
                       //     width: "674px",
                       //   }}
-                      className='w-[229px] sm:w-[674px] text-[8px] text-white sm:text-[16px] font-medium'
+                      className='w-[229px] md:w-[674px] text-[8px] text-white md:text-[16px] font-medium'
                     >
                       Get ready to enhance your listening skills! I'm [Your
                       Name], your guide through the IELTS Listening module.
@@ -459,7 +459,7 @@ const SubjectDetail = (props) => {
                   {/* Mins */}
                   <div
                     // style={{ color: "#FFF" }}
-                    className='hidden sm:flex gap-0 text-white sm:gap-1 mt-1'
+                    className='hidden md:flex gap-0 text-white md:gap-1 mt-1'
                   >
                     <Image src={WhiteTime} className='w-[54px]  h-[20px]' />
                     <span className=''>15 mins</span>
@@ -475,12 +475,12 @@ const SubjectDetail = (props) => {
                   //   padding: "40px",
                   alignItems: "center",
                 }}
-                className='w-[335px] h-[110px] p-[16px] sm:w-[auto] sm:h-[auto] sm:p-[40px]'
+                className='w-[335px] h-[110px] p-[16px] md:w-[auto] md:h-[auto] md:p-[40px]'
               >
-                <div className='flex gap-5 sm:gap-52 justify-between'>
+                <div className='flex gap-5 md:gap-52 justify-between'>
                   {/* Left */}
                   <div
-                    className='flex flex-col gap-0 sm:gap-6 w-[57px] h-[56px] sm:w-[86px] sm:h-[96px]'
+                    className='flex flex-col gap-0 md:gap-6 w-[57px] h-[56px] md:w-[86px] md:h-[96px]'
                     style={{
                       //   width: "86px",
                       //   height: "96px",
@@ -491,29 +491,29 @@ const SubjectDetail = (props) => {
                       style={{
                         paddingTop: "10px",
                       }}
-                      className='text-[16px] text-white sm:text-[24px] font-semibold'
+                      className='text-[16px] text-white md:text-[24px] font-semibold'
                     >
                       Module
                     </span>
-                    <span className='text-[24px] text-white sm:text-[64px] font-semibold'>
+                    <span className='text-[24px] text-white md:text-[64px] font-semibold'>
                       2
                     </span>
                   </div>
                   {/* Center */}
-                  <div className='flex flex-col gap-0 sm:gap-6'>
-                    <span className='hidden sm:flex  text-white text-[32px] font-medium w-[258px]'>
+                  <div className='flex flex-col gap-0 md:gap-6'>
+                    <span className='hidden md:flex  text-white text-[32px] font-medium w-[258px]'>
                       Introduction to IELTS
                     </span>
-                    <div className='flex flex-row sm:hidden'>
-                      <span className='text-[16px] text-white sm:text-[32px] font-medium w-[158px]'>
+                    <div className='flex flex-row md:hidden'>
+                      <span className='text-[16px] text-white md:text-[32px] font-medium w-[158px]'>
                         Introduction to IELTS
                       </span>
                       <span
                         // style={{ color: "#FFF" }}
-                        className='flex flex-row gap-0 justify-between text-white sm:gap-2 mt-1'
+                        className='flex flex-row gap-0 justify-between text-white md:gap-2 mt-1'
                       >
                         <Image src={WhiteTime} className='w-[27px]  h-[10px]' />
-                        <span className=' text-[8px] sm:text-[16px] w-[40px]'>
+                        <span className=' text-[8px] md:text-[16px] w-[40px]'>
                           15 mins
                         </span>
                       </span>
@@ -523,7 +523,7 @@ const SubjectDetail = (props) => {
                       //   style={{
                       //     width: "674px",
                       //   }}
-                      className='w-[229px] sm:w-[674px] sm:h-[auto] text-[8px] text-white sm:text-[16px] font-medium'
+                      className='w-[229px] md:w-[674px] md:h-[auto] text-[8px] text-white md:text-[16px] font-medium'
                     >
                       Get ready to enhance your listening skills! I'm [Your
                       Name], your guide through the IELTS Listening module.
@@ -534,7 +534,7 @@ const SubjectDetail = (props) => {
                   {/* Mins */}
                   <div
                     // style={{ color: "#FFF" }}
-                    className='hidden sm:flex gap-0 text-white sm:gap-1 mt-1'
+                    className='hidden md:flex gap-0 text-white md:gap-1 mt-1'
                   >
                     <Image src={WhiteTime} className='w-[54px]  h-[20px]' />
                     <span className=''>15 mins</span>

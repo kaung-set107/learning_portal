@@ -36,7 +36,7 @@ import { EyeFilledIcon } from "./EyeFilledIcon";
 import { EyeSlashFilledIcon } from "./EyeSlashFilledIcon";
 import Swal from "sweetalert2";
 import { getFile } from "../../util/index";
-import MSI from "../../assets/img/MSI.png";
+import MSI from "../../assets/img/MSI.svg";
 export default function NavBar() {
   const navigate = useNavigate();
   const [imgUrl, setImgUrl] = useState("");

@@ -27,7 +27,7 @@ import { Link } from "react-router-dom";
 import apiInstance from "../../util/api";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import MSI from "../../assets/img/MSI.png";
+import MSI from "../../assets/img/MSI.svg";
 export default function App() {
   const [activeLink, setActiveLink] = useState("/home");
   const navigate = useNavigate();

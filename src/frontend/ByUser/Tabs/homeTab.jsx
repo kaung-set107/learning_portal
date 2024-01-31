@@ -17,16 +17,26 @@ import { Link, useNavigate } from "react-router-dom";
 import CourseDetail from "../CourseDetail/courseDetail";
 export default function Home() {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState(1);
-  const handleTabClick = (tabNumber) => {
-    setActiveTab(tabNumber);
-  };
   const [id, setId] = useState("");
+  const [firstDefaultCourseId, setFirstDefaultCourseId] = useState("");
   const StudentId = localStorage.getItem("id");
   const [coursesList, setCoursesList] = useState([]);
   const [catList, setCatList] = useState([]);
   const [myCourseList, setMyCourseList] = useState([]);
   const [value, setValue] = useState("");
+  const [activeTab, setActiveTab] = useState(0);
+  const [courseId, setCourseId] = useState("");
+  const [filterId, setFilterId] = useState([]);
+
+  const filterSubList = filterId.filter(
+    (el) => el._id === (courseId ? courseId : firstDefaultCourseId)
+  );
+  console.log(filterSubList, "f i");
+
+  const handleTabClick = (ind, courseid) => {
+    setCourseId(courseid);
+    setActiveTab(ind);
+  };
 
   const firstExample = {
     size: 30,
@@ -59,26 +69,31 @@ export default function Home() {
     };
 
     const getEnrollment = async () => {
-      await apiInstance
-        .get(`overall-enrollments`, { paramsms: { status: "waiting" } })
-        .then((res) => {
-          console.log(
-            res.data.data.filter((el) => el.student?._id === StudentId),
-            "enr waits"
-          );
-          setMyCourseList(
-            res.data.data.filter((el) => el.student?._id === StudentId)
-          );
-          // const count = res.data.data.filter((el) => el.subjects.length);
-          // console.log(count, "count");
-        });
+      await apiInstance.get(`enrollments`).then((res) => {
+        console.log(StudentId, "s id");
+        console.log(
+          res.data.data.filter((el) => el.student === StudentId)[0],
+          "enr waits"
+        );
+        setFirstDefaultCourseId(
+          res.data.data.filter((el) => el.student === StudentId)[0].course._id
+        );
+        setMyCourseList(res.data.data.filter((el) => el.student === StudentId));
+        setFilterId(
+          res.data.data
+            .filter((el) => el.student === StudentId)
+            .map((i) => i.course)
+        );
+        // const count = res.data.data.filter((el) => el.subjects.length);
+        // console.log(count, "count");
+      });
     };
 
     getCat();
     getEnrollment();
 
     getAssign();
-  }, []);
+  }, [firstDefaultCourseId]);
 
   // Rating Handle
   const ratingChanged = (newRating) => {
@@ -97,117 +112,87 @@ export default function Home() {
               <h1 style={{ fontSize: "40px", fontWeight: "600" }}>
                 My Courses
               </h1>
-              <div className='justify-start flex gap-4'>
-                <div>
-                  <Button
-                    className={
-                      activeTab === 1
-                        ? "  bg-blue-200 py-3 border-indigo-500/75 w-52 text-center  duration-500"
-                        : "w-52 text-center"
-                    }
-                    color='primary'
-                    variant='bordered'
-                    onClick={() => handleTabClick(1)}
-                  >
-                    {myCourseList[0]?.subject?.title}
-                  </Button>
-                  &nbsp;
-                  {/* <Badge content='9+' shape='circle' color='danger'>
-              <NotificationIcon size={24} />
-            </Badge> */}
-                </div>
-                <div>
-                  <Button
-                    className={
-                      activeTab === 2
-                        ? "  bg-blue-200 py-3 border-indigo-500/75 w-52 text-center  duration-500"
-                        : "text-center w-52"
-                    }
-                    color='primary'
-                    variant='bordered'
-                    // style={{ fontWeight: "400px", fontSize: "16px" }}
-                    onClick={() => handleTabClick(2)}
-                  >
-                    {myCourseList[0]?.subject?.title}
-                  </Button>{" "}
-                  &nbsp;
-                  {/* <Badge content='9+' shape='circle' color='danger'>
-              <NotificationIcon size={24} />
-            </Badge> */}
-                </div>
-                <div>
-                  <Button
-                    className={
-                      activeTab === 3
-                        ? "  bg-blue-200 py-3 border-indigo-500/75 w-52 text-center duration-500"
-                        : "w-52 text-center"
-                    }
-                    color='primary'
-                    variant='bordered'
-                    onClick={() => handleTabClick(3)}
-                  >
-                    {myCourseList[0]?.subject?.title}
-                  </Button>{" "}
-                  {/* <Badge content='9+' shape='circle' color='danger'>
-              <NotificationIcon size={24} />
-            </Badge> */}
-                </div>
+              <div className='flex flex-row gap-4'>
+                {myCourseList.map((item, index) => (
+                  <>
+                    <div key={item._id}>
+                      <Button
+                        className={
+                          activeTab === index
+                            ? "  bg-blue-200 py-3 border-indigo-500/75 w-52 text-center  duration-500"
+                            : "w-52 text-center"
+                        }
+                        color='primary'
+                        variant='bordered'
+                        onClick={() => handleTabClick(index, item.course._id)}
+                      >
+                        {item.course?.title}
+                      </Button>
+                    </div>
+                  </>
+                ))}
               </div>
-            </div>
-            <div
-              className='flex rounded-md pt-16'
-              style={{ width: "1080px", height: "200px" }}
-            >
               <div>
-                <Image
-                  src={Course}
-                  style={{
-                    width: "300px",
-                    height: "200px",
-                  }}
-                />
-              </div>
+                {filterSubList && (
+                  <div className='grid grid-cols-2 gap-20 rounded-md pt-16 w-full'>
+                    {filterSubList[0]?.subjects.map((e, ind) => (
+                      <div className='flex gap-1'>
+                        <div>
+                          <Image
+                            src={getFile({ payload: e.image })}
+                            style={{
+                              width: "300px",
+                              height: "200px",
+                            }}
+                          />
+                        </div>
 
-              <div className='flex flex-col gap-5 '>
-                <div className='flex flex-col gap-10 p-7'>
-                  <div className='flex flex-col gap-4'>
-                    <h1
-                      style={{
-                        fontSize: "20px",
-                        fontWeight: "600",
-                      }}
-                    >
-                      {myCourseList[0]?.subject.title}
-                    </h1>
-                    <div>
-                      Total Lessons: <span className='font-semibold'>35</span>
-                    </div>
-                  </div>
+                        <div className='flex flex-col gap-5 '>
+                          <div className='flex flex-col gap-10 p-7'>
+                            <div className='flex flex-col gap-4'>
+                              <h1
+                                style={{
+                                  fontSize: "20px",
+                                  fontWeight: "600",
+                                }}
+                              >
+                                {e.title}
+                              </h1>
+                              <div>
+                                Total Lessons:{" "}
+                                <span className='font-semibold'>35</span>
+                              </div>
+                            </div>
 
-                  <div className='flex flex-col gap-2'>
-                    <div
-                      style={{
-                        fontSize: "16px",
-                        fontWeight: "500",
-                        color: "#05F",
-                        width: "120px",
-                        height: "19px",
-                      }}
-                      className='ml-24'
-                    >
-                      <div>45% completed</div>
-                    </div>
-                    <div>
-                      <Progress
-                        size='sm'
-                        aria-label='Loading...'
-                        value={45}
-                        className='mt-2'
-                        // onChange={(e) => handleValue(e.target.value)}
-                      />
-                    </div>
+                            <div className='flex flex-col gap-2'>
+                              <div
+                                style={{
+                                  fontSize: "16px",
+                                  fontWeight: "500",
+                                  color: "#05F",
+                                  width: "120px",
+                                  height: "19px",
+                                }}
+                                className='ml-24'
+                              >
+                                <div>45% completed</div>
+                              </div>
+                              <div>
+                                <Progress
+                                  size='sm'
+                                  aria-label='Loading...'
+                                  value={45}
+                                  className='mt-2'
+                                  // onChange={(e) => handleValue(e.target.value)}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>

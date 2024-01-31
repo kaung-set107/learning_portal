@@ -1,7 +1,7 @@
 import Head from "./head";
 import Body from "./body";
 import Nav from "../home/header";
-import Footer from "../home/footer";
+import Footer from "../../components/Navbar/footer";
 import { useLocation } from "react-router-dom";
 export default function App() {
   // const {state}=useLocation()
