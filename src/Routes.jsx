@@ -32,8 +32,8 @@ import StudentAssign from "./frontend/ByUser/studentAssign";
 import StudentCourseDetail from "./frontend/ByUser/CourseDetail/courseDetail.jsx";
 import StudentSubjectDetail from "./frontend/ByUser/CourseDetail/SubjectDetail/subjectDetail.jsx";
 import StudentNo from "./frontend/ByUser/index";
-// import ExtraPay from './pages/PayRoll/extrapay'
-import CourseDetail from "./pages/Course/AttendanceDetail";
+import MyCourseSubDetail from "./frontend/components/MyCourse/index.jsx";
+import MyCourseSubDetailID from "./frontend/components/MyCourse/index.jsx";
 
 import InstructorHome from "./frontend/ByInstructor/home";
 import LearningMaterial from "./frontend/pages/LearningMaterial/LMAdd";
@@ -105,6 +105,14 @@ export default function RouteFile() {
               element={<ApproveDetail />}
             ></Route>
             <Route path='/reject-detail/:id' element={<RejectDetail />}></Route>
+            <Route
+              path='/mycourse-sub-detail'
+              element={<MyCourseSubDetail />}
+            ></Route>
+            <Route
+              path='/mycourse-sub-detail/:id'
+              element={<MyCourseSubDetailID />}
+            ></Route>
             {/*End Student Register and Detail */}
 
             {/*Start Student Enroll */}

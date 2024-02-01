@@ -38,10 +38,9 @@ export default function Home() {
     setActiveTab(ind);
   };
 
-  const firstExample = {
-    size: 30,
-    value: 2,
-    edit: false,
+  const handleSubjectDetail = (data) => {
+    navigate("/mycourse-sub-detail/1", { state: { data: data } });
+    // navigate("/mycourse-sub-detail/2", { state: { data: data } });
   };
   //handle progress value
   const handleRoute = (data) => {
@@ -101,7 +100,7 @@ export default function Home() {
   };
   return (
     <div>
-      {/* Home Page Wrap */}
+      {/* Home Page Wrap Start */}
       {value === "detail" ? (
         <CourseDetail id={id} />
       ) : (
@@ -136,7 +135,10 @@ export default function Home() {
                 {filterSubList && (
                   <div className='grid grid-cols-2 gap-20 rounded-md pt-16 w-full'>
                     {filterSubList[0]?.subjects.map((e, ind) => (
-                      <div className='flex gap-1'>
+                      <div
+                        className='flex gap-1 bg-[#F7F6FA] rounded-[12px]'
+                        onClick={() => handleSubjectDetail(e)}
+                      >
                         <div>
                           <Image
                             src={getFile({ payload: e.image })}
@@ -196,6 +198,7 @@ export default function Home() {
               </div>
             </div>
           </div>
+          {/* All Course Section */}
           {catList.map((item, index) => (
             <Fade>
               <div className='flex gap-6'>
@@ -321,7 +324,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* {location.pathname === "/course-detail" && <CourseDetail />} */}
+      {/* Home Page Wrap End */}
     </div>
   );
 }
