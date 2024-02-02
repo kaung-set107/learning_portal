@@ -136,7 +136,7 @@ export default function Home() {
                   <div className='grid grid-cols-2 gap-20 rounded-md pt-16 w-full'>
                     {filterSubList[0]?.subjects.map((e, ind) => (
                       <div
-                        className='flex gap-1 bg-[#F7F6FA] rounded-[12px]'
+                        className='flex gap-1 bg-[#e1ddec] rounded-[12px]'
                         onClick={() => handleSubjectDetail(e)}
                       >
                         <div>

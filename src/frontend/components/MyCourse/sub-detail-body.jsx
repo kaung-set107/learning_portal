@@ -1,4 +1,11 @@
-import { Card, CardBody, Button, CardHeader, Image } from "@nextui-org/react";
+import {
+  Card,
+  CardBody,
+  Button,
+  CardHeader,
+  Image,
+  Divider,
+} from "@nextui-org/react";
 import { Link, useLocation } from "react-router-dom";
 // import {useEffect,useState} from 'react'
 
@@ -26,17 +33,15 @@ const AddBody = ({ subData }) => {
   return (
     <div>
       {/* body */}
-      <div
-        className='flex flex-col justify-start'
-        style={{ padding: "24px 40px" }}
-      >
+      <div className='flex flex-col gap-10 pl-[16px]'>
         <Nav />
+
         <TabValueComponent
           activeTabValue={handleTabClick}
           detailData={SubData}
         />
 
-        <div id='exam'>
+        <div id='exam w-full'>
           {location.pathname === "/mycourse-sub-detail/1" && <Module />}
         </div>
         <div id='assignment'>
