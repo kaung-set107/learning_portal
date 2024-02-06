@@ -10,22 +10,13 @@ import apiInstance from "../../../util/api";
 // import Swal from 'sweetalert2';
 // import Result from './result'
 export default function QuizPage() {
-  const [timeLeft, setTimeLeft] = useState(10);
+  const [timeLeft, setTimeLeft] = useState("");
   const [clicked, setClicked] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const LMID = location.pathname.split("/")[2];
-  // const [activeQuestion, setActiveQuestion] = useState(0)
-  // const [selectedAnswer, setSelectedAnswer] = useState('')
-  // const [result, setResult] = useState({
-  //   score: 0,
-  //   correctAnswers: 0,
-  //   wrongAnswers: 0,
-  // })
-  // console.log(quiz, "quiz");
+  const [index, setIndex] = useState("");
 
-  // console.log(filtered,'fil')
-  // const [limit,setLimit]=useState(filtered)
   const [selectedOption, setSelectedOption] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [oneHour, setOneHour] = useState("");
@@ -95,7 +86,7 @@ export default function QuizPage() {
       setTimeLeft((prevTime) => {
         if (prevTime === 0) {
           clearInterval(timerInterval);
-          handleResult();
+
           nextQuestion();
           return 10; // Reset timer for the next question
         }
@@ -108,8 +99,7 @@ export default function QuizPage() {
   };
 
   const nextQuestion = (studentAnswer, cas, ind) => {
-    //console.log(studentAnswer, 'stuAns')
-    //console.log(cas, 'cas')
+    setIndex(""); //to check incorrect or correct answer
     if (cas === null) {
       alert("Must select an answer before proceeding to the next question");
       return;
@@ -128,11 +118,8 @@ export default function QuizPage() {
       setCounter(nextQuestion);
     } else {
       setCounter(0);
-      console.log(TotalMark, "in next");
-
       handleResult();
-      // console.log(TotalMark >= quizList.passMark,'passmark')
-      // console.log(TotalMark,'mark')
+      console.log(TotalMark, "in next");
     }
 
     // handleAns()
@@ -185,6 +172,7 @@ export default function QuizPage() {
   const handleAns = (val, ca, index, mark, id) => {
     setClicked(true);
     setShowAlert(true);
+    setIndex(val);
     //console.log(val, 'val')
     //console.log(val + 1, 'val+1')
 
@@ -245,9 +233,19 @@ export default function QuizPage() {
           setQuizList(
             res.data.data.filter((el) => el.learningMaterial === LMID)[0]
           );
+          setTimeLeft(
+            res.data.data.filter((el) => el.learningMaterial === LMID)[0]
+              .duration * 60
+          );
         }
 
-        //console.log(res.data.data.filter(el => el.learningMaterial === LMID)[0] !== undefined ? res.data.data.filter(el => el.learningMaterial === LMID)[0] : 'helo', 'att')
+        // console.log(
+        //   res.data.data.filter((el) => el.learningMaterial === LMID)[0] !==
+        //     undefined
+        //     ? res.data.data.filter((el) => el.learningMaterial === LMID)[0]
+        //     : "helo",
+        //   "att"
+        // );
         //   setPages(res.data._metadata.page_count)
       });
     };
@@ -260,7 +258,8 @@ export default function QuizPage() {
     setStudentID(dataFromLocalStorage);
     //   setPages(res.data._metadata.page_count)
   }, []);
-
+  const displayMinutes = Math.floor(timeLeft / 60);
+  const displaySeconds = timeLeft % 60;
   return (
     <div className='mx-8'>
       {showOrigin && (
@@ -291,19 +290,32 @@ export default function QuizPage() {
 
           {showTimer && (
             <>
-              <div>
-                Time : {timeLeft} s
+              <div className='p-[20px] text-[20px] font-light'>
+                Time : {displayMinutes < 10 ? "0" : ""}
+                {displayMinutes}:{displaySeconds < 10 ? "0" : ""}
+                {displaySeconds}
                 {/* {console.log(quizList.duration * 60, "hi")} */}
               </div>
-              <div>
+              <div className='h-[317px]'>
                 {/* {quizList.questions[counter].map((item, index) => ( */}
-                <>
+
+                <div className='p-[24px] border-1 border-[#10C278] rounded-[12px] flex flex-col gap-10'>
+                  <div className='flex flex-row gap-20'>
+                    <span className='text-[20px] font-semibold p-[10px]'>
+                      Question
+                    </span>
+                    <span className='text-[16px] text-[#BDFFE2] font-medium bg-[#10C278] rounded-[24px] p-[12px] w-[188px] text-center'>
+                      Mark {quizList.questions[counter].mark} out of{" "}
+                      {quizList.questions[counter].mark}{" "}
+                    </span>
+                  </div>
+
                   {showAlert &&
                     (isCorrect === "Correct" ? (
                       <div className='mt-3'>
                         <Stack sx={{ width: "50%" }}>
                           <Alert variant='outlined' severity='success'>
-                            This is an Correct Answer !
+                            This answer is Correct !
                           </Alert>
                         </Stack>
                       </div>
@@ -311,38 +323,41 @@ export default function QuizPage() {
                       <div className='mt-3'>
                         <Stack sx={{ width: "50%" }}>
                           <Alert variant='outlined' severity='error'>
-                            This is an InCorrect Answer !
+                            This answer is InCorrect !
                           </Alert>
                         </Stack>
                       </div>
                     ))}
+                </div>
 
-                  <Card className='mt-5' key={counter}>
+                <Card
+                  className='mt-5 p-[24px] border-1 border-[#10C278] rounded-[12px]'
+                  key={counter}
+                >
+                  <div>
+                    <div className='text-lg py-3 px-3'>
+                      <b>({counter + 1})</b> &nbsp;
+                      {quizList.questions[counter].question}
+                    </div>
                     <div>
-                      <div className='text-lg py-3 px-3'>
-                        <b>({counter + 1})</b> &nbsp;
-                        {quizList.questions[counter].question}(
-                        {quizList.questions[counter].mark} Mark)
-                      </div>
-                      <div>
-                        <img src={quizList.questions[counter].questionPic} />
-                      </div>
-                      <div className='mt-5'>
-                        {quizList.questions[counter].options.map((e, i) => (
-                          <div
-                            key={i}
-                            className='text-lg font-semibold ml-10'
-                            onClick={() =>
-                              handleAns(
-                                i,
-                                quizList.questions[counter].correctAnswer,
-                                counter,
-                                quizList.questions[counter].mark,
-                                quizList.questions[counter]._id
-                              )
-                            }
-                          >
-                            {/* {selectedOption ? (
+                      <img src={quizList.questions[counter].questionPic} />
+                    </div>
+                    <div className='mt-5'>
+                      {quizList.questions[counter].options.map((e, i) => (
+                        <div
+                          key={i}
+                          className='text-lg font-semibold ml-10'
+                          onClick={() =>
+                            handleAns(
+                              i,
+                              quizList.questions[counter].correctAnswer,
+                              counter,
+                              quizList.questions[counter].mark,
+                              quizList.questions[counter]._id
+                            )
+                          }
+                        >
+                          {/* {selectedOption ? (
           <label>
            <input
            type="radio"
@@ -369,22 +384,41 @@ export default function QuizPage() {
       {e.answer}
     </label>
       )} */}
-
+                          {showAlert ? (
                             <label>
                               <input
                                 type='radio'
                                 name='answer_group'
-                                className='answer'
                                 value={e.answer}
                               />
                               &nbsp;
-                              {e.answer}
+                              <span
+                                className={
+                                  isCorrect === "Correct"
+                                    ? index === i && "text-[green]"
+                                    : index === i && "text-[red]"
+                                }
+                              >
+                                {e.answer}
+                              </span>
                             </label>
-                          </div>
-                        ))}
-                      </div>
+                          ) : (
+                            <label>
+                              <input
+                                type='radio'
+                                name='answer_group'
+                                value={e.answer}
+                              />
+                              &nbsp;
+                              <span>{e.answer}</span>
+                            </label>
+                          )}
+                        </div>
+                      ))}
                     </div>
-                    <div className='py-3'>
+                  </div>
+                  <div className='py-3'>
+                    {clicked ? (
                       <Button
                         color='secondary'
                         size='sm'
@@ -399,9 +433,24 @@ export default function QuizPage() {
                       >
                         Next
                       </Button>
-                    </div>
-                  </Card>
-                </>
+                    ) : (
+                      <Button
+                        size='sm'
+                        className='ml-10 rounded-md mt-3'
+                        disabled={true}
+                        // onClick={() =>
+                        //   nextQuestion(
+                        //     studentAnswer,
+                        //     quizList.questions[counter].correctAnswer,
+                        //     counter
+                        //   )
+                        // }
+                      >
+                        Next
+                      </Button>
+                    )}
+                  </div>
+                </Card>
               </div>
             </>
           )}

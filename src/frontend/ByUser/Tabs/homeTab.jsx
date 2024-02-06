@@ -218,7 +218,7 @@ export default function Home() {
                     style={{ width: "1440px", height: "auto" }}
                   >
                     {coursesList
-                      .filter((el) => el.category._id === item._id)
+                      .filter((el) => el?.category?._id === item?._id)
                       .map((e) => (
                         <div
                           onClick={() => handleRoute(e)}

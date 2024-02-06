@@ -14,6 +14,7 @@ import {
   Radio,
   RadioGroup,
 } from "@nextui-org/react";
+import QuizPage from "../../ByUser/Quiz/quizpage";
 import { getFile } from "../../../util";
 
 import apiInstance from "../../../util/api";
@@ -256,21 +257,29 @@ export default function CourseDetail(props) {
                       aria-label='Options'
                     >
                       <Tab title='Summary'>
-                        <div className='pt-[24px]'>
-                          <label className='text-[24px] font-bold text-[#0025A9]'>
-                            Title
-                          </label>
-                          <Textarea
-                            type='text'
-                            placeholder='Description...'
-                            className='form-control'
-                          />
-                          <div className='flex justify-end gap-2 mt-5'>
-                            <Button color='primary' variant='bordered'>
-                              Cancel
-                            </Button>
-                            <Button color='primary'>Submit</Button>
-                          </div>
+                        <div className='bg-[#EBF0FF] text-[#001769] rounded-lg w-full h-[auto] p-[20px] flex flex-col gap-2'>
+                          <span className='w-[902px] h-[24px] text-[20px] font-semibold'>
+                            Description: This chapter is all about the basics of
+                            IELTS
+                          </span>
+                          <span className='w-[902px] h-[24px] text-[20px] font-semibold'>
+                            Reference link: &nbsp;
+                            <a
+                              href='www.msi.com/basicofielts'
+                              className='text-[#3454FF]'
+                            >
+                              www.msi.com/basicofielts
+                            </a>
+                          </span>
+                          <span className='w-[902px] h-[24px] text-[20px] font-semibold'>
+                            PDF File link: &nbsp;
+                            <a
+                              href='www.msi.com/basicofielts'
+                              className='text-[#3454FF]'
+                            >
+                              www.msi.com/basicofielts
+                            </a>
+                          </span>
                         </div>
                       </Tab>
                       <Tab title='Survey'>
@@ -322,8 +331,41 @@ export default function CourseDetail(props) {
                           <Button color='primary'>Submit</Button>
                         </div>
                       </Tab>
-                      <Tab title='Review and Feedback' value={2} />
-                      <Tab title='Quiz' value={3} />
+                      <Tab title='Review and Feedback'>
+                        <div className='pt-[24px]'>
+                          <label className='text-[24px] font-bold text-[#0025A9]'>
+                            Title
+                          </label>
+                          <Textarea
+                            type='text'
+                            placeholder='Description...'
+                            className='form-control'
+                          />
+                          <div className='flex justify-end gap-2 mt-5'>
+                            <Button color='primary' variant='bordered'>
+                              Cancel
+                            </Button>
+                            <Button color='primary'>Submit</Button>
+                          </div>
+                        </div>
+                      </Tab>
+                      <Tab title='Quiz'>
+                        <div className='bg-[#EBF0FF] rounded-lg w-full h-[auto] p-[20px] flex flex-col gap-20'>
+                          <span className='w-[902px] h-[24px] text-[20px] font-semibold'>
+                            This quiz will test your basic knowledge on IELTS
+                          </span>
+                          <div className='flex justify-end gap-2'>
+                            <Button color='primary' variant='bordered'>
+                              Cancel
+                            </Button>
+                            <Link to={"/quiz-page/" + LMDataList._id}>
+                              {" "}
+                              <Button color='primary'>Start Quiz</Button>
+                            </Link>
+                          </div>
+                          {/* <QuizPage /> */}
+                        </div>
+                      </Tab>
                       <Tab title='Articles' value={4} />
                     </Tabs>
                   </div>
