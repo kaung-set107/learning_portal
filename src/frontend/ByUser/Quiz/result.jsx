@@ -13,6 +13,7 @@ import {
   faCheck,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
+import { Stack } from "@mui/material";
 import moment from "moment-timezone";
 import Nav from "../../home/header";
 export default function Result() {
@@ -22,6 +23,7 @@ export default function Result() {
   const [quizList, setQuizList] = useState([]);
   const [quizID, setQuizID] = useState("");
   const [studentList, setStudentList] = useState([]);
+  const [updatedQuestionList, setUpdatedQuestionList] = useState([]);
   // console.log(quizID, 'id')
 
   useEffect(() => {
@@ -35,19 +37,26 @@ export default function Result() {
               .length - 1
           ].quiz
         );
-        console.log(
-          res.data.data.filter((el) => el?.student === dataFromLocalStorage)[
-            res.data.data.filter((el) => el?.student === dataFromLocalStorage)
-              .length - 1
-          ],
-          "result"
-        );
+        // console.log(
+        //   res.data.data.filter((el) => el?.student === dataFromLocalStorage)[
+        //     res.data.data.filter((el) => el?.student === dataFromLocalStorage)
+        //       .length - 1
+        //   ],
+        //   "result"
+        // );
         setQuizResult(
           res.data.data.filter((el) => el?.student === dataFromLocalStorage)[
             res.data.data.filter((el) => el?.student === dataFromLocalStorage)
               .length - 1
           ]
         );
+        setUpdatedQuestionList(
+          res.data.data.filter((el) => el?.student === dataFromLocalStorage)[
+            res.data.data.filter((el) => el?.student === dataFromLocalStorage)
+              .length - 1
+          ].updatedQuestions
+        );
+
         //   setPages(res.data._metadata.page_count)
       });
     };
@@ -73,7 +82,7 @@ export default function Result() {
     getQuizz();
     getStudent();
     getResult();
-  }, [setQuizResult, setQuizID]);
+  }, [setQuizResult, setQuizID, setUpdatedQuestionList]);
   const handleBack = () => {
     // console.log(quizList.filter(el => el._id === quizID).map((i) => {
     //     return {
@@ -203,8 +212,9 @@ export default function Result() {
                   </div>
                 ))}
               </div>
+              {/* {console.log(updatedQuestionList, "up in bod")} */}
               <div className='grid grid-cols-5 gap-3'>
-                {quizResult.updatedQuestions.map((i, index) => (
+                {updatedQuestionList.map((i, index) => (
                   <>
                     {JSON.parse(i.correctAnswer) ===
                     JSON.parse(i.studentAnswer) ? (
@@ -300,48 +310,124 @@ export default function Result() {
             </div>
           </div>
         </div> */}
-        {/* <div className='py-5 px-5 text-center'>
-                    <h2 className='font-semibold text-3xl text-center mt-3'>You Answered</h2>
-                    <div>
-                        {console.log((quizResult), 'quest')}
+        <div className='py-5 px-5 ' style={{ padding: "24px 16px 24px 72px" }}>
+          {/* <h2 className='font-semibold text-3xl text-center mt-3'>
+            You Answered
+          </h2> */}
+          <div>
+            {console.log(quizResult, "quest")}
 
-                        <>
-                            {quizResult.updatedQuestions.map((i) => (parseInt(i.correctAnswer) === parseInt(i.studentAnswer)) ? (
-                                <>
-                                    <div className="mt-3">
-                                        <Stack sx={{ width: "50%" }}>
-                                            <Alert variant="outlined" severity="success">
-                                                This is an Correct Answer !
-                                            </Alert>
-                                        </Stack>
-                                        <div className='block'>
-                                            <div className='text-xl font-semibold'>{i.question}</div>
-                                            <div>Your Answer : {i.studentAnswer}</div>
-                                        </div>
-                                    </div>
-                                </>
-                            ) : (
-                                <>
-                                    <div className="mt-3">
-                                        <Stack sx={{ width: "50%" }}>
-                                            <Alert variant="outlined" severity="error">
-                                                This is an InCorrect Answer !
-                                            </Alert>
-                                        </Stack>
-                                        <div className='block'>
-                                            <div className='text-xl font-semibold'>{i.question}</div>
-                                            <div>Your Answer : {i.studentAnswer}</div>
-                                        </div>
-
-                                    </div>
-                                </>
-                            ))}
-
-                        </>
-
-
-                    </div>
-                </div > */}
+            <>
+              {updatedQuestionList.map((i, ind) =>
+                parseInt(i.correctAnswer) === parseInt(i.studentAnswer) ? (
+                  <>
+                    <Card
+                      className='flex justify-start mt-5 p-[24px] border-1 border-[#10C278] rounded-[12px]'
+                      key={i}
+                    >
+                      <div>
+                        <div className='text-lg py-3 px-3'>
+                          <b>({ind + 1})</b> &nbsp;
+                          {i.question}
+                        </div>
+                        <div>
+                          <img src={i.questionPic} />
+                        </div>
+                        <div className='mt-5'>
+                          {i.options.map((e, ind) => (
+                            <div
+                              key={i}
+                              className='text-lg font-semibold ml-10'
+                              onClick={() =>
+                                handleAns(
+                                  ind,
+                                  e.correctAnswer,
+                                  counter,
+                                  e.mark,
+                                  e._id
+                                )
+                              }
+                            >
+                              {console.log(
+                                parseInt(i.studentAnswer) - 1 === ind,
+                                "indd"
+                              )}
+                              <label>
+                                <input type='radio' name='answer_group' />
+                                &nbsp;
+                                <span
+                                  className={
+                                    parseInt(i.studentAnswer) - 1 === ind
+                                      ? "text-[#00C853]"
+                                      : ""
+                                  }
+                                >
+                                  {e.answer}
+                                </span>
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </Card>
+                  </>
+                ) : (
+                  <>
+                    <Card
+                      className='flex justify-start mt-5 p-[24px] border-1 border-[#F01D1E] rounded-[12px]'
+                      key={i}
+                    >
+                      <div>
+                        <div className='text-lg py-3 px-3'>
+                          <b>({ind + 1})</b> &nbsp;
+                          {i.question}
+                        </div>
+                        <div>
+                          <img src={i.questionPic} />
+                        </div>
+                        <div className='mt-5'>
+                          {i.options.map((e, ind) => (
+                            <div
+                              key={i}
+                              className='text-lg font-semibold ml-10'
+                              onClick={() =>
+                                handleAns(
+                                  ind,
+                                  e.correctAnswer,
+                                  counter,
+                                  e.mark,
+                                  e._id
+                                )
+                              }
+                            >
+                              <label>
+                                <input
+                                  type='radio'
+                                  name='answer_group'
+                                  value={e.answer}
+                                />
+                                &nbsp;
+                                <span
+                                  className={
+                                    parseInt(i.studentAnswer) - 1 === ind
+                                      ? "text-[red]"
+                                      : ""
+                                  }
+                                >
+                                  {e.answer}
+                                </span>
+                              </label>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </Card>
+                  </>
+                )
+              )}
+            </>
+          </div>
+        </div>
       </div>
     </>
   );
