@@ -39,7 +39,8 @@ export default function CourseDetail(props) {
   const [teacherImage, setTeacherImage] = useState([]);
   const [showVideoList, setShowVideoList] = useState([]);
   const [LMDataList, setLMDataList] = useState([]);
-
+  const [LMID, setLMID] = useState("");
+  const [showQuiz, setShowQuiz] = useState(false);
   useEffect(() => {
     // const getCourseDetail = async () => {
     //   await apiInstance.get("courses/" + props.id).then((res) => {
@@ -71,14 +72,14 @@ export default function CourseDetail(props) {
 
   // Handle Tabs
 
-  const handleTab = (val) => {
-    const activeTab = tabRef.current?.value;
-    // setActiveTab(activeTab);
-    console.log(val, "val");
+  const handleQuiz = (val) => {
+    // navigate(`/quiz-page/${LMID}`);
+    setShowQuiz(true);
   };
 
   const handleVideo = (data) => {
     console.log(data, "handleVideo");
+    setLMID(data._id);
     setShowVideoList(JSON.parse(data.video));
     setLMDataList(data);
     setShowVideo(true);
@@ -350,21 +351,9 @@ export default function CourseDetail(props) {
                         </div>
                       </Tab>
                       <Tab title='Quiz'>
-                        <div className='bg-[#EBF0FF] rounded-lg w-full h-[auto] p-[20px] flex flex-col gap-20'>
-                          <span className='w-[902px] h-[24px] text-[20px] font-semibold'>
-                            This quiz will test your basic knowledge on IELTS
-                          </span>
-                          <div className='flex justify-end gap-2'>
-                            <Button color='primary' variant='bordered'>
-                              Cancel
-                            </Button>
-                            <Link to={"/quiz-page/" + LMDataList._id}>
-                              {" "}
-                              <Button color='primary'>Start Quiz</Button>
-                            </Link>
-                          </div>
-                          {/* <QuizPage /> */}
-                        </div>
+                        {/* Quiz Page */}
+
+                        <QuizPage LMID={LMID} />
                       </Tab>
                       <Tab title='Articles' value={4} />
                     </Tabs>

@@ -1,19 +1,27 @@
 import { useEffect, useState } from "react";
-import { Card, Button, Tooltip } from "@nextui-org/react";
+import { Card, Button, Tooltip, Image } from "@nextui-org/react";
 import apiInstance from "../../../util/api";
 import QuizPhoto from "../../../assets/quiz.webp";
 import { useNavigate } from "react-router-dom";
 import Alert from "@mui/material/Alert";
+import Student from "../../../assets/img/student.jpg";
+import { getFile } from "../../../util";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleLeft } from "@fortawesome/free-solid-svg-icons";
-
-import Stack from "@mui/material/Stack";
+import {
+  faCircleLeft,
+  faCircleArrowLeft,
+  faCheck,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
+import moment from "moment-timezone";
+import Nav from "../../home/header";
 export default function Result() {
   const dataFromLocalStorage = localStorage.getItem("id");
   const navigate = useNavigate();
   const [quizResult, setQuizResult] = useState([]);
   const [quizList, setQuizList] = useState([]);
   const [quizID, setQuizID] = useState("");
+  const [studentList, setStudentList] = useState([]);
   // console.log(quizID, 'id')
 
   useEffect(() => {
@@ -43,7 +51,15 @@ export default function Result() {
         //   setPages(res.data._metadata.page_count)
       });
     };
-    getResult();
+    const getStudent = async () => {
+      await apiInstance.get("students").then((res) => {
+        setStudentList(
+          res.data.data.filter((el) => el._id === dataFromLocalStorage),
+          "ID"
+        );
+      });
+    };
+
     const getQuizz = async () => {
       // console.log(quizID, 'iddd')
       await apiInstance.get("quizzes").then((res) => {
@@ -55,6 +71,8 @@ export default function Result() {
       });
     };
     getQuizz();
+    getStudent();
+    getResult();
   }, [setQuizResult, setQuizID]);
   const handleBack = () => {
     // console.log(quizList.filter(el => el._id === quizID).map((i) => {
@@ -71,23 +89,170 @@ export default function Result() {
       })[0].lmID;
     navigate(`/quiz-page/${BackID}`);
   };
+  console.log(quizResult, "q res");
+
+  const dateTime = moment(quizResult.answerDate).locale("en").tz("Asia/Yangon");
+  const formattedDateTime = dateTime.format("LLLL");
   return (
-    <div className='mx-8 mt-5 mb-5'>
-      <Card>
-        <div className='py-3 mt-3'>
+    <>
+      <Nav />
+      <div className='mx-auto mt-5 mb-5'>
+        <div className='py-3 mt-3 flex flex-row gap-5'>
           <Tooltip content='Back to Quiz '>
-            <Button
-              color='light'
-              className='ml-10 rounded-md mt-3'
-              onClick={() => handleBack()}
-            >
-              <FontAwesomeIcon icon={faCircleLeft} size='2xl' />
-            </Button>
+            <div className='ml-10 rounded-md mt-3' onClick={() => handleBack()}>
+              <FontAwesomeIcon
+                icon={faCircleArrowLeft}
+                size='2xl'
+                className='text-[#2C4AE7]'
+              />
+            </div>
           </Tooltip>
+          <div className='p-1'>
+            <span className='text-[32px] font-bold text-[#131313]'>
+              Batch - 6, Module 1: Introduction to IELTS
+            </span>
+          </div>
         </div>
-        <div className='px-3 py-3'>
+        {/* Quiz With UI Design */}
+        <div className='flex flex-row gap-48 pt-14'>
+          {/* Left Side */}
+          <div className='flex flex-col gap-10 w-[887px] h-[570px] pl-24 pt-14'>
+            {/* 1 */}
+            <div className='flex gap-20 w-[855px] h-[52px]'>
+              <span className='text-[20px] text-[#053CFF] font-semibold w-[136px]'>
+                Started On
+              </span>
+              <span className='text-[20px] text-[#000] font-bold'>
+                {formattedDateTime?.split("GMT")[0]}
+              </span>
+            </div>
+            {/* 2 */}
+            <div className='flex gap-20 w-[855px] h-[52px]'>
+              <span className='text-[20px] text-[#053CFF] font-semibold w-[136px]'>
+                State
+              </span>
+              <span className='text-[20px] text-[#000] font-bold'>
+                Finished
+              </span>
+            </div>
+            {/* 3 */}
+            <div className='flex gap-20 w-[855px] h-[52px]'>
+              <span className='text-[20px] text-[#053CFF] font-semibold w-[136px]'>
+                Completed on
+              </span>
+              <span className='text-[20px] text-[#000] font-bold'>
+                Monday, 6 November 2023, 6:34 PM
+              </span>
+            </div>
+            {/* 4 */}
+            <div className='flex gap-20 w-[855px] h-[52px]'>
+              <span className='text-[20px] text-[#053CFF] font-semibold w-[136px]'>
+                Time taken
+              </span>
+              <span className='text-[20px] text-[#000] font-bold'>
+                25 mins 24 secs
+              </span>
+            </div>
+            {/* 5 */}
+            <div className='flex gap-20 w-[855px] h-[52px]'>
+              <span className='text-[20px] text-[#053CFF] font-semibold w-[136px]'>
+                Marks
+              </span>
+              <span className='text-[20px] text-[#000] font-bold'>
+                17.00/{" "}
+                {quizList
+                  .filter((el) => el._id === quizID)
+                  .map((i) => i.passMark)}
+              </span>
+            </div>
+            {/* 6 */}
+            <div className='flex gap-20 w-[855px] h-[52px]'>
+              <span className='text-[20px] text-[#053CFF] font-semibold w-[136px]'>
+                Grade
+              </span>
+              <span className='text-[20px] text-[#000] font-bold'>
+                5.67 out of 10.00 (57%)
+              </span>
+            </div>
+            {/* 7 */}
+            <div className='flex gap-20 w-[855px] h-[52px]'>
+              <span className='text-[20px] text-[#053CFF] font-semibold w-[136px]'>
+                Feedback
+              </span>
+              <span className='text-[20px] text-[#000] font-bold'>
+                {quizResult.status}ed
+              </span>
+            </div>
+          </div>
+          {/* Right Side */}
+          <div className='w-[313px] min-h-[570px] flex flex-col gap-6'>
+            <div className='flex flex-col gap-10 w-[313px] h-[502px] p-[20px] border-1 border-green-400 rounded-lg '>
+              <span className='flex flex-row pl-16 text-[20px] font-bold items-center'>
+                Quiz Navigation
+              </span>
+              <div>
+                {studentList.map((i) => (
+                  <div className='flex gap-5 justify-start items-center'>
+                    <Image
+                      radius='sm'
+                      alt={i.image.originalname}
+                      className='w-[40px] h-[40px] rounded-[100px]'
+                      src={getFile({ payload: i.image })}
+                    />
+                    <span>{i.name}</span>
+                  </div>
+                ))}
+              </div>
+              <div className='grid grid-cols-5 gap-3'>
+                {quizResult.updatedQuestions.map((i, index) => (
+                  <>
+                    {JSON.parse(i.correctAnswer) ===
+                    JSON.parse(i.studentAnswer) ? (
+                      <div
+                        className='flex flex-col  h-[45px] w-[45px] bg-[#E7F9F1] border-1 border-[#9FE7C9] rounded-lg '
+                        style={{ padding: "2px 0px 26px 0px" }}
+                      >
+                        <span className='text-[14px] font-black text-[#000] flex justify-center items-center'>
+                          {index + 1}
+                        </span>
+
+                        <span
+                          className='flex justify-center items-center bg-[#10C278] text-[#fff] border-1 border-[#9FE7C9] rounded-lg text-center w-[45px] h-[25px]'
+                          style={{ padding: "5px 15px 5px 10px" }}
+                        >
+                          <FontAwesomeIcon icon={faCheck} size='xl' />
+                        </span>
+                      </div>
+                    ) : (
+                      <div
+                        className='flex flex-col  h-[45px] w-[45px] bg-[#FDE9EB] border-1 border-[#F66671] rounded-lg '
+                        style={{ padding: "2px 0px 26px 0px" }}
+                      >
+                        <span className='text-[14px] font-black text-[#000] flex justify-center items-center'>
+                          {index + 1}
+                        </span>
+                        <span
+                          className='flex justify-center items-center bg-[#BA0220] text-[#fff] border-1 border-[#F66671] rounded-lg text-center w-[45px] h-[25px]'
+                          style={{ padding: "5px 15px 5px 10px" }}
+                        >
+                          <FontAwesomeIcon icon={faXmark} size='xl' />
+                        </span>
+                      </div>
+                    )}
+                  </>
+                ))}
+              </div>
+            </div>
+            <div className='bg-[#BA0220] rounded-lg text-[16px] font-normal text-[#fff] pt-[10px] pr-[16px] pb-[10px] pl-[16px] flex justify-center'>
+              Finish review
+            </div>
+          </div>
+        </div>
+        {/* Quiz With UI Design End */}
+
+        {/* <div className='px-3 py-3'>
           <h2 className='font-semibold text-3xl text-center mt-3'>
-            Quiz Result
+            Your Quiz Result
           </h2>
           <div className='px-5 py-3 grid grid-cols-2 gap-3 mt-5'>
             <div className='col-4'>
@@ -104,9 +269,9 @@ export default function Result() {
                         : "text-green-600"
                     }
                   >
-                    {quizResult.totalMark} Mark
-                  </b>
-                  .<br></br>Your pass mark is &nbsp;
+                    {quizResult.totalMark}
+                  </b>{" "}
+                  &nbsp; Mark .<br></br>Your pass mark is &nbsp;
                   <b
                     className={
                       quizResult.status === "fail"
@@ -117,8 +282,9 @@ export default function Result() {
                     {quizList
                       .filter((el) => el._id === quizID)
                       .map((i) => i.passMark)}
-                  </b>
-                  .{quizResult?.status === "fail" ? "Sorry" : "Nice"} , you{" "}
+                  </b>{" "}
+                  &nbsp; Mark .
+                  {quizResult?.status === "fail" ? "Sorry" : "Nice"} , you{" "}
                   <b
                     className={
                       quizResult.status === "fail"
@@ -126,14 +292,14 @@ export default function Result() {
                         : "text-green-600"
                     }
                   >
-                    {quizResult.status}
+                    {quizResult.status}ed
                   </b>
                   .
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
         {/* <div className='py-5 px-5 text-center'>
                     <h2 className='font-semibold text-3xl text-center mt-3'>You Answered</h2>
                     <div>
@@ -176,7 +342,7 @@ export default function Result() {
 
                     </div>
                 </div > */}
-      </Card>
-    </div>
+      </div>
+    </>
   );
 }

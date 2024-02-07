@@ -31,6 +31,7 @@ import MSI from "../../assets/img/MSI.svg";
 export default function App() {
   const [activeLink, setActiveLink] = useState("/home");
   const navigate = useNavigate();
+  const GetLoginData = localStorage.getItem("token");
   // const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // const links = [
@@ -128,8 +129,7 @@ export default function App() {
                 </DropdownTrigger>
                 <DropdownMenu aria-label='Profile Actions' variant='flat'>
                   <DropdownItem key='profile' className=' gap-2'>
-                    {location.pathname === "/student" ||
-                    location.pathname === "/instructor" ? (
+                    {GetLoginData ? (
                       <>
                         <div className='hidden sm:flex' onClick={logout}>
                           Logout

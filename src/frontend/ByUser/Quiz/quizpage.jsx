@@ -7,18 +7,19 @@ import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 import { useLocation, useNavigate } from "react-router-dom";
 import apiInstance from "../../../util/api";
+import ResultPage from "./result";
 // import Swal from 'sweetalert2';
 // import Result from './result'
-export default function QuizPage() {
+const QuizPage = ({ LMID }) => {
   const [timeLeft, setTimeLeft] = useState("");
   const [clicked, setClicked] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const LMID = location.pathname.split("/")[2];
+  // const LMID = location.pathname.split("/")[2];
   const [index, setIndex] = useState("");
 
   const [selectedOption, setSelectedOption] = useState(null);
-  const [submitted, setSubmitted] = useState(false);
+  const [showResult, setShowResult] = useState(false);
   const [oneHour, setOneHour] = useState("");
   const [showTimer, setShowTimer] = useState(false);
   const [isCorrect, setIsCorrect] = useState("");
@@ -34,7 +35,7 @@ export default function QuizPage() {
   const [studentAnswer, setStudentAnswer] = useState("");
   const [studentAnswerList, setStudentAnswerList] = useState([]);
 
-  console.log(studentAnswerList, "anass");
+  // console.log(studentAnswerList, "anass");
   // for (let i = 0; i < studentAnswerList.length; i++) {
   //   // const Stu = studentAnswerList[i]
   //   // setStudentAnswer(Stu)
@@ -51,7 +52,7 @@ export default function QuizPage() {
   //   elements.push(<div key={i}>{myArray[i]}</div>);
   // })
   // const { question, choices } = quizList.questions[activeQuestion]
-  console.log(trueAnswerList, "true");
+  // console.log(trueAnswerList, "true");
   // console.log(quizList.questions.map((i) => {
   //   return {
   //     question:i.question,
@@ -65,7 +66,7 @@ export default function QuizPage() {
   const TotalMark = trueAnswerList
     .map((i) => i.markTotal)
     .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-  console.log(TotalMark, "time");
+  // console.log(TotalMark, "time");
   const displayCorrect = (correct) => {
     let correct_msg = correct ? "correct" : "incorrect";
     // console.log("Answer was " + correct_msg);
@@ -148,7 +149,7 @@ export default function QuizPage() {
       totalMark: TotalMark,
       status: TotalMark >= quizList.passMark ? "pass" : "fail",
     };
-
+    // alert(JSON.stringify(data));
     apiInstance
       .post("quiz-results", data)
       .then(function () {
@@ -168,6 +169,7 @@ export default function QuizPage() {
     localStorage.removeItem("formSubmission");
 
     setShowOrigin(false);
+    setShowResult(true);
   };
   const handleAns = (val, ca, index, mark, id) => {
     setClicked(true);
@@ -261,29 +263,24 @@ export default function QuizPage() {
   const displayMinutes = Math.floor(timeLeft / 60);
   const displaySeconds = timeLeft % 60;
   return (
-    <div className='mx-8'>
+    <div className='mx-auto'>
       {showOrigin && (
         <>
           {!showTimer && (
-            <>
-              <Card className='mt-5 p-5'>
-                <h3 className='font-semibold text-xl'>Quiz</h3>
-                <p>
-                  {quizList.questions ? quizList.questions.length : "0"} -
-                  Questions
-                </p>
-                <p className='py-3'>{quizList.title}</p>
-                <div className='rounded-md mt-5'>
-                  {/* <Button color="secondary" size="md" disabled onClick={handleStart}>
-            Start Quiz
-          </Button>
-          ) : ( */}
-                  <Button color='secondary' size='md' onClick={handleStart}>
-                    Start Quiz
-                  </Button>
-                </div>
-              </Card>
-            </>
+            <div className='bg-[#EBF0FF] rounded-lg w-full h-[auto] p-[20px] flex flex-col gap-20'>
+              <span className='w-[902px] h-[24px] text-[20px] font-semibold'>
+                This quiz will test your basic knowledge on IELTS
+              </span>
+              <div className='flex justify-end gap-2'>
+                <Button color='primary' variant='bordered'>
+                  Cancel
+                </Button>
+
+                <Button color='primary' onClick={handleStart}>
+                  Start Quiz
+                </Button>
+              </div>
+            </div>
           )}
 
           {/* <Quiz quiz={quiz} shuffle={true}  showInstantFeedback={true}/> */}
@@ -418,7 +415,7 @@ export default function QuizPage() {
                     </div>
                   </div>
                   <div className='py-3'>
-                    {clicked ? (
+                    {showAlert ? (
                       <Button
                         color='secondary'
                         size='sm'
@@ -456,6 +453,8 @@ export default function QuizPage() {
           )}
         </>
       )}
+      {/* {showResult && <ResultPage />} */}
     </div>
   );
-}
+};
+export default QuizPage;
