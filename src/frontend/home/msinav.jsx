@@ -1,4 +1,3 @@
-import { Button, Image, Input } from "@nextui-org/react";
 import { SearchIcon } from "../../components/Navbar/SearchIcon";
 // import AcmeLogo from "../../assets/lp.png";
 import { useState } from "react";
@@ -8,12 +7,13 @@ import { getFile } from "../../util/index";
 import Theme from "../../components/ThemeSwitch/index";
 
 import {
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-  Avatar,
-  User,
+  Navbar,
+  NavbarMenu,
+  NavbarContent,
+  NavbarItem,
+  Image,
+  NavbarMenuToggle,
+  NavbarMenuItem,
 } from "@nextui-org/react";
 
 import { useEffect } from "react";
@@ -23,6 +23,15 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import MSI from "../../assets/img/MSI.svg";
 export default function App() {
+  const menuItems = [
+    { link: "#", title: "Home" },
+    { link: "#", title: "Courses" },
+    { link: "#", title: "Events" },
+    { link: "#", title: "About" },
+    { link: "#", title: "Contact" },
+    { link: "/login", title: "Login" },
+  ];
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState(1);
   const navigate = useNavigate();
   const handleTab = (value) => {
@@ -79,10 +88,13 @@ export default function App() {
       <div className='sticky top-0 bg-white z-50 shadow-lg mx-auto  w-[375px] sm:w-[100%]'>
         <div className='flex gap-10 justify-between sm:justify-around items-center '>
           <div className='align-left'>
-            <Image src={MSI} className=' w-[200px] sm:w-[300px] ' />
+            <Image
+              src={MSI}
+              className={isMenuOpen ? "hidden" : "w-[200px] sm:w-[300px]"}
+            />
           </div>
           <div
-            className='hidden lg:flex justify-evenly gap-10'
+            className='hidden md:flex justify-evenly gap-10'
             style={{
               borderRadius: "200px",
               width: "486px",
@@ -153,7 +165,80 @@ export default function App() {
             </span>
           </div>
           <div className='flex  lg:hidden gap-10 pr-5'>
-            <Dropdown placement='bottom-end'>
+            <Navbar onMenuOpenChange={setIsMenuOpen}>
+              <NavbarContent>
+                <NavbarMenuToggle
+                  aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                  className='sm:hidden'
+                />
+              </NavbarContent>
+
+              <NavbarMenu className='bg-white top-14'>
+                <NavbarItem>
+                  <Link
+                    to='/'
+                    className={
+                      location.pathname === "/"
+                        ? "font-semibold text-lg"
+                        : "text-lg"
+                    }
+                  >
+                    Home
+                  </Link>
+                </NavbarItem>
+                <NavbarItem>
+                  <Link
+                    to='/home-course'
+                    className={
+                      location.pathname === "/home-course" ||
+                      location.pathname === "/home-course-detail" ||
+                      location.pathname === "/home-sub-detail"
+                        ? "font-semibold text-lg"
+                        : "text-lg"
+                    }
+                  >
+                    {" "}
+                    Courses
+                  </Link>
+                </NavbarItem>
+                <NavbarItem>
+                  <Link
+                    to='/event'
+                    // className={
+                    //   location.pathname === "/home-course"
+                    //     ? "font-semibold text-lg"
+                    //     : "text-lg"
+                    // }
+                  >
+                    Events
+                  </Link>
+                </NavbarItem>
+                <NavbarItem>
+                  <Link
+                    to='/about'
+                    className={
+                      location.pathname === "/about"
+                        ? "font-semibold text-lg"
+                        : "text-lg"
+                    }
+                  >
+                    About
+                  </Link>
+                </NavbarItem>
+                <NavbarItem
+                  onClick={() => handleTab(5)}
+                  className={
+                    activeTab === 5 ? "font-semibold text-lg" : "text-lg"
+                  }
+                >
+                  Contact
+                </NavbarItem>
+                <NavbarItem>
+                  <Link to='/login'>Login</Link>
+                </NavbarItem>
+              </NavbarMenu>
+            </Navbar>
+            {/* <Dropdown placement='bottom-end'>
               <DropdownTrigger>
                 <FontAwesomeIcon icon={faBars} size='xl' />
               </DropdownTrigger>
@@ -172,7 +257,7 @@ export default function App() {
                   </span>
                 </DropdownItem>
               </DropdownMenu>
-            </Dropdown>
+            </Dropdown> */}
           </div>
         </div>
       </div>

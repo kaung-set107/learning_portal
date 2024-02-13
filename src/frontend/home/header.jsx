@@ -1,11 +1,3 @@
-import {
-  Navbar,
-  NavbarContent,
-  NavbarItem,
-  Button,
-  Image,
-  Input,
-} from "@nextui-org/react";
 import { SearchIcon } from "../../components/Navbar/SearchIcon";
 // import AcmeLogo from "../../assets/lp.png";
 import { useState } from "react";
@@ -21,14 +13,39 @@ import {
   DropdownItem,
   Avatar,
   User,
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarMenuToggle,
+  NavbarMenu,
+  NavbarMenuItem,
+  NavbarItem,
+  Image,
+  Input,
+  Button,
 } from "@nextui-org/react";
+import { AcmeLogo } from "./AcmeLogo.jsx";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import apiInstance from "../../util/api";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import MSI from "../../assets/img/MSI.svg";
+
 export default function App() {
+  const menuItems = [
+    "Profile",
+    "Dashboard",
+    "Activity",
+    "Analytics",
+    "System",
+    "Deployments",
+    "My Settings",
+    "Team Settings",
+    "Help & Feedback",
+    "Log Out",
+  ];
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState("/home");
   const navigate = useNavigate();
   const GetLoginData = localStorage.getItem("token");
@@ -178,7 +195,67 @@ export default function App() {
         </div>
 
         <div className='sm:hidden'>
-          <Dropdown placement='bottom-end'>
+          <Navbar onMenuOpenChange={setIsMenuOpen}>
+            <NavbarContent>
+              <NavbarMenuToggle
+                aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                className='sm:hidden'
+              />
+              <NavbarBrand>
+                <AcmeLogo />
+                <p className='font-bold text-inherit'>ACME</p>
+              </NavbarBrand>
+            </NavbarContent>
+
+            <NavbarContent className='hidden sm:flex gap-4' justify='center'>
+              <NavbarItem>
+                <Link color='foreground' href='#'>
+                  Features
+                </Link>
+              </NavbarItem>
+              <NavbarItem isActive>
+                <Link href='#' aria-current='page'>
+                  Customers
+                </Link>
+              </NavbarItem>
+              <NavbarItem>
+                <Link color='foreground' href='#'>
+                  Integrations
+                </Link>
+              </NavbarItem>
+            </NavbarContent>
+            <NavbarContent justify='end'>
+              <NavbarItem className='hidden lg:flex'>
+                <Link href='#'>Login</Link>
+              </NavbarItem>
+              <NavbarItem>
+                <Button as={Link} color='primary' href='#' variant='flat'>
+                  Sign Up
+                </Button>
+              </NavbarItem>
+            </NavbarContent>
+            <NavbarMenu>
+              {menuItems.map((item, index) => (
+                <NavbarMenuItem key={`${item}-${index}`}>
+                  <Link
+                    color={
+                      index === 2
+                        ? "primary"
+                        : index === menuItems.length - 1
+                        ? "danger"
+                        : "foreground"
+                    }
+                    className='w-full'
+                    href='#'
+                    size='lg'
+                  >
+                    {item}
+                  </Link>
+                </NavbarMenuItem>
+              ))}
+            </NavbarMenu>
+          </Navbar>
+          {/* <Dropdown placement='bottom-end'>
             <DropdownTrigger>
               <FontAwesomeIcon icon={faBars} size='xl' />
             </DropdownTrigger>
@@ -197,7 +274,7 @@ export default function App() {
               <DropdownItem key='system'>Contact</DropdownItem>
               <DropdownItem key='configurations'>About</DropdownItem>
             </DropdownMenu>
-          </Dropdown>
+          </Dropdown> */}
         </div>
       </div>
     </>

@@ -46,7 +46,7 @@ export default function CourseDetail(props) {
     const getSubjects = async () => {
       await apiInstance.get("subjects").then((res) => {
         console.log(
-          res.data.data.filter((el) => el.course._id === courseData._id),
+          res.data.data.filter((el) => el.course._id),
           "c subject"
         );
         setSubjectAndTeacherList(
@@ -61,71 +61,77 @@ export default function CourseDetail(props) {
   return (
     <>
       <MSINav />
-      <div style={{ padding: "24px 40px" }}>
+      <div className=' sm:pt-[24px] sm:pr-[20px] sm:pb-[100px] sm:pl-[40px]'>
         <>
           {/* <Head /> */}
-          <div className='flex flex-col flex-grow'>
-            <div className='flex gap-32 pt-20' style={{ height: "370px" }}>
-              <div style={{ width: "900px" }}>
+          <div className='flex flex-col gap-5 sm:gap-10 md:gap-20 duration-100'>
+            {/* Video Section */}
+            <div className='flex flex-col gap-10 md:gap-56 pt-5 md:pt-20 md:flex-row'>
+              <div className='flex w-full gap-2 md:w-[900px] '>
                 <iframe
                   src='https://www.youtube.com/embed/AJhplp3dct8'
                   allowfullscreen=''
-                  width='911'
-                  height='306'
-                  className='border'
+                  className='border w-[375px] h-[136px] md:w-[911px] md:h-[306px]'
                 ></iframe>
               </div>
-              <div className=' pr-24'>
+              <div className=''>
                 <div
                   style={{
-                    width: "275px",
-                    height: "306px",
-                    border: "2px solid red",
+                    border: "1px solid red",
                     borderRadius: "12px",
                   }}
+                  className='flex items-center mx-4 md:mx-0 md:pr-[24] w-[345px] h-[134px] md:w-[275px] md:h-[306px]'
                 >
                   <div className='flex flex-col gap-5 p-5'>
                     <h1 style={{ fontSize: "20px", fontWeight: "700" }}>
-                      This course include
+                      This Course Include
                     </h1>
-                    <div className='flex gap-2'>
-                      <img
-                        src={Module}
-                        style={{ width: "16px", height: "16px" }}
-                      />{" "}
-                      <span style={{ fontSize: "14px", fontWeight: "400" }}>
-                        4 modules
-                      </span>
-                    </div>
-                    <div className='flex gap-2'>
-                      <img
-                        src={Chapter}
-                        style={{ width: "16px", height: "16px" }}
-                      />{" "}
-                      <span style={{ fontSize: "14px", fontWeight: "400" }}>
-                        26 chapters
-                      </span>
-                    </div>
-                    <div className='flex gap-2'>
-                      <img
-                        src={Download}
-                        style={{ width: "16px", height: "16px" }}
-                      />{" "}
-                      <span style={{ fontSize: "14px", fontWeight: "400" }}>
-                        64 downloadable resources
-                      </span>
-                    </div>
-                    <div className='flex gap-2'>
-                      <img src={TV} style={{ width: "16px", height: "16px" }} />{" "}
-                      <span style={{ fontSize: "14px", fontWeight: "400" }}>
-                        Full lifetime access
-                      </span>
-                    </div>
-                    <div className='flex gap-2'>
-                      <img src={TV} style={{ width: "16px", height: "16px" }} />{" "}
-                      <span style={{ fontSize: "14px", fontWeight: "400" }}>
-                        Certificate of completion
-                      </span>
+                    <div className='grid grid-cols-3 gap-4 align-middle md:grid-cols-1'>
+                      <div className='flex gap-2'>
+                        <img
+                          src={Module}
+                          style={{ width: "16px", height: "16px" }}
+                        />{" "}
+                        <span className='text-[8px] font-normal md:text-[14px]'>
+                          4 modules
+                        </span>
+                      </div>
+                      <div className='flex gap-2'>
+                        <img
+                          src={Chapter}
+                          style={{ width: "16px", height: "16px" }}
+                        />{" "}
+                        <span className='text-[8px] font-normal md:text-[14px]'>
+                          26 chapters
+                        </span>
+                      </div>
+                      <div className='flex gap-2'>
+                        <img
+                          src={Download}
+                          style={{ width: "16px", height: "16px" }}
+                        />{" "}
+                        <span className='text-[8px] font-normal md:text-[14px]'>
+                          64 downloadable resources
+                        </span>
+                      </div>
+                      <div className='flex gap-2'>
+                        <img
+                          src={TV}
+                          style={{ width: "16px", height: "16px" }}
+                        />{" "}
+                        <span className='text-[8px] font-normal md:text-[14px]'>
+                          Full lifetime access
+                        </span>
+                      </div>
+                      <div className='flex gap-2'>
+                        <img
+                          src={TV}
+                          style={{ width: "16px", height: "16px" }}
+                        />{" "}
+                        <span className='text-[8px] font-normal md:text-[14px]'>
+                          Certificate of completion
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -141,38 +147,30 @@ export default function CourseDetail(props) {
                 backgroundRepeat: "no-repeat",
                 padding: "64px 0px -180px 0px",
               }}
-              className='flex flex-col mt-20 md:bg-right md:bg-contain'
+              className='flex flex-col mt-0 sm:mt-20 md:bg-right md:bg-contain'
             >
-              <div style={{ height: "272px" }}>
-                <div style={{ width: "468px", height: "120px" }}>
-                  <span style={{ fontSize: "40px", fontWeight: "600" }}>
+              <div className='w-[375px] h-[140px] sm:w-full sm:h-[272px]'>
+                <div className=''>
+                  <span className='text-[20px] font-semibold sm:text-[40px]'>
                     Not sure where to start?
                   </span>
-                  <p style={{ fontSize: "16px", fontWeight: "500" }}>
+                  <p className='text-[8px] font-medium w-[233px] h-[36px] sm:w-[466px] sm:h-[72px] sm:text-[16px]'>
                     No problem, we are here to help! Just answer a couple of
                     questions related to your interests and goals, and we will
                     help set you on the right path on your learning journey.{" "}
                   </p>
-                  <Button
-                    style={{
-                      width: "227px",
-                      height: "48px",
-                      backgroundColor: "#053CFF",
-                      color: "white",
-                    }}
-                    className='mt-10 hover:-translate-x-1 hover:scale-110 duration-700'
-                  >
+                  <Button className='text-[#fff] bg-[#053CFF] rounded-[4px] sm:rounded-[8px] mt-5 sm:mt-10 hover:-translate-x-1 hover:scale-110 duration-700 w-[67px] h-[26px] sm:w-[227px] sm:h-[48px]'>
                     <span className='p-2'>Take Quiz</span>
                   </Button>
                 </div>
               </div>
 
               {/* Subjects Section Start */}
-              <div style={{ height: "619px" }}>
-                <span style={{ fontSize: "40px", fontWeight: "600" }}>
+              <div className=''>
+                <span className='text-[20px] font-semibold sm:text-[40px]'>
                   Subjects
                 </span>
-                <div className='grid grid-cols-2 gap-10 pt-10 md:grid-cols-3'>
+                <div className='grid grid-cols-1 sm:grid-cols-3 gap-10 pt-10'>
                   {subjectList.slice(0, 3).map((e) => (
                     <>
                       <div
@@ -217,19 +215,10 @@ export default function CourseDetail(props) {
                         </p>
                         <div
                           // style={{ padding: "70px 28px 0px 120px" }}
-                          className='2xl:pt-unit-18 2xl:pl-unit-28 xl:pt-16 xl:pl-16'
+                          className='pt-8  left-[98px] b-[-13px] pl-unit-20 sm:pt-unit-18 sm:pl-unit-28'
                         >
                           <Button
-                            style={{
-                              fontSize: "16px",
-                              fontWeight: "500",
-
-                              borderRadius: "12px",
-                              color: "#FFF",
-                              width: "227px",
-                              height: "48px",
-                            }}
-                            className='bg-red-500 hover:bg-red-700'
+                            className='bg-red-500 hover:bg-red-700 text-[#fff] text-[8px] sm:text-[16px] font-medium rounded-[6px] sm:rounded-[12px] w-[127px] h-[26px] sm:w-[227px] sm:h-[48px]'
                             onClick={() => handleSubjectDetail(e, "sub-detail")}
                           >
                             See More

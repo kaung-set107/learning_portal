@@ -59,19 +59,19 @@ const Body = () => {
     navigate("/home-course-detail", { state: { data: data } });
   };
   return (
-    <div className=''>
+    <>
       <MSINav />
 
-      <div className='flex items-center justify-around  flex-wrap relative mb-10 py-[100px]'>
+      <div className='flex items-center justify-around flex-wrap relative mb-10 py-[100px]'>
         <img
           src={EHome}
           className='absolute top-0 left-0 z-0 w-[150px] md:w-[250px]'
           alt=''
         />
 
-        <div className='w-full px-5 md:m-0 lg:w-[490px] leading-[60px] static z-40'>
+        <div className='w-full px-5 md:m-0 lg:w-[490px] leading-[60px] mt-10'>
           <h1
-            className='text-[50px] text-secondary font-[semibold]'
+            className='text-[50px] text-secondary font-[semibold] '
             style={{ color: "#BC1F40", fontWeight: "900" }}
           >
             Welcome to MSI Academy
@@ -113,7 +113,6 @@ const Body = () => {
           {courseList.map((e) => (
             <div
               onClick={() => handleRoute(e)}
-              style={{ height: "470px" }}
               className='w-full hover:-translate-y-1 hover:scale-110 hover:rotate-1 hover:duration-500 md:w-[390px] h-full md:h-[610px]'
             >
               <div>
@@ -121,7 +120,7 @@ const Body = () => {
                   // style={{ width: "500px", height: "280px" }}
                   alt={e.image?.originalname}
                   src={getFile({ payload: e.image })}
-                  className='w-full h-full md:w-[500px] md:h-[280px]'
+                  className='w-full h-full sm:w-[500px] sm:h-[280px]'
                 />
                 <div className='flex p-5 flex-col justify-start flex-grow '>
                   <span
@@ -149,7 +148,7 @@ const Body = () => {
                   <div
                     className='py-10'
                     style={{
-                      width: "388px",
+                      width: "300px",
                       height: "19px",
                       fontSize: "14px",
                       fontWeight: "400px",
@@ -160,50 +159,10 @@ const Body = () => {
                     <br></br>
                     Price - <span style={{ color: "#262FD9" }}>50000 MMK</span>
                   </div>
-
-                  {/* rating state */}
-                  {/* <div
-                                style={{
-                                  width: "388px",
-                                  height: "19px",
-                                  fontSize: "14px",
-                                  fontWeight: "400px",
-                                }}
-                              >
-                                <ReactStars {...firstExample} />
-                              </div> */}
                 </div>
               </div>
             </div>
           ))}
-
-          {/* {item.subjects?.length > 3 && (
-                      <div className='py-10'>
-                        <button
-                          style={{
-                            padding: "16px",
-                            width: "125px",
-                            height: "43px",
-                            alignItems: "center",
-                            border: "1px solid #053CFF",
-                            borderRadius: "8px",
-                          }}
-                          className='flex justify-start'
-                        >
-                          <span
-                            style={{
-                              color: "#053CFF",
-                              fontFamily: "Inter",
-                              fontSize: "16px",
-                              fontWeight: "500px",
-                            }}
-                          >
-                            {console.log(item.subjects?.length - 3, "sub")}
-                            Show {item.subjects?.length - 3} More
-                          </span>
-                        </button>
-                      </div>
-                    )} */}
         </div>
 
         <Link to='/home-course' className='flex justify-center py-10'>
@@ -260,7 +219,7 @@ const Body = () => {
       </div>
       <Testimonials />
       <Footer />
-    </div>
+    </>
   );
 };
 

@@ -2,7 +2,7 @@ import Countdown from "react-countdown";
 // import { quiz } from "./quiz";
 
 import { useState, useEffect } from "react";
-import { Card, Button } from "@nextui-org/react";
+import { Card, Button, Spinner } from "@nextui-org/react";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -12,57 +12,28 @@ import ResultPage from "./result";
 // import Result from './result'
 const QuizPage = ({ LMID }) => {
   const [timeLeft, setTimeLeft] = useState("");
-  const [clicked, setClicked] = useState(false);
+  const [clicked, setClicked] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
   // const LMID = location.pathname.split("/")[2];
   const [index, setIndex] = useState("");
 
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState("");
   const [showResult, setShowResult] = useState(false);
   const [oneHour, setOneHour] = useState("");
   const [showTimer, setShowTimer] = useState(false);
   const [isCorrect, setIsCorrect] = useState("");
   const [showAlert, setShowAlert] = useState(false);
   let [points, setPoints] = useState(null);
-  let [counter, setCounter] = useState(0);
+  const [counter, setCounter] = useState(0);
   const [quizList, setQuizList] = useState([]);
-  //const [showResult, setShowResult] = useState(false)
+  const [nextAnswer, setNextAnswer] = useState(false);
   const [showOrigin, setShowOrigin] = useState(true);
   const [trueAnswerList, setTrueAnswerList] = useState([]);
   // const [trueAnswer, setTrueAnswer] = useState('')
   const [studentID, setStudentID] = useState("");
   const [studentAnswer, setStudentAnswer] = useState("");
   const [studentAnswerList, setStudentAnswerList] = useState([]);
-
-  // console.log(studentAnswerList, "anass");
-  // for (let i = 0; i < studentAnswerList.length; i++) {
-  //   // const Stu = studentAnswerList[i]
-  //   // setStudentAnswer(Stu)
-  //   // student: studentAnswerList[i].studentAnswer
-  //   // console.log(studentAnswerList[i].studentAnswer, 'ans');
-  //   //setStudentAnswer(student)
-  //   return {
-  //     stu: studentAnswerList[i].studentAnswer
-  //   }
-
-  // }
-  // console.log(stu, 'stu')
-  // console.log(for (let i = 0; i < myArray.length; i++) {
-  //   elements.push(<div key={i}>{myArray[i]}</div>);
-  // })
-  // const { question, choices } = quizList.questions[activeQuestion]
-  // console.log(trueAnswerList, "true");
-  // console.log(quizList.questions.map((i) => {
-  //   return {
-  //     question:i.question,
-  //     correctAnswer:i.correctAnswer,
-  //     mark:i.mark,
-  //     options:i.options,
-  //     type:i.type
-  //   }
-
-  // }),'ques  ')
   const TotalMark = trueAnswerList
     .map((i) => i.markTotal)
     .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
@@ -79,10 +50,7 @@ const QuizPage = ({ LMID }) => {
   };
   const handleStart = () => {
     setShowTimer(true);
-    // setOneHour(
-    //   new Date(new Date().setHours(new Date().getHours() + 1)).toISOString()
-    // );
-    console.log(studentAnswerList, "answer lIst");
+
     const timerInterval = setInterval(() => {
       setTimeLeft((prevTime) => {
         if (prevTime === 0) {
@@ -100,6 +68,8 @@ const QuizPage = ({ LMID }) => {
   };
 
   const nextQuestion = (studentAnswer, cas, ind) => {
+    setClicked("");
+    setNextAnswer(true);
     setIndex(""); //to check incorrect or correct answer
     if (cas === null) {
       alert("Must select an answer before proceeding to the next question");
@@ -120,7 +90,7 @@ const QuizPage = ({ LMID }) => {
     } else {
       setCounter(0);
       handleResult();
-      console.log(TotalMark, "in next");
+      // console.log(TotalMark, "in next");
     }
 
     // handleAns()
@@ -172,24 +142,10 @@ const QuizPage = ({ LMID }) => {
     setShowResult(true);
   };
   const handleAns = (val, ca, index, mark, id) => {
+    setNextAnswer(false);
     setClicked(true);
     setShowAlert(true);
     setIndex(val);
-    //console.log(val, 'val')
-    //console.log(val + 1, 'val+1')
-
-    // setTrueAnswer(parseInt(ca))
-    // console.log(val + 1, "val");
-    // console.log(ca, "ca");
-    // console.log(mark, 'valll');
-
-    // setFormData({
-    //   username: '',
-    //   email: '',
-    // });
-
-    // console.log(newFormSubmissions,'fix')
-    // Clear the input field
 
     if (val + 1 === parseInt(ca)) {
       // setStudentAnswer(val + 1)
@@ -242,10 +198,7 @@ const QuizPage = ({ LMID }) => {
         }
 
         // console.log(
-        //   res.data.data.filter((el) => el.learningMaterial === LMID)[0] !==
-        //     undefined
-        //     ? res.data.data.filter((el) => el.learningMaterial === LMID)[0]
-        //     : "helo",
+        //   res.data.data.filter((el) => el.learningMaterial === LMID)[0],
         //   "att"
         // );
         //   setPages(res.data._metadata.page_count)
@@ -275,35 +228,35 @@ const QuizPage = ({ LMID }) => {
                 <Button color='primary' variant='bordered'>
                   Cancel
                 </Button>
-
-                <Button color='primary' onClick={handleStart}>
-                  Start Quiz
-                </Button>
+                {quizList.questions ? (
+                  <Button color='primary' onClick={handleStart}>
+                    Start Quiz
+                  </Button>
+                ) : (
+                  <Button color='light'>
+                    Start Quiz <Spinner size='sm' />
+                  </Button>
+                )}
               </div>
             </div>
           )}
 
-          {/* <Quiz quiz={quiz} shuffle={true}  showInstantFeedback={true}/> */}
-
           {showTimer && (
             <>
-              <div className='p-[20px] text-[20px] font-light'>
-                Time : {displayMinutes < 10 ? "0" : ""}
-                {displayMinutes}:{displaySeconds < 10 ? "0" : ""}
-                {displaySeconds}
-                {/* {console.log(quizList.duration * 60, "hi")} */}
-              </div>
               <div className='h-[317px]'>
-                {/* {quizList.questions[counter].map((item, index) => ( */}
-
                 <div className='p-[24px] border-1 border-[#10C278] rounded-[12px] flex flex-col gap-10'>
-                  <div className='flex flex-row gap-20'>
+                  <div className='flex justify-between'>
                     <span className='text-[20px] font-semibold p-[10px]'>
                       Question
                     </span>
-                    <span className='text-[16px] text-[#BDFFE2] font-medium bg-[#10C278] rounded-[24px] p-[12px] w-[188px] text-center'>
+                    <span className='text-[16px] text-[#BDFFE2] font-medium bg-[#10C278] rounded-[24px] pt-[22px] w-[180px]  text-center'>
                       Mark {quizList.questions[counter].mark} out of{" "}
                       {quizList.questions[counter].mark}{" "}
+                    </span>
+                    <span className='p-[20px] text-[20px] font-light'>
+                      Time : {displayMinutes < 10 ? "0" : ""}
+                      {displayMinutes}:{displaySeconds < 10 ? "0" : ""}
+                      {displaySeconds}
                     </span>
                   </div>
 
@@ -326,7 +279,7 @@ const QuizPage = ({ LMID }) => {
                       </div>
                     ))}
                 </div>
-
+                {/* Qusetion And Answer Section */}
                 <Card
                   className='mt-5 p-[24px] border-1 border-[#10C278] rounded-[12px]'
                   key={counter}
@@ -354,61 +307,45 @@ const QuizPage = ({ LMID }) => {
                             )
                           }
                         >
-                          {/* {selectedOption ? (
-          <label>
-           <input
-           type="radio"
-           name="answer_group"
-           className="answer"
-           value={e.answer}
-     disabled={true}
-           onChange={() => handleOptionSelect(e)}  
-         />
-         &nbsp;
-         {e.answer}
-       </label>
-      ) : (
-        <label>
-        <input
-        type="radio"
-        name="answer_group"
-        className="answer"
-        value={e.answer}
-
-        onChange={() => handleOptionSelect(e)}
-      />
-      &nbsp;
-      {e.answer}
-    </label>
-      )} */}
-                          {showAlert ? (
-                            <label>
+                          {showTimer && (
+                            <div>
                               <input
                                 type='radio'
                                 name='answer_group'
                                 value={e.answer}
+                                disabled={
+                                  clicked === ""
+                                    ? ""
+                                    : selectedOption === e.answer
+                                    ? ""
+                                    : true
+                                }
+                                onChange={(e) =>
+                                  handleOptionSelect(e.target.value)
+                                }
                               />
                               &nbsp;
-                              <span
+                              <button
                                 className={
                                   isCorrect === "Correct"
                                     ? index === i && "text-[green]"
                                     : index === i && "text-[red]"
                                 }
+                                value={e.answer}
+                                disabled={
+                                  clicked === ""
+                                    ? ""
+                                    : selectedOption === e.answer
+                                    ? ""
+                                    : true
+                                }
+                                onChange={(e) =>
+                                  handleOptionSelect(e.target.value)
+                                }
                               >
                                 {e.answer}
-                              </span>
-                            </label>
-                          ) : (
-                            <label>
-                              <input
-                                type='radio'
-                                name='answer_group'
-                                value={e.answer}
-                              />
-                              &nbsp;
-                              <span>{e.answer}</span>
-                            </label>
+                              </button>
+                            </div>
                           )}
                         </div>
                       ))}

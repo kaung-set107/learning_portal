@@ -54,10 +54,10 @@ const Body = () => {
     getAssign();
   }, []);
   return (
-    <div className=''>
+    <>
       <MSINav />
 
-      <div className='p-5 md:p-10 relative'>
+      <div className='md:p-[24 20 100 40] p-5'>
         <h1
           className='text-[40px] font-[semibold] py-5'
           style={{ color: "#BC1F40", fontWeight: "900" }}
@@ -163,7 +163,7 @@ const Body = () => {
       </div>
 
       <Footer />
-    </div>
+    </>
   );
 };
 
