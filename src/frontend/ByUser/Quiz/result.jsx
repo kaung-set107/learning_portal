@@ -34,83 +34,81 @@ export default function Result() {
   useEffect(() => {
     // console.log(dataFromLocalStorage, 'local')
 
-    setUpdatedQuestionList(
-      res.data.data.filter((el) => el?.student === dataFromLocalStorage)[
-        res.data.data.filter((el) => el?.student === dataFromLocalStorage)
-          .length - 1
-      ].updatedQuestions
-    );
+    const getStudent = async () => {
+      await apiInstance.get("students").then((res) => {
+        setStudentList(
+          res.data.data.filter((el) => el._id === dataFromLocalStorage),
+          "ID"
+        );
+      });
+    };
 
-    //   setPages(res.data._metadata.page_count)
-  });
-}
-const getStudent = async () => {
-  await apiInstance.get("students").then((res) => {
-    setStudentList(
-      res.data.data.filter((el) => el._id === dataFromLocalStorage),
-      "ID"
-    );
-  });
-};
+    const getQuizz = async () => {
+      // console.log(quizID, 'iddd')
+      await apiInstance.get("quizzes").then((res) => {
+        //   window.location.reload()
 
-const getQuizz = async () => {
-  // console.log(quizID, 'iddd')
-  await apiInstance.get("quizzes").then((res) => {
-    //   window.location.reload()
+        // console.log(res.data.data.filter(el=>el?.student === dataFromLocalStorage)[res.data.data.filter(el=>el?.student === dataFromLocalStorage).length - 1],'result')
+        setQuizList(res.data.data);
+        //   setPages(res.data._metadata.page_count)
+      });
+    };
+    const getLM = async () => {
+      await apiInstance.get("learning-materials").then((res) => {
+        // console.log(res.data.data, "lm");
+        setLMList(res.data.data);
+      });
+    };
+    const getSUB = async () => {
+      await apiInstance.get("subjects").then((res) => {
+        // console.log(res.data.data, "lm");
+        setSubList(res.data.data);
+      });
+    };
 
-    // console.log(res.data.data.filter(el=>el?.student === dataFromLocalStorage)[res.data.data.filter(el=>el?.student === dataFromLocalStorage).length - 1],'result')
-    setQuizList(res.data.data);
-    //   setPages(res.data._metadata.page_count)
-  });
-};
-const getLM = async () => {
-  await apiInstance.get("learning-materials").then((res) => {
-    // console.log(res.data.data, "lm");
-    setLMList(res.data.data);
-  });
-};
-const getSUB = async () => {
-  await apiInstance.get("subjects").then((res) => {
-    // console.log(res.data.data, "lm");
-    setSubList(res.data.data);
-  });
-};
+    getSUB();
+    getLM();
+    getQuizz();
+    getStudent();
 
-getSUB();
-getLM();
-getQuizz();
-getStudent();
-getResult();
-const getResult = async () => {
-  await apiInstance.get("quiz-results").then(
-    (res) => {
-      //console.log(res.data.data.filter(el => el.student === dataFromLocalStorage)[res.data.data.filter(el => el?.student === dataFromLocalStorage).length - 1].quiz, 'ID')
-      setQuizID(
-        res.data.data.filter((el) => el.student === dataFromLocalStorage)[
-          res.data.data.filter((el) => el?.student === dataFromLocalStorage)
-            .length - 1
-        ].quiz
-      );
-      // console.log(
-      //   res.data.data.filter((el) => el?.student === dataFromLocalStorage)[
-      //     res.data.data.filter((el) => el?.student === dataFromLocalStorage)
-      //       .length - 1
-      //   ],
-      //   "result"
-      // );
-      const timer = setTimeout(() => {
-        setQuizResult(
+    const getResult = async () => {
+      await apiInstance.get("quiz-results").then((res) => {
+        //console.log(res.data.data.filter(el => el.student === dataFromLocalStorage)[res.data.data.filter(el => el?.student === dataFromLocalStorage).length - 1].quiz, 'ID')
+        setQuizID(
+          res.data.data.filter((el) => el.student === dataFromLocalStorage)[
+            res.data.data.filter((el) => el?.student === dataFromLocalStorage)
+              .length - 1
+          ].quiz
+        );
+        // console.log(
+        //   res.data.data.filter((el) => el?.student === dataFromLocalStorage)[
+        //     res.data.data.filter((el) => el?.student === dataFromLocalStorage)
+        //       .length - 1
+        //   ],
+        //   "result"
+        // );
+        const timer = setTimeout(() => {
+          setQuizResult(
+            res.data.data.filter((el) => el?.student === dataFromLocalStorage)[
+              res.data.data.filter((el) => el?.student === dataFromLocalStorage)
+                .length - 1
+            ]
+          );
+        }, 5000);
+
+        setUpdatedQuestionList(
           res.data.data.filter((el) => el?.student === dataFromLocalStorage)[
             res.data.data.filter((el) => el?.student === dataFromLocalStorage)
               .length - 1
-          ]
+          ].updatedQuestions
         );
-      }, 5000);
-
-      return () => clearTimeout(timer);
-    },
-    [setQuizResult, setQuizID, setUpdatedQuestionList]
-  );
+        return () => clearTimeout(timer);
+        //   setPages(res.data._metadata.page_count)
+      });
+    };
+    getResult();
+    // return () => clearTimeout(timer);
+  }, [setQuizResult, setQuizID, setUpdatedQuestionList]);
 
   const handleBack = (quizId) => {
     // const SectionInSub = subList.filter((el) => el?.subjectSections[0]);
@@ -514,4 +512,4 @@ const getResult = async () => {
       )}
     </>
   );
-};
+}
