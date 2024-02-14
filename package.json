@@ -39,6 +39,7 @@
     "react-dom": "^18.2.0",
     "react-drag-drop-files": "^2.3.10",
     "react-google-charts": "^4.0.1",
+    "react-h5-audio-player": "^3.9.1",
     "react-hook-form": "^7.45.4",
     "react-icons": "^4.10.1",
     "react-id-swiper": "^4.0.0",

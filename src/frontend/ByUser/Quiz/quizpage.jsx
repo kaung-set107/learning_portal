@@ -259,8 +259,8 @@ const QuizPage = ({ LMID }) => {
                       {displaySeconds}
                     </span>
                   </div>
-
-                  {showAlert &&
+                  {quizList.questions[counter].answerType === "radio" ? (
+                    showAlert &&
                     (isCorrect === "Correct" ? (
                       <div className='mt-3'>
                         <Stack sx={{ width: "50%" }}>
@@ -277,7 +277,10 @@ const QuizPage = ({ LMID }) => {
                           </Alert>
                         </Stack>
                       </div>
-                    ))}
+                    ))
+                  ) : (
+                    <div>Multiple</div>
+                  )}
                 </div>
                 {/* Qusetion And Answer Section */}
                 <Card
@@ -309,42 +312,55 @@ const QuizPage = ({ LMID }) => {
                         >
                           {showTimer && (
                             <div>
-                              <input
-                                type='radio'
-                                name='answer_group'
-                                value={e.answer}
-                                disabled={
-                                  clicked === ""
-                                    ? ""
-                                    : selectedOption === e.answer
-                                    ? ""
-                                    : true
-                                }
-                                onChange={(e) =>
-                                  handleOptionSelect(e.target.value)
-                                }
-                              />
+                              {quizList.questions[counter].answerType ===
+                              "radio" ? (
+                                <input
+                                  type='radio'
+                                  name='answer_group'
+                                  value={e.answer}
+                                  disabled={
+                                    clicked === ""
+                                      ? ""
+                                      : selectedOption === e.answer
+                                      ? ""
+                                      : true
+                                  }
+                                  onChange={(e) =>
+                                    handleOptionSelect(e.target.value)
+                                  }
+                                />
+                              ) : (
+                                <input
+                                  type='checkbox'
+                                  name='answer_group'
+                                  value={e.answer}
+                                  // disabled={
+                                  //   clicked === ""
+                                  //     ? ""
+                                  //     : selectedOption === e.answer
+                                  //     ? ""
+                                  //     : true
+                                  // }
+                                  // onChange={(e) =>
+                                  //   handleOptionSelect(e.target.value)
+                                  // }
+                                />
+                              )}
                               &nbsp;
-                              <button
+                              <span
                                 className={
-                                  isCorrect === "Correct"
-                                    ? index === i && "text-[green]"
-                                    : index === i && "text-[red]"
+                                  isCorrect === "Correct" &&
+                                  i.studentAnswer === i.correctAnswer
+                                    ? "text-[green]"
+                                    : "text-[red]"
                                 }
                                 value={e.answer}
-                                disabled={
-                                  clicked === ""
-                                    ? ""
-                                    : selectedOption === e.answer
-                                    ? ""
-                                    : true
-                                }
                                 onChange={(e) =>
                                   handleOptionSelect(e.target.value)
                                 }
                               >
                                 {e.answer}
-                              </button>
+                              </span>
                             </div>
                           )}
                         </div>

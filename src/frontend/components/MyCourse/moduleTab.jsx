@@ -16,7 +16,7 @@ import {
 } from "@nextui-org/react";
 import QuizPage from "../../ByUser/Quiz/quizpage";
 import { getFile } from "../../../util";
-
+import BBAudio from "../../../assets/audio/bb.mp3";
 import apiInstance from "../../../util/api";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -26,6 +26,8 @@ import {
   faLock,
   faAngleLeft,
 } from "@fortawesome/free-solid-svg-icons";
+import AudioPlayer from "react-h5-audio-player";
+import "react-h5-audio-player/lib/styles.css";
 export default function CourseDetail(props) {
   const tabRef = useRef();
   const location = useLocation();
@@ -78,8 +80,9 @@ export default function CourseDetail(props) {
   };
 
   const handleVideo = (data) => {
-    console.log(data, "handleVideo");
+    // console.log(data, "handleVideo");
     setLMID(data._id);
+
     setShowVideoList(JSON.parse(data.video));
     setLMDataList(data);
     setShowVideo(true);
@@ -355,7 +358,19 @@ export default function CourseDetail(props) {
 
                         <QuizPage LMID={LMID} />
                       </Tab>
-                      <Tab title='Articles' value={4} />
+                      <Tab title='Articles'>
+                        <div className='flex flex-col gap-10'>
+                          <h1 className='text-[#0025A9] font-semibold text-[25px]'>
+                            IELTs Listening Test
+                          </h1>
+                          <AudioPlayer
+                            autoPlay={false}
+                            src={BBAudio}
+                            onPlay={(e) => console.log("onPlay")}
+                            // other props here
+                          />
+                        </div>
+                      </Tab>
                     </Tabs>
                   </div>
                 </div>

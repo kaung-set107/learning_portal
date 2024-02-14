@@ -28,7 +28,7 @@ export default function Result() {
   const [updatedQuestionList, setUpdatedQuestionList] = useState([]);
   const [LMList, setLMList] = useState([]);
   const [subList, setSubList] = useState([]);
-
+  const [quizNavigationID, setQuizNavigationID] = useState("");
   // console.log(quizID, 'id')
 
   useEffect(() => {
@@ -110,6 +110,18 @@ export default function Result() {
     // return () => clearTimeout(timer);
   }, [setQuizResult, setQuizID, setUpdatedQuestionList]);
 
+  const handleQuizNavigation = (data) => {
+    console.log(data, "navi");
+    console.log(
+      updatedQuestionList
+        .filter((el) => el._id === data._id)[0]
+        ._id.slice(22, 2),
+      "up qu"
+    );
+    setQuizNavigationID(
+      updatedQuestionList.filter((el) => el._id === data._id)[0]._id?.slice(-2)
+    );
+  };
   const handleBack = (quizId) => {
     // const SectionInSub = subList.filter((el) => el?.subjectSections[0]);
 
@@ -277,9 +289,11 @@ export default function Result() {
                     <>
                       {JSON.parse(i.correctAnswer) ===
                       JSON.parse(i.studentAnswer) ? (
-                        <div
+                        <a
+                          href={`#${quizNavigationID}`}
                           className='flex flex-col  h-[45px] w-[45px] bg-[#E7F9F1] border-1 border-[#9FE7C9] rounded-lg '
                           style={{ padding: "2px 0px 26px 0px" }}
+                          onClick={() => handleQuizNavigation(i)}
                         >
                           <span className='text-[14px] font-black text-[#000] flex justify-center items-center'>
                             {index + 1}
@@ -291,11 +305,13 @@ export default function Result() {
                           >
                             <FontAwesomeIcon icon={faCheck} size='xl' />
                           </span>
-                        </div>
+                        </a>
                       ) : (
-                        <div
+                        <a
+                          href={`#${quizNavigationID}`}
                           className='flex flex-col  h-[45px] w-[45px] bg-[#FDE9EB] border-1 border-[#F66671] rounded-lg '
                           style={{ padding: "2px 0px 26px 0px" }}
+                          onClick={() => handleQuizNavigation(i)}
                         >
                           <span className='text-[14px] font-black text-[#000] flex justify-center items-center'>
                             {index + 1}
@@ -306,7 +322,7 @@ export default function Result() {
                           >
                             <FontAwesomeIcon icon={faXmark} size='xl' />
                           </span>
-                        </div>
+                        </a>
                       )}
                     </>
                   ))}
@@ -320,187 +336,132 @@ export default function Result() {
               </div>
             </div>
           </div>
-          {/* Quiz With UI Design End */}
-
-          {/* <div className='px-3 py-3'>
-          <h2 className='font-semibold text-3xl text-center mt-3'>
-            Your Quiz Result
-          </h2>
-          <div className='px-5 py-3 grid grid-cols-2 gap-3 mt-5'>
-            <div className='col-4'>
-              <img src={QuizPhoto} style={{ width: "350px" }} />
-            </div>
-            <div className='offset-2 col-4 font-semibold text-2xl'>
-              <div className='text-center mt-20'>
+          {updatedQuestionList.map((i, ind) =>
+            parseInt(i.correctAnswer) === parseInt(i.studentAnswer) ? (
+              <div
+                className='py-5 px-5 '
+                style={{ padding: "24px 16px 24px 72px" }}
+                id={i._id.slice(-2)}
+              >
                 <div>
-                  Your mark is{" "}
-                  <b
-                    className={
-                      quizResult.status === "fail"
-                        ? "text-red-600"
-                        : "text-green-600"
-                    }
+                  <Card
+                    className='flex justify-start mt-5 p-[24px] border-1 border-[#10C278] rounded-[12px]'
+                    key={i}
                   >
-                    {quizResult.totalMark}
-                  </b>{" "}
-                  &nbsp; Mark .<br></br>Your pass mark is &nbsp;
-                  <b
-                    className={
-                      quizResult.status === "fail"
-                        ? "text-red-600"
-                        : "text-green-600"
-                    }
-                  >
-                    {quizList
-                      .filter((el) => el._id === quizID)
-                      .map((i) => i.passMark)}
-                  </b>{" "}
-                  &nbsp; Mark .
-                  {quizResult?.status === "fail" ? "Sorry" : "Nice"} , you{" "}
-                  <b
-                    className={
-                      quizResult.status === "fail"
-                        ? "text-red-600"
-                        : "text-green-600"
-                    }
-                  >
-                    {quizResult.status}ed
-                  </b>
-                  .
+                    <div>
+                      <div className='text-lg py-3 px-3'>
+                        <b>({ind + 1})</b> &nbsp;
+                        {i.question}
+                      </div>
+                      <div>
+                        <img src={i.questionPic} />
+                      </div>
+                      <div className='mt-5'>
+                        {i.options.map((e, index) => (
+                          <div
+                            key={i}
+                            className='text-lg font-semibold ml-10'
+                            onClick={() =>
+                              handleAns(
+                                index,
+                                e.correctAnswer,
+                                counter,
+                                e.mark,
+                                e._id
+                              )
+                            }
+                          >
+                            <label>
+                              <span
+                                className={
+                                  parseInt(i.studentAnswer) - 1 === index
+                                    ? "text-[#00C853]"
+                                    : "text-[#d6d3d3]"
+                                }
+                              >
+                                {" "}
+                                <FontAwesomeIcon icon={faCircleCheck} />
+                              </span>
+                              &nbsp;
+                              <span
+                                className={
+                                  parseInt(i.studentAnswer) - 1 === index
+                                    ? "text-[#00C853]"
+                                    : "text-[#d6d3d3]"
+                                }
+                              >
+                                {e.answer}
+                              </span>
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </Card>
                 </div>
               </div>
-            </div>
-          </div>
-        </div> */}
-          <div
-            className='py-5 px-5 '
-            style={{ padding: "24px 16px 24px 72px" }}
-          >
-            {/* <h2 className='font-semibold text-3xl text-center mt-3'>
-            You Answered
-          </h2> */}
-            <div>
-              {/* {console.log(quizResult, "quest")} */}
-
-              <>
-                {updatedQuestionList.map((i, ind) =>
-                  parseInt(i.correctAnswer) === parseInt(i.studentAnswer) ? (
-                    <>
-                      <Card
-                        className='flex justify-start mt-5 p-[24px] border-1 border-[#10C278] rounded-[12px]'
-                        key={i}
-                      >
-                        <div>
-                          <div className='text-lg py-3 px-3'>
-                            <b>({ind + 1})</b> &nbsp;
-                            {i.question}
-                          </div>
-                          <div>
-                            <img src={i.questionPic} />
-                          </div>
-                          <div className='mt-5'>
-                            {i.options.map((e, index) => (
-                              <div
-                                key={i}
-                                className='text-lg font-semibold ml-10'
-                                onClick={() =>
-                                  handleAns(
-                                    index,
-                                    e.correctAnswer,
-                                    counter,
-                                    e.mark,
-                                    e._id
-                                  )
+            ) : (
+              <div
+                className='py-5 px-5 '
+                style={{ padding: "24px 16px 24px 72px" }}
+              >
+                <div id={i._id.slice(-2)}>
+                  <Card
+                    className='flex justify-start mt-5 p-[24px] border-1 border-[#F01D1E] rounded-[12px]'
+                    key={i}
+                  >
+                    <div>
+                      <div className='text-lg py-3 px-3'>
+                        <b>({ind + 1})</b> &nbsp;
+                        {i.question}
+                      </div>
+                      <div>
+                        <img src={i.questionPic} />
+                      </div>
+                      <div className='mt-5'>
+                        {i.options.map((e, index) => (
+                          <div
+                            key={i}
+                            className='text-lg font-semibold ml-10'
+                            onClick={() =>
+                              handleAns(
+                                index,
+                                e.correctAnswer,
+                                counter,
+                                e.mark,
+                                e._id
+                              )
+                            }
+                          >
+                            <label>
+                              <FontAwesomeIcon
+                                icon={faCircleXmark}
+                                className={
+                                  parseInt(i.studentAnswer) - 1 === index
+                                    ? "text-[red]"
+                                    : "text-[#d6d3d3]"
+                                }
+                              />
+                              &nbsp;
+                              <span
+                                className={
+                                  parseInt(i.studentAnswer) - 1 === index
+                                    ? "text-[red]"
+                                    : "text-[#d6d3d3]"
                                 }
                               >
-                                <label>
-                                  <span
-                                    className={
-                                      parseInt(i.studentAnswer) - 1 === index
-                                        ? "text-[#00C853]"
-                                        : "text-[#d6d3d3]"
-                                    }
-                                  >
-                                    {" "}
-                                    <FontAwesomeIcon icon={faCircleCheck} />
-                                  </span>
-                                  &nbsp;
-                                  <span
-                                    className={
-                                      parseInt(i.studentAnswer) - 1 === index
-                                        ? "text-[#00C853]"
-                                        : "text-[#d6d3d3]"
-                                    }
-                                  >
-                                    {e.answer}
-                                  </span>
-                                </label>
-                              </div>
-                            ))}
+                                {e.answer}
+                              </span>
+                            </label>
                           </div>
-                        </div>
-                      </Card>
-                    </>
-                  ) : (
-                    <>
-                      <Card
-                        className='flex justify-start mt-5 p-[24px] border-1 border-[#F01D1E] rounded-[12px]'
-                        key={i}
-                      >
-                        <div>
-                          <div className='text-lg py-3 px-3'>
-                            <b>({ind + 1})</b> &nbsp;
-                            {i.question}
-                          </div>
-                          <div>
-                            <img src={i.questionPic} />
-                          </div>
-                          <div className='mt-5'>
-                            {i.options.map((e, index) => (
-                              <div
-                                key={i}
-                                className='text-lg font-semibold ml-10'
-                                onClick={() =>
-                                  handleAns(
-                                    index,
-                                    e.correctAnswer,
-                                    counter,
-                                    e.mark,
-                                    e._id
-                                  )
-                                }
-                              >
-                                <label>
-                                  <FontAwesomeIcon
-                                    icon={faCircleXmark}
-                                    className={
-                                      parseInt(i.studentAnswer) - 1 === index
-                                        ? "text-[red]"
-                                        : "text-[#d6d3d3]"
-                                    }
-                                  />
-                                  &nbsp;
-                                  <span
-                                    className={
-                                      parseInt(i.studentAnswer) - 1 === index
-                                        ? "text-[red]"
-                                        : "text-[#d6d3d3]"
-                                    }
-                                  >
-                                    {e.answer}
-                                  </span>
-                                </label>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </Card>
-                    </>
-                  )
-                )}
-              </>
-            </div>
-          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </Card>
+                </div>
+              </div>
+            )
+          )}
         </div>
       ) : (
         <div className='flex flex-col gap-10 items-center pt-[40px]'>

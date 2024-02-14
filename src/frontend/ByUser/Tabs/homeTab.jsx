@@ -31,7 +31,7 @@ export default function Home() {
   const filterSubList = filterId.filter(
     (el) => el._id === (courseId ? courseId : firstDefaultCourseId)
   );
-  console.log(filterSubList, "f i");
+  // console.log(filterSubList, "f i");
 
   const handleTabClick = (ind, courseid) => {
     setCourseId(courseid);
@@ -60,7 +60,7 @@ export default function Home() {
     };
     const getCat = async () => {
       await apiInstance.get(`categories`).then((res) => {
-        console.log(res.data.data, "cat res");
+        // console.log(res.data.data, "cat res");
         setCatList(res.data.data);
         // const count = res.data.data.filter((el) => el.subjects.length);
         // console.log(count, "count");
@@ -69,11 +69,11 @@ export default function Home() {
 
     const getEnrollment = async () => {
       await apiInstance.get(`enrollments`).then((res) => {
-        console.log(StudentId, "s id");
-        console.log(
-          res.data.data.filter((el) => el.student === StudentId)[0],
-          "enr waits"
-        );
+        // console.log(StudentId, "s id");
+        // console.log(
+        //   res.data.data.filter((el) => el.student === StudentId)[0],
+        //   "enr waits"
+        // );
         setFirstDefaultCourseId(
           res.data.data.filter((el) => el.student === StudentId)[0].course._id
         );
@@ -96,7 +96,7 @@ export default function Home() {
 
   // Rating Handle
   const ratingChanged = (newRating) => {
-    console.log(newRating);
+    // console.log(newRating);
   };
   return (
     <div>
