@@ -41,7 +41,7 @@ const AddBody = ({ subData }) => {
           detailData={SubData}
         />
 
-        <div id='exam w-full'>
+        <div id='exam'>
           {location.pathname === "/mycourse-sub-detail/1" && <Module />}
         </div>
         <div id='assignment'>
