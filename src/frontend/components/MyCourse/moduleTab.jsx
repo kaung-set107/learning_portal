@@ -141,9 +141,9 @@ export default function CourseDetail(props) {
                         Module {index + 1} ({item.title})
                       </span>
                     }
-                    //   startContent={
-                    //     <FontAwesomeIcon icon={faDesktop} size='xl' />
-                    //   }
+                  //   startContent={
+                  //     <FontAwesomeIcon icon={faDesktop} size='xl' />
+                  //   }
                   >
                     {item.learningMaterials.map((e) => (
                       <>
@@ -240,7 +240,7 @@ export default function CourseDetail(props) {
                     allowFullScreen
                     className=' w-full h-[442px]'
                     allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-                    // style={{ width:'1400px',height:'500px' }}
+                  // style={{ width:'1400px',height:'500px' }}
                   ></iframe>
                   <div className='flex justify-between pt-[20px]'>
                     <span className='w-[311px] h-[16px] text-[32px] text-[#0025A9] font-semibold'>
@@ -367,7 +367,7 @@ export default function CourseDetail(props) {
                             autoPlay={false}
                             src={BBAudio}
                             onPlay={(e) => console.log("onPlay")}
-                            // other props here
+                          // other props here
                           />
                         </div>
                       </Tab>

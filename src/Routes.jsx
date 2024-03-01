@@ -110,7 +110,7 @@ export default function RouteFile() {
               element={<MyCourseSubDetail />}
             ></Route>
             <Route
-              path='/mycourse-sub-detail/:id'
+              path='/mycourse-sub-detail'
               element={<MyCourseSubDetailID />}
             ></Route>
             {/*End Student Register and Detail */}

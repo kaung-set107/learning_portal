@@ -39,7 +39,7 @@ export default function Home() {
   };
 
   const handleSubjectDetail = (data) => {
-    navigate("/mycourse-sub-detail/1", { state: { data: data } });
+    navigate("/mycourse-sub-detail", { state: { data: data } });
     // navigate("/mycourse-sub-detail/2", { state: { data: data } });
   };
   //handle progress value
@@ -185,7 +185,7 @@ export default function Home() {
                                   aria-label='Loading...'
                                   value={45}
                                   className='mt-2'
-                                  // onChange={(e) => handleValue(e.target.value)}
+                                // onChange={(e) => handleValue(e.target.value)}
                                 />
                               </div>
                             </div>

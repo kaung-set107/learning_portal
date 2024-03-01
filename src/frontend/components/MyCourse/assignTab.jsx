@@ -29,7 +29,7 @@ import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 export default function CourseDetail() {
   const location = useLocation();
   const navigate = useNavigate();
-  const assignData = location.state.data;
+  const assignData = location.state?.data;
   console.log(assignData, "sub assign");
   //   const courseData = location.state.courseData;
   // console.log(props.id, "id");
@@ -63,12 +63,10 @@ export default function CourseDetail() {
 
   return (
     <>
-      {/* <Nav /> */}
-      <div style={{ padding: "24px 20px 100px 40px" }}>
-        {/* <Head /> */}
 
-        <div className='flex flex-col flex-grow gap-10 duration-100'>HI</div>
-      </div>
+
+      <div className='flex flex-col flex-grow gap-10 duration-100'>HI</div>
+
     </>
   );
 }
