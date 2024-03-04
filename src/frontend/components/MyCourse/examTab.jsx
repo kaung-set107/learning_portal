@@ -28,36 +28,50 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
+const colors = ["bg-[#ED1D25]", "bg-[#215887]"]
+const oneColor = colors[0]
+const twoColor = colors[1]
 export default function CourseDetail(props) {
+
   const tabRef = useRef();
   const location = useLocation();
   const navigate = useNavigate();
-  const examData = location.state.data;
-  console.log(examData, "sub ii");
+  const subjectData = location.state.data;
+  console.log(subjectData, "sub data");
   const courseData = location.state.courseData;
   // console.log(props.id, "id");
-  const [showVideo, setShowVideo] = useState(false);
+  const [showMid, setShowMid] = useState(false);
+  const [showFinal, setShowFinal] = useState(false);
+  const [showOrigin, setShowOrigin] = useState(true);
   const [teacherName, setTeacherName] = useState([]);
   const [teacherImage, setTeacherImage] = useState([]);
 
-  const [value, setValue] = useState(0)
+  const [value, setValue] = useState([])
   const handleExam = (val) => {
+    if (val.term === 'mid') {
+      setShowMid(true)
+      setShowFinal(false)
+      setShowOrigin(false)
+    } else {
+      setShowMid(false)
+      setShowFinal(true)
+      setShowOrigin(false)
+    }
     setValue(val)
   }
+
+
   useEffect(() => {
 
     const getSubjects = async () => {
       await apiInstance.get("subjects").then((res) => {
-        console.log(
-          res.data.data.filter((el) => el._id === examData._id)[0],
-          "c subject"
-        );
-        const Filter = res.data.data.filter((el) => el._id === examData._id)[0];
+
+        const Filter = res.data.data.filter((el) => el._id === subjectData._id)[0];
         setTeacherName(Filter);
-        const Img = getFile({
-          payload: Filter.instructor.image,
-        });
-        setTeacherImage(Img);
+        // const Img = getFile({
+        //   payload: Filter.instructor.image,
+        // });
+        // setTeacherImage(Img);
       });
     };
     getSubjects();
@@ -65,7 +79,9 @@ export default function CourseDetail(props) {
   }, []);
 
   const handleBack = () => {
-    navigate("/course-detail", { state: { data: courseData } });
+    setShowOrigin(true)
+    setShowMid(false)
+    setShowFinal(false)
   };
 
   // Handle Tabs
@@ -73,25 +89,27 @@ export default function CourseDetail(props) {
 
   return (
     <>
-      {value === 0 && (
 
+      {showOrigin && (
         <div className='flex flex-col gap-5'>
-          <div className=' bg-[#215887] h-[72px] rounded-[8px] p-20 flex items-center w-full ' onClick={() => handleExam(1)}>
-            <span className='text-white text-[24px] font-semibold'>Mid - Term Exam </span>
-          </div>
-          <div className=' bg-[#ED1D25] h-[72px] rounded-[8px] p-20 flex items-center w-full ' onClick={() => handleExam(2)} >
-            <span className='text-white text-[24px] font-semibold'>Final Exam </span>
-          </div>
+          {subjectData.exams.map((item, index) => (
+            <div className={` h-[72px] rounded-[8px] p-20 flex items-center w-full ${index === 0 ? twoColor : oneColor}`} onClick={() => handleExam(item)}>
+              <span className='text-white text-[24px] font-semibold'>{item?.term === 'mid' ? 'Mid - Term Exam' : 'Final Exam'}</span>
+            </div>
 
+          ))}
         </div >
       )}
 
-
-      {value === 1 && (
+      {showMid && (
         <div className='h-[408px] w-full flex flex-col gap-5 pl-16'>
-          <Button className='flex justify-start w-10' onClick={() => handleExam(0)}>Back</Button>
+
           <div className='flex flex-col gap-5'>
-            <span className='text-[40px] font-bold'>Mid-Term Exam</span>
+            <div className='flex justify-between'>
+              <span className='text-[40px] font-bold'>Mid-Term Exam</span>
+              <Button className='flex justify-center w-10' onClick={handleBack}>Back</Button>
+            </div>
+
             <div className='pl-5'>
               <ul className='text-[24px] font-semibold flex flex-col gap-2'>
                 <li>Must be able to answer the Project Management (Week-4) Quiz.</li>
@@ -104,29 +122,42 @@ export default function CourseDetail(props) {
           <div>
             <span className='text-[#ED1D25] text-[24px] font-bold'> Note. . After taking the first (2) exams, you will be able to retake the exam only after 5 (5) hours have passed.</span>
           </div>
+          <div className='flex justify-center p-5'>
+            <Button color='primary' className='flex justify-center w-40 disabled:opacity-75  items-center' onClick={handleBack}>Start</Button>
 
-        </div>
-      )}
-      {value === 2 && (
-        <div className='h-[408px] w-full flex flex-col gap-5 pl-16'>
-          <Button className='flex justify-start w-10' onClick={() => handleExam(0)}>Back</Button>
-          <div className='flex flex-col gap-5'>
-            <span className='text-[40px] font-bold'>Final Exam</span>
-            <div className='pl-5'>
-              <ul className='text-[24px] font-semibold flex flex-col gap-2'>
-                <li>Must be able to answer the Project Management (Week-4) Quiz.</li>
-                <li>Must have passed (90%).</li>
-                <li>There is no number of times, but the opportunity to answer</li>
-                <li className='w-[1315px]'>In answering, if you take the quiz for the first (2) times and want to take it again for the (3rd) time, you can answer it immediately, and you can take the quiz for the (3rd) time only after 5 (5) hours have passed.</li>
-              </ul>
+          </div>
+        </div >
+      )
+      }
+
+      {
+        showFinal && (
+          <div className='h-[408px] w-full flex flex-col gap-5 pl-16'>
+
+            <div className='flex flex-col gap-5'>
+              <div className='flex justify-between'>
+                <span className='text-[40px] font-bold'>Final Exam</span>
+                <Button className='flex justify-center w-10' onClick={handleBack}>Back</Button>
+              </div>
+              <div className='pl-5'>
+                <ul className='text-[24px] font-semibold flex flex-col gap-2'>
+                  <li>Must be able to answer the Project Management (Week-4) Quiz.</li>
+                  <li>Must have passed (90%).</li>
+                  <li>There is no number of times, but the opportunity to answer</li>
+                  <li className='w-[1315px]'>In answering, if you take the quiz for the first (2) times and want to take it again for the (3rd) time, you can answer it immediately, and you can take the quiz for the (3rd) time only after 5 (5) hours have passed.</li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <span className='text-[#ED1D25] text-[24px] font-bold'> Note. . After taking the first (2) exams, you will be able to retake the exam only after 5 (5) hours have passed.</span>
+            </div>
+            <div className='flex justify-center p-5' disabled>
+              <Button color='primary' className={value.showToStudent === true ? 'flex justify-center w-40 items-center' : 'flex justify-center w-40 items-center opacity-60 cursor-not-allowed'} onClick={handleBack}>Start</Button>
+
             </div>
           </div>
-          <div>
-            <span className='text-[#ED1D25] text-[24px] font-bold'> Note. . After taking the first (2) exams, you will be able to retake the exam only after 5 (5) hours have passed.</span>
-          </div>
-
-        </div>
-      )}
+        )
+      }
 
     </>
   );
