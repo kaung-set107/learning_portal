@@ -191,6 +191,7 @@ const QuizPage = ({ LMID }) => {
           setQuizList(
             res.data.data.filter((el) => el.learningMaterial === LMID)[0]
           );
+          console.log(res.data.data.filter((el) => el.learningMaterial === LMID)[0], 'quizList')
           setTimeLeft(
             res.data.data.filter((el) => el.learningMaterial === LMID)[0]
               .duration * 60
@@ -249,7 +250,7 @@ const QuizPage = ({ LMID }) => {
                     <span className='text-[20px] font-semibold p-[10px]'>
                       Question
                     </span>
-                    <span className='text-[16px] text-[#BDFFE2] font-medium bg-[#10C278] rounded-[24px] pt-[22px] w-[180px]  text-center'>
+                    <span className='flex justify-center text-[16px] text-[#BDFFE2] font-medium bg-[#10C278] rounded-[24px] p-[1px] w-[180px] items-center  text-center'>
                       Mark {quizList.questions[counter].mark} out of{" "}
                       {quizList.questions[counter].mark}{" "}
                     </span>
@@ -313,7 +314,7 @@ const QuizPage = ({ LMID }) => {
                           {showTimer && (
                             <div>
                               {quizList.questions[counter].answerType ===
-                              "radio" ? (
+                                "radio" ? (
                                 <input
                                   type='radio'
                                   name='answer_group'
@@ -322,8 +323,8 @@ const QuizPage = ({ LMID }) => {
                                     clicked === ""
                                       ? ""
                                       : selectedOption === e.answer
-                                      ? ""
-                                      : true
+                                        ? ""
+                                        : true
                                   }
                                   onChange={(e) =>
                                     handleOptionSelect(e.target.value)
@@ -334,25 +335,25 @@ const QuizPage = ({ LMID }) => {
                                   type='checkbox'
                                   name='answer_group'
                                   value={e.answer}
-                                  // disabled={
-                                  //   clicked === ""
-                                  //     ? ""
-                                  //     : selectedOption === e.answer
-                                  //     ? ""
-                                  //     : true
-                                  // }
-                                  // onChange={(e) =>
-                                  //   handleOptionSelect(e.target.value)
-                                  // }
+                                // disabled={
+                                //   clicked === ""
+                                //     ? ""
+                                //     : selectedOption === e.answer
+                                //     ? ""
+                                //     : true
+                                // }
+                                // onChange={(e) =>
+                                //   handleOptionSelect(e.target.value)
+                                // }
                                 />
                               )}
                               &nbsp;
                               <span
                                 className={
                                   isCorrect === "Correct" &&
-                                  i.studentAnswer === i.correctAnswer
-                                    ? "text-[green]"
-                                    : "text-[red]"
+                                    i.studentAnswer === i.correctAnswer
+                                    ? index === i && "text-[green]"
+                                    : index === i && "text-[red]"
                                 }
                                 value={e.answer}
                                 onChange={(e) =>
@@ -388,13 +389,13 @@ const QuizPage = ({ LMID }) => {
                         size='sm'
                         className='ml-10 rounded-md mt-3'
                         disabled={true}
-                        // onClick={() =>
-                        //   nextQuestion(
-                        //     studentAnswer,
-                        //     quizList.questions[counter].correctAnswer,
-                        //     counter
-                        //   )
-                        // }
+                      // onClick={() =>
+                      //   nextQuestion(
+                      //     studentAnswer,
+                      //     quizList.questions[counter].correctAnswer,
+                      //     counter
+                      //   )
+                      // }
                       >
                         Next
                       </Button>

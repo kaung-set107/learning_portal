@@ -123,8 +123,15 @@ export default function CourseDetail(props) {
             <span className='text-[#ED1D25] text-[24px] font-bold'> Note. . After taking the first (2) exams, you will be able to retake the exam only after 5 (5) hours have passed.</span>
           </div>
           <div className='flex justify-center p-5'>
-            <Button color='primary' className='flex justify-center w-40 disabled:opacity-75  items-center' onClick={handleBack}>Start</Button>
+            {
+              value.showToStudent === false ? (
+                <Button color='primary' disabled className='flex justify-center w-40 items-center cursor-not-allowed opacity-60' >Start</Button>
 
+              ) : (
+                <Button color='primary' className='flex justify-center w-40 items-center' onClick={handleBack}>Start</Button>
+
+              )
+            }
           </div>
         </div >
       )
@@ -151,11 +158,19 @@ export default function CourseDetail(props) {
             <div>
               <span className='text-[#ED1D25] text-[24px] font-bold'> Note. . After taking the first (2) exams, you will be able to retake the exam only after 5 (5) hours have passed.</span>
             </div>
-            <div className='flex justify-center p-5' disabled>
-              <Button color='primary' className={value.showToStudent === true ? 'flex justify-center w-40 items-center' : 'flex justify-center w-40 items-center opacity-60 cursor-not-allowed'} onClick={handleBack}>Start</Button>
+            <div className='flex justify-center p-5'>
+              {
+                value.showToStudent === false ? (
+                  <Button color='primary' disabled className='flex justify-center w-40 items-center cursor-not-allowed opacity-60' >Start</Button>
+
+                ) : (
+                  <Button color='primary' className='flex justify-center w-40 items-center' onClick={handleBack}>Start</Button>
+
+                )
+              }
 
             </div>
-          </div>
+          </div >
         )
       }
 

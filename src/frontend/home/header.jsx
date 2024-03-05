@@ -1,7 +1,7 @@
 import { SearchIcon } from "../../components/Navbar/SearchIcon";
 // import AcmeLogo from "../../assets/lp.png";
 import { useState } from "react";
-
+import UserPng from '../../assets/img/user.png'
 import { getFile } from "../../util/index";
 import Theme from "../../components/ThemeSwitch/index";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -97,14 +97,16 @@ export default function App() {
   const navigate = useNavigate();
   const GetLoginData = localStorage.getItem("token");
 
-
+  const [notiList, setNotiList] = useState([])
   const [list, setList] = useState([]);
   const [imgUrl, setImgUrl] = useState("");
   const [user, setUser] = useState(null);
   const [email, setEmail] = useState("");
 
   const handleAllRead = () => {
-    setAllRead(!allRead)
+    apiInstance.put("notifications").then(function () {
+      console.log(res.data.data, 'res')
+    })
   };
 
   useEffect(() => {
@@ -126,6 +128,15 @@ export default function App() {
         }
       });
     };
+    const getNoti = async () => {
+      await apiInstance.get("notifications").then((res) => {
+        const sortedData = res.data.data.sort((a, b) => new Date(a.date) - new Date(b.date));
+        setNotiList(res.data.data);
+        console.log(sortedData, 'resss')
+
+      });
+    };
+    getNoti();
     getUser();
     getAssign();
   }, []);
@@ -175,17 +186,19 @@ export default function App() {
                 </DropdownTrigger>
                 <DropdownMenu closeOnSelect={false} aria-label='Profile Actions' variant='flat' className='p-2 sticky-top'>
                   <DropdownItem><span className='text-[20px] font-bold'>{noti.title}</span></DropdownItem>
-                  {seeAll ? (noti.info.map((item, index) => (
+                  {seeAll ? (notiList.slice(0).reverse().map((item, index) => (
 
-                    <DropdownItem startContent={<Image src={item.img} className='w-[70px] h-[65px] rounded-full' />} key={index} className='w-[430px]'>
+                    <DropdownItem key={index} className='w-[430px]'>
 
                       <div className='flex gap-4 p-5'>
-                        {allRead ? '' : (<div className={item.status === false && 'bg-indigo-600 rounded-full float-right w-[10px] h-[10px] mt-5'}></div>)}
+                        {allRead ? '' : (<div className={item.status === 'unread' && 'bg-indigo-600 rounded-full float-right w-[10px] h-[10px] mt-5'}></div>)}
 
-                        <div></div>
+
+                        <div><Image src={UserPng} className='w-[70px] h-[65px] rounded-full' /></div>
+
                         <div className=' flex flex-col gap-4 pt-2'>
                           <div className=' gap-20'>
-                            <p className='w-[20px] flex'>{item.message}</p>
+                            <p className='w-[20px] flex'>{item.title}</p>
                           </div>
 
                           <span className='text-[#2C4AE7] text-[12px] font-medium'>{item.time} hours</span>
@@ -197,18 +210,18 @@ export default function App() {
                     </DropdownItem>
 
 
-                  ))) : (noti.info.slice(0, 3).map((item, index) => (
+                  ))) : (notiList.slice(0, 3).reverse().map((item, index) => (
 
                     <DropdownItem key={index} className='w-[430px]'>
 
                       <div className='flex gap-4 p-5'>
-                        {allRead ? '' : (<div className={item.status === false && 'bg-indigo-600 rounded-full float-right w-[10px] h-[10px] mt-5'}></div>)}
+                        {allRead ? '' : (<div className={item.status === 'unread' && 'bg-indigo-600 rounded-full float-right w-[10px] h-[10px] mt-5'}></div>)}
 
 
-                        <div><Image src={item.img} className='w-[70px] h-[65px] rounded-full' /></div>
+                        <div><Image src={UserPng} className='w-[70px] h-[65px] rounded-full' /></div>
                         <div className=' flex flex-col gap-4 pt-2'>
                           <div className=' gap-20'>
-                            <p className='w-[20px] flex'>{item.message}</p>
+                            <p className='w-[20px] flex'>{item.title}</p>
                           </div>
 
                           <span className='text-[#2C4AE7] text-[12px] font-medium'>{item.time} hours</span>
@@ -367,7 +380,7 @@ export default function App() {
             </DropdownMenu>
           </Dropdown> */}
         </div>
-      </div>
+      </div >
     </>
   );
 }

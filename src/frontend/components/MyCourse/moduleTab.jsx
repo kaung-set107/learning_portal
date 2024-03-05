@@ -80,10 +80,11 @@ export default function CourseDetail(props) {
   };
 
   const handleVideo = (data) => {
-    // console.log(data, "handleVideo");
+    console.log(data, "heee");
     setLMID(data._id);
 
     setShowVideoList(JSON.parse(data.video));
+    console.log(JSON.parse(data.video), "handleVideo");
     setLMDataList(data);
     setShowVideo(true);
   };
