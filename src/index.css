@@ -39,3 +39,6 @@ body{
   padding:0px 2rem 2rem 1rem;
 } */
 
+/* input[type='date']::-webkit-datetime-edit{
+  color:transparent;
+} */

@@ -14,7 +14,8 @@ import LoginVideo from '../../assets/video/login.mp4'
 import MSI from '../../assets/img/MSI.svg'
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+// import { Select, SelectItem } from "@nextui-org/select";
+import { useEffect } from "react";
 // Also possible:
 // import { videoPlayer } from 'cloudinary-video-player';
 
@@ -25,19 +26,21 @@ fields.forEach((field) => (fieldsState[field.id] = ""));
 export default function Login() {
   const [loading, setLoading] = useState("");
   const [arr, setArr] = useState([]);
+  const [courseList, setCourseList] = useState([])
   const [showForgotPage, setShowForgotPage] = useState(false)
   const [showLoginPage, setShowLoginPage] = useState(true)
   const [showRegisterPage, setShowRegisterPage] = useState(false)
   const navigate = useNavigate();
-  const nameRef = useRef();
-  const passRef = useRef();
-  const emailRef = useRef();
-  const addressRef = useRef();
-  const eduRef = useRef();
-  const schoolRef = useRef();
-  const dateRef = useRef();
-  const phoneRef = useRef();
-  const courseRef = useRef();
+  const nameRef = useRef(null);
+  const passRef = useRef(null);
+  const emailRef = useRef(null);
+  const addressRef = useRef(null);
+  const eduRef = useRef(null);
+  const schoolRef = useRef(null);
+  const dateRef = useRef(null);
+  const phoneRef = useRef(null);
+  const courseRef = useRef(null);
+  const countryRef = useRef(null)
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = {
@@ -59,7 +62,7 @@ export default function Login() {
         //   confirmButtonColor: '#3085d6'
         // })
 
-        console.log(res.data, "login res");
+        // console.log(res.data, "login res");
         if (res.data.data.roles[0].includes("instructor")) {
           Swal.fire({
             icon: "success",
@@ -114,6 +117,56 @@ export default function Login() {
       });
   };
 
+  const handleRegisterCreate = (e) => {
+    e.preventDefault();
+    const data = {
+      name: nameRef.current.value,
+      phone: phoneRef.current.value,
+      email: emailRef.current.value,
+      address: addressRef.current.value,
+      birthDate: dateRef.current.value,
+      educationBackground: eduRef.current.value,
+      attendedHighSchool: schoolRef.current.value,
+      course: courseRef.current.value,
+      desiredCountry: countryRef.current.value,
+
+    };
+    apiInstance
+      .post("register-waiting-lists", data)
+      .then((res) => {
+        nameRef.current = null
+        Swal.fire({
+          icon: "success",
+          title: "Register Successful",
+          text: "",
+          showCancelButton: false,
+          showConfirmButton: false,
+          timer: 3000,
+        });
+
+      }).catch((error) => {
+        console.log(error);
+        Swal.fire({
+          icon: "error",
+          title: "Login Failed",
+          text: error.response.data.message,
+          showCancelButton: false,
+          showConfirmButton: false,
+          timer: 3000,
+        });
+      });
+  }
+
+  useEffect(() => {
+    const getCourse = async () => {
+      await apiInstance.get('courses').then((res) => {
+        // console.log(res.data.data, 'cou')
+        setCourseList(res.data.data)
+      })
+    }
+    getCourse()
+
+  }, [])
   //Handle Login API Integration here
   console.log(arr, "dat");
   const [isVisible, setIsVisible] = React.useState(false);
@@ -164,14 +217,14 @@ export default function Login() {
 
         {/* Forgot Page */}
         {showForgotPage && (
-          <div className=' p-10 flex flex-col justify-center'>
+          <div className='p-4 sm:p-6 md:p-10 flex flex-col justify-center'>
 
-            <div className=' flex flex-col pl-18 items-center gap-4 '>
-              <span className=' text-[#262626] text-[32px] font-semibold font-inter text-center'>Forgot Password?</span>
-              <p className='flex text-[#898989] text-center text-[16px] font-medium items-center w-[357px] h-[44px]'>Please enter your email address. We will send you an email to resend  your password.</p>
+            <div className=' flex flex-col pl-6 sm:pl-10 md:pl-18 items-center gap-4 '>
+              <span className=' text-[#262626] text-[18px] sm:text-[21px] md:text-[32px] font-semibold font-inter text-center'>Forgot Password?</span>
+              <p className='flex text-[#898989] text-center text-[12px] sm:text-[16px] font-medium items-center w-[300px] sm:w-[357px] h-[44px]'>Please enter your email address. We will send you an email to resend  your password.</p>
 
             </div>
-            <div className='w-[522px] h-[120px] pt-12'>
+            <div className='w-[320px] sm:w-[350px] md:w-[522px] h-[120px] pt-12'>
               <form className='' onSubmit={handleSubmit}>
                 <div className='flex flex-col w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
                   <div>
@@ -209,25 +262,25 @@ export default function Login() {
 
         {/* Login Page */}
         {showLoginPage && (
-          <div className='p-10 flex flex-col justify-center'>
+          <div className='p-4 sm:p-7 md:p-10 flex flex-col justify-center'>
 
             <div className='flex flex-col  ' style={{ fontFamily: 'JaguarJC' }}>
               {/* Header Logo */}
               <div className='flex justify-center flex-col items-center'>
 
-                <Image src={MSI} className='w-[260px] h-[130px]' />
+                <Image src={MSI} className='w-[180px] sm:w-[200px] md:w-[260px] h-[130px]' />
 
-                <div className='w-[318px] text-center'>
-                  <span className='text-[#262626] text-[48px] font-bold ml-5'>Welcome to</span>
+                <div className='w-[250px] sm:w-[280px] md:w-[318px] text-center'>
+                  <span className='text-[#262626] text-[24px] sm:text-[28px] md:text-[48px] font-bold ml-2 sm:ml-5'>Welcome to</span>
                 </div>
 
-                <div className='flex gap-2 w-[318px] ml-10'>
-                  <span className='text-[#C1193E] text-[48px] font-bold'>MSI</span> <span className='text-[#1F4163] text-[48px] font-bold'>Academy</span>
+                <div className='flex gap-2 w-[250px] sm:w-[318px] ml-24 sm:ml-10'>
+                  <span className='text-[#C1193E] text-[24px] sm:text-[48px] font-bold'>MSI</span> <span className='text-[#1F4163] text-[24px] sm:text-[48px] font-bold'>Academy</span>
                 </div>
               </div>
 
               {/* Login Form */}
-              <div className='pt-8 w-[522px]'>
+              <div className='pt-8 w-full sm:w-[450px] md:w-[650px] lg:w-[522px]'>
                 <form className='' onSubmit={handleSubmit}>
                   <div className='flex flex-col w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
                     <div>
@@ -236,7 +289,6 @@ export default function Login() {
                         variant='bordered'
                         type='text'
                         placeholder='  Enter your username'
-
                         ref={nameRef}
                         endContent={
                           <MailFilledIcon className='text-2xl text-default-400 pointer-events-none flex-shrink-0' />
@@ -290,14 +342,14 @@ export default function Login() {
         )}
         {/* Register Page */}
         {showRegisterPage && (
-          <div className='p-5 flex flex-col'>
+          <div className='p-4 sm:p-8 flex flex-col'>
 
-            <div className=' flex flex-col pl-18 items-center gap-4 pt-6'>
-              <span className=' text-[#262626] text-[32px] font-semibold font-inter text-center'>Registration</span>
+            <div className=' flex flex-col pl-9 sm:pl-18 items-center gap-4 pt-4 sm:pt-6'>
+              <span className=' text-[#262626] text-[18px] sm:text-[32px] font-semibold font-inter text-center'>Registration</span>
 
             </div>
-            <div className='w-[522px] h-[120px] pt-12'>
-              <form className='' onSubmit={handleSubmit}>
+            <div className='w-[350px] sm:w-[400px] md:w-[522px] h-[120px] pt-8 sm:pt-12'>
+              <form className='' onSubmit={handleRegisterCreate}>
                 <div className='flex flex-col w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
                   <div>
                     {/* <label className='flex justify-start text-[#5A5A5D] text-[14px] font-semibold'>Email</label> */}
@@ -344,16 +396,21 @@ export default function Login() {
 
                     />
                   </div>
-                  <div>
+                  <div className='relative'>
                     {/* <label className='flex justify-start text-[#5A5A5D] text-[14px] font-semibold'>Email</label> */}
-                    <Input
-                      variant='bordered'
-                      type='text'
-                      placeholder=' Birth Date'
+                    <input
 
+                      type='date'
+
+                      className="appearance-none border text-transparent border-gray-300 rounded-[12px] w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline custom-input"
                       ref={dateRef}
 
                     />
+                    {dateRef.current === '' && (
+                      <span className="absolute inset-y-0 left-4  flex items-center pr-1 text-gray-500 pointer-events-none">
+                        Birth Date
+                      </span>
+                    )}
                   </div>
                   <div>
                     {/* <label className='flex justify-start text-[#5A5A5D] text-[14px] font-semibold'>Email</label> */}
@@ -378,22 +435,44 @@ export default function Login() {
                     />
                   </div>
                   <div>
-                    {/* <label className='flex justify-start text-[#5A5A5D] text-[14px] font-semibold'>Email</label> */}
-                    <Input
-                      variant='bordered'
-                      type='text'
-                      placeholder=' Which country will you attend desire?'
+                    <select
+                      className="w-full p-3 border rounded-[12px] hover:border-gray-400 focus:border-gray-400"
+                      ref={countryRef}
+                    >
+                      <option hidden>Select Country</option>
 
+                      <option value=' United State' >
+                        United State
+                      </option>
+                      <option value='Singapore' >
+                        Singapore
+                      </option>
+                      <option value='Australia' >
+                        Australia
+                      </option>
+                    </select>
+
+                  </div>
+                  <div>
+                    <select
+                      className="w-full p-3 border rounded-[12px] hover:border-gray-400 focus:border-gray-400"
                       ref={courseRef}
+                    >
+                      <option hidden>Select Course</option>
+                      {courseList.map((item) => (
+                        <option key={item._id} value={item._id} >
+                          {item.title}
+                        </option>
+                      ))}
+                    </select>
 
-                    />
                   </div>
                 </div>
 
                 <div className='mt-1'>
-                  <FormAction handleSubmit={() => handleSubmit()} text='Send Email' />
+                  <FormAction handleSubmit={() => handleRegisterCreate()} text='Register' />
                 </div>
-                <div className='pt-12 flex justify-center '>
+                <div className='pt-2 flex justify-center '>
                   <span className='font-medium text-[#5A5A5D] text-[16px]' onClick={handleBack}>
                     <FontAwesomeIcon icon={faArrowLeft} size='xl' /> &nbsp;Back To Login
                   </span>
