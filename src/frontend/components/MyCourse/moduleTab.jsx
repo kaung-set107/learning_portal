@@ -86,6 +86,7 @@ export default function CourseDetail(props) {
     setShowVideoList(JSON.parse(data.video));
     console.log(JSON.parse(data.video), "handleVideo");
     setLMDataList(data);
+    console.log(data, 'lm da')
     setShowVideo(true);
   };
 
@@ -146,6 +147,7 @@ export default function CourseDetail(props) {
                   //     <FontAwesomeIcon icon={faDesktop} size='xl' />
                   //   }
                   >
+                    {console.log(item.learningMaterials, 'lm data two')}
                     {item.learningMaterials.map((e) => (
                       <>
                         {/* Lock or Default Check */}
@@ -263,29 +265,20 @@ export default function CourseDetail(props) {
                     >
                       <Tab title='Summary'>
                         <div className='bg-[#EBF0FF] text-[#001769] rounded-lg w-full h-[auto] p-[20px] flex flex-col gap-2'>
-                          <span className='w-[902px] h-[24px] text-[20px] font-semibold'>
-                            Description: This chapter is all about the basics of
-                            IELTS
+
+                          <span className='w-[902px] h-[24px] text-[12px] sm:text-[16px] font-semibold'>
+                            This video is all about giving you the insights of IELTS with the best explanation.
                           </span>
+
+
                           <span className='w-[902px] h-[24px] text-[20px] font-semibold'>
-                            Reference link: &nbsp;
-                            <a
-                              href='www.msi.com/basicofielts'
-                              className='text-[#3454FF]'
-                            >
-                              www.msi.com/basicofielts
-                            </a>
+                            Document Files
                           </span>
-                          <span className='w-[902px] h-[24px] text-[20px] font-semibold'>
-                            PDF File link: &nbsp;
-                            <a
-                              href='www.msi.com/basicofielts'
-                              className='text-[#3454FF]'
-                            >
-                              www.msi.com/basicofielts
-                            </a>
-                          </span>
+                          <div>
+                            hee
+                          </div>
                         </div>
+                        <div></div>
                       </Tab>
                       <Tab title='Survey'>
                         <div className='flex flex-col gap-10'>
@@ -359,7 +352,7 @@ export default function CourseDetail(props) {
 
                         <QuizPage LMID={LMID} />
                       </Tab>
-                      <Tab title='Articles'>
+                      {/* <Tab title='Articles'>
                         <div className='flex flex-col gap-10'>
                           <h1 className='text-[#0025A9] font-semibold text-[25px]'>
                             IELTs Listening Test
@@ -371,7 +364,7 @@ export default function CourseDetail(props) {
                           // other props here
                           />
                         </div>
-                      </Tab>
+                      </Tab> */}
                     </Tabs>
                   </div>
                 </div>

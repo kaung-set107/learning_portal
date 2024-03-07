@@ -90,8 +90,8 @@ export default function Result() {
         const timer = setTimeout(() => {
           setQuizResult(
             res.data.data.filter((el) => el?.student === dataFromLocalStorage)[
-              res.data.data.filter((el) => el?.student === dataFromLocalStorage)
-                .length - 1
+            res.data.data.filter((el) => el?.student === dataFromLocalStorage)
+              .length - 1
             ]
           );
         }, 5000);
@@ -111,13 +111,13 @@ export default function Result() {
   }, [setQuizResult, setQuizID, setUpdatedQuestionList]);
 
   const handleQuizNavigation = (data) => {
-    console.log(data, "navi");
-    console.log(
-      updatedQuestionList
-        .filter((el) => el._id === data._id)[0]
-        ._id.slice(22, 2),
-      "up qu"
-    );
+    // console.log(data, "navi");
+    // console.log(
+    //   updatedQuestionList
+    //     .filter((el) => el._id === data._id)[0]
+    //     ._id.slice(22, 2),
+    //   "up qu"
+    // );
     setQuizNavigationID(
       updatedQuestionList.filter((el) => el._id === data._id)[0]._id?.slice(-2)
     );
@@ -288,7 +288,7 @@ export default function Result() {
                   {updatedQuestionList.map((i, index) => (
                     <>
                       {JSON.parse(i.correctAnswer) ===
-                      JSON.parse(i.studentAnswer) ? (
+                        JSON.parse(i.studentAnswer) ? (
                         <a
                           href={`#${quizNavigationID}`}
                           className='flex flex-col  h-[45px] w-[45px] bg-[#E7F9F1] border-1 border-[#9FE7C9] rounded-lg '

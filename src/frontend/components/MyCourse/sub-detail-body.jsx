@@ -47,9 +47,9 @@ const AddBody = ({ subData }) => {
         <div id='assignment'>
           {activeTab === 2 && <Assignment />}
         </div>
-        <div id='test'>
+        {/* <div id='test'>
           {activeTab === 3 && <Assignment />}
-        </div>
+        </div> */}
         <div id='exam'>
           {activeTab === 4 && <Exam />}
         </div>

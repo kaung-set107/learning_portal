@@ -38,30 +38,15 @@ const TabValueComponent = ({ activeTabValue, detailData }) => {
           }
           onClick={() => handleTabClick(2)}
         >
-          <Link to={{ pathname: "/mycourse-sub-detail/2", state: detailData }}>
-            Assignments
-          </Link>{" "}
+
+          Assignments
+
           &nbsp;
           {/* <Badge content='9+' shape='circle' color='danger'>
               <NotificationIcon size={24} />
             </Badge> */}
         </div>
-        <div
-          className={
-            activeTab === 3
-              ? "border-b-4 text-blue-800 bg-blue-100 py-3 border-indigo-500/75 w-48 text-center font-semibold duration-500"
-              : "w-48 text-center font-semibold py-3"
-          }
-          onClick={() => handleTabClick(3)}
-        >
-          <Link to={{ pathname: "/mycourse-sub-detail/3", state: detailData }}>
-            Test
-          </Link>{" "}
-          &nbsp;
-          {/* <Badge content='9+' shape='circle' color='danger'>
-              <NotificationIcon size={24} />
-            </Badge> */}
-        </div>
+
         <div
           className={
             activeTab === 4
@@ -79,7 +64,7 @@ const TabValueComponent = ({ activeTabValue, detailData }) => {
             </Badge> */}
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 export default TabValueComponent;

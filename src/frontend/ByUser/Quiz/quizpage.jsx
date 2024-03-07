@@ -11,6 +11,7 @@ import ResultPage from "./result";
 // import Swal from 'sweetalert2';
 // import Result from './result'
 const QuizPage = ({ LMID }) => {
+  const [selectedItem, setSelectedItem] = useState('');
   const [timeLeft, setTimeLeft] = useState("");
   const [clicked, setClicked] = useState("");
   const location = useLocation();
@@ -33,6 +34,7 @@ const QuizPage = ({ LMID }) => {
   // const [trueAnswer, setTrueAnswer] = useState('')
   const [studentID, setStudentID] = useState("");
   const [studentAnswer, setStudentAnswer] = useState("");
+  const [multiAns, setMultiAns] = useState([])
   const [studentAnswerList, setStudentAnswerList] = useState([]);
   const TotalMark = trueAnswerList
     .map((i) => i.markTotal)
@@ -48,6 +50,25 @@ const QuizPage = ({ LMID }) => {
 
     setSelectedOption(option);
   };
+
+  const handleCheckboxSelect = (e) => {
+    console.log(e.target.value, 'll')
+    const ans = e.target.value
+    if (e.target.checked) {
+      setMultiAns([...multiAns, { ans }]);
+      console.log(multiAns)
+    } else {
+      setMultiAns(multiAns.filter((el, index) => (el.ans !== e.target.value)[0]))
+      console.log(multiAns.filter((el, index) => (el.ans !== e.target.value)[0]))
+    }
+
+
+    // setSelectedItem(multiAns.map((i, ind) => (ind)))
+    // console.log(multiAns.map((i, ind) => (ind)))
+
+  }
+
+
   const handleStart = () => {
     setShowTimer(true);
 
@@ -123,13 +144,7 @@ const QuizPage = ({ LMID }) => {
     apiInstance
       .post("quiz-results", data)
       .then(function () {
-        // Swal.fire({
-        //   icon: "success",
-        //   title: "Created Quiz Successful",
-        //   text: "Nice!",
-        //   confirmButtonText: "OK",
-        //   confirmButtonColor: "#3085d6",
-        // });
+
         navigate("/quiz-result");
       })
       .catch((error) => {
@@ -313,6 +328,7 @@ const QuizPage = ({ LMID }) => {
                         >
                           {showTimer && (
                             <div>
+                              {/* True False Quiz */}
                               {quizList.questions[counter].answerType ===
                                 "radio" ? (
                                 <input
@@ -331,20 +347,22 @@ const QuizPage = ({ LMID }) => {
                                   }
                                 />
                               ) : (
+                                // Multiple Choice Quiz
                                 <input
                                   type='checkbox'
                                   name='answer_group'
                                   value={e.answer}
-                                // disabled={
-                                //   clicked === ""
-                                //     ? ""
-                                //     : selectedOption === e.answer
-                                //     ? ""
-                                //     : true
-                                // }
-                                // onChange={(e) =>
-                                //   handleOptionSelect(e.target.value)
-                                // }
+                                  // checked={multiAns.map((i, ind) => (selectedItem.map((e, ine) => (ine === ind))))}
+                                  // disabled={
+                                  //   clicked === ""
+                                  //     ? ""
+                                  //     : selectedOption === e.answer
+                                  //     ? ""
+                                  //     : true
+                                  // }
+                                  onChange={(e) =>
+                                    handleCheckboxSelect(e)
+                                  }
                                 />
                               )}
                               &nbsp;
