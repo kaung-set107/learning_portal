@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
+  Image,
   Divider,
   Accordion,
   AccordionItem,
@@ -20,6 +21,8 @@ import BBAudio from "../../../assets/audio/bb.mp3";
 import apiInstance from "../../../util/api";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ExcelPhoto from "../../ByInstructor/images/excel.png";
+import PdfPhoto from "../../ByInstructor/images/pdf.png";
 import {
   faCircleCheck,
   faAngleRight,
@@ -40,9 +43,40 @@ export default function CourseDetail(props) {
   const [teacherName, setTeacherName] = useState([]);
   const [teacherImage, setTeacherImage] = useState([]);
   const [showVideoList, setShowVideoList] = useState([]);
+  const [showDocumentList, setShowDocumentList] = useState([])
   const [LMDataList, setLMDataList] = useState([]);
   const [LMID, setLMID] = useState("");
   const [showQuiz, setShowQuiz] = useState(false);
+  const download = () => {
+    var element = document.createElement("a");
+    var file = new Blob(
+      [
+        "https://timesofindia.indiatimes.com/thumb/msid-70238371,imgsize-89579,width-400,resizemode-4/70238371.jpg",
+      ],
+      { type: "image/*" }
+    );
+    element.href = URL.createObjectURL(file);
+    element.download = "image.jpg";
+    element.click();
+  };
+  const downloadPDF = (val) => {
+    // Replace 'your-pdf-file.pdf' with the actual file path or URL
+    const pdfUrl = getFile({ payload: val });
+
+    // Create a link element
+    const link = document.createElement("a");
+    link.href = pdfUrl;
+    link.download = "downloaded-file.pdf";
+
+    // Append the link to the document
+    document.body.appendChild(link);
+
+    // Trigger a click on the link to start the download
+    link.click();
+
+    // Remove the link from the document
+    document.body.removeChild(link);
+  };
   useEffect(() => {
     // const getCourseDetail = async () => {
     //   await apiInstance.get("courses/" + props.id).then((res) => {
@@ -84,7 +118,8 @@ export default function CourseDetail(props) {
     setLMID(data._id);
 
     setShowVideoList(JSON.parse(data.video));
-    console.log(JSON.parse(data.video), "handleVideo");
+    setShowDocumentList(data.assets);
+    console.log(data.assets, "document");
     setLMDataList(data);
     console.log(data, 'lm da')
     setShowVideo(true);
@@ -271,14 +306,51 @@ export default function CourseDetail(props) {
                           </span>
 
 
-                          <span className='w-[902px] h-[24px] text-[20px] font-semibold'>
+                          <span className='w-[902px] h-[24px] pt-5 text-[20px] font-semibold'>
                             Document Files
                           </span>
-                          <div>
-                            hee
+                          <div className='grid grid-cols-2 justify-start gap-5 pt-10'>
+                            {showVideo && showDocumentList.map((i) => (
+                              <div >
+
+                                <div className="sm:flex justify-start gap-5" key={i._id}>
+                                  <a
+                                    href={getFile({ payload: i })}
+                                    onClick={
+                                      i.originalname?.split(".")[1] === "pdf"
+                                        ? () => downloadPDF(i)
+                                        : () => download()
+                                    }>
+                                    <Image
+                                      radius="sm"
+                                      alt={i.title}
+                                      className="object-cover w-[40px] h-[40px]"
+                                      src={
+                                        i.originalname?.split(".")[1] === "pdf"
+                                        && PdfPhoto ||
+                                        i.originalname?.split(".")[1] === "xlsx"
+                                        && ExcelPhoto ||
+                                        i.originalname?.split(".")[1] === "jpg" && getFile({ payload: i })
+                                      }
+                                    />
+                                  </a>
+                                  {/* <b className="mt-3">{i.originalname?.split(".")[1] === "pdf" && "Download.pdf" || i.originalname?.split(".")[1] === "xlsx" && "Download.xlsx" || i.originalname?.split(".")[1] === "jpg" && "Download.jpg"}</b> */}
+                                  <b className="mt-3">{i?.originalname}</b>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                          <div className='pt-5'>
+                            <span className='text-[#000] text-[20px] font-semibold'>Class Note</span>
+                            <p className='flex justify-start text-[#000] text-[16px] font-semibold w-[842px] pt-2'>
+                              Lorem ipsum dolor sit amet consectetur. Pulvinar venenatis lobortis dignissim velit massa sit.
+                              Massa at gravida pulvinar sem. Vel nibh sed feugiat turpis sapien. Tempus donec et semper condimentum est congue.
+                              Lorem ipsum dolor sit amet consectetur. Pulvinar venenatis lobortis dignissim velit massa sit.
+                              Massa at gravida pulvinar sem. Vel nibh sed feugiat turpis sapien. Tempus donec et semper condimentum est congue.
+                            </p>
                           </div>
                         </div>
-                        <div></div>
+
                       </Tab>
                       <Tab title='Survey'>
                         <div className='flex flex-col gap-10'>
@@ -352,7 +424,7 @@ export default function CourseDetail(props) {
 
                         <QuizPage LMID={LMID} />
                       </Tab>
-                      {/* <Tab title='Articles'>
+                      <Tab title='Class'>
                         <div className='flex flex-col gap-10'>
                           <h1 className='text-[#0025A9] font-semibold text-[25px]'>
                             IELTs Listening Test
@@ -364,7 +436,7 @@ export default function CourseDetail(props) {
                           // other props here
                           />
                         </div>
-                      </Tab> */}
+                      </Tab>
                     </Tabs>
                   </div>
                 </div>

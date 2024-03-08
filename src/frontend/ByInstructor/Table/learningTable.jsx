@@ -34,7 +34,7 @@ function PositionTable() {
   const location = useLocation();
 
   const Val = location.state ? location.state.id : "6541db4ceef974bf5476db1e";
-  console.log(location.state?.id,'lm id')
+  console.log(location.state?.id, 'lm id')
   //  const [dataValue,setDataValue]=useState('English')
   //      if(location.pathname === '/instructor'){
   //   setDataValue(Val)
@@ -208,14 +208,14 @@ function PositionTable() {
             emptyContent={"No Positions to display."}
             className="overflow-y-scroll">
             {items.map((item, index) => (
-              <TableRow key={item._id} style={{ height:'100px' }}>
+              <TableRow key={item._id} style={{ height: '100px' }}>
                 {/* {console.log(JSON.parse(items.links),'reeee')} */}
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{item?.title}</TableCell>
                 <TableCell>
                   {item.assets.map((i) => (
                     <>
-                      {console.log(i, "asse")}
+
                       <div className="sm:flex justify-start gap-5" key={i._id}>
                         <a
                           href={getFile({ payload: i })}
@@ -232,8 +232,8 @@ function PositionTable() {
                               i.originalname?.split(".")[1] === "pdf"
                                 ? PdfPhoto
                                 : i.originalname?.split(".")[1] === "xlsx"
-                                ? ExcelPhoto
-                                : getFile({ payload: i })
+                                  ? ExcelPhoto
+                                  : getFile({ payload: i })
                             }
                           />
                         </a>
@@ -244,36 +244,36 @@ function PositionTable() {
                 </TableCell>
 
                 <TableCell>
-                   {JSON.parse(item.links).map((e) => (
+                  {JSON.parse(item.links).map((e) => (
                     <>
-                    {console.log(e,'e')}
-                    <div key={e} className="text-blue-700 gap-5">
-                      <a target="_blank" rel='noreferrer' href={e.links}>
-                        {e.links}
-                      </a>
-                    </div>
+                      {console.log(e, 'e')}
+                      <div key={e} className="text-blue-700 gap-5">
+                        <a target="_blank" rel='noreferrer' href={e.links}>
+                          {e.links}
+                        </a>
+                      </div>
                     </>
                   ))}
                 </TableCell>
-  <TableCell>
-                   {JSON.parse(item.video).map((e) => (
+                <TableCell>
+                  {JSON.parse(item.video).map((e) => (
                     <>
-                    {console.log(e,'e')}
-                    <div key={e} className="text-blue-700 gap-5">
-                      <a target="_blank" rel='noreferrer' href={e.links}>
-                        {e.links}
-                      </a>
-                    </div>
+                      {console.log(e, 'e')}
+                      <div key={e} className="text-blue-700 gap-5">
+                        <a target="_blank" rel='noreferrer' href={e.links}>
+                          {e.links}
+                        </a>
+                      </div>
                     </>
                   ))}
                 </TableCell>
 
-               
+
 
                 <TableCell>
                   <div className="relative flex items-center gap-2">
-                   <Tooltip content="Create Quiz">
-                      <Link to={'/quiz-create/'+item._id}>
+                    <Tooltip content="Create Quiz">
+                      <Link to={'/quiz-create/' + item._id}>
                         <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                           <PlusIcon />
                         </span>

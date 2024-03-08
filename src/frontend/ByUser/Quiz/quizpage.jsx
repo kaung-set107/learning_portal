@@ -1,6 +1,6 @@
 import Countdown from "react-countdown";
 // import { quiz } from "./quiz";
-
+import _isEqual from 'lodash/isEqual';
 import { useState, useEffect } from "react";
 import { Card, Button, Spinner } from "@nextui-org/react";
 import Alert from "@mui/material/Alert";
@@ -11,6 +11,8 @@ import ResultPage from "./result";
 // import Swal from 'sweetalert2';
 // import Result from './result'
 const QuizPage = ({ LMID }) => {
+  const a = ['a', 'b']
+  const b = ['a', 'b', 'c']
   const [selectedItem, setSelectedItem] = useState('');
   const [timeLeft, setTimeLeft] = useState("");
   const [clicked, setClicked] = useState("");
@@ -20,6 +22,7 @@ const QuizPage = ({ LMID }) => {
   const [index, setIndex] = useState("");
 
   const [selectedOption, setSelectedOption] = useState("");
+  const [selectedCheckbox, setSelectedCheckbox] = useState("");
   const [showResult, setShowResult] = useState(false);
   const [oneHour, setOneHour] = useState("");
   const [showTimer, setShowTimer] = useState(false);
@@ -51,15 +54,21 @@ const QuizPage = ({ LMID }) => {
     setSelectedOption(option);
   };
 
+  const handleCheckboxSelectAnswer = (option) => {
+    console.log(option, "option");
+
+    setSelectedCheckbox(option);
+  };
+
   const handleCheckboxSelect = (e) => {
     console.log(e.target.value, 'll')
     const ans = e.target.value
     if (e.target.checked) {
       setMultiAns([...multiAns, { ans }]);
-      console.log(multiAns)
+      console.log([...multiAns, { ans }])
     } else {
-      setMultiAns(multiAns.filter((el, index) => (el.ans !== e.target.value)[0]))
-      console.log(multiAns.filter((el, index) => (el.ans !== e.target.value)[0]))
+      setMultiAns(multiAns.filter((el, index) => (el.ans !== ans)))
+      console.log(multiAns.filter((el, index) => (el.ans !== ans)))
     }
 
 
@@ -156,11 +165,15 @@ const QuizPage = ({ LMID }) => {
     setShowOrigin(false);
     setShowResult(true);
   };
+
+
   const handleAns = (val, ca, index, mark, id) => {
     setNextAnswer(false);
     setClicked(true);
     setShowAlert(true);
     setIndex(val);
+
+    // console.log(multiAns.map((i, index) => index + 1), 'harrrr')
 
     if (val + 1 === parseInt(ca)) {
       // setStudentAnswer(val + 1)
@@ -185,6 +198,8 @@ const QuizPage = ({ LMID }) => {
       // setStudentAnswer(val + 1)
       setIsCorrect("incorrect");
     }
+
+
     const newFormSubmissionsforStudentAnswer = [...studentAnswerList];
     newFormSubmissionsforStudentAnswer.push({ studentAnswer: val + 1, id: id });
 
@@ -367,15 +382,9 @@ const QuizPage = ({ LMID }) => {
                               )}
                               &nbsp;
                               <span
-                                className={
-                                  isCorrect === "Correct" &&
-                                    i.studentAnswer === i.correctAnswer
-                                    ? index === i && "text-[green]"
-                                    : index === i && "text-[red]"
-                                }
                                 value={e.answer}
                                 onChange={(e) =>
-                                  handleOptionSelect(e.target.value)
+                                  handleCheckboxSelectAnswer(e.target.value)
                                 }
                               >
                                 {e.answer}
