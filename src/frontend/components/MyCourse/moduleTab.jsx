@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
+  Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure,
   Image,
   Divider,
   Accordion,
@@ -16,6 +17,7 @@ import {
   RadioGroup,
 } from "@nextui-org/react";
 import QuizPage from "../../ByUser/Quiz/quizpage";
+
 import { getFile } from "../../../util";
 import BBAudio from "../../../assets/audio/bb.mp3";
 import apiInstance from "../../../util/api";
@@ -23,15 +25,20 @@ import { useLocation, useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ExcelPhoto from "../../ByInstructor/images/excel.png";
 import PdfPhoto from "../../ByInstructor/images/pdf.png";
+import ZoomPic from '../../../assets/img/pic.jpg'
 import {
-  faCircleCheck,
+  faSquarePlus,
+  faCalendarDays,
+  faVideo,
   faAngleRight,
   faLock,
   faAngleLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
+import MeetingModal from './newmeetingmodal'
 export default function CourseDetail(props) {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const tabRef = useRef();
   const location = useLocation();
   const navigate = useNavigate();
@@ -47,6 +54,41 @@ export default function CourseDetail(props) {
   const [LMDataList, setLMDataList] = useState([]);
   const [LMID, setLMID] = useState("");
   const [showQuiz, setShowQuiz] = useState(false);
+  const [showModal, setShowModal] = useState(false)
+
+  const upcomingMeeting = [{
+    title: 'IELTs',
+    date: '20-03-2024',
+    time: '7:00PM',
+  },
+  {
+    title: 'IELTs',
+    date: '20-03-2024',
+    time: '7:00PM',
+  }, {
+    title: 'IELTs',
+    date: '20-03-2024',
+    time: '7:00PM',
+  }]
+
+  const prevMeeting = [{
+    title: 'IELTs Basic',
+    date: '20-03-2024',
+    time: '7:00PM',
+  },
+  {
+    title: 'IELTs Basic',
+    date: '20-03-2024',
+    time: '7:00PM',
+  }, {
+    title: 'IELTs Basic',
+    date: '20-03-2024',
+    time: '7:00PM',
+  }]
+
+  const handleModal = () => {
+    setShowModal(true)
+  }
   const download = () => {
     var element = document.createElement("a");
     var file = new Blob(
@@ -107,6 +149,7 @@ export default function CourseDetail(props) {
   };
 
   // Handle Tabs
+
 
   const handleQuiz = (val) => {
     // navigate(`/quiz-page/${LMID}`);
@@ -328,9 +371,9 @@ export default function CourseDetail(props) {
                                       src={
                                         i.originalname?.split(".")[1] === "pdf"
                                         && PdfPhoto ||
-                                        i.originalname?.split(".")[1] === "xlsx"
+                                        (i.originalname?.split(".")[1] === "xlsx")
                                         && ExcelPhoto ||
-                                        i.originalname?.split(".")[1] === "jpg" && getFile({ payload: i })
+                                        (i.originalname?.split(".")[1] === "png" || "jpg" || "jpeg") && getFile({ payload: i })
                                       }
                                     />
                                   </a>
@@ -425,17 +468,112 @@ export default function CourseDetail(props) {
                         <QuizPage LMID={LMID} />
                       </Tab>
                       <Tab title='Class'>
+
                         <div className='flex flex-col gap-10'>
-                          <h1 className='text-[#0025A9] font-semibold text-[25px]'>
-                            IELTs Listening Test
-                          </h1>
-                          <AudioPlayer
-                            autoPlay={false}
-                            src={BBAudio}
-                            onPlay={(e) => console.log("onPlay")}
-                          // other props here
-                          />
+
+                          <div className='grid grid-cols-2 pt-10 w-full'>
+
+                            <div className='grid grid-cols-2 justify-center pt-32 items-center w-[300px] h-[400px]'>
+
+                              <div className='flex flex-col justify-center items-center gap-2'>
+                                <Button className='bg-orange-500 p-10 rounded-[20%] text-[#fff] w-[80px]' onPress={onOpen}><FontAwesomeIcon icon={faVideo} size='2xl' /></Button>
+                                <span className='text-[#000] text-[16px]' >New Meeting</span>
+                              </div>
+                              <div className='flex flex-col justify-center items-center gap-2'>
+                                <Button className='bg-blue-500 p-10 rounded-[20%] text-[#fff] w-[80px]'><FontAwesomeIcon icon={faSquarePlus} size='2xl' /></Button>
+                                <span className='text-[#000] text-[16px] '>Join</span>
+                              </div>
+                              <div className='flex flex-col justify-center items-center gap-2'>
+                                <div className='bg-blue-500 p-6 rounded-[20%] text-[#fff]'><FontAwesomeIcon icon={faCalendarDays} size='2xl' /></div>
+                                <span className='text-[#000] text-[16px] '>Schedule</span>
+                              </div>
+
+                            </div>
+
+                            <div className='flex flex-col gap-4 justify-end'>
+                              <div><Image src={ZoomPic} className='w-full h-30' /></div>
+                              <div className='flex flex-col gap-4'>
+                                <span className='text-[20px] font-semibold text-[#0025A9]'>Upcoming Meeting</span>
+                                <div>
+                                  {upcomingMeeting.map((item, index) => (
+                                    <div key={item} className='grid grid-cols-3 text-[#000] p-1 text-[18px] '>
+                                      <div>{item.title}</div>
+                                      <div>{item.date}</div>
+                                      <div>{item.time}</div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                              <div className='flex flex-col gap-4'>
+                                <span className='text-[20px] font-semibold text-[#0025A9] '>Previous Meeting</span>
+                                <div>
+                                  {prevMeeting.map((item, index) => (
+                                    <div key={item} className='grid grid-cols-3 text-[#000] p-1 text-[18px] '>
+                                      <div>{item.title}</div>
+                                      <div>{item.date}</div>
+                                      <div>{item.time}</div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+
+                          </div>
                         </div>
+                        <div>
+                          <Modal
+                            backdrop="opaque"
+                            size='2xl'
+                            isOpen={isOpen}
+                            onOpenChange={onOpenChange}
+
+                            motionProps={{
+                              variants: {
+                                enter: {
+                                  y: 0,
+                                  opacity: 1,
+                                  transition: {
+                                    duration: 0.3,
+                                    ease: "easeOut",
+                                  },
+                                },
+                                exit: {
+                                  y: -20,
+                                  opacity: 0,
+                                  transition: {
+                                    duration: 0.2,
+                                    ease: "easeIn",
+                                  },
+                                },
+                              }
+                            }}
+                          >
+                            <ModalContent>
+                              {(onClose) => (
+                                <>
+                                  <ModalHeader className="flex flex-col gap-1 text-[24px]">New Meeting Create</ModalHeader>
+                                  <ModalBody>
+                                    <form className='flex flex-col gap-4'>
+                                      <Input type='text' label='Name' variant='bordered' />
+                                      <Input type='date' label='Date' className='text-transparent' variant='bordered' />
+                                      <Input type='time' label='Time' variant='bordered' />
+                                      <Input type='password' label='Password' variant='bordered' />
+                                    </form>
+                                  </ModalBody>
+                                  <ModalFooter>
+                                    <Button color="danger" variant="light" onPress={onClose}>
+                                      Close
+                                    </Button>
+                                    <Button color="primary" onPress={onClose}>
+                                      Create
+                                    </Button>
+                                  </ModalFooter>
+                                </>
+                              )}
+                            </ModalContent>
+                          </Modal>
+                        </div>
+
                       </Tab>
                     </Tabs>
                   </div>

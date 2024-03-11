@@ -37,7 +37,16 @@ const QuizPage = ({ LMID }) => {
   // const [trueAnswer, setTrueAnswer] = useState('')
   const [studentID, setStudentID] = useState("");
   const [studentAnswer, setStudentAnswer] = useState("");
+  const [caList, setCaList] = useState([])
   const [multiAns, setMultiAns] = useState([])
+  // const [multiAnswerList, setMultiAnswerList] = useState([])
+  const [final, setFinal] = useState('')
+  const multiAnswerList = multiAns.map((i, ind) => {
+    return {
+      ans: i
+    }
+  })
+  console.log(multiAnswerList, 'multiAnswerList')
   const [studentAnswerList, setStudentAnswerList] = useState([]);
   const TotalMark = trueAnswerList
     .map((i) => i.markTotal)
@@ -60,22 +69,6 @@ const QuizPage = ({ LMID }) => {
     setSelectedCheckbox(option);
   };
 
-  const handleCheckboxSelect = (e) => {
-    console.log(e.target.value, 'll')
-    const ans = e.target.value
-    if (e.target.checked) {
-      setMultiAns([...multiAns, { ans }]);
-      console.log([...multiAns, { ans }])
-    } else {
-      setMultiAns(multiAns.filter((el, index) => (el.ans !== ans)))
-      console.log(multiAns.filter((el, index) => (el.ans !== ans)))
-    }
-
-
-    // setSelectedItem(multiAns.map((i, ind) => (ind)))
-    // console.log(multiAns.map((i, ind) => (ind)))
-
-  }
 
 
   const handleStart = () => {
@@ -105,26 +98,49 @@ const QuizPage = ({ LMID }) => {
       alert("Must select an answer before proceeding to the next question");
       return;
     }
+    if (quizList.questions[counter].type === 'multipleChoice') {
+      let answerObj =
+        quizList.questions.filter((ans, i) => i === ind).correctAnswer ===
+        cas;
+      console.log(answerObj, 'answerobj multi')
+      let updated_points = answerObj ? points + 1 : points;
+      //console.log(updated_points, 'point');
+      setPoints(updated_points);
+      let nextQuestion = counter + 1;
 
-    let answerObj =
-      quizList.questions.filter((ans, i) => i === ind)[0]?.correctAnswer ===
-      cas;
-    //console.log(answerObj, 'answerobj')
-    let updated_points = answerObj ? points + 1 : points;
-    //console.log(updated_points, 'point');
-    setPoints(updated_points);
-    let nextQuestion = counter + 1;
+      if (nextQuestion < quizList.questions.length) {
+        setCounter(nextQuestion);
+      } else {
+        setCounter(0);
+        handleResult();
+        // console.log(TotalMark, "in next");
+      }
 
-    if (nextQuestion < quizList.questions.length) {
-      setCounter(nextQuestion);
+      // handleAns()
+      displayCorrect(answerObj);
     } else {
-      setCounter(0);
-      handleResult();
-      // console.log(TotalMark, "in next");
+      let answerObj =
+        quizList.questions.filter((ans, i) => i === ind)[0]?.correctAnswer ===
+        cas;
+      //console.log(answerObj, 'answerobj')
+      let updated_points = answerObj ? points + 1 : points;
+      //console.log(updated_points, 'point');
+      setPoints(updated_points);
+      let nextQuestion = counter + 1;
+
+      if (nextQuestion < quizList.questions.length) {
+        setCounter(nextQuestion);
+      } else {
+        setCounter(0);
+        handleResult();
+        // console.log(TotalMark, "in next");
+      }
+
+      // handleAns()
+      displayCorrect(answerObj);
+
     }
 
-    // handleAns()
-    displayCorrect(answerObj);
   };
 
   const handleResult = () => {
@@ -168,50 +184,126 @@ const QuizPage = ({ LMID }) => {
 
 
   const handleAns = (val, ca, index, mark, id) => {
+
     setNextAnswer(false);
     setClicked(true);
     setShowAlert(true);
     setIndex(val);
+    if (quizList.questions[counter].type === 'multipleChoice') {
 
-    // console.log(multiAns.map((i, index) => index + 1), 'harrrr')
+    }
+    console.log(ca, 'ca list')
 
-    if (val + 1 === parseInt(ca)) {
-      // setStudentAnswer(val + 1)
-      const newFormSubmissions = [...trueAnswerList];
-      newFormSubmissions.push({
-        correct: parseInt(ca),
-        markTotal: mark,
-        studentAnswer: val + 1,
-      });
+
+    console.log(multiAnswerList, 'mul list')
+    console.log(quizList.questions[counter].type, 'index of multi + 1')
+
+    if (quizList.questions[counter].type === 'multipleChoice') {
+      const caList = ca?.map((i) => (parseInt(i)))
+      setCaList(caList)
+      if (final) {
+        // setStudentAnswer(val + 1)
+        console.log(final, 'hoo hoo')
+        const newFormSubmissions = [...trueAnswerList];
+        newFormSubmissions.push({
+          correct: caList,
+          markTotal: mark,
+          studentAnswer: multiAnswerList,
+        });
+
+        localStorage.setItem(
+          "formSubmission",
+          JSON.stringify(newFormSubmissions)
+        );
+
+        setTrueAnswerList(newFormSubmissions);
+        // const equal = _isEqual(quizList.questions[counter].correctAnswer.map((i, ind) => (i)), multiAns.map((i, index) => parseInt(index + 1)));
+        // console.log(equal, 'equal')
+        console.log(newFormSubmissions, 'new')
+        // console.log(quiz.questions.filter(el=>el.correctAnswer === val+1))
+        setIsCorrect("Correct");
+      } else {
+        // setStudentAnswer(val + 1)
+        setIsCorrect("incorrect");
+      }
+      const newFormSubmissionsforStudentAnswer = [...studentAnswerList];
+      console.log(multiAnswerList, 'last')
+      newFormSubmissionsforStudentAnswer.push({ studentAnswer: multiAnswerList, id: id });
 
       localStorage.setItem(
-        "formSubmission",
-        JSON.stringify(newFormSubmissions)
+        "studentformSubmission",
+        JSON.stringify(newFormSubmissionsforStudentAnswer)
       );
-
-      setTrueAnswerList(newFormSubmissions);
-
-      // console.log(newFormSubmissions,'new')
-      // console.log(quiz.questions.filter(el=>el.correctAnswer === val+1))
-      setIsCorrect("Correct");
+      console.log(newFormSubmissionsforStudentAnswer, 'final final')
+      setStudentAnswerList(newFormSubmissionsforStudentAnswer);
     } else {
-      // setStudentAnswer(val + 1)
-      setIsCorrect("incorrect");
+      if (val + 1 === parseInt(ca)) {
+        // setStudentAnswer(val + 1)
+        // console.log('fdjfsakjkfsn')
+        const newFormSubmissions = [...trueAnswerList];
+        newFormSubmissions.push({
+          correct: parseInt(ca),
+          markTotal: mark,
+          studentAnswer: [val + 1],
+        });
+
+        localStorage.setItem(
+          "formSubmission",
+          JSON.stringify(newFormSubmissions)
+        );
+
+        setTrueAnswerList(newFormSubmissions);
+
+        // console.log(newFormSubmissions, 'new radio')
+        // console.log(quiz.questions.filter(el=>el.correctAnswer === val+1))
+        setIsCorrect("Correct");
+      } else {
+        // setStudentAnswer(val + 1)
+        setIsCorrect("incorrect");
+      }
+      const newFormSubmissionsforStudentAnswer = [...studentAnswerList];
+      newFormSubmissionsforStudentAnswer.push({ studentAnswer: [val + 1], id: id });
+
+      localStorage.setItem(
+        "studentformSubmission",
+        JSON.stringify(newFormSubmissionsforStudentAnswer)
+      );
+      console.log(newFormSubmissionsforStudentAnswer, 'final else li')
+      setStudentAnswerList(newFormSubmissionsforStudentAnswer);
     }
 
 
-    const newFormSubmissionsforStudentAnswer = [...studentAnswerList];
-    newFormSubmissionsforStudentAnswer.push({ studentAnswer: val + 1, id: id });
-
-    localStorage.setItem(
-      "studentformSubmission",
-      JSON.stringify(newFormSubmissionsforStudentAnswer)
-    );
-
-    setStudentAnswerList(newFormSubmissionsforStudentAnswer);
   };
 
+  const handleCheckboxSelect = (e, index) => {
+    console.log(e.target.value, 'll')
+    // const ans = e.target.value
+    // const res = quizList.questions[counter].options.filter((e, ind) => (e.answer === ans))[0]
+    if (e.target.checked) {
+      const multi = [...multiAns, { ans: index + 1 }]
+      setMultiAns(multi);
+      // We get answer with index no
+      console.log(multi, 'multi ans list')
+    } else {
+      // setMultiAns(multiAns.filter((el, index) => (el.res === index + 1)))
+      const multi = multiAns.filter(data => data !== index + 1)
+      setMultiAns(multi)
+
+      console.log(multi, 'ma tu tar')
+    }
+
+
+    // setSelectedItem(multiAns.map((i, ind) => (ind)))
+    // console.log(multiAns.map((i, ind) => (ind)))
+
+  }
   useEffect(() => {
+    console.log(multiAns, 'under its array')
+    const final = caList.every(item => multiAns.includes(item))
+    setFinal(final)
+    console.log(final, 'hee hee')
+
+    // setMultiAnswerList(multiAnswerList)
     const getQuiz = async () => {
       await apiInstance.get("quizzes").then((res) => {
         if (
@@ -236,6 +328,8 @@ const QuizPage = ({ LMID }) => {
       });
     };
     getQuiz();
+
+
     const dataFromLocalStorage = localStorage.getItem("id");
     // console.log(dataFromLocalStorage,'local')
 
@@ -243,6 +337,7 @@ const QuizPage = ({ LMID }) => {
     // console.log((dataFromLocalStorage),'hello')
     setStudentID(dataFromLocalStorage);
     //   setPages(res.data._metadata.page_count)
+
   }, []);
   const displayMinutes = Math.floor(timeLeft / 60);
   const displaySeconds = timeLeft % 60;
@@ -327,71 +422,77 @@ const QuizPage = ({ LMID }) => {
                       <img src={quizList.questions[counter].questionPic} />
                     </div>
                     <div className='mt-5'>
+
                       {quizList.questions[counter].options.map((e, i) => (
-                        <div
-                          key={i}
-                          className='text-lg font-semibold ml-10'
-                          onClick={() =>
-                            handleAns(
-                              i,
-                              quizList.questions[counter].correctAnswer,
-                              counter,
-                              quizList.questions[counter].mark,
-                              quizList.questions[counter]._id
-                            )
-                          }
-                        >
-                          {showTimer && (
-                            <div>
-                              {/* True False Quiz */}
-                              {quizList.questions[counter].answerType ===
-                                "radio" ? (
-                                <input
-                                  type='radio'
-                                  name='answer_group'
-                                  value={e.answer}
-                                  disabled={
-                                    clicked === ""
-                                      ? ""
-                                      : selectedOption === e.answer
+                        <>
+
+                          < div
+                            key={i}
+                            className='text-lg font-semibold ml-10'
+                            onClick={() =>
+                              handleAns(
+                                i,
+                                quizList.questions[counter].correctAnswer,
+                                counter,
+                                quizList.questions[counter].mark,
+                                quizList.questions[counter]._id
+
+                              )
+                            }
+                          >
+                            {showTimer && (
+                              <div>
+                                {/* True False Quiz */}
+                                {quizList.questions[counter].answerType ===
+                                  "radio" ? (
+                                  <input
+                                    type='radio'
+                                    name='answer_group'
+                                    value={e.answer}
+                                    disabled={
+                                      clicked === ""
                                         ? ""
-                                        : true
-                                  }
-                                  onChange={(e) =>
-                                    handleOptionSelect(e.target.value)
-                                  }
-                                />
-                              ) : (
-                                // Multiple Choice Quiz
-                                <input
-                                  type='checkbox'
-                                  name='answer_group'
+                                        : selectedOption === e.answer
+                                          ? ""
+                                          : true
+                                    }
+                                    onChange={(e) =>
+                                      handleCheckboxSelect(e, i)
+                                    }
+                                  />
+                                ) : (
+                                  // Multiple Choice Quiz
+                                  <input
+                                    type='checkbox'
+                                    name='answer_group'
+                                    value={e.answer}
+                                    // checked={multiAns.map((i, ind) => (selectedItem.map((e, ine) => (ine === ind))))}
+                                    // disabled={
+                                    //   clicked === ""
+                                    //     ? ""
+                                    //     : selectedOption === e.answer
+                                    //     ? ""
+                                    //     : true
+                                    // }
+                                    onChange={(e) =>
+                                      handleCheckboxSelect(e, i)
+                                    }
+                                  />
+                                )}
+                                &nbsp;
+                                <span
                                   value={e.answer}
-                                  // checked={multiAns.map((i, ind) => (selectedItem.map((e, ine) => (ine === ind))))}
-                                  // disabled={
-                                  //   clicked === ""
-                                  //     ? ""
-                                  //     : selectedOption === e.answer
-                                  //     ? ""
-                                  //     : true
-                                  // }
                                   onChange={(e) =>
-                                    handleCheckboxSelect(e)
+                                    handleCheckboxSelectAnswer(e)
                                   }
-                                />
-                              )}
-                              &nbsp;
-                              <span
-                                value={e.answer}
-                                onChange={(e) =>
-                                  handleCheckboxSelectAnswer(e.target.value)
-                                }
-                              >
-                                {e.answer}
-                              </span>
-                            </div>
-                          )}
-                        </div>
+                                >
+                                  {e.answer}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        </>
+
                       ))}
                     </div>
                   </div>
@@ -431,11 +532,12 @@ const QuizPage = ({ LMID }) => {
                 </Card>
               </div>
             </>
-          )}
+          )
+          }
         </>
       )}
       {/* {showResult && <ResultPage />} */}
-    </div>
+    </div >
   );
 };
 export default QuizPage;
