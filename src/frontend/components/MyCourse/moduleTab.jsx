@@ -37,7 +37,16 @@ import {
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import MeetingModal from './newmeetingmodal'
-export default function CourseDetail(props) {
+const CourseDetail = (props) => {
+  // const time = new Date().toLocaleTimeString()
+
+  // const [ctime, setTime] = useState(time)
+  // const UpdateTime = () => {
+  //   time = new Date().toLocaleTimeString()
+  //   setTime(time)
+  // }
+  // setInterval(UpdateTime)
+
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const tabRef = useRef();
   const location = useLocation();
@@ -378,7 +387,7 @@ export default function CourseDetail(props) {
                                     />
                                   </a>
                                   {/* <b className="mt-3">{i.originalname?.split(".")[1] === "pdf" && "Download.pdf" || i.originalname?.split(".")[1] === "xlsx" && "Download.xlsx" || i.originalname?.split(".")[1] === "jpg" && "Download.jpg"}</b> */}
-                                  <b className="mt-3">{i?.originalname}</b>
+                                  <b className="mt-3">{i?.originalname?.split('.')[0]}</b>
                                 </div>
                               </div>
                             ))}
@@ -491,7 +500,15 @@ export default function CourseDetail(props) {
                             </div>
 
                             <div className='flex flex-col gap-4 justify-end'>
-                              <div><Image src={ZoomPic} className='w-full h-30' /></div>
+                              <div className='flex justify-center items-center' style={{
+                                backgroundImage: `url(${ZoomPic})`,
+                                backgroundPosition: "right",
+                                backgroundSize: "cover",
+                                backgroundAttachment: "scroll",
+                                backgroundRepeat: "no-repeat",
+                                padding: "64px 0px 160px 0px",
+                              }}><span className='text-[45px] text-[#fff]'></span></div>
+
                               <div className='flex flex-col gap-4'>
                                 <span className='text-[20px] font-semibold text-[#0025A9]'>Upcoming Meeting</span>
                                 <div>
@@ -586,4 +603,5 @@ export default function CourseDetail(props) {
   );
 }
 
+export default CourseDetail
 // Author:Kaung Set Hein

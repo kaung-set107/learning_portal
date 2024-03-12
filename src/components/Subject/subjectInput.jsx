@@ -104,11 +104,10 @@ export default function PositionInputForm() {
           />
           <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-2'>
             <label
-              className={`text-sm font-semibold ${
-                errors.description && errors.description.type === "required"
-                  ? "text-[#f31260]"
-                  : ""
-              }`}
+              className={`text-sm font-semibold ${errors.description && errors.description.type === "required"
+                ? "text-[#f31260]"
+                : ""
+                }`}
             >
               Description
             </label>
@@ -126,11 +125,10 @@ export default function PositionInputForm() {
         <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
           <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-2'>
             <label
-              className={`text-sm font-semibold ${
-                errors.subject && errors.subject.type === "required"
-                  ? "text-[#f31260]"
-                  : ""
-              }`}
+              className={`text-sm font-semibold ${errors.subject && errors.subject.type === "required"
+                ? "text-[#f31260]"
+                : ""
+                }`}
             >
               Course
             </label>
@@ -153,11 +151,10 @@ export default function PositionInputForm() {
           </div>
           <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-2'>
             <label
-              className={`text-sm font-semibold ${
-                errors.instructor && errors.instructor.type === "required"
-                  ? "text-[#f31260]"
-                  : ""
-              }`}
+              className={`text-sm font-semibold ${errors.instructor && errors.instructor.type === "required"
+                ? "text-[#f31260]"
+                : ""
+                }`}
             >
               Instructor
             </label>
@@ -180,7 +177,7 @@ export default function PositionInputForm() {
           </div>
         </div>
 
-        <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
+        {/* <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
           <Input
             type='text'
             label='Student Allowed'
@@ -215,8 +212,8 @@ export default function PositionInputForm() {
               onChange: (e) => setCurrentStudent(e.target.value),
             })}
           />
-        </div>
-        <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
+        </div> */}
+        {/* <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
           <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-8'>
             <label>Installment Allowed</label>
             <RadioGroup
@@ -253,9 +250,9 @@ export default function PositionInputForm() {
               onChange: (e) => setInTime(e.target.value),
             })}
           />
-        </div>
+        </div> */}
 
-        <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
+        {/* <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
           <Input
             type='number'
             label='Installment %'
@@ -287,7 +284,7 @@ export default function PositionInputForm() {
               onChange: (e) => setFee(e.target.value),
             })}
           />
-        </div>
+        </div> */}
         <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
           <Input
             type='file'
@@ -297,16 +294,14 @@ export default function PositionInputForm() {
             labelPlacement='outside'
             onChange={handleImage}
           />
-          <Input
+          {/* <Input
             type='text'
             label='Duration'
             placeholder='Duration'
             variant={variant}
             onChange={(e) => setDuration(e.target.value)}
             labelPlacement='outside'
-          />
-        </div>
-        <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
+          /> */}
           <Input
             type='date'
             label='Start Date'
@@ -315,6 +310,9 @@ export default function PositionInputForm() {
             labelPlacement='outside'
             onChange={(e) => setFromDate(e.target.value)}
           />
+        </div>
+        <div className='grid grid-cols-2 mb-6 md:mb-0 gap-4 mt-1'>
+
           <Input
             type='date'
             label='End Date'
@@ -323,6 +321,7 @@ export default function PositionInputForm() {
             onChange={(e) => setToDate(e.target.value)}
             labelPlacement='outside'
           />
+          <div></div>
         </div>
 
         <div className='flex justify-center gap-10 py-4'>
