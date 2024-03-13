@@ -73,7 +73,7 @@ export default function Result() {
 
     const getResult = async () => {
       await apiInstance.get("quiz-results").then((res) => {
-        //console.log(res.data.data.filter(el => el.student === dataFromLocalStorage)[res.data.data.filter(el => el?.student === dataFromLocalStorage).length - 1].quiz, 'ID')
+        console.log(res.data.data, 'res quiz mul')
         setQuizID(
           res.data.data.filter((el) => el.student === dataFromLocalStorage)[
             res.data.data.filter((el) => el?.student === dataFromLocalStorage)
@@ -123,35 +123,12 @@ export default function Result() {
     );
   };
   const handleBack = (quizId) => {
-    // const SectionInSub = subList.filter((el) => el?.subjectSections[0]);
 
-    // const LMSubId = LMList.filter((el) => el.quiz?._id === quizId)[0]?._id;
-    // console.log(LMSubId);
-    // console.log(
-    //   SectionInSub.map((el) =>
-    //     el.subjectSections.map((i) =>
-    //       i.learningMaterials.filter((e) => e._id === LMSubId)
-    //     )
-    //   )
-    // );
-
-    // console.log(
-    //   subList.filter((el) => el?.subjectSections.map((i) => i._id)),
-
-    //   "lmis"
-    // );
-    // // const BackID = quizList
-    // //   .filter((el) => el._id === quizID)
-    // //   .map((i) => {
-    // //     return {
-    // //       lmID: i.learningMaterial,
-    // //     };
-    // //   })[0].lmID;
     navigate("/student");
   };
   console.log(quizResult, "q res");
 
-  const dateTime = moment(quizResult.answerDate).locale("en").tz("Asia/Yangon");
+  const dateTime = moment(quizResult?.answerDate).locale("en").tz("Asia/Yangon");
   const formattedDateTime = dateTime.format("LLLL");
   return (
     <>
@@ -287,43 +264,44 @@ export default function Result() {
                 <div className='grid grid-cols-5 gap-3'>
                   {updatedQuestionList.map((i, index) => (
                     <>
-                      {JSON.parse(i.correctAnswer) ===
-                        JSON.parse(i.studentAnswer) ? (
-                        <a
-                          href={`#${quizNavigationID}`}
-                          className='flex flex-col  h-[45px] w-[45px] bg-[#E7F9F1] border-1 border-[#9FE7C9] rounded-lg '
-                          style={{ padding: "2px 0px 26px 0px" }}
-                          onClick={() => handleQuizNavigation(i)}
-                        >
-                          <span className='text-[14px] font-black text-[#000] flex justify-center items-center'>
-                            {index + 1}
-                          </span>
+                      {/* correctList.every(item => caList.includes(item)) */}
+                      {i.correctAnswer.map((i) => (parseInt(i))).every(item => i.studentAnswer.map((i) => (parseInt(i))).includes(item))
+                        ? (
+                          <a
+                            href={`#${quizNavigationID}`}
+                            className='flex flex-col  h-[45px] w-[45px] bg-[#c6f4df] border-1 border-[#9FE7C9] rounded-lg '
+                            style={{ padding: "2px 0px 26px 0px" }}
+                            onClick={() => handleQuizNavigation(i)}
+                          >
+                            <span className='text-[14px] font-black text-[#000] flex justify-center items-center'>
+                              {index + 1}
+                            </span>
 
-                          <span
-                            className='flex justify-center items-center bg-[#10C278] text-[#fff] border-1 border-[#9FE7C9] rounded-lg text-center w-[45px] h-[25px]'
-                            style={{ padding: "5px 15px 5px 10px" }}
+                            <span
+                              className='flex justify-center items-center bg-[#10C278] text-[#fff] border-1 border-[#9FE7C9] rounded-lg text-center w-[45px] h-[25px]'
+                              style={{ padding: "5px 15px 5px 10px" }}
+                            >
+                              <FontAwesomeIcon icon={faCheck} size='xl' />
+                            </span>
+                          </a>
+                        ) : (
+                          <a
+                            href={`#${quizNavigationID}`}
+                            className='flex flex-col  h-[45px] w-[45px] bg-[#FDE9EB] border-1 border-[#F66671] rounded-lg '
+                            style={{ padding: "2px 0px 26px 0px" }}
+                            onClick={() => handleQuizNavigation(i)}
                           >
-                            <FontAwesomeIcon icon={faCheck} size='xl' />
-                          </span>
-                        </a>
-                      ) : (
-                        <a
-                          href={`#${quizNavigationID}`}
-                          className='flex flex-col  h-[45px] w-[45px] bg-[#FDE9EB] border-1 border-[#F66671] rounded-lg '
-                          style={{ padding: "2px 0px 26px 0px" }}
-                          onClick={() => handleQuizNavigation(i)}
-                        >
-                          <span className='text-[14px] font-black text-[#000] flex justify-center items-center'>
-                            {index + 1}
-                          </span>
-                          <span
-                            className='flex justify-center items-center bg-[#BA0220] text-[#fff] border-1 border-[#F66671] rounded-lg text-center w-[45px] h-[25px]'
-                            style={{ padding: "5px 15px 5px 10px" }}
-                          >
-                            <FontAwesomeIcon icon={faXmark} size='xl' />
-                          </span>
-                        </a>
-                      )}
+                            <span className='text-[14px] font-black text-[#000] flex justify-center items-center'>
+                              {index + 1}
+                            </span>
+                            <span
+                              className='flex justify-center items-center bg-[#BA0220] text-[#fff] border-1 border-[#F66671] rounded-lg text-center w-[45px] h-[25px]'
+                              style={{ padding: "5px 15px 5px 10px" }}
+                            >
+                              <FontAwesomeIcon icon={faXmark} size='xl' />
+                            </span>
+                          </a>
+                        )}
                     </>
                   ))}
                 </div>
@@ -337,7 +315,7 @@ export default function Result() {
             </div>
           </div>
           {updatedQuestionList.map((i, ind) =>
-            parseInt(i.correctAnswer) === parseInt(i.studentAnswer) ? (
+            i.correctAnswer.map((i) => (parseInt(i))).every(item => i.studentAnswer.map((i) => (parseInt(i))).includes(item)) ? (
               <div
                 className='py-5 px-5 '
                 style={{ padding: "24px 16px 24px 72px" }}

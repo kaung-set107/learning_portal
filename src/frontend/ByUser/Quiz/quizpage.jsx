@@ -10,10 +10,10 @@ import apiInstance from "../../../util/api";
 import ResultPage from "./result";
 // import Swal from 'sweetalert2';
 // import Result from './result'
-const QuizPage = ({ LMID }) => {
+const QuizPage = ({ LMID, enrollID }) => {
   const a = ['a', 'b']
   const b = ['a', 'b', 'c']
-  const [selectedItem, setSelectedItem] = useState('');
+  const [arr, setArr] = useState([]);
   const [timeLeft, setTimeLeft] = useState("");
   const [clicked, setClicked] = useState("");
   const location = useLocation();
@@ -39,269 +39,41 @@ const QuizPage = ({ LMID }) => {
   const [studentAnswer, setStudentAnswer] = useState("");
   const [caList, setCaList] = useState([])
   const [multiAns, setMultiAns] = useState([])
+
+  // const multiAnswerList = multiAns.map((i, ind) => {
+  //   return {
+  //     ans: i.ans,
+  //     id: i.id
+  //   }
+  // })
+  // console.log(multiAnswerList, 'multiAnswerList')
+  // const sameList = [...arr, multiAnswerList]
+  // console.log(sameList, 'sameList')
+
   // const [multiAnswerList, setMultiAnswerList] = useState([])
   const [final, setFinal] = useState('')
-  const multiAnswerList = multiAns.map((i, ind) => {
-    return {
-      ans: i
-    }
-  })
-  console.log(multiAnswerList, 'multiAnswerList')
+
   const [studentAnswerList, setStudentAnswerList] = useState([]);
+  console.log(trueAnswerList, 'true ori');
+
+
+  // console.log(trueAns, 'fix true');
   const TotalMark = trueAnswerList
     .map((i) => i.markTotal)
     .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-  // console.log(TotalMark, "time");
+  console.log(TotalMark, "time");
   const displayCorrect = (correct) => {
     let correct_msg = correct ? "correct" : "incorrect";
     // console.log("Answer was " + correct_msg);
   };
-
-  const handleOptionSelect = (option) => {
-    console.log(option, "option");
-
-    setSelectedOption(option);
-  };
-
-  const handleCheckboxSelectAnswer = (option) => {
-    console.log(option, "option");
-
-    setSelectedCheckbox(option);
-  };
-
-
-
-  const handleStart = () => {
-    setShowTimer(true);
-
-    const timerInterval = setInterval(() => {
-      setTimeLeft((prevTime) => {
-        if (prevTime === 0) {
-          clearInterval(timerInterval);
-
-          nextQuestion();
-          return 10; // Reset timer for the next question
-        }
-        return prevTime - 1;
-      });
-    }, 1000);
-
-    // Clear interval when the component unmounts or when moving to the next question
-    return () => clearInterval(timerInterval);
-  };
-
-  const nextQuestion = (studentAnswer, cas, ind) => {
-    setClicked("");
-    setNextAnswer(true);
-    setIndex(""); //to check incorrect or correct answer
-    if (cas === null) {
-      alert("Must select an answer before proceeding to the next question");
-      return;
-    }
-    if (quizList.questions[counter].type === 'multipleChoice') {
-      let answerObj =
-        quizList.questions.filter((ans, i) => i === ind).correctAnswer ===
-        cas;
-      console.log(answerObj, 'answerobj multi')
-      let updated_points = answerObj ? points + 1 : points;
-      //console.log(updated_points, 'point');
-      setPoints(updated_points);
-      let nextQuestion = counter + 1;
-
-      if (nextQuestion < quizList.questions.length) {
-        setCounter(nextQuestion);
-      } else {
-        setCounter(0);
-        handleResult();
-        // console.log(TotalMark, "in next");
-      }
-
-      // handleAns()
-      displayCorrect(answerObj);
-    } else {
-      let answerObj =
-        quizList.questions.filter((ans, i) => i === ind)[0]?.correctAnswer ===
-        cas;
-      //console.log(answerObj, 'answerobj')
-      let updated_points = answerObj ? points + 1 : points;
-      //console.log(updated_points, 'point');
-      setPoints(updated_points);
-      let nextQuestion = counter + 1;
-
-      if (nextQuestion < quizList.questions.length) {
-        setCounter(nextQuestion);
-      } else {
-        setCounter(0);
-        handleResult();
-        // console.log(TotalMark, "in next");
-      }
-
-      // handleAns()
-      displayCorrect(answerObj);
-
-    }
-
-  };
-
-  const handleResult = () => {
-    //Quiz-Result Create
-    const data = {
-      quiz: quizList._id,
-      student: studentID,
-      answerDate: Date.now(),
-      updatedQuestions: quizList.questions.map((i) => {
-        return {
-          question: i.question,
-          type: i.type,
-          mark: i.mark,
-
-          options: i.options,
-          answerType: i.answerType,
-          correctAnswer: i.correctAnswer,
-          studentAnswer: studentAnswerList.filter((el) => el.id === i._id)[0]
-            ?.studentAnswer,
-        };
-      }),
-      totalMark: TotalMark,
-      status: TotalMark >= quizList.passMark ? "pass" : "fail",
-    };
-    // alert(JSON.stringify(data));
-    apiInstance
-      .post("quiz-results", data)
-      .then(function () {
-
-        navigate("/quiz-result");
-      })
-      .catch((error) => {
-        alert(error);
-      });
-
-    localStorage.removeItem("formSubmission");
-
-    setShowOrigin(false);
-    setShowResult(true);
-  };
-
-
-  const handleAns = (val, ca, index, mark, id) => {
-
-    setNextAnswer(false);
-    setClicked(true);
-    setShowAlert(true);
-    setIndex(val);
-    if (quizList.questions[counter].type === 'multipleChoice') {
-
-    }
-    console.log(ca, 'ca list')
-
-
-    console.log(multiAnswerList, 'mul list')
-    console.log(quizList.questions[counter].type, 'index of multi + 1')
-
-    if (quizList.questions[counter].type === 'multipleChoice') {
-      const caList = ca?.map((i) => (parseInt(i)))
-      setCaList(caList)
-      if (final) {
-        // setStudentAnswer(val + 1)
-        console.log(final, 'hoo hoo')
-        const newFormSubmissions = [...trueAnswerList];
-        newFormSubmissions.push({
-          correct: caList,
-          markTotal: mark,
-          studentAnswer: multiAnswerList,
-        });
-
-        localStorage.setItem(
-          "formSubmission",
-          JSON.stringify(newFormSubmissions)
-        );
-
-        setTrueAnswerList(newFormSubmissions);
-        // const equal = _isEqual(quizList.questions[counter].correctAnswer.map((i, ind) => (i)), multiAns.map((i, index) => parseInt(index + 1)));
-        // console.log(equal, 'equal')
-        console.log(newFormSubmissions, 'new')
-        // console.log(quiz.questions.filter(el=>el.correctAnswer === val+1))
-        setIsCorrect("Correct");
-      } else {
-        // setStudentAnswer(val + 1)
-        setIsCorrect("incorrect");
-      }
-      const newFormSubmissionsforStudentAnswer = [...studentAnswerList];
-      console.log(multiAnswerList, 'last')
-      newFormSubmissionsforStudentAnswer.push({ studentAnswer: multiAnswerList, id: id });
-
-      localStorage.setItem(
-        "studentformSubmission",
-        JSON.stringify(newFormSubmissionsforStudentAnswer)
-      );
-      console.log(newFormSubmissionsforStudentAnswer, 'final final')
-      setStudentAnswerList(newFormSubmissionsforStudentAnswer);
-    } else {
-      if (val + 1 === parseInt(ca)) {
-        // setStudentAnswer(val + 1)
-        // console.log('fdjfsakjkfsn')
-        const newFormSubmissions = [...trueAnswerList];
-        newFormSubmissions.push({
-          correct: parseInt(ca),
-          markTotal: mark,
-          studentAnswer: [val + 1],
-        });
-
-        localStorage.setItem(
-          "formSubmission",
-          JSON.stringify(newFormSubmissions)
-        );
-
-        setTrueAnswerList(newFormSubmissions);
-
-        // console.log(newFormSubmissions, 'new radio')
-        // console.log(quiz.questions.filter(el=>el.correctAnswer === val+1))
-        setIsCorrect("Correct");
-      } else {
-        // setStudentAnswer(val + 1)
-        setIsCorrect("incorrect");
-      }
-      const newFormSubmissionsforStudentAnswer = [...studentAnswerList];
-      newFormSubmissionsforStudentAnswer.push({ studentAnswer: [val + 1], id: id });
-
-      localStorage.setItem(
-        "studentformSubmission",
-        JSON.stringify(newFormSubmissionsforStudentAnswer)
-      );
-      console.log(newFormSubmissionsforStudentAnswer, 'final else li')
-      setStudentAnswerList(newFormSubmissionsforStudentAnswer);
-    }
-
-
-  };
-
-  const handleCheckboxSelect = (e, index) => {
-    console.log(e.target.value, 'll')
-    // const ans = e.target.value
-    // const res = quizList.questions[counter].options.filter((e, ind) => (e.answer === ans))[0]
-    if (e.target.checked) {
-      const multi = [...multiAns, { ans: index + 1 }]
-      setMultiAns(multi);
-      // We get answer with index no
-      console.log(multi, 'multi ans list')
-    } else {
-      // setMultiAns(multiAns.filter((el, index) => (el.res === index + 1)))
-      const multi = multiAns.filter(data => data !== index + 1)
-      setMultiAns(multi)
-
-      console.log(multi, 'ma tu tar')
-    }
-
-
-    // setSelectedItem(multiAns.map((i, ind) => (ind)))
-    // console.log(multiAns.map((i, ind) => (ind)))
-
-  }
   useEffect(() => {
-    console.log(multiAns, 'under its array')
-    const final = caList.every(item => multiAns.includes(item))
-    setFinal(final)
-    console.log(final, 'hee hee')
+    const item = localStorage.getItem('hello');
+    // Update state with the retrieved item
+    // setStoredItem(item);
+    console.log(item, 'under its array')
+    // const final = caList.every(item => multiAns.includes(item))
+    // setFinal(final)
+    // console.log(final, 'hee hee')
 
     // setMultiAnswerList(multiAnswerList)
     const getQuiz = async () => {
@@ -339,6 +111,272 @@ const QuizPage = ({ LMID }) => {
     //   setPages(res.data._metadata.page_count)
 
   }, []);
+  const handleOptionSelect = (option) => {
+    console.log(option, "option");
+
+    setSelectedOption(option);
+  };
+
+  const handleCheckboxSelectAnswer = (option) => {
+    console.log(option, "option");
+
+    setSelectedCheckbox(option);
+  };
+
+
+
+  const handleStart = () => {
+    setShowTimer(true);
+
+    const timerInterval = setInterval(() => {
+      setTimeLeft((prevTime) => {
+        if (prevTime === 0) {
+          clearInterval(timerInterval);
+
+          nextQuestion();
+          return 10; // Reset timer for the next question
+        }
+        return prevTime - 1;
+      });
+    }, 1000);
+
+    // Clear interval when the component unmounts or when moving to the next question
+    return () => clearInterval(timerInterval);
+  };
+
+  const nextQuestion = (studentAnswer, cas, ind) => {
+    console.log(quizList.questions[counter].correctAnswer === cas, 'cas')
+
+
+    // console.log(caList, 'caList')
+    setClicked("");
+    setNextAnswer(true);
+    setIndex(""); //to check incorrect or correct answer
+    if (cas === null) {
+      alert("Must select an answer before proceeding to the next question");
+      return;
+    }
+    if (quizList.questions[counter].type === 'multipleChoice') {
+
+
+      const correctList = cas?.map((i) => (parseInt(i))) //To change Int in array's items
+
+      let answerObj = correctList.every(item => studentAnswerList.includes(item))  // To know two arrays's items same?
+      // console.log(answerObj, 'answerobj multi')
+
+
+      let updated_points = answerObj ? points + 1 : points;       // If we true,we increase mark
+      // console.log(updated_points, 'point');
+
+      setPoints(updated_points);
+      let nextQuestion = counter + 1;
+
+      if (nextQuestion < quizList.questions.length) {
+        setCounter(nextQuestion);
+      } else {
+        setCounter(0);
+        handleResult();
+        // console.log(TotalMark, "in next");
+      }
+
+      // handleAns()
+      displayCorrect(answerObj);
+    } else {
+      let answerObj = quizList.questions[counter].correctAnswer === cas
+      // console.log(answerObj, 'answerobj')
+      let updated_points = answerObj ? points + 1 : points;
+      // console.log(updated_points, 'point');
+      setPoints(updated_points);
+      let nextQuestion = counter + 1;
+
+      if (nextQuestion < quizList.questions.length) {
+        setCounter(nextQuestion);
+      } else {
+        setCounter(0);
+        handleResult();
+        // console.log(TotalMark, "in next");
+      }
+
+      // handleAns()
+      displayCorrect(answerObj);
+
+    }
+
+  };
+
+  const handleResult = () => {
+
+    console.log(studentAnswerList, 'studentAnswerList');
+
+    // console.log(studentAnswerList.filter(el => quizList.questions.find(i => i._id === el.id)), 'studentAnswerList')
+    //Quiz-Result Create
+    const data = {
+      enrollment: enrollID,
+      quiz: quizList._id,
+      student: studentID,
+      answerDate: Date.now(),
+      updatedQuestions: quizList.questions.map((i) => {
+        return {
+          question: i.question,
+          type: i.type,
+          mark: i.mark,
+
+          options: i.options,
+          answerType: i.answerType,
+          correctAnswer: i.correctAnswer,
+          studentAnswer: i.type === 'trueFalse' ? studentAnswerList.filter((el) => el.id === i._id)[0]
+            ?.studentAnswer : studentAnswerList.filter((el) => el.id === i._id)[1]
+            ?.studentAnswer,
+        };
+      }),
+      totalMark: TotalMark,
+      status: TotalMark >= quizList.passMark ? "pass" : "fail",
+    };
+    // alert(JSON.stringify(data));
+    apiInstance
+      .post("quiz-results", data)
+      .then(function () {
+
+        navigate("/quiz-result");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    localStorage.removeItem("formSubmission");
+
+    setShowOrigin(false);
+    setShowResult(true);
+  };
+
+  const handleCheckboxSelect = (event, index, data, correct, counter, mark, counterId) => {
+    setIndex(index);
+    // console.log(index, 'll')
+
+    if (event.target.checked) {
+      const multi = [...multiAns, index + 1]
+      setMultiAns(multi);
+      // We get answer with index no
+      console.log(multi, 'multi ans list')
+
+      const correctList = correct.map((i) => (parseInt(i)))
+      console.log(correctList, 'corr ans list')
+      console.log(correctList.every(item => multi.includes(item)), 'true?')
+
+      if (correctList.every(item => multi.includes(item))) {
+        // setStudentAnswer(val + 1)
+
+        const newFormSubmissions = [...trueAnswerList];
+        newFormSubmissions.push({
+          id: counterId,
+          correct: correctList,
+          markTotal: mark,
+          studentAnswer: multi
+        });
+
+        localStorage.setItem(
+          "formSubmission",
+          JSON.stringify(newFormSubmissions)
+        );
+
+        setTrueAnswerList(newFormSubmissions);
+
+        console.log(newFormSubmissions, 'new')
+        // console.log(quiz.questions.filter(el=>el.correctAnswer === val+1))
+        setIsCorrect("Correct");
+      } else {
+        // setStudentAnswer(val + 1)
+        setIsCorrect("incorrect");
+      }
+
+      // const newFormSubmissionsforStudentAnswer = [...studentAnswerList];
+      // console.log(multi, 'last')
+      // newFormSubmissionsforStudentAnswer.push({ studentAnswer: multi, id: counterId });
+
+      // localStorage.setItem(
+      //   "studentformSubmission",
+      //   JSON.stringify(newFormSubmissionsforStudentAnswer)
+      // );
+
+      console.log(multi, ',ul')
+
+      // Create the main array and push the sub-arrays into it
+      const mainArray = [...studentAnswerList, ...[{ studentAnswer: multi, id: counterId }]];
+
+
+      console.log(mainArray, 'final final')
+      setStudentAnswerList(mainArray);
+    } else {
+      // setMultiAns(multiAns.filter((el, index) => (el.res === index + 1)))
+      const multi = multiAns.filter(data => data !== counterId)
+      setMultiAns(multi)
+
+      console.log(multi, 'ma tu tar')
+    }
+
+
+    // setSelectedItem(multiAns.map((i, ind) => (ind)))
+    // console.log(multiAns.map((i, ind) => (ind)))
+
+  }
+
+  const handleAns = (val, studentChoose, ca, index, mark, counterid) => {
+    setNextAnswer(false);
+    setClicked(true);
+    setShowAlert(true);
+    setIndex(val);
+
+
+    console.log('hello', [...multiAns, studentChoose]);
+
+
+    const TrueFalseAns = [...arr, val + 1] // to get student's index choose value with array list style
+    console.log(TrueFalseAns, 'studentChoose list')
+
+
+    // console.log(multiAnswerList, 'mul list')
+    // console.log(quizList.questions[counter].type, 'index of multi + 1')
+
+
+    if (parseInt(ca) === parseInt(TrueFalseAns)) {
+      // setStudentAnswer(val + 1)
+      // console.log('fdjfsakjkfsn')
+      const newFormSubmissions = [...trueAnswerList];
+      newFormSubmissions.push({
+        correct: parseInt(ca),
+        markTotal: mark,
+        studentAnswer: TrueFalseAns
+      });
+
+      localStorage.setItem(
+        "formSubmission",
+        JSON.stringify(newFormSubmissions)
+      );
+
+      setTrueAnswerList(newFormSubmissions);
+
+      // console.log(newFormSubmissions, 'new radio')
+
+      setIsCorrect("Correct");
+    } else {
+      // setStudentAnswer(val + 1)
+      setIsCorrect("incorrect");
+    }
+    const newFormSubmissionsforStudentAnswer = [...studentAnswerList];
+    newFormSubmissionsforStudentAnswer.push({ studentAnswer: TrueFalseAns, id: counterid });
+
+    localStorage.setItem(
+      "studentformSubmission",
+      JSON.stringify(newFormSubmissionsforStudentAnswer)
+    );
+    // console.log(newFormSubmissionsforStudentAnswer, 'final else radio')
+    setStudentAnswerList(newFormSubmissionsforStudentAnswer);
+
+
+
+  };
+
+
   const displayMinutes = Math.floor(timeLeft / 60);
   const displaySeconds = timeLeft % 60;
   return (
@@ -385,28 +423,7 @@ const QuizPage = ({ LMID }) => {
                       {displaySeconds}
                     </span>
                   </div>
-                  {quizList.questions[counter].answerType === "radio" ? (
-                    showAlert &&
-                    (isCorrect === "Correct" ? (
-                      <div className='mt-3'>
-                        <Stack sx={{ width: "50%" }}>
-                          <Alert variant='outlined' severity='success'>
-                            This answer is Correct !
-                          </Alert>
-                        </Stack>
-                      </div>
-                    ) : (
-                      <div className='mt-3'>
-                        <Stack sx={{ width: "50%" }}>
-                          <Alert variant='outlined' severity='error'>
-                            This answer is InCorrect !
-                          </Alert>
-                        </Stack>
-                      </div>
-                    ))
-                  ) : (
-                    <div>Multiple</div>
-                  )}
+
                 </div>
                 {/* Qusetion And Answer Section */}
                 <Card
@@ -425,26 +442,26 @@ const QuizPage = ({ LMID }) => {
 
                       {quizList.questions[counter].options.map((e, i) => (
                         <>
+                          {quizList.questions[counter].type === 'trueFalse' ? (
+                            < div
+                              key={i}
+                              className='text-lg font-semibold ml-10'
+                              onClick={() =>
+                                handleAns(
+                                  i,
+                                  e,
+                                  quizList.questions[counter].correctAnswer,
+                                  counter,
+                                  quizList.questions[counter].mark,
+                                  quizList.questions[counter]._id
 
-                          < div
-                            key={i}
-                            className='text-lg font-semibold ml-10'
-                            onClick={() =>
-                              handleAns(
-                                i,
-                                quizList.questions[counter].correctAnswer,
-                                counter,
-                                quizList.questions[counter].mark,
-                                quizList.questions[counter]._id
+                                )
+                              }
+                            >
+                              {showTimer && (
+                                <div>
+                                  {/* True False Quiz */}
 
-                              )
-                            }
-                          >
-                            {showTimer && (
-                              <div>
-                                {/* True False Quiz */}
-                                {quizList.questions[counter].answerType ===
-                                  "radio" ? (
                                   <input
                                     type='radio'
                                     name='answer_group'
@@ -456,12 +473,39 @@ const QuizPage = ({ LMID }) => {
                                           ? ""
                                           : true
                                     }
-                                    onChange={(e) =>
-                                      handleCheckboxSelect(e, i)
-                                    }
+                                  // onChange={(event) =>
+                                  //   handleOptionSelect(event, e, i)
+                                  // }
                                   />
-                                ) : (
-                                  // Multiple Choice Quiz
+
+
+                                  &nbsp;
+
+                                  {e.answer}
+
+                                </div>
+                              )}
+                            </div>
+                          ) : (
+                            < div
+                              key={i}
+                              className='text-lg font-semibold ml-10'
+                            // onChange={() =>
+                            //   handleAns(
+                            //     i,
+                            //     e,
+                            //     quizList.questions[counter].correctAnswer,
+                            //     counter,
+                            //     quizList.questions[counter].mark,
+                            //     quizList.questions[counter]._id
+
+                            //   )
+                            // }
+                            >
+                              {showTimer && (
+                                <div>
+
+                                  {/* Multiple Choice Quiz */}
                                   <input
                                     type='checkbox'
                                     name='answer_group'
@@ -474,45 +518,49 @@ const QuizPage = ({ LMID }) => {
                                     //     ? ""
                                     //     : true
                                     // }
-                                    onChange={(e) =>
-                                      handleCheckboxSelect(e, i)
+                                    onClick={(event) =>
+                                      handleCheckboxSelect(event,
+                                        i,
+                                        e,
+                                        quizList.questions[counter].correctAnswer,
+                                        counter,
+                                        quizList.questions[counter].mark,
+                                        quizList.questions[counter]._id
+                                      )
                                     }
                                   />
-                                )}
-                                &nbsp;
-                                <span
-                                  value={e.answer}
-                                  onChange={(e) =>
-                                    handleCheckboxSelectAnswer(e)
-                                  }
-                                >
+
+                                  &nbsp;
+
                                   {e.answer}
-                                </span>
-                              </div>
-                            )}
-                          </div>
+
+                                </div>
+                              )}
+                            </div>)}
+
+
                         </>
 
                       ))}
-                    </div>
+                    </div >
                   </div>
                   <div className='py-3'>
-                    {showAlert ? (
-                      <Button
-                        color='secondary'
-                        size='sm'
-                        className='ml-10 rounded-md mt-3'
-                        onClick={() =>
-                          nextQuestion(
-                            studentAnswer,
-                            quizList.questions[counter].correctAnswer,
-                            counter
-                          )
-                        }
-                      >
-                        Next
-                      </Button>
-                    ) : (
+
+                    <Button
+                      color='secondary'
+                      size='sm'
+                      className='ml-10 rounded-md mt-3'
+                      onClick={() =>
+                        nextQuestion(
+                          multiAns,
+                          quizList.questions[counter].correctAnswer,
+                          counter
+                        )
+                      }
+                    >
+                      Next
+                    </Button>
+                    {/* ) : (
                       <Button
                         size='sm'
                         className='ml-10 rounded-md mt-3'
@@ -527,7 +575,7 @@ const QuizPage = ({ LMID }) => {
                       >
                         Next
                       </Button>
-                    )}
+                    )} */}
                   </div>
                 </Card>
               </div>

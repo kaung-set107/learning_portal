@@ -52,6 +52,8 @@ const CourseDetail = (props) => {
   const location = useLocation();
   const navigate = useNavigate();
   const examData = location.state.data;
+  const enrollID = location.state.enroll_id;
+  console.log(enrollID, "enrollID");
   console.log(examData, "sub ii");
   const courseData = location.state.courseData;
   // console.log(props.id, "id");
@@ -474,7 +476,7 @@ const CourseDetail = (props) => {
                       <Tab title='Quiz'>
                         {/* Quiz Page */}
 
-                        <QuizPage LMID={LMID} />
+                        <QuizPage LMID={LMID} enrollID={enrollID} />
                       </Tab>
                       <Tab title='Class'>
 
