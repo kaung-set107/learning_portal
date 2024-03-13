@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFireFlameCurved, faStar, faCheck, faImage
 } from "@fortawesome/free-solid-svg-icons";
+import Pic from '../../../assets/img/pic.jpg'
 export default function App() {
   return (
     <div className="flex justify-center items-center w-full flex-col">
@@ -98,16 +99,17 @@ export default function App() {
               </div>
 
               <div className='flex flex-col gap-10 p-2 justify-start  bg-[#fff] w-[480px] h-[174px]  rounded-[4px]'>
-                <div className='flex gap-2'>
+                <div className='flex gap-2 items-center'>
                   <Image
                     radius="sm"
                     alt=''
-                    className="object-cover w-[40px] h-[40px]"
-                    src=''
+                    className="object-cover w-[40px] h-[40px] ml-12"
+                    src={Pic}
                   />
-                  <div>IELTs</div>
+                  <div className='text-[16px] font-medium text-[#415EFF]'>Your assignment result.ar</div>
                 </div>
-                <div className='bg-[red] w-[240px] h-[74px] rounded-t-[32px] rounded-r-[32px] rounded-b-[32px] rounded-l-[0px]'>Hello</div>
+                <div className='bg-[red] w-[240px] h-[74px] rounded-t-[32px] rounded-r-[32px] rounded-b-[32px] rounded-l-[0px] text-[12px] font-normal p-4 text-[#fff] ml-12'>Oh, hello! All perfectly.
+                  I will check it and get back to you soon</div>
               </div>
             </div>
           </div>

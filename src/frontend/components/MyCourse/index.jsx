@@ -16,7 +16,10 @@ export default function App() {
 
       <Body subData={SubData} />
 
-      <Footer />
+      <div className=''>
+        <Footer />
+      </div>
+
     </div>
   );
 }
