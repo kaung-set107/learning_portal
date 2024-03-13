@@ -224,6 +224,26 @@ export default function Sidebar(props) {
                 </AccordionItem>
               </Accordion>
               <Divider></Divider>
+
+                <h3 className="my-3 text-xl font-bold">Instructor</h3>
+              {/* instructor sidebar */}
+              <Accordion>
+                <AccordionItem
+                  key='by-instructor'
+                  aria-label='by instructor'
+                  title='By Instructor'
+                  startContent={<FontAwesomeIcon icon={faGear} size='xl' />}
+                >
+                  <Divider></Divider>
+                  <Link to='/by-instructor/subjects' onClick={() => setCou(true)}>
+                    <div className='hover:bg-blue-100 px-4 py-3 m-auto text-sm'>
+                      &nbsp;
+                      <span className='ml-4 font-medium '>Subjects</span>
+                    </div>
+                  </Link>
+                </AccordionItem>
+              </Accordion>
+              <Divider></Divider>
             </CardBody>
 
             <CardFooter>

@@ -72,7 +72,7 @@ export default function Login() {
             showConfirmButton: false,
             timer: 3000,
           });
-          navigate("/instructor");
+          navigate("/by-instructor");
           setLoading(false);
         } else if (res.data.data.roles[0].includes("student")) {
           const rol = res.data.data.roles[0];
