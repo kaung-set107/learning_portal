@@ -11,7 +11,7 @@ export default function DepartmentInputForm() {
   const location = useLocation()
   const SSId = location.pathname.split('/')[2]
   console.log(SSId, 'id')
-  const variant = "faded";
+  const variant = "bordered";
   const {
 
     handleSubmit,

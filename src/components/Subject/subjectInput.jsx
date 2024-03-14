@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 export default function PositionInputForm() {
-  const variant = "faded";
+  const variant = "bordered";
 
   const [instructorList, setInstructorList] = useState([]);
   const [courseList, setCourseList] = useState([]);

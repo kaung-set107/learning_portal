@@ -3,6 +3,7 @@ import Login from "./pages/Login/login";
 // Home Web Page
 import FHome from "./frontend/home/body";
 import About from "./frontend/home/about.jsx";
+import Booking from './frontend/home/booking.jsx'
 import HomeCourse from "./frontend/home/home-course/home-course.jsx";
 import HomeCourseDetail from "./frontend/home/home-course/course-detail.jsx";
 import HomeSubjectDetail from "./frontend/home/home-course/home_subject_detail.jsx";
@@ -85,6 +86,7 @@ export default function RouteFile() {
           <Route path='/' element={<FHome />}></Route>
 
           <Route path='/about' element={<About />}></Route>
+          <Route path='/booking' element={<Booking />}></Route>
           <Route path='/home-course' element={<HomeCourse />}></Route>
           <Route
             path='/home-course-detail'
@@ -94,6 +96,7 @@ export default function RouteFile() {
             path='/home-sub-detail'
             element={<HomeSubjectDetail />}
           ></Route>
+
           <Route element={<AuthContainer />}>
             {/* Admin Panel */}
             {/* Start Student Register and Detail */}
@@ -161,8 +164,8 @@ export default function RouteFile() {
             <Route path="/by-instructor" element={<InstructorLayout />}>
               <Route index element={<InstructorHome />} />
               <Route path='subjects'>
-                <Route index element={<Subjects/>}/>
-                <Route path=":id/brief" element={<SubjectBrief/>}/>
+                <Route index element={<Subjects />} />
+                <Route path=":id/brief" element={<SubjectBrief />} />
               </Route>
               {/* <Route path='/instructor' element={<InstructorHome />}></Route> */}
               {/* <Route path='/lm' element={<LearningMaterial />}></Route> */}

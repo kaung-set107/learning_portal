@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 export default function EmployeeInput() {
-  const variant = ["faded"];
+  const variant = ["bordered"];
   const {
     register,
     handleSubmit,
@@ -175,11 +175,10 @@ export default function EmployeeInput() {
         <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1">
           <div className="block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
             <label
-              className={`text-sm font-semibold ${
-                errors.position && errors.position.type === "required"
-                  ? "text-[#f31260]"
-                  : ""
-              }`}>
+              className={`text-sm font-semibold ${errors.position && errors.position.type === "required"
+                ? "text-[#f31260]"
+                : ""
+                }`}>
               Role
             </label>
             <select
@@ -205,11 +204,10 @@ export default function EmployeeInput() {
           </div>
           <div className="block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
             <label
-              className={`text-sm font-semibold ${
-                errors.gender && errors.gender.type === "required"
-                  ? "text-[#f31260]"
-                  : ""
-              }`}>
+              className={`text-sm font-semibold ${errors.gender && errors.gender.type === "required"
+                ? "text-[#f31260]"
+                : ""
+                }`}>
               Gender
             </label>
             <select

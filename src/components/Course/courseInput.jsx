@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleChevronLeft } from "@fortawesome/free-solid-svg-icons";
 export default function DepartmentInputForm() {
-  const variant = "faded";
+  const variant = 'bordered';
 
   const [catList, setCatList] = useState([]);
   const [title, setTitle] = useState("");

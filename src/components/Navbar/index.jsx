@@ -181,7 +181,7 @@ export default function NavBar() {
       {location.pathname !== "/" &&
         location.pathname !== "/login" &&
         location.pathname !== "/student" &&
-        location.pathname !== "/instructor" && (
+        location.pathname !== "/by-instructor" && (
           <Navbar
             maxWidth='full'
             isBordered

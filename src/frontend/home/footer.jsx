@@ -8,12 +8,12 @@ import {
 const Footer = () => {
   return (
     <div className='text-white' style={{ background: "#BC1F40" }}>
-      <div className='w-full md:w-[80%] mx-auto py-10'>
+      <div className='w-full md:w-[90%] mx-auto py-5 sm:py-10'>
         <div className='flex flex-wrap items-center justify-between p-5'>
           <div className='w-[300px]'>
             <h1
-              className=' text-white pb-5 font-semibold'
-              style={{ fontSize: "30px" }}
+              className=' text-white pb-5 font-semibold text-[20px] sm:text-[30px]'
+
             >
               Contact Us
             </h1>
@@ -40,7 +40,7 @@ const Footer = () => {
             {/* <img src="/assets/images/logo.jpeg" onClick={()=>router.push("/")} className='cursor-pointer w-[300px] p-5' alt="" /> */}
           </div>
           <div>
-            <ul className='flex list-none items-center justify-evenly py-5 font-semibold '>
+            <ul className='flex sm:text-[16px] text-[12px] list-none items-center justify-evenly py-5 font-semibold '>
               <Link href='/'>
                 <li className='mr-5 text-white font-regular cursor-pointer'>
                   Home

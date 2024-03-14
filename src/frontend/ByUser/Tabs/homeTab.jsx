@@ -6,7 +6,7 @@ import {
   Image,
   Progress,
 } from "@nextui-org/react";
-
+// import { useSelector } from 'react-redux'
 import ReactStars from "react-rating-stars-component";
 import React, { useEffect, useState } from "react";
 import apiInstance from "../../../util/api";
@@ -16,6 +16,8 @@ import { Fade } from "react-awesome-reveal";
 import { Link, useNavigate } from "react-router-dom";
 import CourseDetail from "../CourseDetail/courseDetail";
 export default function Home() {
+  // const posts = useSelector(state => state.posts)
+  // console.log(posts, 'pos id')
   const navigate = useNavigate();
   const [id, setId] = useState("");
   const [firstDefaultCourseId, setFirstDefaultCourseId] = useState("");
