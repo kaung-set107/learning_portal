@@ -64,6 +64,9 @@ import EnrollDetail from "./pages/Enroll/enrollDetail.jsx";
 import EnrollApproveDetail from "./pages/Enroll/enrollApproveDetail.jsx";
 import EnrollRejectDetail from "./pages/Enroll/enrollRejectDetail.jsx";
 import Nav from "./frontend/home/header.jsx";
+import InstructorLayout from "./frontend/components/layouting/InstructorLayout.jsx";
+import Subjects from "./frontend/features/subjects/pages/Subjects.jsx";
+import SubjectBrief from "./frontend/features/subjects/pages/SubjectBrief.jsx";
 export default function RouteFile() {
   console.log(localStorage.getItem("user"), "local use");
   return (
@@ -153,11 +156,24 @@ export default function RouteFile() {
             ></Route>
 
             {/* End Admin Panel */}
+
             {/* Instructor form */}
-            <Route path='/instructor' element={<InstructorHome />}></Route>
-            <Route path='/lm' element={<LearningMaterial />}></Route>
-            <Route path='/assign' element={<Assignment />}></Route>
-            <Route path='/assign/:id' element={<AssignmentUpdate />}></Route>
+            <Route path="/by-instructor" element={<InstructorLayout />}>
+              <Route index element={<InstructorHome />} />
+              <Route path='subjects'>
+                <Route index element={<Subjects/>}/>
+                <Route path=":id/brief" element={<SubjectBrief/>}/>
+              </Route>
+              {/* <Route path='/instructor' element={<InstructorHome />}></Route> */}
+              {/* <Route path='/lm' element={<LearningMaterial />}></Route> */}
+              {/* <Route path='/assign' element={<Assignment />}></Route> */}
+              {/* <Route path='/assign/:id' element={<AssignmentUpdate />}></Route> */}
+            </Route>
+
+
+            {/* Quiz Instructor */}
+            {/* <Route path='/quiz' element={<Quiz />}></Route> */}
+            <Route path='/quiz-create/:id' element={<QuizCreate />}></Route>
 
             {/* Instructor or user create from admin */}
             <Route path='/instru' element={<Instructor />} />
@@ -185,9 +201,6 @@ export default function RouteFile() {
               element={<LMUpdateDetail />}
             ></Route>
 
-            {/* Quiz Instructor */}
-            {/* <Route path='/quiz' element={<Quiz />}></Route> */}
-            <Route path='/quiz-create/:id' element={<QuizCreate />}></Route>
 
             {/* Quiz Student */}
             <Route path='/quiz-page/:id' element={<QuizPage />}></Route>
