@@ -165,10 +165,10 @@ export default function RouteFile() {
                 <Route path=":id/brief" element={<SubjectBrief/>}/>
               </Route>
               {/* <Route path='/instructor' element={<InstructorHome />}></Route> */}
-              {/* <Route path='/lm' element={<LearningMaterial />}></Route> */}
               {/* <Route path='/assign' element={<Assignment />}></Route> */}
               {/* <Route path='/assign/:id' element={<AssignmentUpdate />}></Route> */}
             </Route>
+              <Route path='/lm' element={<LearningMaterial />}></Route>
 
 
             {/* Quiz Instructor */}
