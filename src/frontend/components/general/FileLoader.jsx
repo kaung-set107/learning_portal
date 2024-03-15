@@ -4,33 +4,33 @@ import ExcelPhoto from "../../ByInstructor/images/excel.png"
 import { Image } from "@nextui-org/react";
 
 /* eslint-disable react/prop-types */
-const ImageLoader = (props) => {
-    const { image, images } = props
+const FileLoader = (props) => {
+    const { file, files } = props
     return (
         <div className="">
             <a
-                href={getFile({ payload: image })}
+                href={getFile({ payload: file })}
                 onClick={
-                    image.originalname?.split(".")[1] === "pdf"
-                        ? () => downloadPDF(image)
+                    file.originalname?.split(".")[1] === "pdf"
+                        ? () => downloadPDF(file)
                         : () => download()
                 }>
                 <Image
                     radius="sm"
-                    alt={image.title}
+                    alt={file.title}
                     className="object-cover w-[40px] h-[40px]"
                     src={
-                        image.originalname?.split(".")[1] === "pdf"
+                        file.originalname?.split(".")[1] === "pdf"
                             ? PdfPhoto
-                            : image.originalname?.split(".")[1] === "xlsx"
+                            : file.originalname?.split(".")[1] === "xlsx"
                                 ? ExcelPhoto
-                                : getFile({ payload: image })
+                                : getFile({ payload: file })
                     }
                 />
             </a>
-            <b className="mt-3">{image?.originalname}</b>
+            <b className="mt-3">{file?.originalname}</b>
         </div>
     )
 }
 
-export default ImageLoader
+export default FileLoader

@@ -1,6 +1,7 @@
+import { Spinner } from "@nextui-org/react";
 const Loading = () => {
   return (
-    <div>Loading</div>
+    <div><Spinner /></div>
   )
 }
 

@@ -8,7 +8,7 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure
 import { v4 as uuidv4 } from "uuid";
 import Loading from "../../../components/general/Loading";
 import { dateForInput } from "../../../../util/Util";
-import ImageLoader from "../../../components/general/ImageLoader";
+import FileLoader from "../../../components/general/FileLoader";
 
 export default function AssignmentUpdateModal(props) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -137,7 +137,7 @@ export default function AssignmentUpdateModal(props) {
                                     <div className="mb-3">
                                         <h3 className="mb-3">Previous Question</h3>
                                         <div className="bg-gray-100 p-3 rounded-xl border">
-                                            {formData.question && <ImageLoader image={formData.question} />
+                                            {formData.question && <FileLoader file={formData.question} />
                                             }
                                         </div>
                                     </div>

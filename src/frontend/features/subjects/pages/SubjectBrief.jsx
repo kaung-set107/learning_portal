@@ -9,7 +9,7 @@ import AssignmentCreateModal from "../../assignments/components/AssignmentCreate
 import AssignmentUpdateModal from "../../assignments/components/AssignmentUpdateModal"
 import { assignmentsApi } from "../../assignments/api"
 import { v4 as uuidv4 } from 'uuid'
-import ImageLoader from "../../../components/general/ImageLoader"
+import FileLoader from "../../../components/general/FileLoader"
 import SubjectSectionCreateModal from "../../subject-sections/components/SubjectSectionCreateModal"
 import CardTitle from "../../../components/general/typography/CardTitle"
 import { Tabs, Tab } from "@nextui-org/react";
@@ -108,7 +108,7 @@ const SubjectBrief = () => {
                                                                 <h3 className="text-lg font-semibold mb-3">Question</h3>
                                                                 <div className="bg-gray-100 p-3 rounded-xl border">
                                                                     {assignment.question ? (
-                                                                        <ImageLoader image={assignment.question} />
+                                                                        <FileLoader file={assignment.question} />
                                                                     ) : (<span>No File!</span>)
                                                                     }
                                                                 </div>
