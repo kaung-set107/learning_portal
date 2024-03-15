@@ -1,19 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Tabs, Tab, Input, Button, Image } from "@nextui-org/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFireFlameCurved, faStar, faCheck, faImage
 } from "@fortawesome/free-solid-svg-icons";
 import Pic from '../../../assets/img/pic.jpg'
+import Swal from "sweetalert2";
 import { useLocation } from "react-router";
 import { getFile } from "../../../util";
 import ExcelPhoto from "../../ByInstructor/images/excel.png";
 import PdfPhoto from "../../ByInstructor/images/pdf.png";
+import apiInstance from "../../../util/api";
 export default function App() {
+  const variant = 'bordered'
   const location = useLocation()
   const assignmentList = location.state.data.assignments
-  // console.log(assignmentList, 'sub for assign')
-
+  const courseId = location.state.data.course
+  const enrollID = location.state.enroll_id;
+  // console.log(enrollID, 'sub for assign')
+  const [image, setImage] = useState("");
+  const [studentID, setStudentID] = useState('')
   const download = () => {
     var element = document.createElement("a");
     var file = new Blob(
@@ -44,6 +50,53 @@ export default function App() {
     // Remove the link from the document
     document.body.removeChild(link);
   };
+
+  useEffect(() => {
+    const getStudentId = async () => {
+      apiInstance.get('enrollments').then(res =>
+        setStudentID(res.data.data.filter(el => el.course._id === courseId)[0].student)
+
+      )
+    }
+    getStudentId()
+  }, [])
+
+  const handleImage = (e) => {
+    if (e.target.files) {
+      setImage(e.target.files[0]);
+    }
+  };
+
+  const handleCreateAssignment = (assId) => {
+    const formData = new FormData();
+    formData.append("file", image);
+    formData.append("assignment", assId);
+    formData.append("submissionDate", Date.now());
+    formData.append("student", studentID);
+    formData.append("enrollment", enrollID);
+    formData.append("batch", '65f411f1fc0365898130c59f');
+
+    apiInstance
+      .post("assignment-results", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then(function () {
+        Swal.fire({
+          icon: "success",
+          title: "Uploaded Your Assignemnt Successful",
+          text: "Nice!",
+          confirmButtonText: "OK",
+          confirmButtonColor: "#3085d6",
+        });
+        setImage(null)
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
+
   return (
     <div className="flex justify-center items-center w-full flex-col">
       <Tabs aria-label="Options" color="primary" variant="bordered">
@@ -57,25 +110,26 @@ export default function App() {
           }
         >
           {assignmentList.map((item, index) => (
-            <div className='flex flex-col gap-5 w-[1560px] h-[204px] pt-8 pl-10 pb-8 pr-10'>
+            <div className='flex flex-col gap-5 w-[1560px] h-[204px] pt-8 pl-10 pb-8 pr-10' key={item._id}>
               <div className='grid grid-cols-3 bg-[#215887]   p-12  border-4 border-l-red-500 '>
                 <div className='flex justify-center text-[24px] text-[#fff] font-semibold items-center'>Assignment</div>
                 <div className='flex flex-col gap-2 justify-start'>
                   <span className='text-[32px] text-[#fff] font-semibold'>{item?.title}</span>
                   <div className='text-[16px] text-[#fff] font-medium'>{item?.description}</div>
-                  <div className='flex'>
-                    <span className='text-[16px] text-[#fff] font-semibold'>Reference link :</span>
-                    {JSON.parse(item.links).map((e) => (
-                      <>
+                  <div className='flex flex-col  gap-1'>
+                    <span className='text-[16px] text-[#fff] font-semibold'>Reference link </span>
+                    <div className='grid grid-cols-3'>
+                      {JSON.parse(item.links).map((e) => (
 
-                        <div key={e} className="text-[16px] text-[#4b4eff] font-semibold px-3">
+
+                        <div key={e} className="text-[16px] text-[#4b4eff] font-semibold px-3 ">
                           <a target="_blank" rel='noreferrer' href={e.links}>
                             {e.links}
                           </a>
                         </div>
-                      </>
-                    ))}
 
+                      ))}
+                    </div>
                   </div>
                   <div className='flex flex-col'>
                     <span className='text-[16px] text-[#fff] font-semibold'>Document File link </span>
@@ -112,12 +166,21 @@ export default function App() {
                 </div>
 
                 <div className='flex flex-col gap-4  justify-center'>
-                  <Input type='file' className='w-96' endContent={
-                    < FontAwesomeIcon icon={faImage} size='xl' />
-                  } />
+                  <Input
+                    type='file'
+
+                    placeholder='$..'
+                    variant={variant}
+                    className='text-[#fff] w-96 border-indigo-500' endContent={
+                      < FontAwesomeIcon icon={faImage} size='xl' />
+                    }
+                    labelPlacement='outside'
+                    onChange={handleImage}
+                  />
+
                   <div className='flex justify-start gap-2'>
                     <Button>Cancel</Button>
-                    <Button color='primary'>Upload</Button>
+                    <Button color='primary' onClick={() => handleCreateAssignment(item._id)}>Upload</Button>
                   </div>
                 </div>
               </div>

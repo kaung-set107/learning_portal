@@ -110,7 +110,7 @@ const Body = () => {
         </h1>
 
         <div className='flex flex-col gap-32 items-center justify-center md:flex-row flex-wrap py-10'>
-          {courseList.map((e) => (
+          {courseList.slice(0, 3).map((e) => (
             <div
               onClick={() => handleRoute(e)}
               className='w-full hover:-translate-y-1 hover:scale-110 hover:rotate-1 hover:duration-500 md:w-[390px] h-full md:h-[610px]'
