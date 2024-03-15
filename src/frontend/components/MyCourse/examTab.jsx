@@ -37,7 +37,7 @@ export default function CourseDetail(props) {
   const location = useLocation();
   const navigate = useNavigate();
   const subjectData = location.state.data;
-  console.log(subjectData, "sub data");
+  // console.log(subjectData, "sub data");
   const courseData = location.state.courseData;
   // console.log(props.id, "id");
   const [showMid, setShowMid] = useState(false);

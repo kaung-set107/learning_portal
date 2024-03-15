@@ -105,14 +105,6 @@ const About = () => {
                     </div>
                     <div className='w-full flex flex-col gap-2'>
                         <label>Phone Number</label>
-                        {/* <Input type='text' variant={variant} className='' name='phone' placeholder="Enter name" onChange={handleInput} /> */}
-                        {/* <PhoneInput
-                            placeholder="Enter phone number"
-                            value={formData.value}
-                            name='value'
-
-                            className='border-1 border-gray-300 p-2 rounded-[10px]'
-                            onChange={handleInput} /> */}
                         <PhoneInputWithCountry
                             name="phone"
                             control={control}

@@ -204,7 +204,7 @@ export default function Login() {
             id="player"
             muted
             autoplay="autoplay"
-            className='object-cover h-[750px]'
+            className='object-cover  h-[650px] md:h-[750px]'
             loop
             src={LoginVideo}
 

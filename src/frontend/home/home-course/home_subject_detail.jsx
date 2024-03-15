@@ -8,6 +8,7 @@ import {
   Input,
   Progress,
 } from "@nextui-org/react";
+import Footer from '../footer'
 import { getFile } from "../../../util";
 import Module from "../../../assets/img/modules.svg";
 import Chapter from "../../../assets/img/chapter.svg";
@@ -183,8 +184,8 @@ const SubjectDetail = (props) => {
                   }}
                   className='text-[14px] w-[200px]  h-[24px] md:text-[24px] font-medium md:w-[298px] md:h-[29px]'
                 >
-                  {parseInt((teacherName?.duration * 30) / 7)} Weeks &{" "}
-                  {(teacherName?.duration * 30) % 7} Days
+                  {teacherName?.duration ? parseInt((teacherName?.duration * 30) / 7) : 0} Weeks &{" "}
+                  {teacherName?.duration ? (teacherName?.duration * 30) % 7 : 0} Days
                 </span>
               </div>
               <div
@@ -207,7 +208,7 @@ const SubjectDetail = (props) => {
                   Instructor
                 </span>
                 <span className='text-[16px] pl-4 md:pl-0 md:text-[24px] font-bold w-[98px] h-[29px]'>
-                  Tr.{teacherName.instructor?.name}
+                  Tr.{teacherName.instructor ? teacherName.instructor?.name : 'Hein'}
                 </span>
               </div>
               <div
@@ -260,12 +261,12 @@ const SubjectDetail = (props) => {
           </div>
           {/* About Section */}
           <div className='flex'>
-            <div className='w-[375px] h-[426px] pt-[24px] md:w-[946px] md:h-[426px] md:p-[24px] mx-4 md:mx-0'>
+            <div className='w-[375px] h-full sm:h-[426px] pt-[24px] md:w-[946px] md:h-[426px] md:p-[24px] mx-4 md:mx-0'>
               <div className='flex flex-col gap-10'>
                 <span className='text-[20px] md:text-[40px] font-bold '>
                   About This Course
                 </span>
-                <p className='text-[8px] pt-0 md:text-[16px] font-medium'>
+                <p className='text-[11px] pt-0 md:text-[16px] font-medium'>
                   Embark on a comprehensive IELTS preparation journey with our
                   meticulously designed course, offering in-depth insights into
                   each section of the test, expert strategies, and personalized
@@ -304,7 +305,7 @@ const SubjectDetail = (props) => {
             </div>
           </div>
           {/* Meet Teacher */}
-          <div className='flex flex-col gap-10 p-0 w-[355px] h-[550px] md:w-[693px] md:p-[24px] mx-4 md:mx-0'>
+          <div className='flex flex-col gap-10 p-0 w-[355px] h-[600px] sm:h-[550px] md:w-[693px] md:p-[24px] mx-4 md:mx-0'>
             {" "}
             <span
               //   style={{ fontSize: "40px", fontWeight: "700" }}
@@ -330,7 +331,7 @@ const SubjectDetail = (props) => {
                 {/* Info */}
                 <div className='flex flex-col gap-2'>
                   <span className='text-[16px] md:text-[40px] font-bold'>
-                    Tr.{teacherName.instructor?.name}
+                    Tr.{teacherName.instructor ? teacherName.instructor?.name : 'Hein'}
                   </span>
                   <span className='text-[16px] md:text-[24px] font-medium'>
                     {teacherName.course?.title} Teacher
@@ -342,16 +343,16 @@ const SubjectDetail = (props) => {
                   style={{
                     // width: "718px",
                     // height: "auto",
-                    paddingTop: "20px",
+
                   }}
-                  className='flex flex-col gap-4 w-[309px] h-[400px] md:w-[718px] md:h-[auto]'
+                  className='flex flex-col gap-4 w-[309px] h-full sm:h-[400px] md:w-[718px] md:h-[auto]'
                 >
                   <p
                     // style={{
                     //   fontSize: "24px",
                     //   fontWeight: "500",
                     // }}
-                    className='text-[8px] md:text-[24px] font-medium'
+                    className='text-[12px] md:text-[24px] font-medium'
                   >
                     Hello, I'm [Teacher's Name], your dedicated IELTS
                     instructor. With [X] years of teaching experience and a
@@ -367,7 +368,7 @@ const SubjectDetail = (props) => {
                       style={{
                         color: "#FFF",
                       }}
-                      className='text-[8px] md:p-[8px] md:text-[14px] font-medium bg-[#215887] rounded-[12px] w-[35px] h-[16px] md:w-[73px] md:h-[33px]'
+                      className='text-[8px] md:p-[8px] md:text-[14px] font-medium bg-[#215887] rounded-[12px] w-[35px] h-[16px] md:w-[73px] md:h-[33px] p-1'
                     >
                       Email : {teacherName.instructor?.email}
                     </span>{" "}
@@ -376,7 +377,7 @@ const SubjectDetail = (props) => {
                       style={{
                         color: "#FFF",
                       }}
-                      className='text-[8px] md:p-[8px] md:text-[14px] font-medium bg-[#215887] rounded-[12px] w-[35px] h-[16px] md:w-[73px] md:h-[33px]'
+                      className='text-[8px] md:p-[8px] md:text-[14px] font-medium bg-[#215887] rounded-[12px] w-[35px] h-[16px] md:w-[73px] md:h-[33px] p-1'
                     >
                       Phone : {teacherName.instructor?.phone}
                     </span>
@@ -544,6 +545,9 @@ const SubjectDetail = (props) => {
             </div>
           </div>
         </div>
+      </div>
+      <div className='pt-[30px] mx-2'>
+        <Footer />
       </div>
     </>
   );

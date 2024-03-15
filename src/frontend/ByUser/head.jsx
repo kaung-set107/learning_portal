@@ -20,7 +20,9 @@ const TabValueComponent = ({ activeTabValue }) => {
           }
           onClick={() => handleTabClick(1)}
         >
-          Home &nbsp;
+          {location.pathname === '/course-detail' ? 'Home' : (<Link to='/student'>Home</Link>)}
+          {/* Home &nbsp; */}
+
           {/* <Badge content='9+' shape='circle' color='danger'>
               <NotificationIcon size={24} />
             </Badge> */}

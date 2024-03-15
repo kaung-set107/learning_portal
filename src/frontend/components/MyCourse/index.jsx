@@ -16,7 +16,7 @@ export default function App() {
 
       <Body subData={SubData} />
 
-      <div className=''>
+      <div className='mt-20'>
         <Footer />
       </div>
 

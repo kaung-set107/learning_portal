@@ -53,8 +53,8 @@ const CourseDetail = (props) => {
   const navigate = useNavigate();
   const examData = location.state.data;
   const enrollID = location.state.enroll_id;
-  console.log(enrollID, "enrollID");
-  console.log(examData, "sub ii");
+  // console.log(enrollID, "enrollID");
+  // console.log(examData, "sub ii");
   const courseData = location.state.courseData;
   // console.log(props.id, "id");
   const [showVideo, setShowVideo] = useState(false);
@@ -168,6 +168,7 @@ const CourseDetail = (props) => {
   };
 
   const handleVideo = (data) => {
+
     console.log(data, "heee");
     setLMID(data._id);
 
@@ -347,12 +348,13 @@ const CourseDetail = (props) => {
                   </div>
                   <div className='flex w-full flex-col pt-[20px]'>
                     <Tabs
+                      defaultSelectedKey='sum'
                       variant='light'
                       color='primary'
                       radius='full'
                       aria-label='Options'
                     >
-                      <Tab title='Summary'>
+                      <Tab title='Summary' key='sum'>
                         <div className='bg-[#EBF0FF] text-[#001769] rounded-lg w-full h-[auto] p-[20px] flex flex-col gap-2'>
 
                           <span className='w-[902px] h-[24px] text-[12px] sm:text-[16px] font-semibold'>
@@ -406,7 +408,7 @@ const CourseDetail = (props) => {
                         </div>
 
                       </Tab>
-                      <Tab title='Survey'>
+                      <Tab title='Survey' key='suv'>
                         <div className='flex flex-col gap-10'>
                           <div className='bg-[#EBF0FF] rounded-lg w-full h-[auto] p-[16px]'>
                             <p className=''>
@@ -455,7 +457,7 @@ const CourseDetail = (props) => {
                           <Button color='primary'>Submit</Button>
                         </div>
                       </Tab>
-                      <Tab title='Review and Feedback'>
+                      <Tab title='Review and Feedback' key='r&f'>
                         <div className='pt-[24px]'>
                           <label className='text-[24px] font-bold text-[#0025A9]'>
                             Title
@@ -473,12 +475,12 @@ const CourseDetail = (props) => {
                           </div>
                         </div>
                       </Tab>
-                      <Tab title='Quiz'>
+                      <Tab title='Quiz' key='quiz'>
                         {/* Quiz Page */}
 
                         <QuizPage LMID={LMID} enrollID={enrollID} />
                       </Tab>
-                      <Tab title='Class'>
+                      <Tab title='Class' key='class'>
 
                         <div className='flex flex-col gap-10'>
 
