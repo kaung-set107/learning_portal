@@ -10,6 +10,7 @@ import { useLocation } from "react-router";
 import { getFile } from "../../../util";
 import ExcelPhoto from "../../ByInstructor/images/excel.png";
 import PdfPhoto from "../../ByInstructor/images/pdf.png";
+import CSV from '../../../assets/img/csv.png';
 import apiInstance from "../../../util/api";
 export default function App() {
   const variant = 'bordered'
@@ -64,14 +65,14 @@ export default function App() {
 
     const getAssignRes = async () => {
       apiInstance.get('assignment-results').then(res => {
-        // console.log(res.data.data.filter(el => el.status === "submitted"), 'lll ')
+        console.log(studentID, 'lll ')
         const CompleteStatusAssign = res.data.data.filter(el => el.status === "submitted")
         const CheckedStatusAssign = res.data.data.filter(el => el.status === "checked")
-        // console.log(StatusAssign.filter(el => el.student._id === studentID), 'stttututtu')
+        console.log(CheckedStatusAssign, 'stttututtu')
 
-        setCompleteList(CompleteStatusAssign.filter(el => el.student._id === studentID))
-        setCheckedList(CheckedStatusAssign.filter(el => el.student._id === studentID))
-        console.log(CheckedStatusAssign.filter(el => el.student._id === studentID), 'check')
+        setCompleteList(CompleteStatusAssign.filter(el => el.student._id === studentID).filter(el => el.assignment !== null))
+        setCheckedList(CheckedStatusAssign.filter(el => el.student._id === studentID).filter(el => el.assignment !== null))
+        // console.log(CheckedStatusAssign.filter(el => el.student._id === studentID).filter(el => el.assignment !== null), 'check')
       }
 
       )
@@ -227,57 +228,61 @@ export default function App() {
             <div className='flex flex-col gap-5 w-[1560px] h-[204px] pt-8 pl-10 pb-8 pr-10' key={item._id}>
               <div className='grid grid-cols-3 bg-[#215887]   p-12  border-4 border-l-red-500 '>
                 <div className='flex justify-center text-[24px] text-[#fff] font-semibold items-center'>Assignment</div>
-                <div className='flex flex-col gap-2 justify-start'>
-                  <span className='text-[32px] text-[#fff] font-semibold'>{item?.assignment.title}</span>
-                  <div className='text-[16px] text-[#fff] font-medium'>{item?.assignment.description}</div>
-                  <div className='flex flex-col  gap-1'>
-                    <span className='text-[16px] text-[#fff] font-semibold'>Reference link </span>
-                    <div className='grid grid-cols-3'>
-                      {JSON.parse(item?.assignment.links).map((e) => (
+                {
+                  item.assignment !== null && (<div className='flex flex-col gap-2 justify-start'>
+                    <span className='text-[32px] text-[#fff] font-semibold'>{item?.assignment.title}</span>
+                    <div className='text-[16px] text-[#fff] font-medium'>{item?.assignment.description}</div>
+                    <div className='flex flex-col  gap-1'>
+                      <span className='text-[16px] text-[#fff] font-semibold'>Reference link </span>
+                      <div className='grid grid-cols-3'>
+                        {JSON.parse(item?.assignment.links).map((e) => (
 
 
-                        <div key={e} className="text-[16px] text-[#4b4eff] font-semibold px-3 ">
-                          <a target="_blank" rel='noreferrer' href={e.links}>
-                            {e.links}
-                          </a>
-                        </div>
+                          <div key={e} className="text-[16px] text-[#4b4eff] font-semibold px-3 ">
+                            <a target="_blank" rel='noreferrer' href={e.links}>
+                              {e.links}
+                            </a>
+                          </div>
 
-                      ))}
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                  <div className='flex flex-col'>
-                    <span className='text-[16px] text-[#fff] font-semibold'>Document File link </span>
-                    {/* {item.assets.map((i) => (
+                    <div className='flex flex-col'>
+                      <span className='text-[16px] text-[#fff] font-semibold'>Document File link </span>
+                      {/* {item.assets.map((i) => (
                       <> */}
 
-                    <div className="sm:flex justify-start gap-5">
-                      <a
-                        href={getFile({ payload: item?.assignment.question })}
-                        onClick={
-                          item?.assignment.question.originalname?.split(".")[1] === "pdf"
-                            ? () => downloadPDF(item?.assignment.question)
-                            : () => download()
-                        }>
-                        <Image
-                          radius="sm"
-                          alt={item?.assignment.question.title}
-                          className="object-cover w-[40px] h-[40px]"
-                          src={
+                      <div className="sm:flex justify-start gap-5">
+                        <a
+                          href={getFile({ payload: item?.assignment.question })}
+                          onClick={
                             item?.assignment.question.originalname?.split(".")[1] === "pdf"
-                              ? PdfPhoto
-                              : item?.assignment.question.originalname?.split(".")[1] === "xlsx"
-                                ? ExcelPhoto
-                                : getFile({ payload: item?.assignment.question })
-                          }
-                        />
-                      </a>
-                      <b className="text-[16px] text-[#4b4eff] font-semibold mt-3">{item?.assignment.question?.originalname}</b>
-                    </div>
-                    {/* </>
+                              ? () => downloadPDF(item?.assignment.question)
+                              : () => download()
+                          }>
+                          <Image
+                            radius="sm"
+                            alt={item?.assignment.question.title}
+                            className="object-cover w-[40px] h-[40px]"
+                            src={
+                              item?.assignment.question.originalname?.split(".")[1] === "pdf"
+                                ? PdfPhoto
+                                : item?.assignment.question.originalname?.split(".")[1] === "xlsx"
+                                  ? ExcelPhoto
+                                  : getFile({ payload: item?.assignment.question })
+                            }
+                          />
+                        </a>
+                        <b className="text-[16px] text-[#4b4eff] font-semibold mt-3">{item?.assignment.question?.originalname}</b>
+                      </div>
+                      {/* </>
                     ))} */}
-                  </div>
+                    </div>
 
-                </div>
+                  </div>)
+
+                }
+
 
                 <div className='flex flex-col gap-4  justify-center'>
 
@@ -301,71 +306,91 @@ export default function App() {
             <div className='flex flex-col gap-5 w-[1560px] h-[204px] pt-8 pl-10 pb-8 pr-10' key={item._id}>
               <div className='grid grid-cols-3 bg-[#215887]   p-12  border-4 border-l-red-500 '>
                 <div className='flex justify-center text-[24px] text-[#fff] font-semibold items-center'>Assignment</div>
-                <div className='flex flex-col gap-2 justify-start'>
-                  <span className='text-[32px] text-[#fff] font-semibold'>{item?.assignment.title}</span>
-                  <div className='text-[16px] text-[#fff] font-medium'>{item?.assignment.description}</div>
-                  <div className='flex flex-col  gap-1'>
-                    <span className='text-[16px] text-[#fff] font-semibold'>Reference link </span>
-                    <div className='grid grid-cols-3'>
-                      {JSON.parse(item?.assignment.links).map((e) => (
+                {item.assignment !== null && (
+                  <div className='flex flex-col gap-2 justify-start'>
+                    <span className='text-[32px] text-[#fff] font-semibold'>{item?.assignment.title}</span>
+                    <div className='text-[16px] text-[#fff] font-medium'>{item?.assignment.description}</div>
+                    <div className='flex flex-col  gap-1'>
+                      <span className='text-[16px] text-[#fff] font-semibold'>Reference link </span>
+                      <div className='grid grid-cols-3'>
+                        {JSON.parse(item?.assignment.links).map((e) => (
 
 
-                        <div key={e} className="text-[16px] text-[#4b4eff] font-semibold px-3 ">
-                          <a target="_blank" rel='noreferrer' href={e.links}>
-                            {e.links}
-                          </a>
-                        </div>
+                          <div key={e} className="text-[16px] text-[#4b4eff] font-semibold px-3 ">
+                            <a target="_blank" rel='noreferrer' href={e.links}>
+                              {e.links}
+                            </a>
+                          </div>
 
-                      ))}
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                  <div className='flex flex-col'>
-                    <span className='text-[16px] text-[#fff] font-semibold'>Document File link </span>
-                    {/* {item.assets.map((i) => (
+                    <div className='flex flex-col'>
+                      <span className='text-[16px] text-[#fff] font-semibold'>Document File link </span>
+                      {/* {item.assets.map((i) => (
                       <> */}
 
-                    <div className="sm:flex justify-start gap-5">
-                      <a
-                        href={getFile({ payload: item?.assignment.question })}
-                        onClick={
-                          item?.assignment.question.originalname?.split(".")[1] === "pdf"
-                            ? () => downloadPDF(item?.assignment.question)
-                            : () => download()
-                        }>
-                        <Image
-                          radius="sm"
-                          alt={item?.assignment.question.title}
-                          className="object-cover w-[40px] h-[40px]"
-                          src={
+                      <div className="sm:flex justify-start gap-5">
+                        <a
+                          href={getFile({ payload: item?.assignment.question })}
+                          onClick={
                             item?.assignment.question.originalname?.split(".")[1] === "pdf"
-                              ? PdfPhoto
-                              : item?.assignment.question.originalname?.split(".")[1] === "xlsx"
-                                ? ExcelPhoto
-                                : getFile({ payload: item?.assignment.question })
-                          }
-                        />
-                      </a>
-                      <b className="text-[16px] text-[#4b4eff] font-semibold mt-3">{item?.assignment.question?.originalname}</b>
-                    </div>
-                    {/* </>
+                              ? () => downloadPDF(item?.assignment.question)
+                              : () => download()
+                          }>
+                          <Image
+                            radius="sm"
+                            alt={item?.assignment.question.title}
+                            className="object-cover w-[40px] h-[40px]"
+                            src={
+                              item?.assignment.question.originalname?.split(".")[1] === "pdf"
+                              && PdfPhoto ||
+                              item?.assignment.question.originalname?.split(".")[1] === "xlsx"
+                              && ExcelPhoto ||
+                              item?.assignment.question.originalname?.split(".")[1] === "csv"
+                              && CSV
+                              || getFile({ payload: item?.assignment.question })
+                            }
+                          />
+                        </a>
+                        <b className="text-[16px] text-[#4b4eff] font-semibold mt-3">{item?.assignment.question?.originalname}</b>
+                      </div>
+                      {/* </>
                     ))} */}
-                  </div>
+                    </div>
 
-                </div>
+                  </div>
+                )}
+
 
 
                 <div className='flex flex-col gap-10 p-2 justify-start  bg-[#fff] w-[480px] h-[174px]  rounded-[4px]'>
-                  <div className='flex gap-2 items-center'>
-                    <Image
-                      radius="sm"
-                      alt=''
-                      className="object-cover w-[40px] h-[40px] ml-12"
-                      src={Pic}
-                    />
-                    <div className='text-[16px] font-medium text-[#415EFF]'>Your assignment result.ar</div>
+                  <div className="sm:flex justify-start gap-5">
+                    <a
+                      href={getFile({ payload: item?.checkedFile })}
+                      onClick={
+                        item?.checkedFile.originalname?.split(".")[1] === "pdf"
+                          ? () => downloadPDF(item?.checkedFile)
+                          : () => download()
+                      }>
+                      <Image
+                        radius="sm"
+                        alt={item?.checkedFile.title}
+                        className="object-cover w-[40px] h-[40px] border-1 border-indigo-400"
+                        src={
+                          item?.checkedFile.originalname?.split(".")[1] === "pdf"
+                          && PdfPhoto
+                          || item?.checkedFile.originalname?.split(".")[1] === "xlsx"
+                          && ExcelPhoto || item?.checkedFile.originalname?.split(".")[1] === "csv"
+                          && CSV
+                          || getFile({ payload: item?.checkedFile })
+                        }
+                      />
+                    </a>
+                    <b className="text-[16px] text-[#4b4eff] font-semibold mt-3">Your Assignment Result</b>
                   </div>
                   <div className='bg-[red] w-[240px] h-[74px] rounded-t-[32px] rounded-r-[32px] rounded-b-[32px] rounded-l-[0px] text-[12px] font-normal p-4 text-[#fff] ml-12'>Oh, hello! All perfectly.
-                    I will check it and get back to you soon</div>
+                    I checked it and your Grade is <b>{item.grade}</b>.My remark is <b>{item.remark}</b>. </div>
                 </div>
               </div>
             </div>
