@@ -5,6 +5,7 @@ import { assignmentsApi } from "../api";
 import CustomButton from "../../../components/general/CustomButton";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/react";
 import { v4 as uuidv4 } from "uuid";
+import { showError, showSuccess } from "../../../../util/noti";
 
 export default function AssignmentCreateModal(props) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -29,13 +30,14 @@ export default function AssignmentCreateModal(props) {
         try {
             setIsSubmitting(true)
             let payload = { ...formData, links: JSON.stringify(links) }
-
             console.log(payload)
-            await assignmentsApi.create(payload)
+            let res = await assignmentsApi.create(payload)
+            showSuccess({text: res.message, type: 'noti-box'})
             successCallback()
             onClose()
         } catch (error) {
             console.log(error)
+            showError({axiosResponse: error})
         } finally {
             setIsSubmitting(false)
         }

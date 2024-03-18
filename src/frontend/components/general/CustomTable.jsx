@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 export default function CustomTable(props) {
-    const { tableData, src } = props
+    const { tableData, src, ...args } = props
     const [page, setPage] = useState(1);
     let perPage = 10
 
@@ -23,7 +23,7 @@ export default function CustomTable(props) {
       }, [page, src, perPage]);
 
     return (
-        <Table aria-label="Example table with client side pagination"
+        <Table {...args} aria-label="Example table with client side pagination"
             bottomContent={
                 <div className="flex w-full justify-center">
                     <Pagination
@@ -43,11 +43,11 @@ export default function CustomTable(props) {
             <TableHeader>
                 {
                     tableData.headers.map((header, index) => {
-                        return (<TableColumn key={header.key + index}>{header.name}</TableColumn>)
+                        return (<TableColumn className="min-w-[150px]" key={header.key + index}>{header.name}</TableColumn>)
                     })
                 }
             </TableHeader>
-            <TableBody>
+            <TableBody emptyContent={"No rows to display."}>
                 {
                     items.map((each) => {
                         return (

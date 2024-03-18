@@ -44,19 +44,35 @@ export const getTableData = ({ getCheckButton }) => {
                 }
             },
             {
-
+                name: 'Checked File',
+                key: 'checkedFile',
+                getComponent: (data) => {
+                    return (
+                        <>
+                            {data.checkedFile ? (<FileLoader file={data.checkedFile} />) : 'Not Set!'}
+                        </>
+                    )
+                }
+            },
+            {
                 name: "Grade",
                 key: "grade",
+            },
+            {
+                name: "Remark",
+                key: "remark",
             },
             {
                 name: 'Action',
                 key: 'action',
                 getComponent: (data) => {
-                    return (
-                        <>
+                    if (data.status === 'submitted') {
+                        return (<>
                             {getCheckButton(data._id)}
-                        </>
-                    )
+                        </>)
+                    } else {
+                        return 'No Action!'
+                    }
                 }
             },
         ],

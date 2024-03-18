@@ -10,7 +10,6 @@ import AssignmentsDropdown from "../../assignments/components/AssignmentsDropDow
 import BatchesDropdown from "../../batches/components/BatchesDropdown"
 import { Chip } from "@nextui-org/react";
 import { Select, SelectItem } from "@nextui-org/select";
-import { v4 as uuidv4 } from "uuid"
 
 const StatusDropdown = (props) => {
   const { setStatus, className } = props
@@ -28,6 +27,7 @@ const StatusDropdown = (props) => {
         color="primary"
         label="Status"
         placeholder="Select an status"
+        defaultSelectedKeys={['submitted']}
         className="max-w-xs"
         onChange={e => handleStatusSelect(e.target.value)}
       >
@@ -38,7 +38,7 @@ const StatusDropdown = (props) => {
             </SelectItem>
           )
         })
-      }         
+        }
       </Select>
     </div>
   )
@@ -121,7 +121,7 @@ const AssignmentResults = () => {
       }
       <div>
         <div>
-          <CustomTable src={assignmentResults} tableData={tableData} />
+          <CustomTable src={assignmentResults} tableData={tableData} isStriped />
         </div>
       </div>
     </div>)
