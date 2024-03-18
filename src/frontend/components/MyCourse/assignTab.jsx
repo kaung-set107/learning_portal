@@ -129,7 +129,7 @@ export default function App() {
           }
         >
           <div className='flex flex-col pt-10 w-[1560px] h-[204px] pl-10 pb-8 pr-10'>
-            {assignmentList.slice().map((item, index) => (
+            {assignmentList.map((item, index) => (
 
               <div className='grid grid-cols-3 bg-[#215887]   p-12  border-4 border-l-red-500 ' key={item._id}>
                 <div className='flex justify-center text-[24px] text-[#fff] font-semibold items-center'>Assignment</div>
@@ -201,11 +201,9 @@ export default function App() {
 
                   <div className='flex justify-start gap-2'>
                     <Button>Cancel</Button>
-                    {completeList.filter(el => el.assignment._id === item._id) ? (
-                      <Button color='primary' disabled>Upload</Button>
-                    ) : (
-                      <Button color='primary' onClick={() => handleCreateAssignment(item._id)}>Upload</Button>
-                    )}
+
+                    <Button color='primary' onClick={() => handleCreateAssignment(item._id)}>Upload</Button>
+
 
                   </div>
                 </div>
