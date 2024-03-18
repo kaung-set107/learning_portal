@@ -27,7 +27,7 @@ export default function App() {
     var element = document.createElement("a");
     var file = new Blob(
       [
-        "https://timesofindia.indiatimes.com/thumb/msid-70238371,imgsize-89579,width-400,resizemode-4/70238371.jpg",
+        "",
       ],
       { type: "image/*" }
     );
@@ -201,7 +201,12 @@ export default function App() {
 
                   <div className='flex justify-start gap-2'>
                     <Button>Cancel</Button>
-                    <Button color='primary' onClick={() => handleCreateAssignment(item._id)}>Upload</Button>
+                    {completeList.filter(el => el.assignment._id === item._id) ? (
+                      <Button color='primary' disabled>Upload</Button>
+                    ) : (
+                      <Button color='primary' onClick={() => handleCreateAssignment(item._id)}>Upload</Button>
+                    )}
+
                   </div>
                 </div>
               </div>

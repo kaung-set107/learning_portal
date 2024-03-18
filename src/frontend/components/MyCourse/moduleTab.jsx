@@ -100,17 +100,25 @@ const CourseDetail = (props) => {
   const handleModal = () => {
     setShowModal(true)
   }
-  const download = () => {
-    var element = document.createElement("a");
-    var file = new Blob(
-      [
-        "https://timesofindia.indiatimes.com/thumb/msid-70238371,imgsize-89579,width-400,resizemode-4/70238371.jpg",
-      ],
-      { type: "image/*" }
-    );
-    element.href = URL.createObjectURL(file);
-    element.download = "image.jpg";
-    element.click();
+  const download = (val) => {
+    // console.log(val, 'cv')
+
+    const file = getFile({ payload: val });
+    if (val.split('.')[1] === 'jpg' || val.split('.')[1] === 'png' || val.split('.')[1] === 'jpeg') {
+      var element = document.createElement("a");
+      element.href = URL.createObjectURL(file);
+      element.download = val;
+      element.click();
+    } else if (val.split('.')[1] === 'xlsx') {
+      // Create a download link
+      const xlsxLink = document.createElement('a');
+      xlsxLink.click();
+    } else {
+      const csvLink = document.createElement('a');
+      csvLink.click();
+
+    }
+
   };
   const downloadPDF = (val) => {
     // Replace 'your-pdf-file.pdf' with the actual file path or URL
@@ -375,7 +383,7 @@ const CourseDetail = (props) => {
                                     onClick={
                                       i.originalname?.split(".")[1] === "pdf"
                                         ? () => downloadPDF(i)
-                                        : () => download()
+                                        : () => download(i.originalname)
                                     }>
                                     <Image
                                       radius="sm"
