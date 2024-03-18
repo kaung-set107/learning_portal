@@ -29,8 +29,8 @@ export default function AssignmentResultCheckModal(props) {
             let payload = { ...formData, _id: assignmentResultId }
 
             console.log(payload)
-            return
-            // await assignmentResultsApi.check(payload)
+            // return
+            await assignmentResultsApi.check(payload)
             successCallback()
             onClose()
         } catch (error) {

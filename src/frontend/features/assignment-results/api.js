@@ -42,6 +42,7 @@ const remove = async (payload) => {
 };
 
 const check = async (payload) => {
+  console.log(payload)
   const res = await apiInstance.put(baseUrl + `/${payload._id}/check`, getFormData(payload));
   console.log(baseName, res);
   return res.data;

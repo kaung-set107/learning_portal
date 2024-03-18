@@ -5,6 +5,7 @@ import { getTableData } from "./data"
 import Loading from "../../../components/general/Loading"
 import { subjectsApi } from "./api"
 import { useNavigate } from "react-router-dom"
+import CustomButton from '../../../components/general/CustomButton'
 
 const Subjects = () => {
     const [isLoading, setIsLoading] = useState(true)
@@ -14,9 +15,7 @@ const Subjects = () => {
 
     const getViewButton = (id) => {
         return (
-            <div onClick={() => navigate(`/by-instructor/subjects/${id}/brief`)}>
-                view
-            </div>
+            <CustomButton title="View" onClick={() => navigate(`/by-instructor/subjects/${id}/brief`)} />
         )
     }
 
@@ -40,7 +39,7 @@ const Subjects = () => {
     let content
 
     if (isLoading) {
-        content = (<Loading />)
+        content = (<div className="flex h-[500px] justify-center items-center"><Loading /></div>)
     }
 
     if (!isLoading) {

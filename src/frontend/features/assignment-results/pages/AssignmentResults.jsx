@@ -52,9 +52,9 @@ const AssignmentResults = () => {
   const [currentBatch, setCurrentBatch] = useState({})
   const [status, setStatus] = useState('submitted')
 
-  const getCheckButton = (data) => {
+  const getCheckButton = (id) => {
     return (
-      <AssignmentResultCheckModal assignmentResultId={data._id} successCallback={getAssignmentResults} />
+      <AssignmentResultCheckModal assignmentResultId={id} successCallback={getAssignmentResults} />
     )
   }
 
