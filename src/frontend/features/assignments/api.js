@@ -24,7 +24,7 @@ const get = async (payload) => {
 };
 
 const create = async (payload) => {
-  const res = await apiInstance.post(baseUrl, payload);
+  const res = await apiInstance.post(baseUrl, getFormData(payload));
   console.log(baseName, res);
   return res.data;
 };

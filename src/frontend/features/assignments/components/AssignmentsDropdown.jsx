@@ -48,7 +48,8 @@ const AssignmentsDropdown = (props) => {
       >
         {(assignment) => (
           <SelectItem key={assignment._id} textValue={assignment.title}>
-            {`Subject: ${assignment?.subject?.title ?? 'Not Set!'}, Assignment: ${assignment.code ?? 'Not Set!'}`}
+            {/* {`Subject: ${assignment?.subject?.title ?? 'Not Set!'}, Assignment: ${assignment.code ?? 'Not Set!'}`} */}
+            {`Assignment: ${assignment.code ?? 'Not Set!'}`}
           </SelectItem>
         )}
       </Select>

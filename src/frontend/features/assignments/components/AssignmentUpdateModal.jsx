@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import Loading from "../../../components/general/Loading";
 import { dateForInput } from "../../../../util/Util";
 import FileLoader from "../../../components/general/FileLoader";
+import { showError, showSuccess } from "../../../../util/noti";
 
 export default function AssignmentUpdateModal(props) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -41,11 +42,13 @@ export default function AssignmentUpdateModal(props) {
             }
             delete payload.newQuestion
             console.log(payload)
-            await assignmentsApi.update(payload)
+            let res = await assignmentsApi.update(payload)
+            showSuccess({text: res.message, type: "noti-box"})
             successCallback()
             onClose()
         } catch (error) {
             console.log(error)
+            showError({axiosResponse: error})
         } finally {
             setIsSubmitting(false)
         }

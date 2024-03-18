@@ -7,17 +7,21 @@ export const getFile = ({ resource, fileType, payload }) => {
   );
 };
 
-export const download = () => {
+export const download = (data) => {
   var element = document.createElement("a");
-  var file = new Blob(
-    [
-      "https://timesofindia.indiatimes.com/thumb/msid-70238371,imgsize-89579,width-400,resizemode-4/70238371.jpg",
-    ],
-    { type: "image/*" }
-  );
-  element.href = URL.createObjectURL(file);
-  element.download = "image.jpg";
-  element.click();
+  if(data && data.mimetype.includes('image')) {
+    var file = new Blob(
+      [
+        "https://timesofindia.indiatimes.com/thumb/msid-70238371,imgsize-89579,width-400,resizemode-4/70238371.jpg",
+      ],
+      { type: "image/*" }
+    );
+    element.href = URL.createObjectURL(file);
+    // element.download = "image.jpg";
+    element.click();
+  } else {
+    element.click();
+  }
 };
 
 export const downloadPDF = (val) => {

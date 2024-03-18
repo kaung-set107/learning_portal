@@ -15,6 +15,7 @@ import CardTitle from "../../../components/general/typography/CardTitle"
 import { Tabs, Tab } from "@nextui-org/react";
 import SubjectSectionUpdateModal from "../../subject-sections/components/SubjectSectionUpdateModal"
 import { subjectSectionsApi } from "../../subject-sections/api"
+import { showError, showSuccess } from "../../../../util/noti"
 
 const SubjectBrief = () => {
     const { id } = useParams()
@@ -45,11 +46,12 @@ const SubjectBrief = () => {
             setIsSubmitting(true)
             let res = await assignmentsApi.remove({ _id: id })
             await getSubject()
+            showSuccess({text: res.message, type: 'noti-box'})
             setIsSubmitting(false)
             console.log(res)
-            alert('assignment is deleted!')
         } catch (error) {
             console.log(error)
+            showError({axiosResponse: error})
         } finally {
             setIsSubmitting(false)
         }
@@ -118,7 +120,7 @@ const SubjectBrief = () => {
                                                                 <ul>
                                                                     {assignment.links &&
                                                                         JSON.parse(assignment.links).map(link => {
-                                                                            return (<li className="underline text-blue-600" key={uuidv4()}>{link.links}</li>)
+                                                                            return (<a href={link.links} target="_blank" rel="noreferrer" className="block underline text-blue-600" key={uuidv4()}>{link.links}</a>)
                                                                         })
                                                                     }
                                                                 </ul>
