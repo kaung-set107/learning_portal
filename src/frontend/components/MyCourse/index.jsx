@@ -5,19 +5,16 @@ import { useLocation } from "react-router-dom";
 export default function App() {
   const location = useLocation();
   const SubData = location.state?.data;
-  console.log(SubData, "sub ii");
-  //   const SubData = location.state.data;
-  // const {state}=useLocation()
-  //   console.log(useLocation().state.rol,'lllll')
+  // console.log(SubData, "sub ii");
+
   return (
-    <div className=' flex flex-col gap-4'>
-      {/* three card */}
-      {/* <Nav /> */}
+    <div className=''>
+
 
       <Body subData={SubData} />
 
-      <div className='mt-20'>
-        <Footer />
+      <div className=''>
+        {/* <Footer /> */}
       </div>
 
     </div>
