@@ -17,10 +17,10 @@ export const getTableData = ({
         
         name: 'Action',
         key: 'action',
-        getComponent: (id) => {
+        getComponent: (data) => {
             return (
                 <>
-                    {getViewButton(id)}
+                    {getViewButton(data._id)}
                 </>
             )
         }

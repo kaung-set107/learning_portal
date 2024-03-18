@@ -10,7 +10,9 @@ export default function CustomTable(props) {
     let perPage = 10
 
     const getTotal = () => {
-        return src.count / perPage
+        let total = Math.ceil(src.count / perPage)
+        console.log(total)
+        return total
     }
 
     const items = useMemo(() => {
@@ -52,10 +54,11 @@ export default function CustomTable(props) {
                             <TableRow key={uuidv4()}>
                                 {
                                     tableData.headers.map(header => {
-                                        if(header.key !== 'action') {
+                                        if(!header.getComponent) {
                                             return (<TableCell key={uuidv4()}>{each[header.key]}</TableCell>)
-                                        } else {
-                                            return (<TableCell key={uuidv4()}>{header.getComponent(each._id)}</TableCell>)
+                                        }
+                                         else if(header.getComponent) {
+                                            return (<TableCell key={uuidv4()}>{header.getComponent(each)}</TableCell>)
                                         }
                                     })
                                 }

@@ -31,3 +31,8 @@ export function getDatesByMonth(month) {
   // Convert to ISO string format
   return { $gte: startDate.toISOString(), $lte: endDate.toISOString() };
 }
+
+export const dateForInput = function (date) {
+	return moment.utc(date).tz(config.timeZone).format('YYYY-MM-DD');
+}
+

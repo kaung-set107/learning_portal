@@ -1,18 +1,25 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { Button, Input } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { assignmentsApi } from "../api";
 import CustomButton from "../../../components/general/CustomButton";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/react";
 import { v4 as uuidv4 } from "uuid";
+import Loading from "../../../components/general/Loading";
+import { dateForInput } from "../../../../util/Util";
+import FileLoader from "../../../components/general/FileLoader";
 
-export default function AssignmentCreateModal(props) {
+export default function AssignmentUpdateModal(props) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-    let { subjectId, successCallback } = props
+    let { subjectId, assignmentData, assignmentId, successCallback } = props
+
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [link, setLink] = useState('')
     const [links, setLinks] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+    const [assignment, setAssignment] = useState({})
 
     const variant = 'bordered'
 
@@ -20,18 +27,21 @@ export default function AssignmentCreateModal(props) {
         title: '',
         description: '',
         subject: subjectId,
-        question: '',
+        // question: 'test',
         // links: '[{"links":"www.google.com"},{"links":"www.msi.com"},{"links":"www.msiedu.com"}]',
-        dueDate: '2023-12-02T04:56:17.771Z'
+        dueDate: ''
     })
 
     const handleSubmit = async (onClose) => {
         try {
             setIsSubmitting(true)
-            let payload = { ...formData, links: JSON.stringify(links) }
-
+            let payload = { ...formData, _id: assignment.data._id, links: JSON.stringify(links) }
+            if (formData.newQuestion) {
+                payload.question = formData.newQuestion
+            }
+            delete payload.newQuestion
             console.log(payload)
-            await assignmentsApi.create(payload)
+            await assignmentsApi.update(payload)
             successCallback()
             onClose()
         } catch (error) {
@@ -41,9 +51,55 @@ export default function AssignmentCreateModal(props) {
         }
     }
 
-    return (
-        <>
-            <Button onPress={onOpen} color="primary">Add Assignment</Button>
+    const fillData = () => {
+        setFormData({
+            title: assignment.data.title,
+            description: assignment.data.description,
+            subject: subjectId,
+            question: assignment.data?.question ?? '',
+            // links: '[{"links":"www.google.com"},{"links":"www.msi.com"},{"links":"www.msiedu.com"}]',
+            dueDate: assignment.data.dueDate
+        })
+
+        setLinks(JSON.parse(assignment.data.links))
+    }
+
+    const getAssignment = async () => {
+        if (assignmentData) {
+            setAssignment({ data: assignmentData })
+        } else if (!assignmentData && assignmentId) {
+            try {
+                let res = await assignmentsApi.get({ _id: assignmentId })
+                setAssignment(res)
+            } catch (error) {
+                console.log(error)
+            } finally {
+                setIsLoading(false)
+            }
+        }
+    }
+
+    useEffect(() => {
+        getAssignment()
+    }, [assignmentData, assignmentId, isOpen])
+
+    useEffect(() => {
+        if (assignment.data) fillData()
+    }, [assignment])
+
+    useEffect(() => {
+        if (isLoading) {
+            if (formData && links) setIsLoading(false)
+        }
+    }, [formData, links])
+
+    let content
+
+    if (isLoading) {
+        content = (<Loading />)
+    } else {
+        content = <>
+            <Button onPress={onOpen} color="success" size="sm">Update</Button>
             <Modal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
@@ -52,7 +108,7 @@ export default function AssignmentCreateModal(props) {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">Assignment Create</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">Assignment Update</ModalHeader>
                             <ModalBody>
                                 <form>
                                     <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
@@ -78,10 +134,17 @@ export default function AssignmentCreateModal(props) {
                                             labelPlacement="outside"
                                         />
                                     </div>
+                                    <div className="mb-3">
+                                        <h3 className="mb-3">Previous Question</h3>
+                                        <div className="bg-gray-100 p-3 rounded-xl border">
+                                            {formData.question && <FileLoader file={formData.question} />
+                                            }
+                                        </div>
+                                    </div>
                                     <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4">
                                         <Input
                                             type="file"
-                                            onChange={(e) => setFormData(prev => ({ ...prev, question: e.target.files[0] }))}
+                                            onChange={(e) => setFormData(prev => ({ ...prev, newQuestion: e.target.files[0] }))}
                                             label="Question"
                                             placeholder=" "
                                             labelPlacement="outside"
@@ -93,6 +156,7 @@ export default function AssignmentCreateModal(props) {
                                         <Input
                                             id="dueDate"
                                             type="date"
+                                            value={dateForInput(formData.dueDate)}
                                             onChange={(e) => setFormData(prev => ({ ...prev, dueDate: e.target.value }))}
                                             labelPlacement="outside"
                                             variant={variant}
@@ -110,8 +174,8 @@ export default function AssignmentCreateModal(props) {
                                             labelPlacement="outside"
                                         />
                                         {/* <Bu type="button" onClick={() => setLinks(prev => ([...prev, { links: link }]))}>
-                                            Add
-                                        </Bu> */}
+                                        Add
+                                    </Bu> */}
                                         <CustomButton onClick={() => setLinks(prev => ([...prev, { links: link }]))} color="primary" title="Add" />
                                     </div>
                                     <div className="rounded-xl border space-y-2 p-3">
@@ -119,14 +183,12 @@ export default function AssignmentCreateModal(props) {
                                         {
                                             links.map((each, index) => {
                                                 return (<div className="gap-3 rounded-xl flex items-center justify-between" key={uuidv4()}>
-                                                    {/* <Input
+                                                    <Input
                                                         type="text"
                                                         variant={variant}
                                                         value={each.links}
                                                         disabled
-                                                        className="cursor-none"
-                                                    /> */}
-                                                    <span className="bg-white px-3 py-1 rounded-xl border w-full">{each.links}</span>
+                                                    />
                                                     <span onClick={() => setLinks(prev => ([...prev.filter((each, linkIndex) => (index !== linkIndex))]))} className="font-bold text-red-800">X</span>
                                                 </div>)
                                             })
@@ -135,21 +197,17 @@ export default function AssignmentCreateModal(props) {
                                 </form>
                             </ModalBody>
                             <ModalFooter>
-                                {/* <Button color="danger" variant="flat" onPress={onClose}>
-                                    Close
-                                </Button>
-                                <Button color="primary" onPress={onClose}>
-                                    Sign in
-                                </Button> */}
                                 <Button color="danger" onPress={onClose}>
                                     Close
                                 </Button>
-                                <CustomButton onClick={() => handleSubmit(onClose)} color="primary" isLoading={isSubmitting} title="Create" />
+                                <CustomButton onClick={() => handleSubmit(onClose)} color="primary" isLoading={isSubmitting} title="Update" />
                             </ModalFooter>
                         </>
                     )}
                 </ModalContent>
             </Modal>
         </>
-    );
+    }
+
+    return content
 }

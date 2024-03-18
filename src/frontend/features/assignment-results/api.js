@@ -1,8 +1,8 @@
 import { getFormData } from "../../../util";
 import apiInstance from "../../../util/api";
 
-const baseUrl = "/assignments";
-const baseName = "assignments";
+const baseUrl = "/assignment-results";
+const baseName = "assignment-results";
 
 const getAll = async (payload) => {
   const res = await apiInstance.get(baseUrl, { params: payload });
@@ -24,13 +24,13 @@ const get = async (payload) => {
 };
 
 const create = async (payload) => {
-  const res = await apiInstance.post(baseUrl, payload);
+  const res = await apiInstance.post(baseUrl, getFormData(payload));
   console.log(baseName, res);
   return res.data;
 };
 
 const update = async (payload) => {
-  const res = await apiInstance.put(baseUrl + `/${payload._id}`, getFormData(payload));
+  const res = await apiInstance.put(baseUrl + `/${payload._id}`, payload);
   console.log(baseName, res);
   return res.data;
 };
@@ -41,10 +41,18 @@ const remove = async (payload) => {
   return res.data;
 };
 
-export const assignmentsApi = {
+const check = async (payload) => {
+  console.log(payload)
+  const res = await apiInstance.put(baseUrl + `/${payload._id}/check`, getFormData(payload));
+  console.log(baseName, res);
+  return res.data;
+};
+
+export const assignmentResultsApi = {
   getAll,
   get,
   create,
   update,
   remove,
+  check
 };

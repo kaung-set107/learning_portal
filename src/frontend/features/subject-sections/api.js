@@ -1,8 +1,7 @@
-import { getFormData } from "../../../util";
 import apiInstance from "../../../util/api";
 
-const baseUrl = "/assignments";
-const baseName = "assignments";
+const baseUrl = "/subject-sections";
+const baseName = "subject-sections";
 
 const getAll = async (payload) => {
   const res = await apiInstance.get(baseUrl, { params: payload });
@@ -30,7 +29,7 @@ const create = async (payload) => {
 };
 
 const update = async (payload) => {
-  const res = await apiInstance.put(baseUrl + `/${payload._id}`, getFormData(payload));
+  const res = await apiInstance.put(baseUrl + `/${payload._id}`, payload);
   console.log(baseName, res);
   return res.data;
 };
@@ -41,7 +40,7 @@ const remove = async (payload) => {
   return res.data;
 };
 
-export const assignmentsApi = {
+export const subjectSectionsApi = {
   getAll,
   get,
   create,

@@ -68,6 +68,7 @@ import Nav from "./frontend/home/header.jsx";
 import InstructorLayout from "./frontend/components/layouting/InstructorLayout.jsx";
 import Subjects from "./frontend/features/subjects/pages/Subjects.jsx";
 import SubjectBrief from "./frontend/features/subjects/pages/SubjectBrief.jsx";
+import AssignmentResults from "./frontend/features/assignment-results/pages/AssignmentResults.jsx";
 export default function RouteFile() {
   console.log(localStorage.getItem("user"), "local use");
   return (
@@ -167,9 +168,12 @@ export default function RouteFile() {
                 <Route index element={<Subjects />} />
                 <Route path=":id/brief" element={<SubjectBrief />} />
               </Route>
+              <Route path='assignment-results'>
+                <Route index element={<AssignmentResults/>}/>
+              </Route>
               {/* <Route path='/instructor' element={<InstructorHome />}></Route> */}
-              {/* <Route path='/lm' element={<LearningMaterial />}></Route> */}
               {/* <Route path='/assign' element={<Assignment />}></Route> */}
+              {/* <Route path='/lm' element={<LearningMaterial />}></Route> */}
               {/* <Route path='/assign/:id' element={<AssignmentUpdate />}></Route> */}
             </Route>
 
