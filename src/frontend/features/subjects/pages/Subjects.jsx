@@ -3,7 +3,7 @@ import CustomTable from "../../../components/general/CustomTable"
 import TableHeading from "../../../components/general/typography/TableHeading"
 import { getTableData } from "./data"
 import Loading from "../../../components/general/Loading"
-import { subjectsApi } from "./api"
+import { subjectsApi } from "../api"
 import { useNavigate } from "react-router-dom"
 import CustomButton from '../../../components/general/CustomButton'
 

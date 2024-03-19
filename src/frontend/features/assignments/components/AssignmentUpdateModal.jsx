@@ -10,6 +10,7 @@ import Loading from "../../../components/general/Loading";
 import { dateForInput } from "../../../../util/Util";
 import FileLoader from "../../../components/general/FileLoader";
 import { showError, showSuccess } from "../../../../util/noti";
+import { Checkbox } from "@nextui-org/react";
 
 export default function AssignmentUpdateModal(props) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -21,6 +22,7 @@ export default function AssignmentUpdateModal(props) {
     const [links, setLinks] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [assignment, setAssignment] = useState({})
+    const [showToStudent, setShowToStudent] = useState(false)
 
     const variant = 'bordered'
 
@@ -36,19 +38,19 @@ export default function AssignmentUpdateModal(props) {
     const handleSubmit = async (onClose) => {
         try {
             setIsSubmitting(true)
-            let payload = { ...formData, _id: assignment.data._id, links: JSON.stringify(links) }
+            let payload = { ...formData, _id: assignment.data._id, links: JSON.stringify(links), showToStudent }
             if (formData.newQuestion) {
                 payload.question = formData.newQuestion
             }
             delete payload.newQuestion
             console.log(payload)
             let res = await assignmentsApi.update(payload)
-            showSuccess({text: res.message, type: "noti-box"})
+            showSuccess({ text: res.message, type: "noti-box" })
             successCallback()
             onClose()
         } catch (error) {
             console.log(error)
-            showError({axiosResponse: error})
+            showError({ axiosResponse: error })
         } finally {
             setIsSubmitting(false)
         }
@@ -65,6 +67,7 @@ export default function AssignmentUpdateModal(props) {
         })
 
         setLinks(JSON.parse(assignment.data.links))
+        setShowToStudent(assignment.data.showToStudent)
     }
 
     const getAssignment = async () => {
@@ -102,7 +105,7 @@ export default function AssignmentUpdateModal(props) {
         content = (<Loading />)
     } else {
         content = <>
-            <Button onPress={onOpen} color="success" size="sm">Update</Button>
+            <CustomButton onPress={onOpen} type="edit" iconOnly size="sm">Update</CustomButton>
             <Modal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
@@ -181,22 +184,20 @@ export default function AssignmentUpdateModal(props) {
                                     </Bu> */}
                                         <CustomButton onClick={() => setLinks(prev => ([...prev, { links: link }]))} color="primary" title="Add" />
                                     </div>
-                                    <div className="rounded-xl border space-y-2 p-3">
+                                    <div className="rounded-xl border space-y-2 p-3 mb-3">
                                         <h3 className="font-bold mb-3">Links</h3>
                                         {
                                             links.map((each, index) => {
                                                 return (<div className="gap-3 rounded-xl flex items-center justify-between" key={uuidv4()}>
-                                                    <Input
-                                                        type="text"
-                                                        variant={variant}
-                                                        value={each.links}
-                                                        disabled
-                                                    />
+                                                    <span className="bg-white px-3 py-1 rounded-xl border w-full">{each.links}</span>
                                                     <span onClick={() => setLinks(prev => ([...prev.filter((each, linkIndex) => (index !== linkIndex))]))} className="font-bold text-red-800">X</span>
                                                 </div>)
                                             })
                                         }
                                     </div>
+                                    <Checkbox isSelected={showToStudent} onValueChange={setShowToStudent}>
+                                        Show to student?
+                                    </Checkbox>
                                 </form>
                             </ModalBody>
                             <ModalFooter>

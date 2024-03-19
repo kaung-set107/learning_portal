@@ -8,30 +8,33 @@ export const getFile = ({ resource, fileType, payload }) => {
 };
 
 export const download = (data) => {
-  var element = document.createElement("a");
+  let element = document.createElement("a");
   if(data && data.mimetype.includes('image')) {
-    var file = new Blob(
+    let file = new Blob(
       [
-        "https://timesofindia.indiatimes.com/thumb/msid-70238371,imgsize-89579,width-400,resizemode-4/70238371.jpg",
+        getFile({payload: data}),
       ],
       { type: "image/*" }
     );
     element.href = URL.createObjectURL(file);
-    // element.download = "image.jpg";
+    element.download = data.originalname;
     element.click();
   } else {
+    element.download = data.originalname;
     element.click();
   }
 };
 
 export const downloadPDF = (val) => {
+  console.log('hereing dfsljfkls')
+
   // Replace 'your-pdf-file.pdf' with the actual file path or URL
   const pdfUrl = getFile({ payload: val });
 
   // Create a link element
   const link = document.createElement("a");
   link.href = pdfUrl;
-  link.download = "downloaded-file.pdf";
+  link.download = val.originalname;
 
   // Append the link to the document
   document.body.appendChild(link);

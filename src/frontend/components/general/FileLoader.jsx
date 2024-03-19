@@ -40,6 +40,8 @@ const FileLoader = (props) => {
     return (
         <div className="">
             <a
+                target="_blank"
+                rel="noreferrer"
                 href={getFile({ payload: file })}
                 onClick={
                     file.originalname?.split(".")[1] === "pdf"

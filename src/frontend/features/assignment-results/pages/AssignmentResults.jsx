@@ -10,6 +10,10 @@ import AssignmentsDropdown from "../../assignments/components/AssignmentsDropDow
 import BatchesDropdown from "../../batches/components/BatchesDropdown"
 import { Chip } from "@nextui-org/react";
 import { Select, SelectItem } from "@nextui-org/select";
+import CustomButton from "../../../components/general/CustomButton"
+import { showMessage } from "../../../../util/noti"
+import { useLocation } from "react-router-dom"
+import SubjectsDropdown from "../../subjects/components/SubjectDropdown"
 
 const StatusDropdown = (props) => {
   const { setStatus, className } = props
@@ -18,7 +22,7 @@ const StatusDropdown = (props) => {
     setStatus(value)
   }
 
-  let statuses = ['submitted', 'checked']
+  let statuses = ['submitted', 'checked', 'published']
 
 
   return (
@@ -50,7 +54,13 @@ const AssignmentResults = () => {
   const [assignmentResults, setAssignmentResults] = useState([])
   const [currentAssignment, setCurrentAssignment] = useState({})
   const [currentBatch, setCurrentBatch] = useState({})
+  const [currentSubject, setCurrentSubject] = useState({})
   const [status, setStatus] = useState('submitted')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const { state } = useLocation()
+
+  console.log(state)
 
   const getCheckButton = (id) => {
     return (
@@ -61,9 +71,12 @@ const AssignmentResults = () => {
   const tableData = getTableData({ getCheckButton })
 
   const getAssignmentResults = async () => {
+    console.log('erherejklj')
+    console.log(currentAssignment)
     setIsFetching(true)
     try {
       let res = await assignmentResultsApi.getAll({ assignment: currentAssignment._id, batch: currentBatch._id, status })
+      console.log(res)
       setAssignmentResults(res)
     } catch (error) {
       console.log(error)
@@ -73,18 +86,43 @@ const AssignmentResults = () => {
     }
   }
 
+  const handlePublishAll = async () => {
+    if (!currentBatch._id) {
+      showMessage({ message: "Please Select a batch to publish !" })
+    }
+    setIsSubmitting(true)
+    try {
+      await assignmentResultsApi.publishAll({ batch: currentBatch._id })
+      await getAssignmentResults()
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   const handleClearAllFilter = () => {
     setCurrentAssignment({})
     setCurrentBatch({})
   }
 
-  useEffect(() => {
+  const fetchData = () => {
     getAssignmentResults()
-  }, [currentAssignment, currentBatch, status])
+  }
 
   useEffect(() => {
     getAssignmentResults()
   }, [])
+
+  // useEffect(() => {
+  //   if (state && state.assignment) {
+  //     setCurrentAssignment(prev => ({ ...state.assignment }))
+  //   }
+
+  //   if (state && state.subject) {
+  //     setCurrentSubject(prev => ({ ...state.subject }))
+  //   }
+  // }, [state])
 
   let content
 
@@ -95,30 +133,40 @@ const AssignmentResults = () => {
   if (!isLoading) {
     content = (<div className="relative">
       {
-        isFetching && (<div className="absolute right-0">
+        isFetching && (<div className="absolute -top-10 right-0">
           <Loading />
         </div>)
       }
-      <TableHeading title="Assignment Results" className="mb-12" />
+      <div className="flex items-center justify-between mb-12">
+        <TableHeading title="Assignment Results" />
+        <CustomButton onClick={() => handlePublishAll()} isLoading={isSubmitting} title="Publish All" />
+      </div>
       <div className="my-3 flex items-center gap-3">
         <StatusDropdown className="shrink-0 w-[200px]" setStatus={setStatus} />
-        <AssignmentsDropdown className="shrink-0 w-[200px]" setCurrentAssignment={setCurrentAssignment} />
+        <SubjectsDropdown className="shrink-0 w-[200px]" setCurrentSubject={setCurrentSubject} />
+        {currentSubject._id && (
+          <AssignmentsDropdown subject={currentSubject._id} className="shrink-0 w-[200px]" setCurrentAssignment={setCurrentAssignment} />
+        )}
         <BatchesDropdown className="shrink-0 w-[200px]" setCurrentBatch={setCurrentBatch} />
+        <CustomButton onClick={() => fetchData()} isLoading={isSubmitting} title="Fetch" />
       </div>
-      {
-        (Object.keys(currentAssignment).length > 0 || Object.keys(currentBatch).length > 0) && (
-          <div className="flex gap-3 items-center my-6">
-            <span>
-              Filter By:
-            </span>
-            {Object.keys(currentAssignment).length > 0 && (<Chip>Assignment: {currentAssignment.title}</Chip>)}
-            {Object.keys(currentBatch).length > 0 && (<Chip>Batch: {currentBatch.name}</Chip>)}
-            <button onClick={handleClearAllFilter} className="bg-red-700 text-white border rounded-full px-3 py-1">
-              Clear All
-            </button>
-          </div>
-        )
-      }
+      <div className="flex gap-3 items-center my-6">
+        <span>
+          Filter By:
+        </span>
+        {<Chip>Status: {status}</Chip>}
+        {
+          (Object.keys(currentAssignment).length > 0 || Object.keys(currentBatch).length > 0) && (
+            <>{Object.keys(currentAssignment).length > 0 && (<Chip>Assignment: {currentAssignment.title}</Chip>)}
+              {Object.keys(currentBatch).length > 0 && (<Chip>Batch: {currentBatch.name}</Chip>)}
+              {Object.keys(currentSubject).length > 0 && (<Chip>Subject: {currentSubject.title}</Chip>)}
+              <button onClick={handleClearAllFilter} className="bg-red-700 text-white border rounded-full px-3 py-1">
+                Reset
+              </button>
+            </>
+          )
+        }
+      </div>
       <div>
         <div>
           <CustomTable src={assignmentResults} tableData={tableData} isStriped />
