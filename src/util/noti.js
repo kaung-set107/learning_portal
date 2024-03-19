@@ -50,3 +50,7 @@ export const showError = ({ text, axiosResponse } = { text: "Failed to process!"
 	}
 	new Swal(message)
 }
+
+export const showMessage = ({message}) => {
+	new Swal(message)
+}

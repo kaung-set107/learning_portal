@@ -48,11 +48,19 @@ const check = async (payload) => {
   return res.data;
 };
 
+const publishAll = async (payload) => {
+  console.log(payload)
+  const res = await apiInstance.put(baseUrl + `/publish-all`, payload);
+  console.log(baseName, res);
+  return res.data;
+};
+
 export const assignmentResultsApi = {
   getAll,
   get,
   create,
   update,
   remove,
-  check
+  check,
+  publishAll
 };

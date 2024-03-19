@@ -16,6 +16,8 @@ const CustomButton = (props) => {
             return "warning"
         } else if (type === 'delete') {
             return 'danger'
+        } else {
+            return 'primary'
         }
     }
 
@@ -41,13 +43,11 @@ const CustomButton = (props) => {
             }
         }
 
-        else {
-            return title
-        }
+        return title
     }
 
     return (
-        <Button color={getColor()} isDisabled={isLoading} {...args} className={`hover:border p-1 border-gray-400 hover:shadow-sm ${isLoading ? 'cursor-not-allowed' : ''}`}>
+        <Button color={getColor()} isDisabled={isLoading} {...args} className={`hover:border px-2 border-gray-400 hover:shadow-sm ${isLoading ? 'cursor-not-allowed' : ''}`}>
             {
                 isLoading ? <Loading size={"sm"} /> : getContent()
             }

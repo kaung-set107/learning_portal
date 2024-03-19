@@ -15,12 +15,24 @@ export default function CustomTable(props) {
         return total
     }
 
+    // const items = useMemo(() => {
+    //     const start = (page - 1) * perPage;
+    //     const end = start + perPage;
+
+    //     return src.data.slice(start, end);
+    //   }, [page, src, perPage]);
+
+
     const items = useMemo(() => {
-        const start = (page - 1) * perPage;
-        const end = start + perPage;
-    
-        return src.data.slice(start, end);
-      }, [page, src, perPage]);
+        if (src.count > 0) {
+            const start = (page - 1) * perPage;
+            const end = start + perPage;
+
+            return src.data.slice(start, end);
+        } else {
+            return []
+        }
+    }, [page, src, perPage]);
 
     return (
         <Table {...args} aria-label="Example table with client side pagination"
@@ -54,10 +66,10 @@ export default function CustomTable(props) {
                             <TableRow key={uuidv4()}>
                                 {
                                     tableData.headers.map(header => {
-                                        if(!header.getComponent) {
+                                        if (!header.getComponent) {
                                             return (<TableCell key={uuidv4()}>{each[header.key]}</TableCell>)
                                         }
-                                         else if(header.getComponent) {
+                                        else if (header.getComponent) {
                                             return (<TableCell key={uuidv4()}>{header.getComponent(each)}</TableCell>)
                                         }
                                     })

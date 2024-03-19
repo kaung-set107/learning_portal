@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
-import { subjectsApi } from "./api"
+import { useNavigate, useParams } from "react-router-dom"
+import { subjectsApi } from "../api"
 import Loading from "../../../components/general/Loading"
 import Heading from "../../../components/general/typography/Heading"
 import SubHeading from "../../../components/general/typography/SubHeading"
@@ -19,6 +19,7 @@ import { showError, showSuccess } from "../../../../util/noti"
 import { dateForDisplay } from "../../../../util/Util"
 
 const SubjectBrief = () => {
+    const navigate = useNavigate()
     const { id } = useParams()
     const [subject, setSubject] = useState({})
     const [isLoading, setIsLoading] = useState(true)
@@ -41,18 +42,22 @@ const SubjectBrief = () => {
         }
     }
 
+    const goToResult = (data) => {
+        navigate('/by-instructor/assignment-results', {state: {assignment: data, subject: subject.data}})
+    }
+
 
     const handleAssignmentDelete = async (id) => {
         try {
             setIsSubmitting(true)
             let res = await assignmentsApi.remove({ _id: id })
             await getSubject()
-            showSuccess({text: res.message, type: 'noti-box'})
+            showSuccess({ text: res.message, type: 'noti-box' })
             setIsSubmitting(false)
             console.log(res)
         } catch (error) {
             console.log(error)
-            showError({axiosResponse: error})
+            showError({ axiosResponse: error })
         } finally {
             setIsSubmitting(false)
         }
@@ -102,6 +107,7 @@ const SubjectBrief = () => {
                                                     return (
                                                         <div key={assignment._id} className="p-3 border rounded-xl mb-3 relative">
                                                             <div className="flex gap-3 absolute right-2 top-2">
+                                                                <CustomButton size="sm" onClick={() => goToResult(assignment)} isLoading={isSubmitting} title="Results" />
                                                                 <AssignmentUpdateModal subjectId={id} assignmentData={assignment} successCallback={getSubject} />
                                                                 <CustomButton iconOnly type="delete" size="sm" onClick={() => handleAssignmentDelete(assignment._id)} isLoading={isSubmitting} title="Delete" />
                                                             </div>

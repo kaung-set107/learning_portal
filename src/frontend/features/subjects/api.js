@@ -1,4 +1,4 @@
-import apiInstance from "../../../../util/api";
+import apiInstance from "../../../util/api";
 
 const baseUrl = "/subjects";
 const baseName = "subjects";

@@ -8,11 +8,12 @@ const AssignmentsDropdown = (props) => {
   const [isLoading, setIsLoading] = useState(true)
   const [assignments, setAssignments] = useState([])
 
-  const { setCurrentAssignment, className } = props
+  const { setCurrentAssignment, className, subject, ...args } = props
 
   const getAssignments = async () => {
+    setIsLoading(true)
     try {
-      let res = await assignmentsApi.getAll()
+      let res = await assignmentsApi.getAll({subject})
       setAssignments(res)
     } catch (error) {
       console.log(error)
@@ -28,6 +29,10 @@ const AssignmentsDropdown = (props) => {
 
   useEffect(() => {
     getAssignments()
+  }, [subject])
+
+  useEffect(() => {
+    getAssignments()
   }, [])
 
   let content
@@ -39,6 +44,7 @@ const AssignmentsDropdown = (props) => {
   if (!isLoading) {
     content = (<div>
       <Select
+        {...args}
         items={assignments.data}
         color="primary"
         label="Assignment"
