@@ -47,9 +47,22 @@ import SubjectDetail from "./pages/Subject/subjectDetail";
 import LMDetail from "./frontend/pages/LearningMaterial/LMDetail";
 import LearningMaterialAdmin from "./components/Subject/learnigMaterialInput";
 import Chart from "./frontend/ByUser/PieChart.jsx";
+
+//Batch
 import Batch from './pages/Batch/batchList.jsx'
 import BatchCreate from './pages/Batch/batchInput.jsx'
 import BatchUpdate from './pages/Batch/batchUpdate.jsx'
+
+//Event
+import Event from './pages/Events/eventList.jsx'
+import EventCreate from './pages/Events/eventInput.jsx'
+import EventUpdate from './pages/Events/eventUpdate.jsx'
+
+//Testimonial
+import Testimonial from './pages/Testimonial/testimonialList.jsx'
+import TestimonialCreate from './pages/Testimonial/testimonialInput.jsx'
+import TestimonialUpdate from './pages/Testimonial/testimonialUpdate.jsx'
+
 //assign update
 import AssignmentUpdate from "./frontend/pages/Assignment/AssignmentUpdate";
 import LMUpdate from "./frontend/components/LearningMaterial/LMUpdateInput";
@@ -150,6 +163,8 @@ export default function RouteFile() {
             <Route path='/batch' element={<Batch />}></Route>
             <Route path='/batch-create' element={<BatchCreate />}></Route>
             <Route path='/batch-update/:id' element={<BatchUpdate />}></Route>
+
+
             {/* Subject*/}
             <Route path='/subject' element={<Subject />}></Route>
             <Route path='/subject-add' element={<SubjectAdd />}></Route>
@@ -193,6 +208,16 @@ export default function RouteFile() {
             <Route path='/instru' element={<Instructor />} />
             <Route path='/instru-add' element={<InstructorAdd />} />
             <Route path='/instru-update/:id' element={<InstructorUpdate />} />
+
+            {/* Event */}
+            <Route path='/event' element={<Event />} />
+            <Route path='/event-create' element={<EventCreate />} />
+            <Route path='/event-update/:id' element={<EventUpdate />} />
+
+            {/* Testimonial */}
+            <Route path='/testimonial' element={<Testimonial />} />
+            <Route path='/testimonial-create' element={<TestimonialCreate />} />
+            <Route path='/testimonial-update/:id' element={<TestimonialUpdate />} />
 
             {/* Student */}
             <Route path='/student' element={<Student />} />
