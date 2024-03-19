@@ -36,3 +36,6 @@ export const dateForInput = function (date) {
 	return moment.utc(date).tz(config.timeZone).format('YYYY-MM-DD');
 }
 
+export const dateForDisplay = function (date) {
+	return moment.utc(date).tz(config.timeZone).format('D-M-Y');
+}

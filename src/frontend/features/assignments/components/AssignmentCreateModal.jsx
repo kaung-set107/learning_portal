@@ -6,6 +6,7 @@ import CustomButton from "../../../components/general/CustomButton";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/react";
 import { v4 as uuidv4 } from "uuid";
 import { showError, showSuccess } from "../../../../util/noti";
+import { Checkbox } from "@nextui-org/react";
 
 export default function AssignmentCreateModal(props) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -14,6 +15,7 @@ export default function AssignmentCreateModal(props) {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [link, setLink] = useState('')
     const [links, setLinks] = useState([])
+    const [showToStudent, setShowToStudent] = useState(false)
 
     const variant = 'bordered'
 
@@ -23,21 +25,22 @@ export default function AssignmentCreateModal(props) {
         subject: subjectId,
         question: '',
         // links: '[{"links":"www.google.com"},{"links":"www.msi.com"},{"links":"www.msiedu.com"}]',
-        dueDate: '2023-12-02T04:56:17.771Z'
+        dueDate: '2023-12-02T04:56:17.771Z',
+        showToStudent: false
     })
 
     const handleSubmit = async (onClose) => {
         try {
             setIsSubmitting(true)
-            let payload = { ...formData, links: JSON.stringify(links) }
+            let payload = { ...formData, links: JSON.stringify(links), showToStudent }
             console.log(payload)
             let res = await assignmentsApi.create(payload)
-            showSuccess({text: res.message, type: 'noti-box'})
+            showSuccess({ text: res.message, type: 'noti-box' })
             successCallback()
             onClose()
         } catch (error) {
             console.log(error)
-            showError({axiosResponse: error})
+            showError({ axiosResponse: error })
         } finally {
             setIsSubmitting(false)
         }
@@ -100,7 +103,6 @@ export default function AssignmentCreateModal(props) {
                                             variant={variant}
                                         />
                                     </div>
-
                                     <div className="flex w-full items-end flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
                                         <Input
                                             type="text"
@@ -116,7 +118,7 @@ export default function AssignmentCreateModal(props) {
                                         </Bu> */}
                                         <CustomButton onClick={() => setLinks(prev => ([...prev, { links: link }]))} color="primary" title="Add" />
                                     </div>
-                                    <div className="rounded-xl border space-y-2 p-3">
+                                    <div className="rounded-xl border space-y-2 p-3 mb-3">
                                         <h3 className="font-bold mb-3">Links</h3>
                                         {
                                             links.map((each, index) => {
@@ -134,6 +136,9 @@ export default function AssignmentCreateModal(props) {
                                             })
                                         }
                                     </div>
+                                    <Checkbox isSelected={showToStudent} onValueChange={setShowToStudent}>
+                                        Show to student?
+                                    </Checkbox>
                                 </form>
                             </ModalBody>
                             <ModalFooter>
