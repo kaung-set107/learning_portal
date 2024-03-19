@@ -34,22 +34,24 @@ export default function CourseDetail(props) {
   };
   const [subjectList, setSubjectList] = useState([]);
   const [subjectAndTeacherList, setSubjectAndTeacherList] = useState([]);
+  const [headVideoLink, setHeadVideoLink] = useState('')
   useEffect(() => {
     const getCourseDetail = async () => {
       await apiInstance.get("courses/" + courseData._id).then((res) => {
-        // console.log(res.data.data.subjects, "c detail");
+        // console.log(JSON.parse(res.data.data.previewVideo)[0].links?.split('/')[3], "c detail");
         setCourse(res.data.data);
+        setHeadVideoLink(JSON.parse(res.data.data.previewVideo)[0].links?.split('/')[3])
         setSubjectList(res.data.data.subjects);
       });
     };
     const getSubjects = async () => {
       await apiInstance.get("subjects").then((res) => {
-        console.log(
-          res.data.data.filter((el) => el.course._id === courseData._id),
-          "c subject"
-        );
+        // console.log(
+        //   res.data.data.filter((el) => el.course === courseData._id),
+        //   "c subject"
+        // );
         setSubjectAndTeacherList(
-          res.data.data.filter((el) => el.course._id === courseData._id)
+          res.data.data.filter((el) => el.course === courseData._id)
         );
       });
     };
@@ -66,12 +68,17 @@ export default function CourseDetail(props) {
           <div className='flex flex-col flex-grow'>
             <div className='flex gap-32 pt-20' style={{ height: "370px" }}>
               <div style={{ width: "900px" }}>
+
                 <iframe
-                  src='https://www.youtube.com/embed/AJhplp3dct8'
+                  src={
+                    "https://www.youtube.com/embed/" +
+                    headVideoLink
+                  }
                   allowfullscreen=''
                   width='911'
                   height='306'
                   className='border'
+                  allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
                 ></iframe>
               </div>
               <div className=' pr-24'>
@@ -159,7 +166,7 @@ export default function CourseDetail(props) {
                       backgroundColor: "#053CFF",
                       color: "white",
                     }}
-                    className='mt-10 hover:-translate-x-1 hover:scale-110 duration-700'
+                    className='mt-10 hover:-translate-x-1 hover:scale-105 duration-700'
                   >
                     <span className='p-2'>Take Quiz</span>
                   </Button>
@@ -286,7 +293,7 @@ export default function CourseDetail(props) {
                           padding: "14px 13px",
                           backgroundColor: "white",
                         }}
-                        className='min-w:[490px] min-h:[463px] flex flex-col gap-3 hover:-translate-y-2 hover:rotate-1 hover:scale-110 hover:bg-indigo-500 duration-500'
+                        className='min-w:[490px] min-h:[463px] flex flex-col gap-3 hover:-translate-y-2  hover:scale-105 hover:bg-indigo-500 duration-500'
                       >
                         <Image
                           radius='sm'

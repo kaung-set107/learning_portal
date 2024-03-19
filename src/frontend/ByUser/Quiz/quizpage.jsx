@@ -10,7 +10,7 @@ import apiInstance from "../../../util/api";
 import ResultPage from "./result";
 // import Swal from 'sweetalert2';
 // import Result from './result'
-const QuizPage = ({ LMID, enrollID }) => {
+const QuizPage = ({ LMID, enrollID, batchID }) => {
   const a = ['a', 'b']
   const b = ['a', 'b', 'c']
   const [arr, setArr] = useState([]);
@@ -214,6 +214,7 @@ const QuizPage = ({ LMID, enrollID }) => {
       enrollment: enrollID,
       quiz: quizList._id,
       student: studentID,
+      batch: batchID,
       answerDate: Date.now(),
       updatedQuestions: quizList.questions.map((i) => {
         return {

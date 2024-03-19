@@ -226,7 +226,7 @@ export default function Home() {
                         <div
                           onClick={() => handleRoute(e)}
                           style={{ height: "470px" }}
-                          className='min-w:[490px]  flex flex-col gap-3 hover:-translate-y-1 hover:rotate-1 hover:scale-110 duration-500'
+                          className='min-w:[490px]  flex flex-col gap-3 hover:-translate-y-1  hover:scale-105 duration-500'
                         >
                           <div>
                             <Image
@@ -249,7 +249,7 @@ export default function Home() {
                                 style={{
                                   fontSize: "16px",
                                   fontWeight: "400px",
-                                  width: "500px",
+                                  width: "400px",
                                   height: "auto",
                                 }}
                               >

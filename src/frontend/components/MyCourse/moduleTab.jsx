@@ -68,7 +68,7 @@ const CourseDetail = (props) => {
   const [LMID, setLMID] = useState("");
   const [showQuiz, setShowQuiz] = useState(false);
   const [showModal, setShowModal] = useState(false)
-
+  const [batchID, setBatchID] = useState('')
   const upcomingMeeting = [{
     title: 'IELTs',
     date: '20-03-2024',
@@ -163,6 +163,17 @@ const CourseDetail = (props) => {
         setTeacherImage(Img);
       });
     };
+    const getEnrol = async () => {
+      await apiInstance.get("enrollments").then((res) => {
+        // console.log(
+        //   res.data.data.filter((el) => el._id === enrollID)[0].batch,
+        //   "c subject"
+        // );
+        setBatchID(res.data.data.filter((el) => el._id === enrollID)[0].batch)
+
+      });
+    };
+    getEnrol();
     getSubjects();
     // getCourseDetail();
   }, []);
@@ -492,7 +503,7 @@ const CourseDetail = (props) => {
                       <Tab title='Quiz' key='quiz'>
                         {/* Quiz Page */}
 
-                        <QuizPage LMID={LMID} enrollID={enrollID} />
+                        <QuizPage LMID={LMID} enrollID={enrollID} batchID={batchID} />
                       </Tab>
                       <Tab title='Class' key='class'>
 
