@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 // import { Link } from "@nextui-org/react";
 const TabValueComponent = ({ activeTabValue, detailData }) => {
-  console.log(detailData, "detail head");
-  console.log(activeTabValue, "activeTabValue head");
+  // console.log(detailData, "detail head");
+  // console.log(activeTabValue, "activeTabValue head");
   const [activeTab, setActiveTab] = useState(1);
   const handleTabClick = (tabNumber) => {
     setActiveTab(tabNumber);

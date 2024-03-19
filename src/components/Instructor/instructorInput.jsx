@@ -65,8 +65,8 @@ export default function EmployeeInput() {
       .then(function () {
         Swal.fire({
           icon: "success",
-          title: "Login Successful",
-          text: "Welcome back!",
+          title: "Created Successful",
+          text: "Nice!",
           confirmButtonText: "OK",
           confirmButtonColor: "#3085d6",
         });

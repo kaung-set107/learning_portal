@@ -27,6 +27,7 @@ export default function Login() {
   const [loading, setLoading] = useState("");
   const [arr, setArr] = useState([]);
   const [courseList, setCourseList] = useState([])
+  const [batchList, setBatchList] = useState([])
   const [showForgotPage, setShowForgotPage] = useState(false)
   const [showLoginPage, setShowLoginPage] = useState(true)
   const [showRegisterPage, setShowRegisterPage] = useState(false)
@@ -39,8 +40,20 @@ export default function Login() {
   const schoolRef = useRef(null);
   const dateRef = useRef(null);
   const phoneRef = useRef(null);
-  const courseRef = useRef(null);
+  // const courseRef = useRef(null);
+  const [course, setCourse] = useState('')
+  const [batch, setBatch] = useState('')
+  const [batchName, setBatchName] = useState('')
   const countryRef = useRef(null)
+
+  const handleCourse = (id) => {
+    setCourse(id)
+    setBatch(batchList.filter(el => el.course._id === id).filter(cl => cl.active === true)[0]._id)
+    setBatchName(batchList.filter(el => el.course._id === id).filter(cl => cl.active === true)[0].name)
+    // console.log(batchList.filter(el => el.course._id === id).filter(cl => cl.active === true)[0]._id, 'ress')
+  }
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = {
@@ -127,7 +140,8 @@ export default function Login() {
       birthDate: dateRef.current.value,
       educationBackground: eduRef.current.value,
       attendedHighSchool: schoolRef.current.value,
-      course: courseRef.current.value,
+      course: course,
+      batch: batch,
       desiredCountry: countryRef.current.value,
 
     };
@@ -164,11 +178,18 @@ export default function Login() {
         setCourseList(res.data.data)
       })
     }
+    const getBatches = async () => {
+      await apiInstance.get('batches').then((res) => {
+        // console.log(res.data.data, 'cou')
+        setBatchList(res.data.data)
+      })
+    }
+    getBatches()
     getCourse()
 
   }, [])
   //Handle Login API Integration here
-  console.log(arr, "dat");
+  // console.log(arr, "dat");
   const [isVisible, setIsVisible] = React.useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
@@ -194,16 +215,12 @@ export default function Login() {
       <div className='flex'>
         {/* Left Side */}
         <div className='hidden lg:flex' >
-          {/* <iframe
-            src={LoginVideo}
-            title="Embedded Content"
 
-          /> */}
 
           <video
             id="player"
             muted
-            autoplay="autoplay"
+            autoPlay="autoplay"
             className='object-cover  h-[650px] md:h-[750px]'
             loop
             src={LoginVideo}
@@ -342,14 +359,14 @@ export default function Login() {
         )}
         {/* Register Page */}
         {showRegisterPage && (
-          <div className='p-4 sm:p-8 flex flex-col'>
+          <div className='pl-10 pr-10  flex flex-col'>
 
             <div className=' flex flex-col pl-9 sm:pl-18 items-center gap-4 pt-4 sm:pt-6'>
               <span className=' text-[#262626] text-[18px] sm:text-[32px] font-semibold font-inter text-center'>Registration</span>
 
             </div>
             <div className='w-[350px] sm:w-[400px] md:w-[522px] h-[120px] pt-8 sm:pt-12'>
-              <form className='' onSubmit={handleRegisterCreate}>
+              <form onSubmit={handleRegisterCreate}>
                 <div className='flex flex-col w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
                   <div>
                     {/* <label className='flex justify-start text-[#5A5A5D] text-[14px] font-semibold'>Email</label> */}
@@ -456,7 +473,7 @@ export default function Login() {
                   <div>
                     <select
                       className="w-full p-3 border rounded-[12px] hover:border-gray-400 focus:border-gray-400"
-                      ref={courseRef}
+                      onChange={(e) => handleCourse(e.target.value)}
                     >
                       <option hidden>Select Course</option>
                       {courseList.map((item) => (
@@ -467,6 +484,12 @@ export default function Login() {
                     </select>
 
                   </div>
+                  {batch && (
+                    <div>
+                      <Input type='text' value={batchName} variant='bordered' />
+                    </div>
+                  )}
+
                 </div>
 
                 <div className='mt-1'>

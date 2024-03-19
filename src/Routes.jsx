@@ -47,6 +47,9 @@ import SubjectDetail from "./pages/Subject/subjectDetail";
 import LMDetail from "./frontend/pages/LearningMaterial/LMDetail";
 import LearningMaterialAdmin from "./components/Subject/learnigMaterialInput";
 import Chart from "./frontend/ByUser/PieChart.jsx";
+import Batch from './pages/Batch/batchList.jsx'
+import BatchCreate from './pages/Batch/batchInput.jsx'
+import BatchUpdate from './pages/Batch/batchUpdate.jsx'
 //assign update
 import AssignmentUpdate from "./frontend/pages/Assignment/AssignmentUpdate";
 import LMUpdate from "./frontend/components/LearningMaterial/LMUpdateInput";
@@ -143,6 +146,10 @@ export default function RouteFile() {
             <Route path='/course-add' element={<CourseAdd />}></Route>
             <Route path='/course-update/:id' element={<CourseUpdate />}></Route>
 
+            {/* Batch */}
+            <Route path='/batch' element={<Batch />}></Route>
+            <Route path='/batch-create' element={<BatchCreate />}></Route>
+            <Route path='/batch-update/:id' element={<BatchUpdate />}></Route>
             {/* Subject*/}
             <Route path='/subject' element={<Subject />}></Route>
             <Route path='/subject-add' element={<SubjectAdd />}></Route>
@@ -169,7 +176,7 @@ export default function RouteFile() {
                 <Route path=":id/brief" element={<SubjectBrief />} />
               </Route>
               <Route path='assignment-results'>
-                <Route index element={<AssignmentResults/>}/>
+                <Route index element={<AssignmentResults />} />
               </Route>
               {/* <Route path='/instructor' element={<InstructorHome />}></Route> */}
               {/* <Route path='/assign' element={<Assignment />}></Route> */}

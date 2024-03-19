@@ -37,13 +37,13 @@ export default function Home() {
     (el) => el._id === (courseId ? courseId : firstDefaultCourseId)
 
   );
-  console.log(filterSubList, "f i");
+  // console.log(filterSubList, "f i");
 
   const handleTabClick = (ind, enroll_Id, courseid) => {
     setCourseId(courseid);
     setActiveTab(ind);
     setEnrollId(enroll_Id)
-    console.log(enroll_Id, 'enr')
+    // console.log(enroll_Id, 'enr')
   };
 
   const handleSubjectDetail = (data, enrollID) => {

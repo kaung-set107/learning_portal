@@ -37,6 +37,8 @@ import {
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import MeetingModal from './newmeetingmodal'
+import CSV from '../../../assets/img/csv.png';
+import PPTX from '../../../assets/img/pptx.png';
 const CourseDetail = (props) => {
   // const time = new Date().toLocaleTimeString()
 
@@ -100,24 +102,26 @@ const CourseDetail = (props) => {
   const handleModal = () => {
     setShowModal(true)
   }
-  const download = (val) => {
+  const download = (i) => {
     // console.log(val, 'cv')
 
-    const file = getFile({ payload: val });
-    if (val.split('.')[1] === 'jpg' || val.split('.')[1] === 'png' || val.split('.')[1] === 'jpeg') {
-      var element = document.createElement("a");
-      element.href = URL.createObjectURL(file);
-      element.download = val;
-      element.click();
-    } else if (val.split('.')[1] === 'xlsx') {
-      // Create a download link
-      const xlsxLink = document.createElement('a');
-      xlsxLink.click();
-    } else {
-      const csvLink = document.createElement('a');
-      csvLink.click();
+    // const file = getFile({ payload: i });
+    var link = getFile({ payload: i })
+    var file = new Blob(
+      [
+        link,
+      ],
+      { type: "image/*" }
+    );
 
-    }
+    // if (val.split('.')[1] === 'jpg' || val.split('.')[1] === 'png' || val.split('.')[1] === 'jpeg') {
+    var element = document.createElement("a");
+
+    element.href = file;
+    element.download = `image.${i.originalname?.split('.')[1]}`;
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
 
   };
   const downloadPDF = (val) => {
@@ -126,7 +130,7 @@ const CourseDetail = (props) => {
 
     // Create a link element
     const link = document.createElement("a");
-    link.href = pdfUrl;
+    link.href = URL.createObjectURL(pdfUrl);
     link.download = "downloaded-file.pdf";
 
     // Append the link to the document
@@ -147,10 +151,10 @@ const CourseDetail = (props) => {
     // };
     const getSubjects = async () => {
       await apiInstance.get("subjects").then((res) => {
-        console.log(
-          res.data.data.filter((el) => el._id === examData._id)[0],
-          "c subject"
-        );
+        // console.log(
+        //   res.data.data.filter((el) => el._id === examData._id)[0],
+        //   "c subject"
+        // );
         const Filter = res.data.data.filter((el) => el._id === examData._id)[0];
         setTeacherName(Filter);
         const Img = getFile({
@@ -177,14 +181,14 @@ const CourseDetail = (props) => {
 
   const handleVideo = (data) => {
 
-    console.log(data, "heee");
+    // console.log(data, "heee");
     setLMID(data._id);
 
     setShowVideoList(JSON.parse(data.video));
     setShowDocumentList(data.assets);
-    console.log(data.assets, "document");
+    // console.log(data.assets, "document");
     setLMDataList(data);
-    console.log(data, 'lm da')
+    // console.log(data, 'lm da')
     setShowVideo(true);
   };
 
@@ -383,7 +387,7 @@ const CourseDetail = (props) => {
                                     onClick={
                                       i.originalname?.split(".")[1] === "pdf"
                                         ? () => downloadPDF(i)
-                                        : () => download(i.originalname)
+                                        : () => download(i)
                                     }>
                                     <Image
                                       radius="sm"
@@ -393,7 +397,9 @@ const CourseDetail = (props) => {
                                         i.originalname?.split(".")[1] === "pdf"
                                         && PdfPhoto ||
                                         (i.originalname?.split(".")[1] === "xlsx")
-                                        && ExcelPhoto ||
+                                        && ExcelPhoto || (i.originalname?.split(".")[1] === "csv")
+                                        && CSV || (i.originalname?.split(".")[1] === "pptx")
+                                        && PPTX ||
                                         (i.originalname?.split(".")[1] === "png" || "jpg" || "jpeg") && getFile({ payload: i })
                                       }
                                     />

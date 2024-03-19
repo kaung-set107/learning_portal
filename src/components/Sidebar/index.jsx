@@ -157,27 +157,7 @@ export default function Sidebar(props) {
                   }
                 >
                   <Divider></Divider>
-                  <Link to='/instru'>
-                    <div
-                      onClick={() => setInc(true)}
-                      className='hover:bg-blue-100 px-4 py-3 m-auto text-sm '
-                    >
-                      {/* <FontAwesomeIcon icon={faCircleQuestion} size='xl' /> */}
-                      &nbsp;&nbsp;
-                      <span className='ml-3 font-medium'>Instructor</span>
-                    </div>
-                  </Link>
-                </AccordionItem>
-              </Accordion>
-              <Divider></Divider>
-              <Accordion>
-                <AccordionItem
-                  key='1'
-                  aria-label='Accordion 1'
-                  title='Master'
-                  startContent={<FontAwesomeIcon icon={faUserGear} size='xl' />}
-                >
-                  <Divider></Divider>
+
                   <Link to='/category'>
                     <div className='hover:bg-blue-100 px-4 py-3 m-auto text-sm'>
                       {/* <FontAwesomeIcon icon={faLaptopFile} size='xl' /> */}
@@ -199,9 +179,58 @@ export default function Sidebar(props) {
                     <div className='hover:bg-blue-100 px-4 py-3 m-auto text-sm'>
                       {/* <FontAwesomeIcon icon={faBook} size='xl' /> */}
                       &nbsp;&nbsp;
-                      <span className='ml-4 font-medium'>Subjects</span>
+                      <span className='ml-3 font-medium'>Subjects</span>
                     </div>
                   </Link>
+                  <Divider></Divider>
+                  <Link to='/batch'>
+                    <div className='hover:bg-blue-100 px-4 py-3 m-auto text-sm'>
+                      {/* <FontAwesomeIcon icon={faBook} size='xl' /> */}
+                      &nbsp;&nbsp;
+                      <span className='ml-3 font-medium'>Batch</span>
+                    </div>
+                  </Link>
+                </AccordionItem>
+              </Accordion>
+              <Divider></Divider>
+              <Accordion>
+                <AccordionItem
+                  key='1'
+                  aria-label='Accordion 1'
+                  title='Master'
+                  startContent={<FontAwesomeIcon icon={faUserGear} size='xl' />}
+                >
+                  <Divider></Divider>
+                  <Link to='/instru'>
+                    <div
+                      onClick={() => setInc(true)}
+                      className='hover:bg-blue-100 px-4 py-3 m-auto text-sm '
+                    >
+                      {/* <FontAwesomeIcon icon={faCircleQuestion} size='xl' /> */}
+                      &nbsp;&nbsp;
+                      <span className='ml-3 font-medium'>Instructor</span>
+                    </div>
+                  </Link>
+
+                  <Divider></Divider>
+                  <Link to='/event'>
+                    <div className='hover:bg-blue-100 px-4 py-3 m-auto text-sm'>
+                      {/* <FontAwesomeIcon icon={faLaptopFile} size='xl' /> */}
+                      &nbsp;
+                      <span className='ml-4 font-medium '>Event</span>
+                    </div>
+                    <Divider></Divider>
+                  </Link>
+
+                  <Link to='/testimonial'>
+                    <div className='hover:bg-blue-100 px-4 py-3 m-auto text-sm'>
+                      {/* <FontAwesomeIcon icon={faLaptopFile} size='xl' /> */}
+                      &nbsp;
+                      <span className='ml-4 font-medium '>Testimonial</span>
+                    </div>
+
+                  </Link>
+
                 </AccordionItem>
               </Accordion>
               <Divider></Divider>
@@ -225,7 +254,7 @@ export default function Sidebar(props) {
               </Accordion>
               <Divider></Divider>
 
-                <h3 className="my-3 text-xl font-bold">Instructor</h3>
+              <h3 className="my-3 text-xl font-bold">Instructor</h3>
               {/* instructor sidebar */}
               <Accordion>
                 <AccordionItem

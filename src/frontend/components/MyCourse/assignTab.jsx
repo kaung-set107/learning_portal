@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Tabs, Tab, Input, Button, Image } from "@nextui-org/react";
+import { Tabs, Tab, Input, Button, Image, Spinner } from "@nextui-org/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFireFlameCurved, faStar, faCheck, faImage
@@ -11,10 +11,14 @@ import { getFile } from "../../../util";
 import ExcelPhoto from "../../ByInstructor/images/excel.png";
 import PdfPhoto from "../../ByInstructor/images/pdf.png";
 import CSV from '../../../assets/img/csv.png';
+import PPTX from '../../../assets/img/pptx.png';
+import DOCX from '../../../assets/img/docx.png';
 import apiInstance from "../../../util/api";
 export default function App() {
   const variant = 'bordered'
   const location = useLocation()
+  const LoginStudentID = localStorage.getItem('id')
+
   const assignmentList = location.state.data.assignments
   const courseId = location.state.data.course
   const enrollID = location.state.enroll_id;
@@ -22,18 +26,13 @@ export default function App() {
   const [checkedList, setCheckedList] = useState([])
   const [image, setImage] = useState("");
   const [studentID, setStudentID] = useState('')
+  const [batchID, setBatchID] = useState('')
+
   // console.log(assignmentList.map((i) => (i._id)), ' assign')
-  // console.log(assignmentList, 'student assign')
+  // console.log(LoginStudentID, 'student id')
   const download = () => {
     var element = document.createElement("a");
-    var file = new Blob(
-      [
-        "",
-      ],
-      { type: "image/*" }
-    );
-    element.href = URL.createObjectURL(file);
-    element.download = "image.jpg";
+    // link.download = "image";
     element.click();
   };
   const downloadPDF = (val) => {
@@ -57,29 +56,35 @@ export default function App() {
 
   useEffect(() => {
     const getStudentId = async () => {
-      apiInstance.get('enrollments').then(res =>
+      apiInstance.get('enrollments').then(res => {
         setStudentID(res.data.data.filter(el => el.course._id === courseId)[0].student)
+        setBatchID((res.data.data.filter(el => el.course._id === courseId)[0].student === LoginStudentID) ? (res.data.data.filter(el => el.course._id === courseId)[0].batch) : (''))
+        // console.log((res.data.data.filter(el => el.course._id === courseId)[0].student === LoginStudentID) ? (res.data.data.filter(el => el.course._id === courseId)[0].batch) : (''), 'hee')
+      }
+
+
+
 
       )
     }
 
     const getAssignRes = async () => {
       apiInstance.get('assignment-results').then(res => {
-        console.log(studentID, 'lll ')
-        const CompleteStatusAssign = res.data.data.filter(el => el.status === "submitted")
-        const CheckedStatusAssign = res.data.data.filter(el => el.status === "checked")
-        console.log(CheckedStatusAssign, 'stttututtu')
+        // console.log(studentID, 'lll ')
+        // const CompleteStatusAssign = res.data.data.filter(el => el.status === "submitted")
+        // const CheckedStatusAssign = res.data.data.filter(el => el.status === "checked")
+        console.log(res.data.data.filter(el => el.status === "published"), 'stttututtu')
 
-        setCompleteList(CompleteStatusAssign.filter(el => el.student._id === studentID).filter(el => el.assignment !== null))
-        setCheckedList(CheckedStatusAssign.filter(el => el.student._id === studentID).filter(el => el.assignment !== null))
-        // console.log(CheckedStatusAssign.filter(el => el.student._id === studentID).filter(el => el.assignment !== null), 'check')
+        setCompleteList(res.data.data.filter(el => el.status === "submitted").filter(el => el.student._id === studentID).filter(el => el.assignment !== null))
+        setCheckedList(res.data.data.filter(el => el.status === "published").filter(el => el.student._id === studentID).filter(el => el.assignment !== null))
+        console.log(res.data.data.filter(el => el.status === "published").filter(el => el.student._id === studentID).filter(el => el.assignment !== null), 'check')
       }
 
       )
     }
     getStudentId()
     getAssignRes()
-  }, [])
+  }, [completeList, checkedList])
 
   const handleImage = (e) => {
     if (e.target.files) {
@@ -94,7 +99,7 @@ export default function App() {
     formData.append("submissionDate", Date.now());
     formData.append("student", studentID);
     formData.append("enrollment", enrollID);
-    formData.append("batch", '65f411f1fc0365898130c59f');
+    formData.append("batch", batchID);
 
     apiInstance
       .post("assignment-results", formData, {
@@ -129,7 +134,7 @@ export default function App() {
             </div>
           }
         >
-          <div className='flex flex-col pt-10 w-[1560px] h-[204px] pl-10 pb-8 pr-10'>
+          <div className='flex flex-col justify-start pt-10 w-[1560px] h-[204px] pl-10 pb-8 pr-10'>
             {assignmentList.map((item, index) => (
 
               <div className='grid grid-cols-3 bg-[#215887]   p-12  border-4 border-l-red-500 ' key={item._id}>
@@ -157,7 +162,7 @@ export default function App() {
                     {/* {item.assets.map((i) => (
                       <> */}
 
-                    {item.question ? (<div className="sm:flex justify-start gap-5">
+                    {item.question ? (<div className="sm:flex justify-start">
                       <a
                         href={getFile({ payload: item.question })}
                         onClick={
@@ -171,14 +176,21 @@ export default function App() {
                           className="object-cover w-[40px] h-[40px]"
                           src={
                             item?.question.originalname?.split(".")[1] === "pdf"
-                              ? PdfPhoto
-                              : item?.question.originalname?.split(".")[1] === "xlsx"
-                                ? ExcelPhoto
-                                : getFile({ payload: item?.question })
+                            && PdfPhoto
+                            || item?.question.originalname?.split(".")[1] === "xlsx"
+                            && ExcelPhoto ||
+                            item?.question.originalname?.split(".")[1] === "csv"
+                            && CSV ||
+                            item?.question.originalname?.split(".")[1] === "docx"
+                            && DOCX ||
+                            item?.question.originalname?.split(".")[1] === "pptx"
+                            && PPTX ||
+                            getFile({ payload: item?.question })
                           }
                         />
+                        <b className="text-[16px] text-[#4b4eff] font-semibold mt-3">{item?.question.originalname}</b>
                       </a>
-                      <b className="text-[16px] text-[#4b4eff] font-semibold mt-3">{item?.question.originalname}</b>
+
                     </div>) : ''}
 
                     {/* </>
@@ -215,6 +227,7 @@ export default function App() {
 
         </Tab>
 
+
         <Tab
           key="com"
           title={
@@ -224,9 +237,10 @@ export default function App() {
             </div>
           }
         >
-          {completeList.map((item, index) => (
-            <div className='flex flex-col gap-5 w-[1560px] h-[204px] pt-8 pl-10 pb-8 pr-10' key={item._id}>
-              <div className='grid grid-cols-3 bg-[#215887]   p-12  border-4 border-l-red-500 '>
+          <div className='flex flex-col justify-start pt-10 w-[1560px] h-[204px] pl-10 pb-8 pr-10' >
+            {completeList.map((item, index) => (
+
+              <div className='grid grid-cols-3 bg-[#215887]   p-12  border-4 border-l-red-500 ' key={item._id}>
                 <div className='flex justify-center text-[24px] text-[#fff] font-semibold items-center'>Assignment</div>
                 {
                   item.assignment !== null && (<div className='flex flex-col gap-2 justify-start'>
@@ -266,10 +280,13 @@ export default function App() {
                             className="object-cover w-[40px] h-[40px]"
                             src={
                               item?.assignment.question.originalname?.split(".")[1] === "pdf"
-                                ? PdfPhoto
-                                : item?.assignment.question.originalname?.split(".")[1] === "xlsx"
-                                  ? ExcelPhoto
-                                  : getFile({ payload: item?.assignment.question })
+                              && PdfPhoto
+                              || item?.assignment.question.originalname?.split(".")[1] === "xlsx"
+                              && ExcelPhoto || item?.assignment.question.originalname?.split(".")[1] === "csv"
+                              && CSV || item?.assignment.question.originalname?.split(".")[1] === "pptx"
+                              && PPTX || item?.assignment.question.originalname?.split(".")[1] === "docx"
+                              && DOCX
+                              || getFile({ payload: item?.assignment.question })
                             }
                           />
                         </a>
@@ -288,10 +305,11 @@ export default function App() {
 
                 </div>
               </div>
-            </div>
-          ))}
 
+            ))}
+          </div>
         </Tab>
+
         <Tab
           key="videos"
           title={
@@ -301,10 +319,10 @@ export default function App() {
             </div>
           }
         >
+          <div className='flex flex-col justify-start pt-10 w-[1560px] h-[204px] pl-10 pb-8 pr-10' >
+            {checkedList.map((item, index) => (
 
-          {checkedList.map((item, index) => (
-            <div className='flex flex-col gap-5 w-[1560px] h-[204px] pt-8 pl-10 pb-8 pr-10' key={item._id}>
-              <div className='grid grid-cols-3 bg-[#215887]   p-12  border-4 border-l-red-500 '>
+              <div className='grid grid-cols-3 bg-[#215887]   p-12  border-4 border-l-red-500 ' key={item._id}>
                 <div className='flex justify-center text-[24px] text-[#fff] font-semibold items-center'>Assignment</div>
                 {item.assignment !== null && (
                   <div className='flex flex-col gap-2 justify-start'>
@@ -382,7 +400,9 @@ export default function App() {
                           && PdfPhoto
                           || item?.checkedFile.originalname?.split(".")[1] === "xlsx"
                           && ExcelPhoto || item?.checkedFile.originalname?.split(".")[1] === "csv"
-                          && CSV
+                          && CSV || item?.checkedFile.originalname?.split(".")[1] === "docx"
+                          && DOCX || item?.checkedFile.originalname?.split(".")[1] === "pptx"
+                          && PPTX
                           || getFile({ payload: item?.checkedFile })
                         }
                       />
@@ -393,11 +413,11 @@ export default function App() {
                     I checked it and your Grade is <b>{item.grade}</b>.My remark is <b>{item.remark}</b>. </div>
                 </div>
               </div>
-            </div>
-          ))}
 
-        </Tab>
-      </Tabs>
-    </div>
+            ))}
+          </div>
+        </Tab >
+      </Tabs >
+    </div >
   );
 }

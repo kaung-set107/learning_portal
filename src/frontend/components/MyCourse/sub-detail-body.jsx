@@ -25,7 +25,7 @@ const AddBody = ({ subData }) => {
     setActiveTab(tabNumber);
   };
   const location = useLocation();
-  console.log(location.state?.data, "body");
+  // console.log(location.state?.data, "body");
 
   const SubData = location.state?.data;
   //   console.log(SubData, "dat");
