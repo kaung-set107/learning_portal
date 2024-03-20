@@ -43,7 +43,11 @@ const SubjectBrief = () => {
     }
 
     const goToResult = (data) => {
-        navigate('/by-instructor/assignment-results', {state: {assignment: data, subject: subject.data}})
+        navigate('/by-instructor/assignment-results', { state: { assignment: data, subject: subject.data } })
+    }
+
+    const goToLearningMaterials = (data) => {
+        navigate('/by-instructor/learning-materials', { state: { subjectSection: data.subjectSection, subject: subject.data } })
     }
 
 
@@ -154,6 +158,7 @@ const SubjectBrief = () => {
                                                 return (
                                                     <div key={section._id} className="p-3 border rounded-xl mb-3 relative">
                                                         <div className="flex gap-3 absolute right-2 top-2">
+                                                            <CustomButton size="sm" onClick={() => goToLearningMaterials({subjectSection: section})} color="primary" title="Learning Materials" />
                                                             <SubjectSectionUpdateModal subjectId={id} subjectSectionData={section} successCallback={getSubject} />
                                                             <CustomButton size="sm" onClick={() => handleSubjectSectionDelete(section._id)} color="danger" isLoading={isSubmitting} title="Delete" />
                                                         </div>

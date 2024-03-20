@@ -50,7 +50,13 @@ export const getFormData = (src) => {
   let formData = new FormData();
 
   for (const pair of Object.entries(src)) {
-    formData.append(pair[0], pair[1]);
+    if(Array.isArray(pair[1])) {
+      pair[1].map(each => {
+        formData.append(pair[0], each);
+      })
+    } else {
+      formData.append(pair[0], pair[1]);
+    }
   }
 
   return formData

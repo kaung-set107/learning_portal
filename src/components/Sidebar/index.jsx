@@ -277,6 +277,12 @@ export default function Sidebar(props) {
                       <span className='ml-4 font-medium '>Assignment Results</span>
                     </div>
                   </Link>
+                  <Link to='/by-instructor/learning-materials' onClick={() => setCou(true)}>
+                    <div className='hover:bg-blue-100 px-4 py-3 m-auto text-sm'>
+                      &nbsp;
+                      <span className='ml-4 font-medium '>Learning Materials</span>
+                    </div>
+                  </Link>
                 </AccordionItem>
               </Accordion>
               <Divider></Divider>

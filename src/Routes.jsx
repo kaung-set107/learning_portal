@@ -72,6 +72,8 @@ import InstructorLayout from "./frontend/components/layouting/InstructorLayout.j
 import Subjects from "./frontend/features/subjects/pages/Subjects.jsx";
 import SubjectBrief from "./frontend/features/subjects/pages/SubjectBrief.jsx";
 import AssignmentResults from "./frontend/features/assignment-results/pages/AssignmentResults.jsx";
+import LearningMaterials from "./frontend/features/learning-materials/pages/LearningMaterials.jsx";
+import LearningMaterialBrief from "./frontend/features/learning-materials/pages/LearningMaterialBrief.jsx";
 export default function RouteFile() {
   console.log(localStorage.getItem("user"), "local use");
   return (
@@ -177,6 +179,10 @@ export default function RouteFile() {
               </Route>
               <Route path='assignment-results'>
                 <Route index element={<AssignmentResults />} />
+              </Route>
+              <Route path='learning-materials'>
+                <Route index element={<LearningMaterials />} />
+                <Route path=":id/brief" element={<LearningMaterialBrief />} />
               </Route>
               {/* <Route path='/instructor' element={<InstructorHome />}></Route> */}
               {/* <Route path='/assign' element={<Assignment />}></Route> */}
