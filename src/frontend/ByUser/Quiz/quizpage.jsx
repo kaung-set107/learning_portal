@@ -54,12 +54,12 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
   const [final, setFinal] = useState('')
 
   const [studentAnswerList, setStudentAnswerList] = useState([]);
-  console.log(trueAnswerList, 'true ori');
+  // const arrList = [...arr, trueAnswerList.filter((el) => el.id === quizList.questions[counter]._id)[1]]
+  console.log([...arr, trueAnswerList.filter((el) => el.id === quizList.questions[counter]._id)[1]], 'true ori');
 
 
   // console.log(trueAns, 'fix true');
-  const TotalMark = trueAnswerList
-    .map((i) => i.markTotal)
+  const TotalMark = trueAnswerList.map((i) => i.markTotal)
     .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
   console.log(TotalMark, "time");
   const displayCorrect = (correct) => {
@@ -145,7 +145,7 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
   };
 
   const nextQuestion = (studentAnswer, cas, ind) => {
-    console.log(quizList.questions[counter].correctAnswer === cas, 'cas')
+    // console.log(quizList.questions[counter].correctAnswer === cas, 'cas')
 
 
     // console.log(caList, 'caList')
@@ -161,8 +161,8 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
 
       const correctList = cas?.map((i) => (parseInt(i))) //To change Int in array's items
 
-      let answerObj = correctList.every(item => studentAnswerList.includes(item))  // To know two arrays's items same?
-      // console.log(answerObj, 'answerobj multi')
+      let answerObj = correctList.every(item => studentAnswerList.filter((el) => el.id === quizList.questions[counter]._id)[1].studentAnswer.slice(-2).includes(item))  // To know two arrays's items same?
+      // console.log(correctList.every(item => studentAnswerList.filter((el) => el.id === quizList.questions[counter]._id)[1].studentAnswer.slice(-2).includes(item)), 'slice in next')
 
 
       let updated_points = answerObj ? points + 1 : points;       // If we true,we increase mark
@@ -206,7 +206,7 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
 
   const handleResult = () => {
 
-    console.log(studentAnswerList, 'studentAnswerList');
+    // console.log(studentAnswerList, 'studentAnswerList');
 
     // console.log(studentAnswerList.filter(el => quizList.questions.find(i => i._id === el.id)), 'studentAnswerList')
     //Quiz-Result Create
@@ -226,12 +226,11 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
           answerType: i.answerType,
           correctAnswer: i.correctAnswer,
           studentAnswer: i.type === 'trueFalse' ? studentAnswerList.filter((el) => el.id === i._id)[0]
-            ?.studentAnswer : studentAnswerList.filter((el) => el.id === i._id)[1]
-            ?.studentAnswer,
+            ?.studentAnswer : studentAnswerList.filter((el) => el.id === i._id)[1].studentAnswer.slice(-2),
         };
       }),
-      totalMark: TotalMark,
-      status: TotalMark >= quizList.passMark ? "pass" : "fail",
+      totalMark: quizList.questions[counter].type === 'trueFalse' ? TotalMark : points,
+      status: TotalMark >= quizList.questions[counter].type === 'trueFalse' ? (TotalMark >= quizList.passMark ? "pass" : "fail") : (points >= quizList.passMark ? "pass" : "fail"),
     };
     // alert(JSON.stringify(data));
     apiInstance
@@ -252,17 +251,17 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
 
   const handleCheckboxSelect = (event, index, data, correct, counter, mark, counterId) => {
     setIndex(index);
-    // console.log(index, 'll')
+    // console.log(correct, 'll')
 
     if (event.target.checked) {
       const multi = [...multiAns, index + 1]
       setMultiAns(multi);
       // We get answer with index no
-      console.log(multi, 'multi ans list')
+      // console.log(multi, 'multi ans list')
 
       const correctList = correct.map((i) => (parseInt(i)))
-      console.log(correctList, 'corr ans list')
-      console.log(correctList.every(item => multi.includes(item)), 'true?')
+      // console.log(correctList, 'corr ans list')
+      // console.log(correctList.every(item => multi.includes(item)), 'true?')
 
       if (correctList.every(item => multi.includes(item))) {
         // setStudentAnswer(val + 1)
@@ -282,7 +281,7 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
 
         setTrueAnswerList(newFormSubmissions);
 
-        console.log(newFormSubmissions, 'new')
+        // console.log(newFormSubmissions, 'setTrueAnswerList')
         // console.log(quiz.questions.filter(el=>el.correctAnswer === val+1))
         setIsCorrect("Correct");
       } else {
@@ -290,34 +289,19 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
         setIsCorrect("incorrect");
       }
 
-      // const newFormSubmissionsforStudentAnswer = [...studentAnswerList];
-      // console.log(multi, 'last')
-      // newFormSubmissionsforStudentAnswer.push({ studentAnswer: multi, id: counterId });
-
-      // localStorage.setItem(
-      //   "studentformSubmission",
-      //   JSON.stringify(newFormSubmissionsforStudentAnswer)
-      // );
-
-      console.log(multi, ',ul')
-
       // Create the main array and push the sub-arrays into it
       const mainArray = [...studentAnswerList, ...[{ studentAnswer: multi, id: counterId }]];
 
 
-      console.log(mainArray, 'final final')
+      // console.log(mainArray, 'final final')
       setStudentAnswerList(mainArray);
     } else {
       // setMultiAns(multiAns.filter((el, index) => (el.res === index + 1)))
       const multi = multiAns.filter(data => data !== counterId)
       setMultiAns(multi)
 
-      console.log(multi, 'ma tu tar')
+      // console.log(multi, 'ma tu tar')
     }
-
-
-    // setSelectedItem(multiAns.map((i, ind) => (ind)))
-    // console.log(multiAns.map((i, ind) => (ind)))
 
   }
 
@@ -328,11 +312,11 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
     setIndex(val);
 
 
-    console.log('hello', [...multiAns, studentChoose]);
+    // console.log('hello', [...multiAns, studentChoose]);
 
 
     const TrueFalseAns = [...arr, val + 1] // to get student's index choose value with array list style
-    console.log(TrueFalseAns, 'studentChoose list')
+    // console.log(TrueFalseAns, 'studentChoose list')
 
 
     // console.log(multiAnswerList, 'mul list')

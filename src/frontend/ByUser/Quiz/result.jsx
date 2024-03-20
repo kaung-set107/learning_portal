@@ -182,7 +182,7 @@ export default function Result() {
                   Completed on
                 </span>
                 <span className='text-[20px] text-[#000] font-bold'>
-                  Monday, 6 November 2023, 6:34 PM
+                  {formattedDateTime?.split("GMT")[0]}
                 </span>
               </div>
               {/* 4 */}
@@ -223,11 +223,11 @@ export default function Result() {
                     10
                   )?.toFixed(2)}{" "}
                   out of 10.00 (
-                  {(quizResult.totalMark /
+                  {Math.round((quizResult.totalMark /
                     quizList
                       .filter((el) => el._id === quizID)
                       .map((i) => i.totalMark)) *
-                    100}
+                    100)}
                   %)
                 </span>
               </div>
@@ -321,6 +321,7 @@ export default function Result() {
                 style={{ padding: "24px 16px 24px 72px" }}
                 id={i._id.slice(-2)}
               >
+                {console.log(i.studentAnswer.map((i) => (parseInt(i)))[0] - 1, 'stu')}
                 <div>
                   <Card
                     className='flex justify-start mt-5 p-[24px] border-1 border-[#10C278] rounded-[12px]'
@@ -352,7 +353,7 @@ export default function Result() {
                             <label>
                               <span
                                 className={
-                                  parseInt(i.studentAnswer) - 1 === index
+                                  i.studentAnswer.map((i) => (parseInt(i)))[0] - 1 === index || i.studentAnswer.map((i) => (parseInt(i)))[1] - 1 === index
                                     ? "text-[#00C853]"
                                     : "text-[#d6d3d3]"
                                 }
@@ -363,7 +364,7 @@ export default function Result() {
                               &nbsp;
                               <span
                                 className={
-                                  parseInt(i.studentAnswer) - 1 === index
+                                  i.studentAnswer.map((i) => (parseInt(i)))[0] - 1 === index || i.studentAnswer.map((i) => (parseInt(i)))[1] - 1 === index
                                     ? "text-[#00C853]"
                                     : "text-[#d6d3d3]"
                                 }
@@ -415,7 +416,7 @@ export default function Result() {
                               <FontAwesomeIcon
                                 icon={faCircleXmark}
                                 className={
-                                  parseInt(i.studentAnswer) - 1 === index
+                                  i.studentAnswer.map((i) => (parseInt(i)))[0] - 1 === index || i.studentAnswer.map((i) => (parseInt(i)))[1] - 1 === index
                                     ? "text-[red]"
                                     : "text-[#d6d3d3]"
                                 }
@@ -423,7 +424,7 @@ export default function Result() {
                               &nbsp;
                               <span
                                 className={
-                                  parseInt(i.studentAnswer) - 1 === index
+                                  i.studentAnswer.map((i) => (parseInt(i)))[0] - 1 === index || i.studentAnswer.map((i) => (parseInt(i)))[1] - 1 === index
                                     ? "text-[red]"
                                     : "text-[#d6d3d3]"
                                 }

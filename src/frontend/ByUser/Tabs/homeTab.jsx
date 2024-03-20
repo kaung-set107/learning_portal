@@ -30,14 +30,14 @@ export default function Home() {
   const [courseId, setCourseId] = useState("");
   const [filterId, setFilterId] = useState([]);
   const enr_id = myCourseList[0]?._id
-  console.log(enr_id, 'my')
+  // console.log(enr_id, 'my')
   const [enrollId, setEnrollId] = useState(enr_id)
 
   const filterSubList = filterId.filter(
     (el) => el._id === (courseId ? courseId : firstDefaultCourseId)
 
   );
-  // console.log(filterSubList, "f i");
+  console.log(filterSubList, "f i");
 
   const handleTabClick = (ind, enroll_Id, courseid) => {
     setCourseId(courseid);
@@ -47,7 +47,7 @@ export default function Home() {
   };
 
   const handleSubjectDetail = (data, enrollID) => {
-    console.log(data, 'hee hee')
+    // console.log(data, 'hee hee')
     navigate("/mycourse-sub-detail", { state: { data: data, enroll_id: handleTabClick() ? enrollID : enr_id } });
     // navigate("/mycourse-sub-detail/2", { state: { data: data } });
   };
@@ -78,7 +78,7 @@ export default function Home() {
 
     const getEnrollment = async () => {
       await apiInstance.get(`enrollments`).then((res) => {
-        console.log(res.data.data.filter((el) => el.student === StudentId), "enroll id");
+        console.log(res.data.data, "first id");
 
         setFirstDefaultCourseId(
           res.data.data.filter((el) => el.student === StudentId)[0].course._id
@@ -98,7 +98,7 @@ export default function Home() {
     getEnrollment();
 
     getAssign();
-  }, [firstDefaultCourseId]);
+  }, [firstDefaultCourseId, StudentId]);
 
 
   return (
