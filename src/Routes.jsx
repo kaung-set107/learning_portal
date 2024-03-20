@@ -36,6 +36,9 @@ import StudentNo from "./frontend/ByUser/index";
 import MyCourseSubDetail from "./frontend/components/MyCourse/index.jsx";
 import MyCourseSubDetailID from "./frontend/components/MyCourse/index.jsx";
 
+// EntranceTestPage
+import EntranceTestPage from './frontend/ByUser/Quiz/entranceTest.jsx'
+
 import InstructorHome from "./frontend/ByInstructor/home";
 import LearningMaterial from "./frontend/pages/LearningMaterial/LMAdd";
 import Assignment from "./frontend/components/Assignment/AssignInput";
@@ -245,6 +248,9 @@ export default function RouteFile() {
             {/* Quiz Student */}
             <Route path='/quiz-page/:id' element={<QuizPage />}></Route>
             <Route path='/quiz-result' element={<QuizResult />}></Route>
+
+            {/* Placement Test */}
+            <Route path='/entranceTest-page' element={<EntranceTestPage />}></Route>
           </Route>
 
           {/* Exam */}

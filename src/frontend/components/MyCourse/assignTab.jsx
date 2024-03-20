@@ -31,9 +31,18 @@ export default function App() {
   // console.log(assignmentList.map((i) => (i._id)), ' assign')
   // console.log(LoginStudentID, 'student id')
   const download = () => {
-    var element = document.createElement("a");
-    // link.download = "image";
-    element.click();
+    const file = getFile({ payload: i });
+
+    if (file) {
+      const url = URL.createObjectURL(file);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = file.originalname;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
   };
   const downloadPDF = (val) => {
     // Replace 'your-pdf-file.pdf' with the actual file path or URL
@@ -168,7 +177,7 @@ export default function App() {
                         onClick={
                           item?.question.originalname?.split(".")[1] === "pdf"
                             ? () => downloadPDF(item.question)
-                            : () => download()
+                            : download
                         }>
                         <Image
                           radius="sm"
@@ -272,7 +281,7 @@ export default function App() {
                           onClick={
                             item?.assignment.question.originalname?.split(".")[1] === "pdf"
                               ? () => downloadPDF(item?.assignment.question)
-                              : () => download()
+                              : download
                           }>
                           <Image
                             radius="sm"
@@ -354,7 +363,7 @@ export default function App() {
                           onClick={
                             item?.assignment.question.originalname?.split(".")[1] === "pdf"
                               ? () => downloadPDF(item?.assignment.question)
-                              : () => download()
+                              : download
                           }>
                           <Image
                             radius="sm"
@@ -389,7 +398,7 @@ export default function App() {
                       onClick={
                         item?.checkedFile.originalname?.split(".")[1] === "pdf"
                           ? () => downloadPDF(item?.checkedFile)
-                          : () => download()
+                          : download
                       }>
                       <Image
                         radius="sm"

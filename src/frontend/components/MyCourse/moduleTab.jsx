@@ -102,26 +102,18 @@ const CourseDetail = (props) => {
   const handleModal = () => {
     setShowModal(true)
   }
-  const download = (i) => {
-    // console.log(val, 'cv')
+  const download = () => {
+    const file = getFile({ payload: i });
 
-    // const file = getFile({ payload: i });
-    var link = getFile({ payload: i })
-    var file = new Blob(
-      [
-        link,
-      ],
-      { type: "image/*" }
-    );
-
-    // if (val.split('.')[1] === 'jpg' || val.split('.')[1] === 'png' || val.split('.')[1] === 'jpeg') {
-    var element = document.createElement("a");
-
-    element.href = file;
-    element.download = `image.${i.originalname?.split('.')[1]}`;
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
+    if (file) {
+      const url = URL.createObjectURL(file);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = file.originalname;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
 
   };
   const downloadPDF = (val) => {
@@ -398,7 +390,7 @@ const CourseDetail = (props) => {
                                     onClick={
                                       i.originalname?.split(".")[1] === "pdf"
                                         ? () => downloadPDF(i)
-                                        : () => download(i)
+                                        : download
                                     }>
                                     <Image
                                       radius="sm"

@@ -14,6 +14,8 @@ import Edu from "../../../assets/img/edu.jpg";
 import EduRes from "../../../assets/img/edures.jpg";
 import Course from "../../../assets/img/course.jpg";
 import { Fade } from "react-awesome-reveal";
+import EntranceTestPage from "../Quiz/entranceTest";
+import { Link, useNavigate } from "react-router-dom";
 export default function MyprofileTab() {
   const variant = 'bordered'
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -21,6 +23,9 @@ export default function MyprofileTab() {
   const handleTabClick = (tabNumber) => {
     setActiveTab(tabNumber);
   };
+
+
+  const navigate = useNavigate()
   const StudentId = localStorage.getItem("id");
   console.log(StudentId, "stu id");
   const [student, setStudent] = useState([]);
@@ -31,13 +36,16 @@ export default function MyprofileTab() {
   const [filterId, setFilterId] = useState([]);
   const [placeactiveTab, setPlaceActiveTab] = useState(0);
   const [courseId, setCourseId] = useState("");
-  const enr_id = myCourseList[0]?._id
+  const [batchId, setBatchId] = useState('')
+  const [entranceID, setEntranceID] = useState('')
+  // const enr_id = myCourseList[0]?._id
   // console.log(enr_id, 'my')
-  const [enrollId, setEnrollId] = useState(enr_id)
+  const [enrollId, setEnrollId] = useState('')
   const filterSubList = filterId.filter(
     (el) => el._id === (courseId ? courseId : firstDefaultCourseId)
 
   );
+
 
   const handlePlaceTabClick = (ind, enroll_Id, courseid) => {
     setCourseId(courseid);
@@ -65,7 +73,8 @@ export default function MyprofileTab() {
     const getEnrollment = async () => {
       await apiInstance.get(`enrollments`).then((res) => {
         console.log(res.data.data, "first id");
-
+        setBatchId(res.data.data.filter((el) => el.student === StudentId)[0].batch)
+        setEnrollId(res.data.data.filter((el) => el.student === StudentId)[0]._id)
         setFirstDefaultCourseId(
           res.data.data.filter((el) => el.student === StudentId)[0].course._id
         );
@@ -101,6 +110,12 @@ export default function MyprofileTab() {
       document.body.removeChild(link);
     }
   };
+
+  const handleEntrance = (e) => {
+
+    navigate("/entranceTest-page", { state: { entranceID: e, enrollID: enrollId, batchID: batchId } });
+  }
+  // const dataToPass = { entranceID: entranceID, enrollID: enrollId, batchID: batchId };
 
   return (
     <div>
@@ -282,6 +297,7 @@ export default function MyprofileTab() {
                             className='flex gap-1 bg-[#e1ddec] rounded-[12px]'
                             onClick={() => handleSubjectDetail(e, enrollId)}
                           >
+
                             <div>
                               <Image
                                 src={getFile({ payload: e.image })}
@@ -330,10 +346,20 @@ export default function MyprofileTab() {
                                         Cancel
                                       </Button>
                                     </div>
+
                                     <div className='flex gap-5 justify-end hover:-translate-y-1  hover:scale-110 duration-500'>
-                                      <Button color='primary' onPress={onOpen} variant='solid'>
-                                        Take Test
-                                      </Button>
+                                      {e?.entranceTests[0]?._id ? (
+                                        <Button color='primary' onClick={() => handleEntrance(e)} variant='solid'>
+                                          Take Test
+
+                                        </Button>
+                                      ) : (
+                                        <Button className='bg-primary-300 text-white' variant='solid'>
+                                          Take Test
+
+                                        </Button>
+                                      )}
+
                                     </div>
 
                                   </div>
@@ -480,7 +506,7 @@ export default function MyprofileTab() {
             )}
           </div>
         </div>
-      </Fade>
-    </div>
+      </Fade >
+    </div >
   );
 }
