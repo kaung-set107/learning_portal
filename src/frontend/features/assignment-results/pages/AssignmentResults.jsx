@@ -52,11 +52,9 @@ const AssignmentResults = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [isFetching, setIsFetching] = useState(true)
   const [assignmentResults, setAssignmentResults] = useState([])
-  const [currentAssignment, setCurrentAssignment] = useState({})
-  const [currentBatch, setCurrentBatch] = useState({})
-  const [currentSubject, setCurrentSubject] = useState({})
-  const [status, setStatus] = useState('submitted')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [filters, setFilters] = useState({ batch: {}, assignment: {}, subject: {}, status: 'submitted' })
+
 
   const { state } = useLocation()
 
@@ -70,12 +68,11 @@ const AssignmentResults = () => {
 
   const tableData = getTableData({ getCheckButton })
 
-  const getAssignmentResults = async () => {
-    console.log('erherejklj')
-    console.log(currentAssignment)
+  const getAssignmentResults = async (defaultPayload) => {
+    let payload = { ...{ assignment: filters.assignment._id, batch: filters.batch._id, status: filters.status }, ...defaultPayload }
     setIsFetching(true)
     try {
-      let res = await assignmentResultsApi.getAll({ assignment: currentAssignment._id, batch: currentBatch._id, status })
+      let res = await assignmentResultsApi.getAll(payload)
       console.log(res)
       setAssignmentResults(res)
     } catch (error) {
@@ -87,12 +84,12 @@ const AssignmentResults = () => {
   }
 
   const handlePublishAll = async () => {
-    if (!currentBatch._id) {
+    if (!filters.batch._id) {
       showMessage({ message: "Please Select a batch to publish !" })
     }
     setIsSubmitting(true)
     try {
-      await assignmentResultsApi.publishAll({ batch: currentBatch._id })
+      await assignmentResultsApi.publishAll({ batch: filters.batch._id })
       await getAssignmentResults()
     } catch (error) {
       console.log(error)
@@ -102,8 +99,7 @@ const AssignmentResults = () => {
   }
 
   const handleClearAllFilter = () => {
-    setCurrentAssignment({})
-    setCurrentBatch({})
+    setFilters(prev => ({ ...prev, assignment: {}, subject: {}, batch: {} }))
   }
 
   const fetchData = () => {
@@ -111,18 +107,24 @@ const AssignmentResults = () => {
   }
 
   useEffect(() => {
-    getAssignmentResults()
+    let data = {}
+    let defaultPayload = {}
+    if (state && state.assignment) {
+      data.assignment = state.assignment
+      defaultPayload.assignment = state.assignment._id
+    }
+
+    if (state && state.subject) {
+      data.subject = state.subject
+      defaultPayload.subject = state.subject._id
+    }
+
+    let newFilters = { ...filters, ...data}
+
+    setFilters(newFilters)
+
+    getAssignmentResults({...filters, ...defaultPayload})
   }, [])
-
-  // useEffect(() => {
-  //   if (state && state.assignment) {
-  //     setCurrentAssignment(prev => ({ ...state.assignment }))
-  //   }
-
-  //   if (state && state.subject) {
-  //     setCurrentSubject(prev => ({ ...state.subject }))
-  //   }
-  // }, [state])
 
   let content
 
@@ -142,29 +144,28 @@ const AssignmentResults = () => {
         <CustomButton onClick={() => handlePublishAll()} isLoading={isSubmitting} title="Publish All" />
       </div>
       <div className="my-3 flex items-center gap-3">
-        <StatusDropdown className="shrink-0 w-[200px]" setStatus={setStatus} />
-        <SubjectsDropdown className="shrink-0 w-[200px]" setCurrentSubject={setCurrentSubject} />
-        {currentSubject._id && (
-          <AssignmentsDropdown subject={currentSubject._id} className="shrink-0 w-[200px]" setCurrentAssignment={setCurrentAssignment} />
+        <StatusDropdown className="shrink-0 w-[200px]" setStatus={(value) => setFilters(prev => ({ ...prev, status: value }))} />
+        <SubjectsDropdown className="shrink-0 w-[200px]" setSubject={(value) => setFilters(prev => ({ ...prev, subject: value }))} />
+        {filters.subject._id && (
+          <AssignmentsDropdown subject={filters.subject._id} className="shrink-0 w-[200px]" setAssignment={(value) => setFilters(prev => ({ ...prev, assignment: value }))} />
         )}
-        <BatchesDropdown className="shrink-0 w-[200px]" setCurrentBatch={setCurrentBatch} />
+        <BatchesDropdown className="shrink-0 w-[200px]" setBatch={(value) => setFilters(prev => ({ ...prev, batch: value }))} />
         <CustomButton onClick={() => fetchData()} isLoading={isSubmitting} title="Fetch" />
       </div>
       <div className="flex gap-3 items-center my-6">
         <span>
           Filter By:
         </span>
-        {<Chip>Status: {status}</Chip>}
+        {<Chip>Status: {filters.status}</Chip>}
         {
-          (Object.keys(currentAssignment).length > 0 || Object.keys(currentBatch).length > 0) && (
-            <>{Object.keys(currentAssignment).length > 0 && (<Chip>Assignment: {currentAssignment.title}</Chip>)}
-              {Object.keys(currentBatch).length > 0 && (<Chip>Batch: {currentBatch.name}</Chip>)}
-              {Object.keys(currentSubject).length > 0 && (<Chip>Subject: {currentSubject.title}</Chip>)}
-              <button onClick={handleClearAllFilter} className="bg-red-700 text-white border rounded-full px-3 py-1">
-                Reset
-              </button>
-            </>
-          )
+
+          <>{Object.keys(filters.assignment).length > 0 && (<Chip>Assignment: {filters.assignment.title}</Chip>)}
+            {Object.keys(filters.batch).length > 0 && (<Chip>Batch: {filters.batch.name}</Chip>)}
+            {Object.keys(filters.subject).length > 0 && (<Chip>Subject: {filters.subject.title}</Chip>)}
+            <button onClick={handleClearAllFilter} className="bg-red-700 text-white border rounded-full px-3 py-1">
+              Reset
+            </button>
+          </>
         }
       </div>
       <div>

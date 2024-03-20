@@ -8,7 +8,7 @@ const SubjectsDropdown = (props) => {
   const [isLoading, setIsLoading] = useState(true)
   const [subjects, setSubjects] = useState([])
 
-  const { setCurrentSubject, className, ...args } = props
+  const { setSubject, className, ...args } = props
 
   const getSubjects = async () => {
     try {
@@ -23,7 +23,7 @@ const SubjectsDropdown = (props) => {
 
   const handleSubjectSelect = (id) => {
     let subject = subjects.data.find(e => e._id == id)
-    setCurrentSubject(subject)
+    setSubject(subject)
   }
 
   useEffect(() => {

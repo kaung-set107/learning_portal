@@ -8,7 +8,7 @@ const BatchesDropdown = (props) => {
     const [isLoading, setIsLoading] = useState(true)
     const [batches, setBatches] = useState([])
 
-    const { setCurrentBatch, className } = props
+    const { setBatch, className } = props
 
     const getBatches = async () => {
         try {
@@ -23,7 +23,7 @@ const BatchesDropdown = (props) => {
 
     const handleBatcheSelect = (id) => {
         let batch = batches.data.find(e => e._id == id)
-        setCurrentBatch(batch)
+        setBatch(batch)
     }
 
     useEffect(() => {

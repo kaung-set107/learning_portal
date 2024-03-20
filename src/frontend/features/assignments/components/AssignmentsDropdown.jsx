@@ -8,7 +8,7 @@ const AssignmentsDropdown = (props) => {
   const [isLoading, setIsLoading] = useState(true)
   const [assignments, setAssignments] = useState([])
 
-  const { setCurrentAssignment, className, subject, ...args } = props
+  const { setAssignment, className, subject, ...args } = props
 
   const getAssignments = async () => {
     setIsLoading(true)
@@ -24,7 +24,7 @@ const AssignmentsDropdown = (props) => {
 
   const handleAssignmentSelect = (id) => {
     let assignment = assignments.data.find(e => e._id == id)
-    setCurrentAssignment(assignment)
+    setAssignment(assignment)
   }
 
   useEffect(() => {

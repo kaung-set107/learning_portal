@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Table, TableHeader, TableColumn, Pagination, TableBody, TableRow, TableCell } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, Pagination, TableBody, TableRow, TableCell, Button } from "@nextui-org/react";
 import { useMemo, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -7,27 +7,19 @@ import { v4 as uuidv4 } from 'uuid';
 export default function CustomTable(props) {
     const { tableData, src, ...args } = props
     const [page, setPage] = useState(1);
-    let perPage = 10
+    let perPage = 4
 
     const getTotal = () => {
         let total = Math.ceil(src.count / perPage)
-        console.log(total)
-        return total
+        if (total > 0) return total
+        return 1
     }
-
-    // const items = useMemo(() => {
-    //     const start = (page - 1) * perPage;
-    //     const end = start + perPage;
-
-    //     return src.data.slice(start, end);
-    //   }, [page, src, perPage]);
 
 
     const items = useMemo(() => {
         if (src.count > 0) {
             const start = (page - 1) * perPage;
             const end = start + perPage;
-
             return src.data.slice(start, end);
         } else {
             return []
@@ -39,7 +31,6 @@ export default function CustomTable(props) {
             bottomContent={
                 <div className="flex w-full justify-center">
                     <Pagination
-                        isCompact
                         showControls
                         showShadow
                         color="secondary"
