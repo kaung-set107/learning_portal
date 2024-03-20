@@ -255,6 +255,7 @@ export default function Sidebar(props) {
               <Divider></Divider>
 
               <h3 className="my-3 text-xl font-bold">Instructor</h3>
+              
               {/* instructor sidebar */}
               <Accordion>
                 <AccordionItem

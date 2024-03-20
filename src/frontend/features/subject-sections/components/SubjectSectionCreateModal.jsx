@@ -3,14 +3,14 @@ import { Button, Input } from "@nextui-org/react";
 import { useState } from "react";
 import { subjectSectionsApi } from "../api";
 import CustomButton from "../../../components/general/CustomButton";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Checkbox } from "@nextui-org/react";
 
 export default function SubjectSectionCreateModal(props) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     let { subjectId, successCallback } = props
     const [isSubmitting, setIsSubmitting] = useState(false)
-
+    const [showToStudent, setShowToStudent] = useState(false)
     const variant = 'bordered'
 
     const [formData, setFormData] = useState({
@@ -22,7 +22,7 @@ export default function SubjectSectionCreateModal(props) {
     const handleSubmit = async (onClose) => {
         try {
             setIsSubmitting(true)
-            let payload = { ...formData }
+            let payload = { ...formData, showToStudent }
 
             console.log(payload)
             await subjectSectionsApi.create(payload)
@@ -72,6 +72,9 @@ export default function SubjectSectionCreateModal(props) {
                                             labelPlacement="outside"
                                         />
                                     </div>
+                                    <Checkbox isSelected={showToStudent} onValueChange={setShowToStudent}>
+                                        Show to student?
+                                    </Checkbox>
                                 </form>
                             </ModalBody>
                             <ModalFooter>

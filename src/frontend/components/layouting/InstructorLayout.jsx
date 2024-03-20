@@ -18,7 +18,7 @@ const InstructorLayout = () => {
                 <div className="">
                     <Sidebar />
                 </div>
-                <div className="w-full py-12">
+                <div className="w-full py-12 overflow-scroll">
                     <div className="container px-6">
                         <Outlet />
                     </div>

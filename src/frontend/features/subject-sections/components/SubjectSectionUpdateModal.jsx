@@ -4,7 +4,7 @@ import { Button, Input } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { subjectSectionsApi } from "../api";
 import CustomButton from "../../../components/general/CustomButton";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Checkbox } from "@nextui-org/react";
 import Loading from "../../../components/general/Loading";
 
 export default function SubjectSectionUpdateModal(props) {
@@ -15,6 +15,7 @@ export default function SubjectSectionUpdateModal(props) {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
     const [subjectSection, setSubjectSection] = useState({})
+    const [showToStudent, setShowToStudent] = useState(false)
 
     const variant = 'bordered'
 
@@ -27,7 +28,7 @@ export default function SubjectSectionUpdateModal(props) {
     const handleSubmit = async (onClose) => {
         try {
             setIsSubmitting(true)
-            let payload = { ...formData, _id: subjectSection.data._id }
+            let payload = { ...formData, _id: subjectSection.data._id, showToStudent }
 
             console.log(payload)
             await subjectSectionsApi.update(payload)
@@ -46,6 +47,8 @@ export default function SubjectSectionUpdateModal(props) {
             description: subjectSection.data.description,
             subject: subjectId,
         })
+
+        setShowToStudent(subjectSection.data.showToStudent)
     }
 
     const getSubjectSection = async () => {
@@ -118,6 +121,9 @@ export default function SubjectSectionUpdateModal(props) {
                                             labelPlacement="outside"
                                         />
                                     </div>
+                                    <Checkbox isSelected={showToStudent} onValueChange={setShowToStudent}>
+                                        Show to student?
+                                    </Checkbox>
                                 </form>
                             </ModalBody>
                             <ModalFooter>

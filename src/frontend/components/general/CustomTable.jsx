@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 export default function CustomTable(props) {
     const { tableData, src, ...args } = props
     const [page, setPage] = useState(1);
-    let perPage = 4
+    let perPage = 10
 
     const getTotal = () => {
         let total = Math.ceil(src.count / perPage)
