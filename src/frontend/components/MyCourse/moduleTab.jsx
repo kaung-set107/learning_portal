@@ -39,6 +39,7 @@ import "react-h5-audio-player/lib/styles.css";
 import MeetingModal from './newmeetingmodal'
 import CSV from '../../../assets/img/csv.png';
 import PPTX from '../../../assets/img/pptx.png';
+import DOCX from '../../../assets/img/docx.png';
 const CourseDetail = (props) => {
   // const time = new Date().toLocaleTimeString()
 
@@ -402,7 +403,8 @@ const CourseDetail = (props) => {
                                         (i.originalname?.split(".")[1] === "xlsx")
                                         && ExcelPhoto || (i.originalname?.split(".")[1] === "csv")
                                         && CSV || (i.originalname?.split(".")[1] === "pptx")
-                                        && PPTX ||
+                                        && PPTX || (i.originalname?.split(".")[1] === "docx")
+                                        && DOCX ||
                                         (i.originalname?.split(".")[1] === "png" || "jpg" || "jpeg") && getFile({ payload: i })
                                       }
                                     />
