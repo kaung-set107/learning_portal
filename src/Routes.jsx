@@ -7,7 +7,7 @@ import Booking from './frontend/home/booking.jsx'
 import HomeCourse from "./frontend/home/home-course/home-course.jsx";
 import HomeCourseDetail from "./frontend/home/home-course/course-detail.jsx";
 import HomeSubjectDetail from "./frontend/home/home-course/home_subject_detail.jsx";
-
+import Test from './frontend/home/test.jsx'
 import Dashboard from "./pages/Dashboard/index.jsx";
 import Instructor from "./pages/Instructor/InstructorList";
 import InstructorAdd from "./pages/Instructor/InstructorAdd";
@@ -101,6 +101,7 @@ export default function RouteFile() {
         <Routes>
           <Route path='/login' element={<Login />}></Route>
           <Route path='/' element={<FHome />}></Route>
+          <Route path='/test' element={<Test />}></Route>
 
           <Route path='/about' element={<About />}></Route>
           <Route path='/booking' element={<Booking />}></Route>

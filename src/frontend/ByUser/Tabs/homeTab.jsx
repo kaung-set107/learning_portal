@@ -21,14 +21,16 @@ export default function Home() {
   const navigate = useNavigate();
   const [id, setId] = useState("");
   const [firstDefaultCourseId, setFirstDefaultCourseId] = useState("");
-  const StudentId = localStorage.getItem("id");
   const [coursesList, setCoursesList] = useState([]);
+  const [filterId, setFilterId] = useState([]);
+  const StudentId = localStorage.getItem("id");
+
   const [catList, setCatList] = useState([]);
   const [myCourseList, setMyCourseList] = useState([]);
   const [value, setValue] = useState("");
   const [activeTab, setActiveTab] = useState(0);
   const [courseId, setCourseId] = useState("");
-  const [filterId, setFilterId] = useState([]);
+
   const enr_id = myCourseList[0]?._id
   // console.log(enr_id, 'my')
   const [enrollId, setEnrollId] = useState(enr_id)
@@ -93,9 +95,8 @@ export default function Home() {
 
       });
     };
-
-    getCat();
     getEnrollment();
+    getCat();
 
     getAssign();
   }, [firstDefaultCourseId, StudentId]);
@@ -225,8 +226,8 @@ export default function Home() {
                       .map((e) => (
                         <div
                           onClick={() => handleRoute(e)}
-                          style={{ height: "470px" }}
-                          className='min-w:[490px]  flex flex-col gap-3 hover:-translate-y-1  hover:scale-105 duration-500'
+
+                          className='min-w:[490px] min-h:[463px] flex flex-col gap-3 hover:-translate-y-2  hover:scale-105 duration-500'
                         >
                           <div>
                             <Image

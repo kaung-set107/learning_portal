@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Image, Input } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, Progress, ModalFooter, Button, useDisclosure, Image, Input } from "@nextui-org/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEnvelope,
@@ -26,6 +26,25 @@ export default function MyprofileTab() {
   const [student, setStudent] = useState([]);
   const [audioFile, setAudioFile] = useState(null);
   const [img, setImg] = useState("");
+  const [firstDefaultCourseId, setFirstDefaultCourseId] = useState("");
+  const [myCourseList, setMyCourseList] = useState([]);
+  const [filterId, setFilterId] = useState([]);
+  const [placeactiveTab, setPlaceActiveTab] = useState(0);
+  const [courseId, setCourseId] = useState("");
+  const enr_id = myCourseList[0]?._id
+  // console.log(enr_id, 'my')
+  const [enrollId, setEnrollId] = useState(enr_id)
+  const filterSubList = filterId.filter(
+    (el) => el._id === (courseId ? courseId : firstDefaultCourseId)
+
+  );
+
+  const handlePlaceTabClick = (ind, enroll_Id, courseid) => {
+    setCourseId(courseid);
+    setPlaceActiveTab(ind);
+    setEnrollId(enroll_Id)
+    // console.log(enroll_Id, 'enr')
+  };
   useEffect(() => {
     const getAssign = async () => {
       await apiInstance.get(`students`).then((res) => {
@@ -43,7 +62,24 @@ export default function MyprofileTab() {
         // console.log(count, "count");
       });
     };
+    const getEnrollment = async () => {
+      await apiInstance.get(`enrollments`).then((res) => {
+        console.log(res.data.data, "first id");
 
+        setFirstDefaultCourseId(
+          res.data.data.filter((el) => el.student === StudentId)[0].course._id
+        );
+        setMyCourseList(res.data.data.filter((el) => el.student === StudentId));
+        setFilterId(
+          res.data.data
+            .filter((el) => el.student === StudentId)
+            .map((i) => i.course)
+        );
+        // const count = res.data.data.filter((el) => el.subjects.length);
+
+      });
+    };
+    getEnrollment();
     getAssign();
   }, []);
 
@@ -213,34 +249,101 @@ export default function MyprofileTab() {
             </div>
 
             {activeTab === 1 && (
-              <div className='flex rounded-md'>
-                <div>
-                  <Image
-                    src={Edu}
-                    style={{
-                      width: "325px",
-                      height: "243px",
-                    }}
-                  />
-                </div>
-
-                <div className='flex flex-col gap-5 p-14 '>
-                  <h1 className='text-xl font-semibold'>
-                    IELTs (Placement Test)
+              <div className=''>
+                {/* My Course at Home Header */}
+                <div className='flex flex-col gap-4'>
+                  <h1 style={{ fontSize: "40px", fontWeight: "600" }}>
+                    My Courses
                   </h1>
-                  <div>
-                    Placement test duration :{" "}
-                    <span className='font-semibold'>1hr 30 mins</span>
+                  <div className='flex flex-row gap-4'>
+                    {myCourseList.map((item, index) => (
+                      <>
+                        <div key={item._id}>
+                          <div
+                            className={
+                              placeactiveTab === index
+                                ? "  bg-blue-100 py-3  w-52 text-center  duration-500 border-b-2 border-indigo-500"
+                                : "w-52 bg-blue-100 py-3 text-center"
+                            }
+
+                            onClick={() => handlePlaceTabClick(index, item._id, item.course._id)}
+                          >
+                            {item.course?.title}
+                          </div>
+                        </div>
+                      </>
+                    ))}
                   </div>
                   <div>
-                    Registration Date :{" "}
-                    <span className='font-semibold'>6 Dec 2023 at 5:00 PM</span>
-                  </div>
-                  <div className='flex gap-5 justify-end'>
-                    <Button variant='flat'>Cancel</Button>
-                    <Button color='primary' variant='solid'>
-                      Take Test
-                    </Button>
+                    {filterSubList && (
+                      <div className='grid grid-cols-2 gap-20 rounded-md pt-16 w-full'>
+                        {filterSubList[0]?.subjects.map((e, ind) => (
+                          <div
+                            className='flex gap-1 bg-[#e1ddec] rounded-[12px]'
+                            onClick={() => handleSubjectDetail(e, enrollId)}
+                          >
+                            <div>
+                              <Image
+                                src={getFile({ payload: e.image })}
+
+                                className='w-[350px] h-[300px] '
+                              />
+                            </div>
+
+                            <div className='flex flex-col gap-5 '>
+                              <div className='flex flex-col gap-10 p-7'>
+                                <div className='flex flex-col gap-4'>
+                                  <h1
+                                    style={{
+                                      fontSize: "20px",
+                                      fontWeight: "600",
+                                    }}
+                                  >
+                                    {e.title}
+                                  </h1>
+                                  <div>
+                                    Placement test duration:{" "}
+                                    <span className='font-semibold'> 1hr 30 mins</span>
+                                  </div>
+                                  <div>
+                                    Placement test version:{" "}
+                                    <span className='font-semibold'> 1.1.1</span>
+                                  </div>
+                                </div>
+
+                                <div className='flex flex-col gap-2'>
+                                  <div
+                                    style={{
+                                      fontSize: "16px",
+                                      fontWeight: "500",
+                                      color: "#05F",
+                                      width: "120px",
+                                      height: "19px",
+                                    }}
+                                    className='ml-24'
+                                  >
+
+                                  </div>
+                                  <div className='flex gap-5 justify-end'>
+                                    <div className='flex gap-5 justify-end hover:-translate-y-1  hover:scale-110 duration-500'>
+                                      <Button color='default' onPress={onOpen} variant='solid'>
+                                        Cancel
+                                      </Button>
+                                    </div>
+                                    <div className='flex gap-5 justify-end hover:-translate-y-1  hover:scale-110 duration-500'>
+                                      <Button color='primary' onPress={onOpen} variant='solid'>
+                                        Take Test
+                                      </Button>
+                                    </div>
+
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
