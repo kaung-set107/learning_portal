@@ -89,7 +89,7 @@ const SubjectBrief = () => {
     let content
 
     if (isLoading) {
-        content = (<Loading />)
+        content = (<div className="h-[500px] flex justify-center items-center"><Loading /></div>)
     } else {
         content = (
             <>

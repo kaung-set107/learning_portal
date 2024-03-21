@@ -105,7 +105,7 @@ export default function AssignmentUpdateModal(props) {
         content = (<Loading />)
     } else {
         content = <>
-            <CustomButton onPress={onOpen} type="edit" iconOnly size="sm">Update</CustomButton>
+            <CustomButton onPress={onOpen} type="edit" iconOnly size="sm" title="Update" />
             <Modal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}

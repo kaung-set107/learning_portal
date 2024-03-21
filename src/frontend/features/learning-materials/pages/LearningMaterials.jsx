@@ -9,10 +9,12 @@ import { useLocation, useNavigate } from "react-router-dom"
 import LearningMaterialCreateModal from "../components/LearningMaterialCreateModal"
 import CustomButton from "../../../components/general/CustomButton"
 import LearningMaterialUpdateModal from "../components/LearningMaterialUpdateModal"
+import { showError, showSuccess } from "../../../../util/noti"
 
 const LearningMaterials = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [isFetching, setIsFetching] = useState(true)
+    const [isSubmitting, setIsSubmitting] = useState(false)
     const [learningMaterials, setLearningMaterials] = useState([])
     const { state } = useLocation()
     const [filters, setFilters] = useState({ subjectSection: {}, subject: {} })
@@ -32,7 +34,27 @@ const LearningMaterials = () => {
         )
     }
 
-    const tableData = getTableData({ getViewButton, getUpdateButton })
+    const getDeleteButton = (data) => {
+        return (
+            <CustomButton title="Delete" isLoading={isSubmitting} iconOnly type="delete" onClick={() => handleLearningMaterialDelete(data._id)} />
+        )
+    }
+
+    const handleLearningMaterialDelete = async (id) => {
+        setIsSubmitting(true)
+        try {
+            let res = await learningMaterialApi.remove({ _id: id })
+            console.log(res)
+            showSuccess({ text: res.message, type: 'noti-box' })
+            getLearningMaterials()  
+        } catch (error) {
+            showError({ axiosResponse: error })
+        } finally {
+            setIsSubmitting(false)
+        }
+    }
+
+    const tableData = getTableData({ getViewButton, getUpdateButton, getDeleteButton })
 
     const getLearningMaterials = async (defaultPayload) => {
         let payload = { ...{ subjectSection: filters.subjectSection._id, subject: filters.subject._id }, ...defaultPayload }
@@ -48,8 +70,6 @@ const LearningMaterials = () => {
             setIsFetching(false)
         }
     }
-
-
 
     // const fetchData = () => {
     //     getLearningMaterials()
@@ -89,6 +109,9 @@ const LearningMaterials = () => {
                     <Loading color="primary" />
                 </div>)
             }
+            <div className="flex items-center justify-between mb-12">
+                <CustomButton type="back" title="Back to Subject"/>
+            </div>
             {
                 Object.keys(filters.subjectSection).length > 0 && (
                     <TableHeading title={`Section ${filters.subjectSection.title}'s`} />

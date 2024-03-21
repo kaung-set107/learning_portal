@@ -1,4 +1,4 @@
-export const getTableData = ({ getViewButton, getUpdateButton }) => {
+export const getTableData = ({ getViewButton, getUpdateButton, getDeleteButton }) => {
     return {
         headers: [
             {
@@ -21,7 +21,7 @@ export const getTableData = ({ getViewButton, getUpdateButton }) => {
                 name: 'Action',
                 key: 'action',
                 getComponent: (data) => {
-                    return (<div className="flex gap-3">{getViewButton(data._id)}{getUpdateButton(data)}</div>)
+                    return (<div className="flex gap-3">{getViewButton(data._id)}{getUpdateButton(data)}{getDeleteButton(data)}</div>)
                 }
             },
         ],

@@ -3,11 +3,17 @@ import { useParams } from "react-router-dom"
 import { learningMaterialApi } from "../api"
 import Loading from "../../../components/general/Loading"
 import Heading from "../../../components/general/typography/Heading"
+import { Tabs, Tab } from "@nextui-org/react";
 
 const LearningMaterialBrief = () => {
   const { id } = useParams()
   const [isLoading, setIsLoading] = useState(true)
   const [learningMaterial, setLearningMaterial] = useState({})
+
+  const TabOptions = [
+    { key: 'summary', title: 'Summary' },
+    { key: 'survey', title: 'Survey' },
+]
 
   const getLearningMaterial = async () => {
     try {
@@ -34,6 +40,20 @@ const LearningMaterialBrief = () => {
       <div>
         <Heading title={learningMaterial.title} className="mb-3" />
         <p className="mb-3">{learningMaterial.description}</p>
+        <div className="space-y-6">
+          <Tabs aria-label="Options">
+            <Tab key={TabOptions[0].key} title={TabOptions[0].title}>
+              <div>
+                this is summary
+              </div>
+            </Tab>
+            <Tab key={TabOptions[1].key} title={TabOptions[1].title}>
+              <div>
+                this is survey
+              </div>
+            </Tab>
+          </Tabs>
+        </div>
       </div>
     )
   }
