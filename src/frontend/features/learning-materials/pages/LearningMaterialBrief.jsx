@@ -4,6 +4,7 @@ import { learningMaterialApi } from "../api"
 import Loading from "../../../components/general/Loading"
 import Heading from "../../../components/general/typography/Heading"
 import { Tabs, Tab } from "@nextui-org/react";
+import SurveyCreateForm from "../../surveys/components/SurveyCreateForm"
 
 const LearningMaterialBrief = () => {
   const { id } = useParams()
@@ -49,7 +50,7 @@ const LearningMaterialBrief = () => {
             </Tab>
             <Tab key={TabOptions[1].key} title={TabOptions[1].title}>
               <div>
-                this is survey
+                <SurveyCreateForm type="learningMaterial" learningMaterial={learningMaterial} />
               </div>
             </Tab>
           </Tabs>
