@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { FaRegTrashAlt } from "react-icons/fa";
 import Loading from "./Loading";
 
-
 /* eslint-disable react/prop-types */
 const CustomButton = (props) => {
     const { isLoading, iconOnly, textOnly, title, type, onClick, ...args } = props
@@ -60,7 +59,7 @@ const CustomButton = (props) => {
     return (
         <Button onClick={handleOnClick} color={getColor()} isDisabled={isLoading} {...args} className={`border px-2 border-transparent hover:border-gray-700 h-[40px] hover:shadow-sm ${isLoading ? 'cursor-not-allowed' : ''}`}>
             {
-                isLoading ? <Loading size={"sm"} /> : <span className=" flex items-center justify-center">{getContent()}</span>
+                isLoading ? <Loading size={"sm"} /> : <span className="flex items-center justify-center">{getContent()}</span>
             }
         </Button>
     )

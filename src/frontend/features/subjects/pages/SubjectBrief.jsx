@@ -158,9 +158,9 @@ const SubjectBrief = () => {
                                                 return (
                                                     <div key={section._id} className="p-3 border rounded-xl mb-3 relative">
                                                         <div className="flex gap-3 absolute right-2 top-2">
-                                                            <CustomButton size="sm" onClick={() => goToLearningMaterials({subjectSection: section})} color="primary" title="Learning Materials" />
+                                                            <CustomButton onClick={() => goToLearningMaterials({subjectSection: section})} color="primary" title="Learning Materials" />
                                                             <SubjectSectionUpdateModal subjectId={id} subjectSectionData={section} successCallback={getSubject} />
-                                                            <CustomButton size="sm" onClick={() => handleSubjectSectionDelete(section._id)} color="danger" isLoading={isSubmitting} title="Delete" />
+                                                            <CustomButton onClick={() => handleSubjectSectionDelete(section._id)} color="danger" isLoading={isSubmitting} title="Delete" />
                                                         </div>
                                                         <CardTitle title={section.title} />
                                                         <p>{section.description}</p>

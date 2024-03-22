@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Button, Input, Card, CardBody } from "@nextui-org/react";
 import { Link } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomButton from "../../../components/general/CustomButton";
 import SubHeading from "../../../components/general/typography/SubHeading";
 import { Select, SelectItem } from "@nextui-org/select";
@@ -10,8 +10,8 @@ import QuestionCreateModal from "../../questions/components/QuestionCreateModal"
 import QuestionList from "../../questions/components/QuestionList";
 import { showError, showSuccess } from "../../../../util/noti";
 
-const SurveyCreateForm = (props) => {
-  const { type, successCallback } = props;
+const SurveyUpdateForm = (props) => {
+  const { type, learningMaterial, successCallback } = props;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [questions, setQuestions] = useState([]);
@@ -39,6 +39,7 @@ const SurveyCreateForm = (props) => {
     questions: [],
     numOfQuestions: 0,
     status: "unfinished",
+    isLoading: false,
   });
 
   const addQuestion = (data) => {
@@ -61,6 +62,8 @@ const SurveyCreateForm = (props) => {
     payload.type = type;
     payload[type] = props[type]._id;
 
+    delete payload.isLoading;
+
     return payload;
   };
 
@@ -81,11 +84,36 @@ const SurveyCreateForm = (props) => {
     }
   };
 
+  // for update
+  const fillData = () => {
+    setQuestions(prev => {
+        return [
+            ...learningMaterial.survey.questions
+        ]
+    })
+
+    setFormData((prev) => {
+      return {
+        ...prev,
+        title: learningMaterial.survey.title,
+        description: learningMaterial.survey.description,
+        numOfQuestions: learningMaterial.survey.numOfQuestions,
+        status: learningMaterial.survey.status,
+        isLoading: false,
+      };
+    });
+  };
+
+  useEffect(() => {
+    fillData();
+  }, []);
+  // for update
+
   return (
     <div>
       <Card>
         <CardBody>
-          <SubHeading title="Survey Create Form" />
+          <SubHeading title="Survey Update Form" />
           <form>
             <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
               <Input
@@ -138,6 +166,7 @@ const SurveyCreateForm = (props) => {
                 label="Status"
                 placeholder="Select an status"
                 className="max-w-xs"
+                selectedKeys={[formData.status]}
                 labelPlacement="outside"
                 onSelectionChange={(e) =>
                   setFormData((prev) => ({ ...prev, status: e.currentKey }))
@@ -168,7 +197,7 @@ const SurveyCreateForm = (props) => {
                 color="primary"
                 onClick={handleSubmit}
                 isLoading={isSubmitting}
-                title="Create"
+                title="Update"
               />
             </div>
           </form>
@@ -178,4 +207,4 @@ const SurveyCreateForm = (props) => {
   );
 };
 
-export default SurveyCreateForm;
+export default SurveyUpdateForm;

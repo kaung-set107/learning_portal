@@ -2,6 +2,7 @@
 import { Button, Input } from "@nextui-org/react";
 import { useState } from "react";
 import CustomButton from "../../../components/general/CustomButton";
+import { v4 as uuidv4 } from "uuid";
 import { Select, SelectItem } from "@nextui-org/select";
 import {
   Modal,
@@ -17,7 +18,7 @@ export default function QuestionCreateModal(props) {
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const [option, setOption] = useState();
+  const [option, setOption] = useState("");
   const variant = "bordered";
 
   const questionTypes = [
@@ -113,7 +114,7 @@ export default function QuestionCreateModal(props) {
                       className="max-w-xs"
                       labelPlacement="outside"
                       onSelectionChange={(e) =>
-                        setFormData((prev) => ({ ...prev, type: e.currentKey }))
+                        setFormData((prev) => ({ ...prev, answerType: e.currentKey }))
                       }
                     >
                       {(type) => (
@@ -150,7 +151,7 @@ export default function QuestionCreateModal(props) {
                       {formData.options.map((option, index) => {
                         return (
                           <div
-                            key={option}
+                            key={uuidv4()}
                             className="p-2 border rounded-xl flex justify-between items-center"
                           >
                             <span>{option}</span>
@@ -175,23 +176,6 @@ export default function QuestionCreateModal(props) {
                       })}
                     </div>
                   )}
-
-                  <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
-                    <Input
-                      type="text"
-                      label="Description"
-                      placeholder="description"
-                      variant={variant}
-                      value={formData.description}
-                      onChange={(e) =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          description: e.target.value,
-                        }))
-                      }
-                      labelPlacement="outside"
-                    />
-                  </div>
                 </form>
               </ModalBody>
               <ModalFooter>
