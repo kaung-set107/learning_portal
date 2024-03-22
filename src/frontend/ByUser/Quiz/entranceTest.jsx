@@ -8,6 +8,8 @@ import Stack from "@mui/material/Stack";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import apiInstance from "../../../util/api";
 import Placement from '../../../assets/img/placementGIF.gif'
+import EHome from '../../../assets/img/EllipseHome.png'
+import EHalf from '../../../assets/img/EllipseHalf.png'
 import ResultPage from "./result";
 // import Swal from 'sweetalert2';
 // import Result from './result'
@@ -15,7 +17,8 @@ function EntranceTestPage() {
     const location = useLocation();
     // const { state } = props.location;
     // const { entranceTestID, enrollID, batchID } = state;
-    console.log(location.state.entranceID.entranceTests[0]._id, 'e')
+    console.log(location.state.entranceID, 'e')
+    const subjectID = location.state.entranceID._id
     const QuizID = location.state.entranceID.entranceTests[0].quiz
     const entranceID = location.state.entranceID.entranceTests[0]._id
     const batchID = location.state.batchID
@@ -222,7 +225,8 @@ function EntranceTestPage() {
             quiz: QuizID,
             student: studentID,
             batch: batchID,
-            entranceTest: entranceID,
+            subject: subjectID,
+            // entranceTest: entranceID,
             answerDate: Date.now(),
             updatedQuestions: quizList.questions.map((i) => {
                 return {
@@ -238,11 +242,11 @@ function EntranceTestPage() {
                 };
             }),
             totalMark: quizList.questions[counter].type === 'trueFalse' ? TotalMark : points,
-            status: TotalMark >= quizList.questions[counter].type === 'trueFalse' ? (TotalMark >= quizList.passMark ? "pass" : "fail") : (points >= quizList.passMark ? "pass" : "fail"),
+            status: quizList.questions[counter].type === 'trueFalse' ? (TotalMark === quizList.passMark && "pass") || (TotalMark > quizList.passMark && "distinction") || ((TotalMark < quizList.passMark && TotalMark === quizList.creditMark) && "credit") || (TotalMark < quizList.creditMark && "fail") : (points >= quizList.passMark ? "pass" : "fail"),
         };
         // alert(JSON.stringify(data));
         apiInstance
-            .post("entrance-test-results", data)
+            .post("quiz-results", data)
             .then(function () {
 
                 navigate("/quiz-result");
@@ -378,6 +382,11 @@ function EntranceTestPage() {
                 <>
                     {!showTimer && (
                         <div className='flex justify-center font-serif bg-[#fbfcfe] shadow-lg rounded-lg  p-[20px] gap-20 '>
+                            <img
+                                src={EHome}
+                                className='absolute top-0 left-0 -z-40 w-[100px] md:w-[150px]'
+                                alt=''
+                            />
                             <div className='flex flex-col gap-10 pt-[20px] mt-[110px]'>
                                 <span className='text-[35px] font-bold w-80'>
                                     This placement test will test your basic knowledge on IELTS
@@ -403,6 +412,11 @@ function EntranceTestPage() {
                             <div className=''>
                                 <Image src={Placement} className='w-[600px] h-[550px]' />
                             </div>
+                            <img
+                                src={EHalf}
+                                className='absolute bottom-0 right-0 -z-10 w-[100px] md:w-[150px]'
+                                alt=''
+                            />
                         </div>
                     )}
 
@@ -465,6 +479,7 @@ function EntranceTestPage() {
 
                                                                     <input
                                                                         type='radio'
+                                                                        className='w-[20px] h-[20px] mt-1'
                                                                         name='answer_group'
                                                                         value={e.answer}
                                                                         disabled={
@@ -482,7 +497,7 @@ function EntranceTestPage() {
 
                                                                     &nbsp;
 
-                                                                    {e.answer}
+                                                                    <span className='ml-2 text-[20px]'>{e.answer}</span>
 
                                                                 </div>
                                                             )}

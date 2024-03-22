@@ -230,7 +230,7 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
         };
       }),
       totalMark: quizList.questions[counter].type === 'trueFalse' ? TotalMark : points,
-      status: TotalMark >= quizList.questions[counter].type === 'trueFalse' ? (TotalMark >= quizList.passMark ? "pass" : "fail") : (points >= quizList.passMark ? "pass" : "fail"),
+      status: quizList.questions[counter].type === 'trueFalse' ? (((TotalMark = quizList.passMark) && "pass") || ((TotalMark > quizList.passMark) && "D") || ((TotalMark < quizList.passMark) && "Credit") || ((TotalMark < quizList.creditMark) && "Fail")) : (points >= quizList.passMark ? "pass" : "fail"),
     };
     // alert(JSON.stringify(data));
     apiInstance

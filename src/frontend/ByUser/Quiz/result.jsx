@@ -14,7 +14,7 @@ import {
   faXmark,
   faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import Loading from "../../../assets/img/loading.gif";
+import Loading from "../../../assets/img/finalloading.gif";
 import { Stack } from "@mui/material";
 import moment from "moment-timezone";
 import Nav from "../../home/header";
@@ -444,7 +444,7 @@ export default function Result() {
         </div>
       ) : (
         <div className='flex flex-col gap-10 items-center pt-[40px]'>
-          <Image src={Loading} className='transform-x-[-1]' />
+          <Image src={Loading} className='transform-x-[-1] w-[500px]' />
           <span className='text-[20px] font-semibold'>
             Please wait ! We are checking your Result
           </span>

@@ -16,6 +16,7 @@ import Course from "../../../assets/img/course.jpg";
 import { Fade } from "react-awesome-reveal";
 import EntranceTestPage from "../Quiz/entranceTest";
 import { Link, useNavigate } from "react-router-dom";
+import Loading from '../../../assets/img/finalloading.gif'
 export default function MyprofileTab() {
   const variant = 'bordered'
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -46,7 +47,7 @@ export default function MyprofileTab() {
 
   );
 
-
+  console.log(filterSubList, 'fil')
   const handlePlaceTabClick = (ind, enroll_Id, courseid) => {
     setCourseId(courseid);
     setPlaceActiveTab(ind);
@@ -262,248 +263,260 @@ export default function MyprofileTab() {
             </Badge> */}
               </div>
             </div>
+            {myCourseList[0] ? (
+              <>
+                {activeTab === 1 && (
+                  <div className=''>
+                    {/* My Course at Home Header */}
+                    <div className='flex flex-col gap-4'>
+                      <h1 style={{ fontSize: "40px", fontWeight: "600" }}>
+                        My Courses
+                      </h1>
+                      <div className='flex flex-row gap-4'>
+                        {myCourseList.map((item, index) => (
+                          <>
+                            <div key={item._id}>
+                              <div
+                                className={
+                                  placeactiveTab === index
+                                    ? "  bg-blue-100 py-3  w-52 text-center  duration-500 border-b-2 border-indigo-500"
+                                    : "w-52 bg-blue-100 py-3 text-center"
+                                }
 
-            {activeTab === 1 && (
-              <div className=''>
-                {/* My Course at Home Header */}
-                <div className='flex flex-col gap-4'>
-                  <h1 style={{ fontSize: "40px", fontWeight: "600" }}>
-                    My Courses
-                  </h1>
-                  <div className='flex flex-row gap-4'>
-                    {myCourseList.map((item, index) => (
-                      <>
-                        <div key={item._id}>
-                          <div
-                            className={
-                              placeactiveTab === index
-                                ? "  bg-blue-100 py-3  w-52 text-center  duration-500 border-b-2 border-indigo-500"
-                                : "w-52 bg-blue-100 py-3 text-center"
-                            }
-
-                            onClick={() => handlePlaceTabClick(index, item._id, item.course._id)}
-                          >
-                            {item.course?.title}
-                          </div>
-                        </div>
-                      </>
-                    ))}
-                  </div>
-                  <div>
-                    {filterSubList && (
-                      <div className='grid grid-cols-2 gap-20 rounded-md pt-16 w-full'>
-                        {filterSubList[0]?.subjects.map((e, ind) => (
-                          <div
-                            className='flex gap-1 bg-[#e1ddec] rounded-[12px]'
-                            onClick={() => handleSubjectDetail(e, enrollId)}
-                          >
-
-                            <div>
-                              <Image
-                                src={getFile({ payload: e.image })}
-
-                                className='w-[350px] h-[300px] '
-                              />
+                                onClick={() => handlePlaceTabClick(index, item._id, item.course._id)}
+                              >
+                                {item.course?.title}
+                              </div>
                             </div>
+                          </>
+                        ))}
+                      </div>
+                      <div>
+                        {filterSubList && (
+                          <div className='grid grid-cols-2 gap-20 rounded-md pt-16 w-full'>
+                            {filterSubList[0]?.subjects.map((e, ind) => (
+                              <div
+                                className='flex gap-1 bg-[#e1ddec] rounded-[12px]'
+                                onClick={() => handleSubjectDetail(e, enrollId)}
+                              >
 
-                            <div className='flex flex-col gap-5 '>
-                              <div className='flex flex-col gap-10 p-7'>
-                                <div className='flex flex-col gap-4'>
-                                  <h1
-                                    style={{
-                                      fontSize: "20px",
-                                      fontWeight: "600",
-                                    }}
-                                  >
-                                    {e.title}
-                                  </h1>
-                                  <div>
-                                    Placement test duration:{" "}
-                                    <span className='font-semibold'> 1hr 30 mins</span>
-                                  </div>
-                                  <div>
-                                    Placement test version:{" "}
-                                    <span className='font-semibold'> 1.1.1</span>
-                                  </div>
+                                <div>
+                                  <Image
+                                    src={getFile({ payload: e.image })}
+
+                                    className='w-[350px] h-[300px] '
+                                  />
                                 </div>
 
-                                <div className='flex flex-col gap-2'>
-                                  <div
-                                    style={{
-                                      fontSize: "16px",
-                                      fontWeight: "500",
-                                      color: "#05F",
-                                      width: "120px",
-                                      height: "19px",
-                                    }}
-                                    className='ml-24'
-                                  >
-
-                                  </div>
-                                  <div className='flex gap-5 justify-end'>
-                                    <div className='flex gap-5 justify-end hover:-translate-y-1  hover:scale-110 duration-500'>
-                                      <Button color='default' onPress={onOpen} variant='solid'>
-                                        Cancel
-                                      </Button>
+                                <div className='flex flex-col gap-5 '>
+                                  <div className='flex flex-col gap-10 p-7'>
+                                    <div className='flex flex-col gap-4'>
+                                      <h1
+                                        style={{
+                                          fontSize: "20px",
+                                          fontWeight: "600",
+                                        }}
+                                      >
+                                        {e.title}
+                                      </h1>
+                                      <div>
+                                        Placement test duration:{" "}
+                                        <span className='font-semibold'> 1hr 30 mins</span>
+                                      </div>
+                                      <div>
+                                        Placement test version:{" "}
+                                        <span className='font-semibold'> 1.1.1</span>
+                                      </div>
                                     </div>
 
-                                    <div className='flex gap-5 justify-end hover:-translate-y-1  hover:scale-110 duration-500'>
-                                      {e?.entranceTests[0]?._id ? (
-                                        <Button color='primary' onClick={() => handleEntrance(e)} variant='solid'>
-                                          Take Test
+                                    <div className='flex flex-col gap-2'>
+                                      <div
+                                        style={{
+                                          fontSize: "16px",
+                                          fontWeight: "500",
+                                          color: "#05F",
+                                          width: "120px",
+                                          height: "19px",
+                                        }}
+                                        className='ml-24'
+                                      >
 
-                                        </Button>
-                                      ) : (
-                                        <Button className='bg-primary-300 text-white' variant='solid'>
-                                          Take Test
+                                      </div>
+                                      <div className='flex gap-5 justify-end'>
+                                        <div className='flex gap-5 justify-end hover:-translate-y-1  hover:scale-110 duration-500'>
+                                          <Button color='default' onPress={onOpen} variant='solid'>
+                                            Cancel
+                                          </Button>
+                                        </div>
 
-                                        </Button>
-                                      )}
+                                        <div className='flex gap-5 justify-end hover:-translate-y-1  hover:scale-110 duration-500'>
+                                          {e?.entranceTests[0]?._id ? (
+                                            <Button color='primary' onClick={() => handleEntrance(e)} variant='solid'>
+                                              Take Test
 
+                                            </Button>
+                                          ) : (
+                                            <Button className='bg-primary-300 text-white' variant='solid'>
+                                              Take Test
+
+                                            </Button>
+                                          )}
+
+                                        </div>
+
+                                      </div>
                                     </div>
-
                                   </div>
                                 </div>
                               </div>
-                            </div>
+                            ))}
                           </div>
-                        ))}
+                        )}
                       </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            )}
-            {activeTab === 2 && (
-              <>
-                <div className='flex rounded-md'>
-                  <div>
-                    <Image
-                      src={EduRes}
-                      style={{
-                        width: "325px",
-                        height: "243px",
-                      }}
-                    />
-                  </div>
-
-                  <div className='flex flex-col gap-5 p-14 '>
-                    <h1 className='text-xl font-semibold'>
-                      IELTs (Placement Test Result)
-                    </h1>
-                    <div>
-                      Completed date :{" "}
-                      <span className='font-semibold'>7 Dec 2023 at 2:00 PM</span>
                     </div>
-                    <div>
-                      You have :{" "}
-                      <span className='font-semibold'>70 / 100 marks</span>
-                    </div>
-                    <div>
-                      You got :{" "}
-                      <span className='font-semibold'>IELTS Advance Level</span>
-                    </div>
-                    <div className='flex gap-5 justify-end'>
-                      <Button color='primary' onPress={onOpen} variant='solid'>
-                        Enroll Now!
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-
-                <Modal
-                  backdrop="opaque"
-                  isOpen={isOpen}
-                  className='p-4'
-                  size='3xl'
-                  onOpenChange={onOpenChange}
-                  motionProps={{
-                    variants: {
-                      enter: {
-                        y: 0,
-                        opacity: 1,
-                        transition: {
-                          duration: 0.3,
-                          ease: "easeOut",
-                        },
-                      },
-                      exit: {
-                        y: -20,
-                        opacity: 0,
-                        transition: {
-                          duration: 0.2,
-                          ease: "easeIn",
-                        },
-                      },
-                    }
-                  }}
-                >
-                  <ModalContent>
-                    {(onClose) => (
-                      <>
-                        <div className="flex flex-col gap-1 pl-6 "><span className='text-[30px]'>Payment Form</span><span className='text-[16px] text-gray-400'>Complete the following form and our staff will contact you.</span></div>
-
-                        <ModalBody>
-                          <form className='flex flex-col gap-4 pt-3'>
-                            <div className='flex gap-4'>
-                              <Input type='text' label="First Name" variant={variant} />
-                              <Input type='text' label="Last Name" variant={variant} />
-                            </div>
-                            <div>  <Input type='text' label="Class" variant={variant} /></div>
-                            <div>  <Input type='phone' label="Phone Number" variant={variant} /></div>
-                            <div>  <Input type='number' label="Transaction Number" variant={variant} /></div>
-                            <div>  <Input type='file' accept="audio/*" onChange={handleAudioChange} label="" variant={variant} /></div>
-                          </form>
-                        </ModalBody>
-                        <ModalFooter>
-                          <Button color="danger" variant="light" onPress={onClose}>
-                            Close
-                          </Button>
-                          <Button color="primary" onPress={onClose}>
-                            Confirm
-                          </Button>
-                        </ModalFooter>
-                      </>
-                    )}
-                  </ModalContent>
-                </Modal>
-                {audioFile && (
-                  <div>
-                    <p>Selected Audio: {audioFile.name}</p>
-                    {/* You can also add an audio player to preview the selected audio file */}
-                    <audio controls>
-                      <source src={URL.createObjectURL(audioFile)} type={audioFile.type} />
-                      Your browser does not support the audio element.
-                    </audio>
                   </div>
                 )}
-                <button onClick={handleDownload}>Download Audio</button>
+                {activeTab === 2 && (
+                  <>
+                    <div className='flex rounded-md'>
+                      <div>
+                        <Image
+                          src={EduRes}
+                          style={{
+                            width: "325px",
+                            height: "243px",
+                          }}
+                        />
+                      </div>
+
+                      <div className='flex flex-col gap-5 p-14 '>
+                        <h1 className='text-xl font-semibold'>
+                          IELTs (Placement Test Result)
+                        </h1>
+                        <div>
+                          Completed date :{" "}
+                          <span className='font-semibold'>7 Dec 2023 at 2:00 PM</span>
+                        </div>
+                        <div>
+                          You have :{" "}
+                          <span className='font-semibold'>70 / 100 marks</span>
+                        </div>
+                        <div>
+                          You got :{" "}
+                          <span className='font-semibold'>IELTS Advance Level</span>
+                        </div>
+                        <div className='flex gap-5 justify-end'>
+                          <Button color='primary' onPress={onOpen} variant='solid'>
+                            Enroll Now!
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <Modal
+                      backdrop="opaque"
+                      isOpen={isOpen}
+                      className='p-4'
+                      size='3xl'
+                      onOpenChange={onOpenChange}
+                      motionProps={{
+                        variants: {
+                          enter: {
+                            y: 0,
+                            opacity: 1,
+                            transition: {
+                              duration: 0.3,
+                              ease: "easeOut",
+                            },
+                          },
+                          exit: {
+                            y: -20,
+                            opacity: 0,
+                            transition: {
+                              duration: 0.2,
+                              ease: "easeIn",
+                            },
+                          },
+                        }
+                      }}
+                    >
+                      <ModalContent>
+                        {(onClose) => (
+                          <>
+                            <div className="flex flex-col gap-1 pl-6 "><span className='text-[30px]'>Payment Form</span><span className='text-[16px] text-gray-400'>Complete the following form and our staff will contact you.</span></div>
+
+                            <ModalBody>
+                              <form className='flex flex-col gap-4 pt-3'>
+                                <div className='flex gap-4'>
+                                  <Input type='text' label="First Name" variant={variant} />
+                                  <Input type='text' label="Last Name" variant={variant} />
+                                </div>
+                                <div>  <Input type='text' label="Class" variant={variant} /></div>
+                                <div>  <Input type='phone' label="Phone Number" variant={variant} /></div>
+                                <div>  <Input type='number' label="Transaction Number" variant={variant} /></div>
+                                <div>  <Input type='file' accept="audio/*" onChange={handleAudioChange} label="" variant={variant} /></div>
+                              </form>
+                            </ModalBody>
+                            <ModalFooter>
+                              <Button color="danger" variant="light" onPress={onClose}>
+                                Close
+                              </Button>
+                              <Button color="primary" onPress={onClose}>
+                                Confirm
+                              </Button>
+                            </ModalFooter>
+                          </>
+                        )}
+                      </ModalContent>
+                    </Modal>
+                    {audioFile && (
+                      <div>
+                        <p>Selected Audio: {audioFile.name}</p>
+                        {/* You can also add an audio player to preview the selected audio file */}
+                        <audio controls>
+                          <source src={URL.createObjectURL(audioFile)} type={audioFile.type} />
+                          Your browser does not support the audio element.
+                        </audio>
+                      </div>
+                    )}
+                    <button onClick={handleDownload}>Download Audio</button>
+                  </>
+
+
+                )}
+                {activeTab === 3 && (
+                  <div className='flex rounded-md'>
+                    <div>
+                      <Image
+                        src={Course}
+                        style={{
+                          width: "325px",
+                          height: "243px",
+                        }}
+                      />
+                    </div>
+
+                    <div className='flex flex-col gap-5 p-14 '>
+                      <h1 className='text-xl font-semibold'>
+                        IELTs (Advance Level)
+                      </h1>
+                      <div>
+                        Total Lessons: <span className='font-semibold'>35</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </>
 
-
-            )}
-            {activeTab === 3 && (
-              <div className='flex rounded-md'>
-                <div>
-                  <Image
-                    src={Course}
-                    style={{
-                      width: "325px",
-                      height: "243px",
-                    }}
-                  />
-                </div>
-
-                <div className='flex flex-col gap-5 p-14 '>
-                  <h1 className='text-xl font-semibold'>
-                    IELTs (Advance Level)
-                  </h1>
-                  <div>
-                    Total Lessons: <span className='font-semibold'>35</span>
-                  </div>
-                </div>
+            ) : (
+              <div className='flex flex-col gap-10 items-center pt-[40px]'>
+                <Image src={Loading} className='transform-x-[-1] w-[350px] h-[250px]' />
+                <span className='text-[20px] font-semibold'>
+                  Please wait ... !
+                </span>
               </div>
             )}
+
           </div>
         </div>
       </Fade >
