@@ -39,6 +39,8 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
   const [studentAnswer, setStudentAnswer] = useState("");
   const [caList, setCaList] = useState([])
   const [multiAns, setMultiAns] = useState([])
+  const [count, setCount] = useState(0)
+  const [forStudentAnswerLength, setForStudentAnswerLength] = useState('')
 
   // const multiAnswerList = multiAns.map((i, ind) => {
   //   return {
@@ -46,7 +48,7 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
   //     id: i.id
   //   }
   // })
-  // console.log(multiAnswerList, 'multiAnswerList')
+  console.log(forStudentAnswerLength, 'multiAnswerList')
   // const sameList = [...arr, multiAnswerList]
   // console.log(sameList, 'sameList')
 
@@ -55,13 +57,22 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
 
   const [studentAnswerList, setStudentAnswerList] = useState([]);
   // const arrList = [...arr, trueAnswerList.filter((el) => el.id === quizList.questions[counter]._id)[1]]
-  console.log([...arr, trueAnswerList.filter((el) => el.id === quizList.questions[counter]._id)[1]], 'true ori');
+  // console.log(trueAnswerList.filter((el) => el.id === quizList.questions[counter]._id)[0], 'true ori');
 
 
-  // console.log(trueAns, 'fix true');
+  console.log(trueAnswerList, 'true list');
+  console.log(trueAnswerList[counter]?.studentAnswer?.length, 'st list');
   const TotalMark = trueAnswerList.map((i) => i.markTotal)
     .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-  console.log(TotalMark, "time");
+  console.log(TotalMark, "trueF mark");
+
+  //Multiple
+
+  // console.log(objectMap, 'last mul')
+  const MulTotalMark = trueAnswerList.map((i) => i.markTotal).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+  console.log(MulTotalMark, "mul mark");
+
+
   const displayCorrect = (correct) => {
     let correct_msg = correct ? "correct" : "incorrect";
     // console.log("Answer was " + correct_msg);
@@ -110,7 +121,7 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
     setStudentID(dataFromLocalStorage);
     //   setPages(res.data._metadata.page_count)
 
-  }, []);
+  }, [forStudentAnswerLength]);
   const handleOptionSelect = (option) => {
     console.log(option, "option");
 
@@ -161,8 +172,8 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
 
       const correctList = cas?.map((i) => (parseInt(i))) //To change Int in array's items
 
-      let answerObj = correctList.every(item => studentAnswerList.filter((el) => el.id === quizList.questions[counter]._id)[1].studentAnswer.slice(-2).includes(item))  // To know two arrays's items same?
-      // console.log(correctList.every(item => studentAnswerList.filter((el) => el.id === quizList.questions[counter]._id)[1].studentAnswer.slice(-2).includes(item)), 'slice in next')
+      let answerObj = correctList.every(item => studentAnswerList.filter((el) => el.id === quizList.questions[counter]._id)[1].studentAnswer.slice(-(quizList.questions[counter].correctAnswer.length)).includes(item))  // To know two arrays's items same?
+      // console.log(answerObj, 'slice in next')
 
 
       let updated_points = answerObj ? points + 1 : points;       // If we true,we increase mark
@@ -210,6 +221,8 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
 
     // console.log(studentAnswerList.filter(el => quizList.questions.find(i => i._id === el.id)), 'studentAnswerList')
     //Quiz-Result Create
+
+
     const data = {
       enrollment: enrollID,
       quiz: quizList._id,
@@ -226,13 +239,13 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
           answerType: i.answerType,
           correctAnswer: i.correctAnswer,
           studentAnswer: i.type === 'trueFalse' ? studentAnswerList.filter((el) => el.id === i._id)[0]
-            ?.studentAnswer : studentAnswerList.filter((el) => el.id === i._id)[1].studentAnswer.slice(-2),
+            ?.studentAnswer : studentAnswerList.filter((el) => el.id === i._id)[1].studentAnswer.slice(-(i.correctAnswer.length)),
         };
       }),
-      totalMark: quizList.questions[counter].type === 'trueFalse' ? TotalMark : points,
-      status: quizList.questions[counter].type === 'trueFalse' ? (((TotalMark = quizList.passMark) && "pass") || ((TotalMark > quizList.passMark) && "D") || ((TotalMark < quizList.passMark) && "Credit") || ((TotalMark < quizList.creditMark) && "Fail")) : (points >= quizList.passMark ? "pass" : "fail"),
+      totalMark: quizList.questions[counter].type === 'trueFalse' ? TotalMark : MulTotalMark,
+      status: quizList.questions[counter].type === 'trueFalse' ? (TotalMark === quizList.passMark && "pass") || (TotalMark > quizList.passMark && "distinction") || ((TotalMark < quizList.passMark && TotalMark === quizList.creditMark) && "credit") || (TotalMark < quizList.creditMark && "fail") : (points >= quizList.passMark ? "pass" : "fail"),
     };
-    // alert(JSON.stringify(data));
+    alert(JSON.stringify(data));
     apiInstance
       .post("quiz-results", data)
       .then(function () {
@@ -249,21 +262,24 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
     setShowResult(true);
   };
 
+
+
   const handleCheckboxSelect = (event, index, data, correct, counter, mark, counterId) => {
-    setIndex(index);
-    // console.log(correct, 'll')
+    setIndex(index + 1);
+    setCount(count + 1)
+    // console.log(counter, 'll')
 
     if (event.target.checked) {
       const multi = [...multiAns, index + 1]
       setMultiAns(multi);
       // We get answer with index no
-      // console.log(multi, 'multi ans list')
-
+      // console.log(multi.slice(-(correct.length)), 'multi ans list')
+      const II = multi.slice(-(correct.length))
       const correctList = correct.map((i) => (parseInt(i)))
       // console.log(correctList, 'corr ans list')
       // console.log(correctList.every(item => multi.includes(item)), 'true?')
 
-      if (correctList.every(item => multi.includes(item))) {
+      if (correctList.every(item => II.includes(item))) {
         // setStudentAnswer(val + 1)
 
         const newFormSubmissions = [...trueAnswerList];
@@ -271,17 +287,28 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
           id: counterId,
           correct: correctList,
           markTotal: mark,
-          studentAnswer: multi
+          studentAnswer: multi.slice(-(correctList.length))
         });
 
         localStorage.setItem(
           "formSubmission",
           JSON.stringify(newFormSubmissions)
         );
+        setForStudentAnswerLength(multi.slice(-(correctList.length)).length)
+        // Function to filter unique objects based on ID
+        const getUniqueById = (arr) => {
+          return Object.values(arr.reduce((acc, obj) => {
+            acc[obj.id] = obj;
+            return acc;
+          }, {}));
+        };
 
-        setTrueAnswerList(newFormSubmissions);
+        // Usage
+        const uniqueObjects = getUniqueById(newFormSubmissions);
+        // console.log(uniqueObjects, 'mul real');
+        setTrueAnswerList(uniqueObjects);
 
-        // console.log(newFormSubmissions, 'setTrueAnswerList')
+        // console.log(uniqueObjects, 'setTrueAnswerList')
         // console.log(quiz.questions.filter(el=>el.correctAnswer === val+1))
         setIsCorrect("Correct");
       } else {
@@ -496,15 +523,14 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
                                     name='answer_group'
                                     value={e.answer}
                                     // checked={multiAns.map((i, ind) => (selectedItem.map((e, ine) => (ine === ind))))}
-                                    // disabled={
-                                    //   clicked === ""
-                                    //     ? ""
-                                    //     : selectedOption === e.answer
-                                    //     ? ""
-                                    //     : true
-                                    // }
+                                    disabled={
+                                      (quizList.questions[counter].correctAnswer?.length < forStudentAnswerLength) && true
+
+
+                                    }
                                     onClick={(event) =>
                                       handleCheckboxSelect(event,
+
                                         i,
                                         e,
                                         quizList.questions[counter].correctAnswer,
