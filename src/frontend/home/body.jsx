@@ -80,8 +80,11 @@ const Body = () => {
             style={{ color: "#BC1F40", fontWeight: "900" }}
           >
             <Wave
+              effectDelay='1'
+              paused={location.pathname === '/' ? false : true}
+
               text='Welcome To MSI Academy'
-              effect="stretch" effectChange={2.2}
+              effect="stretch" effectChange={2}
             />
 
           </h1>

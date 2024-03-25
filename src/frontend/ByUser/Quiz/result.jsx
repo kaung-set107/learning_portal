@@ -262,15 +262,16 @@ export default function Result() {
                 </div>
                 {/* {console.log(updatedQuestionList, "up in bod")} */}
                 <div className='grid grid-cols-5 gap-3'>
-                  {updatedQuestionList.map((i, index) => (
+                  {updatedQuestionList.map((e, index) => (
                     <>
                       {/* correctList.every(item => caList.includes(item)) */}
-                      {i.correctAnswer.map((i) => (parseInt(i))).every(item => i.studentAnswer.map((i) => (parseInt(i))).includes(item))
+                      {e.correctAnswer.map((i) => (parseInt(i))).every(item => e.studentAnswer.map((i) => (parseInt(i))).includes(item))
                         ? (
                           <a
                             href={`#${quizNavigationID}`}
                             className='flex flex-col  h-[45px] w-[45px] bg-[#c6f4df] border-1 border-[#9FE7C9] rounded-lg '
                             style={{ padding: "2px 0px 26px 0px" }}
+
                             onClick={() => handleQuizNavigation(i)}
                           >
                             <span className='text-[14px] font-black text-[#000] flex justify-center items-center'>
@@ -289,7 +290,7 @@ export default function Result() {
                             href={`#${quizNavigationID}`}
                             className='flex flex-col  h-[45px] w-[45px] bg-[#FDE9EB] border-1 border-[#F66671] rounded-lg '
                             style={{ padding: "2px 0px 26px 0px" }}
-                            onClick={() => handleQuizNavigation(i)}
+                            onClick={() => handleQuizNavigation(e)}
                           >
                             <span className='text-[14px] font-black text-[#000] flex justify-center items-center'>
                               {index + 1}
@@ -353,7 +354,7 @@ export default function Result() {
                             <label>
                               <span
                                 className={
-                                  i.studentAnswer.map((i) => (parseInt(i)))[0] - 1 === index || i.studentAnswer.map((i) => (parseInt(i)))[1] - 1 === index
+                                  i.studentAnswer.map((i) => (parseInt(i)))[0] - 1 === index || i.studentAnswer.map((i) => (parseInt(i)))[1] - 1 === index || i.studentAnswer.map((i) => (parseInt(i)))[2] - 1 === index
                                     ? "text-[#00C853]"
                                     : "text-[#d6d3d3]"
                                 }
@@ -364,7 +365,7 @@ export default function Result() {
                               &nbsp;
                               <span
                                 className={
-                                  i.studentAnswer.map((i) => (parseInt(i)))[0] - 1 === index || i.studentAnswer.map((i) => (parseInt(i)))[1] - 1 === index
+                                  i.studentAnswer.map((i) => (parseInt(i)))[0] - 1 === index || i.studentAnswer.map((i) => (parseInt(i)))[1] - 1 === index || i.studentAnswer.map((i) => (parseInt(i)))[2] - 1 === index
                                     ? "text-[#00C853]"
                                     : "text-[#d6d3d3]"
                                 }

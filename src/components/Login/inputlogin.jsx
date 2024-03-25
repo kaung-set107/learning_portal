@@ -102,7 +102,7 @@ export default function Login() {
           });
 
           navigate("/student", { state: { rol } });
-          window.location.reload()
+          // window.location.reload()
         } else if (res.data.data.roles[0].includes("admin")) {
           Swal.fire({
             icon: "success",
