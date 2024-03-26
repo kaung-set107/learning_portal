@@ -6,6 +6,7 @@ import Heading from "../../../components/general/typography/Heading"
 import { Tabs, Tab } from "@nextui-org/react";
 import SurveyCreateForm from "../../surveys/components/SurveyCreateForm"
 import SurveyUpdateForm from "../../surveys/components/SurveyUpdateForm"
+import SummaryForm from "../components/SummaryForm"
 
 const LearningMaterialBrief = () => {
   const { id } = useParams()
@@ -46,7 +47,7 @@ const LearningMaterialBrief = () => {
           <Tabs aria-label="Options">
             <Tab key={TabOptions[0].key} title={TabOptions[0].title}>
               <div>
-                this is summary
+                <SummaryForm learningMaterial={learningMaterial} successCallback={getLearningMaterial} />
               </div>
             </Tab>
             <Tab key={TabOptions[1].key} title={TabOptions[1].title}>
