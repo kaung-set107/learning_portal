@@ -7,6 +7,7 @@ import { Tabs, Tab } from "@nextui-org/react";
 import SurveyCreateForm from "../../surveys/components/SurveyCreateForm";
 import SurveyUpdateForm from "../../surveys/components/SurveyUpdateForm";
 import SummaryForm from "../components/SummaryForm";
+import CustomButton from "../../../components/general/CustomButton";
 
 const LearningMaterialBrief = () => {
   const { id } = useParams();
@@ -45,6 +46,9 @@ const LearningMaterialBrief = () => {
   } else {
     content = (
       <div>
+        <div className="flex items-center justify-between mb-12">
+          <CustomButton type="back" title={`Back to Learning Material`} />
+        </div>
         <Heading title={learningMaterial.title} className="mb-3" />
         <p className="mb-3">{learningMaterial.description}</p>
         <div className="space-y-6">

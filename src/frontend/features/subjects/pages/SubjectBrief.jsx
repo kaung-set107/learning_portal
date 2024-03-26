@@ -28,6 +28,7 @@ const SubjectBrief = () => {
     const TabOptions = [
         { key: 'assignment', title: 'Assignment' },
         { key: 'subject-sections', title: 'Subject Sections' },
+        { key: 'exam', title: 'Exam' },
     ]
 
     const getSubject = async () => {
@@ -170,6 +171,9 @@ const SubjectBrief = () => {
                                         }
                                     </div>
                                 </div>
+                            </Tab>
+                            <Tab key={TabOptions[2].key} title={TabOptions[2].title}>
+                                Exam
                             </Tab>
                         </Tabs>
                     </div>

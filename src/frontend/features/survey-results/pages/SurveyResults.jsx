@@ -8,6 +8,7 @@ import { surveyResultsApi } from "../api";
 import { useNavigate, useParams } from "react-router-dom";
 import CustomButton from "../../../components/general/CustomButton";
 import { surveysApi } from "../../surveys/data";
+import { showError } from "../../../../util/noti";
 
 const SurveyResults = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -40,8 +41,7 @@ const SurveyResults = () => {
       setSurvey(res.data);
     } catch (error) {
       console.log(error);
-    } finally {
-      setIsLoading(false);
+      showError({ axiosResponse: error });
     }
   };
 
