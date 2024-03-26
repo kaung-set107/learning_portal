@@ -223,6 +223,61 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
   };
 
 
+  const handleAns = (val, studentChoose, ca, index, mark, counterid) => {
+    setNextAnswer(false);
+    setClicked(true);
+    setShowAlert(true);
+    setIndex(val);
+
+
+    // console.log('hello', [...multiAns, studentChoose]);
+
+
+    const TrueFalseAns = [...arr, val + 1] // to get student's index choose value with array list style
+    // console.log(TrueFalseAns, 'studentChoose list')
+
+
+    // console.log(multiAnswerList, 'mul list')
+    // console.log(quizList.questions[counter].type, 'index of multi + 1')
+
+
+    if (parseInt(ca) === parseInt(TrueFalseAns)) {
+      // setStudentAnswer(val + 1)
+      // console.log('fdjfsakjkfsn')
+      const newFormSubmissions = [...trueAnswerList];
+      newFormSubmissions.push({
+        correct: parseInt(ca),
+        markTotal: mark,
+        studentAnswer: TrueFalseAns
+      });
+
+      localStorage.setItem(
+        "formSubmission",
+        JSON.stringify(newFormSubmissions)
+      );
+
+      setTrueAnswerList(newFormSubmissions);
+
+      // console.log(newFormSubmissions, 'new radio')
+
+      setIsCorrect("Correct");
+    } else {
+      // setStudentAnswer(val + 1)
+      setIsCorrect("incorrect");
+    }
+    const newFormSubmissionsforStudentAnswer = [...studentAnswerList];
+    newFormSubmissionsforStudentAnswer.push({ studentAnswer: TrueFalseAns, id: counterid });
+
+    localStorage.setItem(
+      "studentformSubmission",
+      JSON.stringify(newFormSubmissionsforStudentAnswer)
+    );
+    // console.log(newFormSubmissionsforStudentAnswer, 'final else radio')
+    setStudentAnswerList(newFormSubmissionsforStudentAnswer);
+
+
+
+  };
 
   const handleCheckboxSelect = (event, index, data, correct, counter, mark, counterId) => {
 
@@ -303,61 +358,6 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
 
   }
 
-  const handleAns = (val, studentChoose, ca, index, mark, counterid) => {
-    setNextAnswer(false);
-    setClicked(true);
-    setShowAlert(true);
-    setIndex(val);
-
-
-    // console.log('hello', [...multiAns, studentChoose]);
-
-
-    const TrueFalseAns = [...arr, val + 1] // to get student's index choose value with array list style
-    // console.log(TrueFalseAns, 'studentChoose list')
-
-
-    // console.log(multiAnswerList, 'mul list')
-    // console.log(quizList.questions[counter].type, 'index of multi + 1')
-
-
-    if (parseInt(ca) === parseInt(TrueFalseAns)) {
-      // setStudentAnswer(val + 1)
-      // console.log('fdjfsakjkfsn')
-      const newFormSubmissions = [...trueAnswerList];
-      newFormSubmissions.push({
-        correct: parseInt(ca),
-        markTotal: mark,
-        studentAnswer: TrueFalseAns
-      });
-
-      localStorage.setItem(
-        "formSubmission",
-        JSON.stringify(newFormSubmissions)
-      );
-
-      setTrueAnswerList(newFormSubmissions);
-
-      // console.log(newFormSubmissions, 'new radio')
-
-      setIsCorrect("Correct");
-    } else {
-      // setStudentAnswer(val + 1)
-      setIsCorrect("incorrect");
-    }
-    const newFormSubmissionsforStudentAnswer = [...studentAnswerList];
-    newFormSubmissionsforStudentAnswer.push({ studentAnswer: TrueFalseAns, id: counterid });
-
-    localStorage.setItem(
-      "studentformSubmission",
-      JSON.stringify(newFormSubmissionsforStudentAnswer)
-    );
-    // console.log(newFormSubmissionsforStudentAnswer, 'final else radio')
-    setStudentAnswerList(newFormSubmissionsforStudentAnswer);
-
-
-
-  };
 
 
   const displayMinutes = Math.floor(timeLeft / 60);
