@@ -6,12 +6,12 @@ import Loading from "../../../components/general/Loading"
 import { subjectsApi } from "../api"
 import { useNavigate } from "react-router-dom"
 import CustomButton from '../../../components/general/CustomButton'
+import { getCurrentUserId } from "../../../../util/Util"
 
 const Subjects = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [subjects, setSubjects] = useState([])
     const navigate = useNavigate()
-
 
     const getViewButton = (id) => {
         return (
@@ -23,7 +23,7 @@ const Subjects = () => {
 
     const getSubjects = async () => {
         try {
-            let res = await subjectsApi.getAll()
+            let res = await subjectsApi.getAll({instructors: getCurrentUserId()})
             setSubjects(res)
         } catch (error) {
             console.log(error)
