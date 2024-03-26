@@ -9,10 +9,11 @@ import { surveysApi } from "../data";
 import QuestionCreateModal from "../../questions/components/QuestionCreateModal";
 import QuestionList from "../../questions/components/QuestionList";
 import { showError, showSuccess } from "../../../../util/noti";
+import { useNavigate } from "react-router-dom";
 
 const SurveyUpdateForm = (props) => {
   const { type, learningMaterial, successCallback } = props;
-
+  const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [questions, setQuestions] = useState([]);
 
@@ -41,6 +42,10 @@ const SurveyUpdateForm = (props) => {
     status: "unfinished",
     isLoading: false,
   });
+
+  const goToResult = (id) => {
+    navigate(`/by-instructor/surveys/${id}/survey-results`, { state: { survey: id } });
+  };
 
   const addQuestion = (data) => {
     let newQuestions = [...questions];
@@ -86,11 +91,9 @@ const SurveyUpdateForm = (props) => {
 
   // for update
   const fillData = () => {
-    setQuestions(prev => {
-        return [
-            ...learningMaterial.survey.questions
-        ]
-    })
+    setQuestions((prev) => {
+      return [...learningMaterial.survey.questions];
+    });
 
     setFormData((prev) => {
       return {
@@ -113,7 +116,15 @@ const SurveyUpdateForm = (props) => {
     <div>
       <Card>
         <CardBody>
-          <SubHeading title="Survey Update Form" />
+          <div className="flex justify-between items-center">
+            <SubHeading title="Survey Update Form" />
+            <CustomButton
+              size="sm"
+              onClick={() => goToResult(learningMaterial.survey._id)}
+              isLoading={isSubmitting}
+              title="Results"
+            />
+          </div>
           <form>
             <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
               <Input

@@ -3,6 +3,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { FiPlus } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { IoChevronBack } from "react-icons/io5";
 import Loading from "./Loading";
 
 /* eslint-disable react/prop-types */
@@ -42,6 +43,12 @@ const CustomButton = (props) => {
                 return (<><FaRegTrashAlt /></>)
             } else if (textOnly) {
                 return (<>{title}</>)
+            }
+        } else if (type === 'back') {
+            if(iconOnly) {
+                return (<><IoChevronBack/></>)
+            } else {
+                return (<><IoChevronBack className="mr-2 text-xl"/>{title}</>)
             }
         }
 
