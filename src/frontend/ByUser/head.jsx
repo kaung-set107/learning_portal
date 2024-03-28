@@ -11,7 +11,9 @@ const TabValueComponent = ({ activeTabValue }) => {
 
   return (
     <div className=''>
-      <div className='justify-center grid grid-cols-4'>
+      <div className={location.pathname === '/course-detail' ? 'justify-center grid grid-cols-5' : 'justify-center grid grid-cols-4'}>
+
+
         <div
           className={
             activeTab === 1
@@ -20,7 +22,7 @@ const TabValueComponent = ({ activeTabValue }) => {
           }
           onClick={() => handleTabClick(1)}
         >
-          {location.pathname === '/course-detail' ? 'Home' : (<Link to='/student'>Home</Link>)}
+          {location.pathname !== '/course-detail' ? 'Home' : (<Link to='/student'>Home</Link>)}
           {/* Home &nbsp; */}
 
           {/* <Badge content='9+' shape='circle' color='danger'>

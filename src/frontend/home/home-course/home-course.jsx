@@ -70,14 +70,14 @@ const Body = () => {
             <div
               onClick={() => handleRoute(e)}
               style={{ height: "470px" }}
-              className='w-full hover:-translate-y-2 hover:scale-105 duration-500 md:w-[390px] h-full md:h-[610px]'
+              className='w-full  md:w-[390px] h-full md:h-[610px]'
             >
               <div>
                 <Image
                   // style={{ width: "500px", height: "280px" }}
                   alt={e.image?.originalname}
                   src={getFile({ payload: e.image })}
-                  className='w-full h-full md:w-[500px] md:h-[280px]'
+                  className='w-full h-full md:w-[500px] md:h-[280px] hover:-translate-y-2 hover:scale-105 duration-500'
                 />
                 <div className='flex p-5 flex-col justify-start flex-grow '>
                   <span

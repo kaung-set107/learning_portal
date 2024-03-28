@@ -96,33 +96,36 @@ export default function App() {
   const [allRead, setAllRead] = useState(false);
   const navigate = useNavigate();
   const GetLoginData = localStorage.getItem("token");
+  const StudentID = localStorage.getItem("id");
 
   const [notiList, setNotiList] = useState([])
   const [list, setList] = useState([]);
   const [imgUrl, setImgUrl] = useState("");
   const [user, setUser] = useState(null);
   const [email, setEmail] = useState("");
+  const [img, setImg] = useState('')
+  // console.log(studentData.image, 'studentDatastudentData')
 
   const handleAllRead = () => {
     apiInstance.put("notifications").then(function () {
-      console.log(res.data.data, 'res')
+      // console.log(res.data.data, 'res')
     })
   };
 
   useEffect(() => {
     const getAssign = async () => {
       await apiInstance.get(`subjects`).then((res) => {
-        console.log(res.data.data, "sub");
+        // console.log(res.data.data, "sub");
         setList(res.data.data);
       });
     };
     const userID = localStorage.getItem("id");
     const getUser = async () => {
-      console.log(userID);
+      // console.log(userID);
       await apiInstance.get("user/" + userID).then((res) => {
         setUser(res.data.data);
         setEmail(res.data.data.email);
-        console.log(res.data.data);
+        // console.log(res.data.data);
         if (res.data.data.image) {
           setImgUrl(res.data.data);
         }
@@ -132,14 +135,30 @@ export default function App() {
       await apiInstance.get("notifications").then((res) => {
         const sortedData = res.data.data.sort((a, b) => new Date(a.date) - new Date(b.date));
         setNotiList(res.data.data);
-        console.log(sortedData, 'resss')
+        // console.log(sortedData, 'resss')
 
       });
     };
+
+    const getStudent = async () => {
+      await apiInstance.get("students").then((res) => {
+
+        // setNotiList(res.data.data);
+
+        const Img = getFile({
+          payload: res.data.data.filter((el) => el._id === StudentID)[0]?.image,
+        });
+        // console.log(Img, "ii");
+        setImg(Img);
+        // console.log(, 'resss')
+
+      });
+    };
+    getStudent();
     getNoti();
     getUser();
     getAssign();
-  }, []);
+  }, [StudentID]);
 
   const handleSeeAll = () => {
     setSeeAll(!seeAll)
@@ -286,14 +305,12 @@ export default function App() {
 
             <div>
               <div className='hidden sm:flex '>
-                <User
-                  avatarProps={{
-                    radius: "xl",
-                    src: imgUrl
-                      ? getFile({ payload: imgUrl.image.fileName })
-                      : "",
-                  }}
-                />
+                <Avatar isBordered src={img}
+                  className='w-[35px] h-[35px] rounded-[50%] mt-[0.2rem]' />
+                {/* <Image
+                  src={img}
+                  className='w-[35px] h-[35px] rounded-[50%] mt-[0.2rem]'
+                /> */}
               </div>
             </div>
           </div>

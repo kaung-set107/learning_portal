@@ -42,7 +42,11 @@ import EntranceTestPage from './frontend/ByUser/Quiz/entranceTest.jsx'
 import InstructorHome from "./frontend/ByInstructor/home";
 import LearningMaterial from "./frontend/pages/LearningMaterial/LMAdd";
 import Assignment from "./frontend/components/Assignment/AssignInput";
+
+//Exam
 import Exam from "./frontend/components/Exam/ExamInput";
+import ExamResult from './frontend/components/MyCourse/examResultPage.jsx'
+
 import Subject from "./pages/Subject/subject";
 import SubjectAdd from "./pages/Subject/subjectAdd";
 import SubjectUpdate from "./pages/Subject/subjectUpdate";
@@ -264,6 +268,7 @@ export default function RouteFile() {
 
           {/* Exam */}
           <Route path="/exam" element={<Exam />}></Route>
+          <Route path="/exam-result" element={<ExamResult />}></Route>
           <Route path="/exam-update/:id" element={<ExamUpdate />}></Route>
           {/* <AuthContainer component={<Dashboard />} path='/home'></AuthContainer> */}
           <Route path="/chart" element={<Chart />}></Route>

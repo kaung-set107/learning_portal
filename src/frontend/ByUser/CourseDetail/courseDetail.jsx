@@ -190,13 +190,14 @@ export default function CourseDetail(props) {
                           height: "463px",
                           padding: "14px 13px",
                         }}
-                        className='min-w:[490px]  flex flex-col gap-3 hover:-translate-y-2 hover:rotate-1 hover:scale-110 hover:bg-indigo-500 duration-500'
+                        className='min-w:[490px]  flex flex-col gap-3 '
                       >
                         <Image
                           radius='sm'
-                          alt={e.image.originalname}
+                          alt={e.image?.originalname}
                           style={{ width: "464px", height: "238px" }}
                           src={getFile({ payload: e.image })}
+                          className='hover:-translate-y-2  hover:scale-105 duration-500'
                         />
 
                         <span
@@ -235,7 +236,7 @@ export default function CourseDetail(props) {
                               width: "227px",
                               height: "48px",
                             }}
-                            className='bg-red-500 hover:bg-red-700'
+                            className='bg-red-500 hover:bg-red-700  hover:-translate-y-2  hover:scale-105 duration-500'
                             onClick={() => handleSubjectDetail(e, "sub-detail")}
                           >
                             See More
@@ -297,9 +298,9 @@ export default function CourseDetail(props) {
                       >
                         <Image
                           radius='sm'
-                          alt={e.instructor.image.originalname}
+                          alt={e.instructors[0]?.image?.originalname}
                           style={{ width: "464px", height: "238px" }}
-                          src={getFile({ payload: e.instructor.image })}
+                          src={getFile({ payload: e.instructors[0].image })}
                         />
                         <span
                           style={{
@@ -311,7 +312,7 @@ export default function CourseDetail(props) {
                           }}
                           className='flex flex-col'
                         >
-                          {e.instructor.name}
+                          {e.instructors[0].name}
                           <span
                             style={{
                               fontSize: "16px",
@@ -321,7 +322,7 @@ export default function CourseDetail(props) {
                               height: "56px",
                             }}
                           >
-                            {e.instructor.email}
+                            {e.instructors[0].email}
                           </span>
                         </span>
 
@@ -335,7 +336,7 @@ export default function CourseDetail(props) {
                           }}
                           className='min-w:[464px] min-h:[auto]'
                         >
-                          {e.instructor?.introduction}
+                          {e.instructors[0]?.introduction}
                         </p>
                         <span
                           style={{
@@ -347,7 +348,7 @@ export default function CourseDetail(props) {
                           }}
                           className=''
                         >
-                          {e.instructor.qualification}
+                          {e.instructors[0].qualification}
                         </span>
                       </div>
                     </>

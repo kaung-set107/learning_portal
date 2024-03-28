@@ -1,7 +1,10 @@
-import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
+import { Card, CardBody, CardFooter, Image, Button, LinkIcon } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-// import { Link } from "@nextui-org/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowLeft
+} from "@fortawesome/free-solid-svg-icons";
 const TabValueComponent = ({ activeTabValue, detailData }) => {
   // console.log(detailData, "detail head");
   // console.log(activeTabValue, "activeTabValue head");
@@ -14,6 +17,18 @@ const TabValueComponent = ({ activeTabValue, detailData }) => {
   return (
     <div className=''>
       <div className='justify-center grid grid-cols-4'>
+        <Link to='/student'>
+          <div
+            className={
+              activeTab === 0
+                ? "border-b-4 text-blue-800 bg-blue-100 py-3 border-indigo-500/75 w-48 text-center font-semibold duration-500"
+                : " w-48 text-center font-semibold py-3 "
+            }
+
+          >
+            &nbsp;Home
+          </div>
+        </Link>
         <div
           className={
             activeTab === 1
@@ -59,10 +74,9 @@ const TabValueComponent = ({ activeTabValue, detailData }) => {
           Exam
 
           &nbsp;
-          {/* <Badge content='9+' shape='circle' color='danger'>
-              <NotificationIcon size={24} />
-            </Badge> */}
+
         </div>
+
       </div>
     </div >
   );

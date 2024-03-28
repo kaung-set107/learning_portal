@@ -21,16 +21,14 @@ import apiInstance from "../../../util/api";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCircleCheck,
-  faAngleRight,
-  faLock,
-  faAngleLeft,
+  faFireFlameCurved, faStar, faCheck, faImage
 } from "@fortawesome/free-solid-svg-icons";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 const colors = ["bg-[#ED1D25]", "bg-[#215887]"]
 const oneColor = colors[0]
 const twoColor = colors[1]
+
 export default function CourseDetail(props) {
 
   const tabRef = useRef();
@@ -102,75 +100,145 @@ export default function CourseDetail(props) {
       )}
 
       {showMid && (
-        <div className='h-[408px] w-full flex flex-col gap-5 pl-16'>
 
-          <div className='flex flex-col gap-5'>
-            <div className='flex justify-between'>
-              <span className='text-[40px] font-bold'>Mid-Term Exam</span>
-              <Button className='flex justify-center w-10' onClick={handleBack}>Back</Button>
-            </div>
+        <div className="flex justify-center items-center w-full flex-col mb-20">
+          <Tabs aria-label="Options" color="primary" variant="bordered">
+            <Tab
+              key="new"
+              title={
+                <div className="flex items-center space-x-2">
+                  <FontAwesomeIcon icon={faFireFlameCurved} size='xl' />
+                  <span>New</span>
+                </div>
+              }
+            >
+              <div className='h-[308px] w-full flex flex-col gap-5 pl-16'>
+                <div className='flex flex-col gap-5'>
+                  <div className='flex justify-between'>
+                    <span className='text-[40px] font-bold'>Mid-Term Exam</span>
+                    <Button className='flex justify-center w-10' onClick={handleBack}>Back</Button>
+                  </div>
 
-            <div className='pl-5'>
-              <ul className='text-[24px] font-semibold flex flex-col gap-2'>
-                <li>Must be able to answer the Project Management (Week-4) Quiz.</li>
-                <li>Must have passed (90%).</li>
-                <li>There is no number of times, but the opportunity to answer</li>
-                <li className='w-[1315px]'>In answering, if you take the quiz for the first (2) times and want to take it again for the (3rd) time, you can answer it immediately, and you can take the quiz for the (3rd) time only after 5 (5) hours have passed.</li>
-              </ul>
-            </div>
-          </div>
-          <div>
-            <span className='text-[#ED1D25] text-[24px] font-bold'> Note. . After taking the first (2) exams, you will be able to retake the exam only after 5 (5) hours have passed.</span>
-          </div>
-          <div className='flex justify-center p-5'>
-            {
-              value.showToStudent === false ? (
-                <Button color='primary' disabled className='flex justify-center w-40 items-center cursor-not-allowed opacity-60' >Start</Button>
+                  <div className='text-[24px] font-semibold flex flex-col gap-2 ml-[30px]'>
+                    <div >
+                      <li>Must be able to answer the Project Management (Week-4) Quiz.</li>
+                      <li>Must have passed (90%).</li>
+                      <li>There is no number of times, but the opportunity to answer</li>
 
-              ) : (
-                <Button color='primary' className='flex justify-center w-40 items-center' onClick={handleBack}>Start</Button>
+                      <li className='w-[1315px]'>In answering, if you take the quiz for the first (2) times and want to take it again for the (3rd) time, you can answer it immediately, and you can take the quiz for the (3rd) time only after 5 (5) hours have passed.</li>
 
-              )
-            }
-          </div>
-        </div >
+
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <span className='text-[#ED1D25] text-[24px] font-bold'> Note. . After taking the first (2) exams, you will be able to retake the exam only after 5 (5) hours have passed.</span>
+                </div>
+                <div className='flex justify-center p-5'>
+                  {
+                    value.showToStudent === false ? (
+                      <Button color='primary' disabled className='flex justify-center w-40 items-center cursor-not-allowed opacity-60' >Start</Button>
+
+                    ) : (
+                      <Button color='primary' className='flex justify-center w-40 items-center' onClick={handleBack}>Start</Button>
+
+                    )
+                  }
+                </div>
+              </div>
+            </Tab>
+            <Tab
+              key="complete"
+              title={
+                <div className="flex items-center space-x-2">
+                  <FontAwesomeIcon icon={faStar} size='xl' />
+                  <span>Complete</span>
+                </div>
+              }
+            ></Tab>
+            <Tab
+              key="result"
+              title={
+                <div className="flex items-center space-x-2">
+                  <FontAwesomeIcon icon={faCheck} size='xl' />
+                  <span>Result</span>
+                </div>
+              }
+            ></Tab>
+          </Tabs>
+        </div>
       )
       }
 
       {
         showFinal && (
-          <div className='h-[408px] w-full flex flex-col gap-5 pl-16'>
 
-            <div className='flex flex-col gap-5'>
-              <div className='flex justify-between'>
-                <span className='text-[40px] font-bold'>Final Exam</span>
-                <Button className='flex justify-center w-10' onClick={handleBack}>Back</Button>
-              </div>
-              <div className='pl-5'>
-                <ul className='text-[24px] font-semibold flex flex-col gap-2'>
-                  <li>Must be able to answer the Project Management (Week-4) Quiz.</li>
-                  <li>Must have passed (90%).</li>
-                  <li>There is no number of times, but the opportunity to answer</li>
-                  <li className='w-[1315px]'>In answering, if you take the quiz for the first (2) times and want to take it again for the (3rd) time, you can answer it immediately, and you can take the quiz for the (3rd) time only after 5 (5) hours have passed.</li>
-                </ul>
-              </div>
-            </div>
-            <div>
-              <span className='text-[#ED1D25] text-[24px] font-bold'> Note. . After taking the first (2) exams, you will be able to retake the exam only after 5 (5) hours have passed.</span>
-            </div>
-            <div className='flex justify-center p-5'>
-              {
-                value.showToStudent === false ? (
-                  <Button color='primary' disabled className='flex justify-center w-40 items-center cursor-not-allowed opacity-60' >Start</Button>
+          <div className="flex justify-center items-center w-full flex-col mb-20">
+            <Tabs aria-label="Options" color="primary" variant="bordered">
+              <Tab
+                key="new"
+                title={
+                  <div className="flex items-center space-x-2">
+                    <FontAwesomeIcon icon={faFireFlameCurved} size='xl' />
+                    <span>New</span>
+                  </div>
+                }
+              >
+                <div className='h-[308px] w-full flex flex-col gap-5 pl-16'>
+                  <div className='flex flex-col gap-5'>
+                    <div className='flex justify-between'>
+                      <span className='text-[40px] font-bold'>Final Exam</span>
+                      <Button className='flex justify-center w-10' onClick={handleBack}>Back</Button>
+                    </div>
 
-                ) : (
-                  <Button color='primary' className='flex justify-center w-40 items-center' onClick={handleBack}>Start</Button>
+                    <div className='text-[24px] font-semibold flex flex-col gap-2 ml-[30px]'>
+                      <div >
+                        <li>Must be able to answer the Project Management (Week-4) Quiz.</li>
+                        <li>Must have passed (90%).</li>
+                        <li>There is no number of times, but the opportunity to answer</li>
 
-                )
-              }
+                        <li className='w-[1315px]'>In answering, if you take the quiz for the first (2) times and want to take it again for the (3rd) time, you can answer it immediately, and you can take the quiz for the (3rd) time only after 5 (5) hours have passed.</li>
 
-            </div>
-          </div >
+
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <span className='text-[#ED1D25] text-[24px] font-bold'> Note. . After taking the first (2) exams, you will be able to retake the exam only after 5 (5) hours have passed.</span>
+                  </div>
+                  <div className='flex justify-center p-5'>
+                    {
+                      value.showToStudent === false ? (
+                        <Button color='primary' disabled className='flex justify-center w-40 items-center cursor-not-allowed opacity-60' >Start</Button>
+
+                      ) : (
+                        <Button color='primary' className='flex justify-center w-40 items-center' onClick={handleBack}>Start</Button>
+
+                      )
+                    }
+                  </div>
+                </div>
+              </Tab>
+              <Tab
+                key="complete"
+                title={
+                  <div className="flex items-center space-x-2">
+                    <FontAwesomeIcon icon={faStar} size='xl' />
+                    <span>Complete</span>
+                  </div>
+                }
+              ></Tab>
+              <Tab
+                key="result"
+                title={
+                  <div className="flex items-center space-x-2">
+                    <FontAwesomeIcon icon={faCheck} size='xl' />
+                    <span>Result</span>
+                  </div>
+                }
+              ></Tab>
+            </Tabs>
+          </div>
         )
       }
 

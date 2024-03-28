@@ -227,13 +227,14 @@ export default function Home() {
                         <div
                           onClick={() => handleRoute(e)}
 
-                          className='min-w:[490px] min-h:[463px] flex flex-col gap-3 hover:-translate-y-2  hover:scale-105 duration-500'
+                          className='min-w:[490px] min-h:[463px] flex flex-col gap-3 '
                         >
                           <div>
                             <Image
                               style={{ width: "500px", height: "280px" }}
                               alt={e.image?.originalname}
                               src={getFile({ payload: e.image })}
+                              className='hover:-translate-y-2  hover:scale-105 duration-500'
                             />
                             <div className='flex p-5 flex-col justify-start flex-grow'>
                               <span

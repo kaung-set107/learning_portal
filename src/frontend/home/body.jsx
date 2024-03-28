@@ -68,6 +68,7 @@ const Body = () => {
       <MSINav />
 
       <div className='flex items-center justify-around flex-wrap relative mb-10 py-[100px]'>
+
         <img
           src={EHome}
           className='absolute top-0 left-0 z-0 w-[150px] md:w-[250px]'
@@ -126,14 +127,14 @@ const Body = () => {
             <div
               onClick={() => handleRoute(e)}
 
-              className='w-full hover:-translate-y-2 hover:scale-105 duration-500 md:w-[390px] h-full md:h-[610px]'
+              className='w-full  md:w-[390px] h-full md:h-[610px]'
             >
               <div>
                 <Image
                   // style={{ width: "500px", height: "280px" }}
                   alt={e.image?.originalname}
                   src={getFile({ payload: e.image })}
-                  className='w-full h-full sm:w-[500px] sm:h-[280px]'
+                  className='w-full h-full sm:w-[500px] sm:h-[280px] hover:-translate-y-2 hover:scale-105 duration-500'
                 />
                 <div className='flex p-5 flex-col justify-start flex-grow '>
                   <span
