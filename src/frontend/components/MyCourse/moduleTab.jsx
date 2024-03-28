@@ -39,6 +39,7 @@ import "react-h5-audio-player/lib/styles.css";
 import MeetingModal from './newmeetingmodal'
 import CSV from '../../../assets/img/csv.png';
 import PPTX from '../../../assets/img/pptx.png';
+import DOCX from '../../../assets/img/docx.png';
 const CourseDetail = (props) => {
   // const time = new Date().toLocaleTimeString()
 
@@ -48,7 +49,7 @@ const CourseDetail = (props) => {
   //   setTime(time)
   // }
   // setInterval(UpdateTime)
-
+  const StudentId = localStorage.getItem("id")
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const tabRef = useRef();
   const location = useLocation();
@@ -61,14 +62,16 @@ const CourseDetail = (props) => {
   // console.log(props.id, "id");
   const [showVideo, setShowVideo] = useState(false);
   const [teacherName, setTeacherName] = useState([]);
-  const [teacherImage, setTeacherImage] = useState([]);
+  const [surveyData, setSurveyData] = useState([]);
   const [showVideoList, setShowVideoList] = useState([]);
   const [showDocumentList, setShowDocumentList] = useState([])
   const [LMDataList, setLMDataList] = useState([]);
   const [LMID, setLMID] = useState("");
-  const [showQuiz, setShowQuiz] = useState(false);
+  const [arr, setArr] = useState([]);
   const [showModal, setShowModal] = useState(false)
-
+  const [batchID, setBatchID] = useState('')
+  const [studentAnswerList, setStudentAnswerList] = useState([]);
+  const [responses, setResponses] = useState({});
   const upcomingMeeting = [{
     title: 'IELTs',
     date: '20-03-2024',
@@ -102,26 +105,18 @@ const CourseDetail = (props) => {
   const handleModal = () => {
     setShowModal(true)
   }
-  const download = (i) => {
-    // console.log(val, 'cv')
+  const download = () => {
+    const file = getFile({ payload: i });
 
-    // const file = getFile({ payload: i });
-    var link = getFile({ payload: i })
-    var file = new Blob(
-      [
-        link,
-      ],
-      { type: "image/*" }
-    );
-
-    // if (val.split('.')[1] === 'jpg' || val.split('.')[1] === 'png' || val.split('.')[1] === 'jpeg') {
-    var element = document.createElement("a");
-
-    element.href = file;
-    element.download = `image.${i.originalname?.split('.')[1]}`;
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
+    if (file) {
+      const url = URL.createObjectURL(file);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = file.originalname;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
 
   };
   const downloadPDF = (val) => {
@@ -157,12 +152,21 @@ const CourseDetail = (props) => {
         // );
         const Filter = res.data.data.filter((el) => el._id === examData._id)[0];
         setTeacherName(Filter);
-        const Img = getFile({
-          payload: Filter.instructor.image,
-        });
-        setTeacherImage(Img);
+
+
       });
     };
+    const getEnrol = async () => {
+      await apiInstance.get("enrollments").then((res) => {
+        // console.log(
+        //   res.data.data.filter((el) => el._id === enrollID)[0].batch,
+        //   "c subject"
+        // );
+        setBatchID(res.data.data.filter((el) => el._id === enrollID)[0].batch)
+
+      });
+    };
+    getEnrol();
     getSubjects();
     // getCourseDetail();
   }, []);
@@ -174,10 +178,7 @@ const CourseDetail = (props) => {
   // Handle Tabs
 
 
-  const handleQuiz = (val) => {
-    // navigate(`/quiz-page/${LMID}`);
-    setShowQuiz(true);
-  };
+
 
   const handleVideo = (data) => {
 
@@ -188,9 +189,74 @@ const CourseDetail = (props) => {
     setShowDocumentList(data.assets);
     // console.log(data.assets, "document");
     setLMDataList(data);
+    setSurveyData(data.survey)
     // console.log(data, 'lm da')
     setShowVideo(true);
   };
+
+  const handleResult = () => {
+
+    console.log(studentAnswerList, 'studentAnswerList');
+
+    // console.log(studentAnswerList.filter(el => quizList.questions.find(i => i._id === el.id)), 'studentAnswerList')
+    //Quiz-Result Create
+
+
+    const data = {
+
+      survey: surveyData._id,
+      student: StudentId,
+
+      answerDate: Date.now(),
+      updatedQuestions: surveyData.questions.map((i) => {
+        return {
+          question: i.question,
+          type: i.type,
+
+          options: i.options,
+          answerType: i.answerType,
+
+          studentAnswer: i.type === 'trueFalse' ? responses[i._id] : studentAnswerList.filter((el) => el.id === i._id)[0]?.studentAnswer.slice(-(i.correctAnswer.length)),
+        };
+      }),
+
+    };
+    // alert(JSON.stringify(data));
+    apiInstance
+      .post("survey-results", data)
+      .then(function () {
+
+        // navigate("/quiz-result");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+
+
+
+  };
+
+
+  const handleAns = (item, data) => {
+
+    setResponses({
+      ...responses,
+      [item._id]: data
+    });
+
+    // console.log({
+    //   ...responses,
+    //   [item._id]: data
+    // }, 'final else radio')
+  };
+
+  const handleClear = () => {
+    setResponses({
+      ...responses,
+      [item._id]: ''
+    });
+  }
 
   return (
     <>
@@ -387,7 +453,7 @@ const CourseDetail = (props) => {
                                     onClick={
                                       i.originalname?.split(".")[1] === "pdf"
                                         ? () => downloadPDF(i)
-                                        : () => download(i)
+                                        : download
                                     }>
                                     <Image
                                       radius="sm"
@@ -399,7 +465,8 @@ const CourseDetail = (props) => {
                                         (i.originalname?.split(".")[1] === "xlsx")
                                         && ExcelPhoto || (i.originalname?.split(".")[1] === "csv")
                                         && CSV || (i.originalname?.split(".")[1] === "pptx")
-                                        && PPTX ||
+                                        && PPTX || (i.originalname?.split(".")[1] === "docx")
+                                        && DOCX ||
                                         (i.originalname?.split(".")[1] === "png" || "jpg" || "jpeg") && getFile({ payload: i })
                                       }
                                     />
@@ -423,53 +490,134 @@ const CourseDetail = (props) => {
 
                       </Tab>
                       <Tab title='Survey' key='suv'>
+
                         <div className='flex flex-col gap-10'>
-                          <div className='bg-[#EBF0FF] rounded-lg w-full h-[auto] p-[16px]'>
-                            <p className=''>
-                              {/* To show question */}
-                              <span className='text-[16px] font-semibold text-[#0025A9]'>
-                                Do you think this chapter is effective for you?
-                              </span>
-                              <RadioGroup className='pt-[20px]'>
-                                <Radio value='yes'>Yes</Radio>
-                                <Radio value='no'>No</Radio>
-                              </RadioGroup>
-                              {/* To show answer radio */}
-                            </p>
+                          <div className='flex flex-col gap-2 pt-5'>
+                            <span className='text-[35px] font-semibold'>{surveyData?.title}</span>
+                            <span className='text-[16px] font-semibold text-[#0025A9]'>
+                              {surveyData?.description}
+                            </span>
                           </div>
-                          <div className='bg-[#EBF0FF] rounded-lg w-full h-[auto] p-[16px]'>
-                            <p className=''>
-                              {/* To show question */}
-                              <span className='text-[16px] font-semibold text-[#0025A9]'>
-                                Do you think this chapter is effective for you?
-                              </span>
-                              <RadioGroup className='pt-[20px]'>
-                                <Radio value='yes'>Yes</Radio>
-                                <Radio value='no'>No</Radio>
-                              </RadioGroup>
-                              {/* To show answer radio */}
-                            </p>
-                          </div>
-                          <div className='bg-[#EBF0FF] rounded-lg w-full h-[auto] p-[16px]'>
-                            <p className=''>
-                              {/* To show question */}
-                              <span className='text-[16px] font-semibold text-[#0025A9]'>
-                                Do you think this chapter is effective for you?
-                              </span>
-                              <RadioGroup className='pt-[20px]'>
-                                <Radio value='yes'>Yes</Radio>
-                                <Radio value='no'>No</Radio>
-                              </RadioGroup>
-                              {/* To show answer radio */}
-                            </p>
-                          </div>
+
+                          {surveyData.questions.map((item, index) => (
+                            <div className='bg-[#EBF0FF] rounded-lg w-full h-[auto] p-[16px]'>
+
+                              <p className=''>
+                                {/* To show question */}
+                                <span className='text-[16px] font-semibold text-[#0025A9]'>
+                                  {item?.question}
+                                </span>
+
+
+                                <>
+                                  {item.type === 'trueFalse' ? (
+                                    < div
+                                      key={item._id}
+                                      className='text-lg font-semibold ml-10'
+
+                                    >
+
+                                      <div className='flex flex-col gap-2'>
+                                        {/* True False Quiz */}
+                                        {item.options.map((ans) => (
+
+                                          <label className='flex gap-2'>
+                                            <input
+                                              type="radio"
+                                              name={item._id}
+                                              value={ans.answer}
+                                              onChange={() => handleAns(item, ans.answer)}
+                                              checked={responses[item._id] === ans.answer}
+                                            />
+                                            {ans.answer}
+                                          </label>
+                                        ))}
+                                        {/* <label className='flex gap-2'>
+                                          <input
+                                            type="radio"
+                                            name={item._id}
+                                            value='No'
+                                            onChange={() => handleAns(item, 'No')}
+                                          />
+                                          No
+                                        </label> */}
+
+
+                                        &nbsp;
+                                        {/* 
+                                          {ans.answer} */}
+
+                                      </div>
+
+                                    </div>
+                                  ) : (
+                                    < div
+                                      key={ind}
+                                      className='text-lg font-semibold ml-10'
+                                      onChange={() =>
+                                        handleAns(
+                                          i,
+                                          e,
+                                          item,
+
+                                        )
+                                      }
+                                    >
+
+                                      <div>
+
+                                        {/* Multiple Choice Quiz */}
+                                        <input
+                                          type='checkbox'
+                                          name='answer_group'
+                                          value={ans.answer}
+                                          // checked={multiAns.map((i, ind) => (selectedItem.map((e, ine) => (ine === ind))))}
+                                          // disabled={
+                                          //   number >= quizList.questions[counter].correctAnswer?.length ? true : ''
+
+
+                                          // }
+                                          className='w-[15px] h-[15px]'
+                                        // onClick={(event) =>
+                                        //   handleCheckboxSelect(event,
+
+                                        //     i,
+                                        //     e,
+                                        //     quizList.questions[counter].correctAnswer,
+                                        //     counter,
+                                        //     quizList.questions[counter].mark,
+                                        //     quizList.questions[counter]._id
+                                        //   )
+                                        // }
+                                        />
+
+                                        &nbsp;
+
+                                        {ans.answer}
+
+                                      </div>
+
+                                    </div>)}
+
+
+                                </>
+
+
+                                {/* To show answer radio */}
+                              </p>
+                            </div>
+                          ))}
+
+
                         </div>
                         <div className='flex justify-end gap-2 mt-5'>
-                          <Button color='primary' variant='bordered'>
+                          {/* <Button color='primary' variant='bordered' onClick={handleClear}>
                             Cancel
-                          </Button>
-                          <Button color='primary'>Submit</Button>
+                          </Button> */}
+                          <Button color='primary' onClick={handleResult}>Submit</Button>
                         </div>
+
+
                       </Tab>
                       <Tab title='Review and Feedback' key='r&f'>
                         <div className='pt-[24px]'>
@@ -492,7 +640,7 @@ const CourseDetail = (props) => {
                       <Tab title='Quiz' key='quiz'>
                         {/* Quiz Page */}
 
-                        <QuizPage LMID={LMID} enrollID={enrollID} />
+                        <QuizPage LMID={LMID} enrollID={enrollID} batchID={batchID} />
                       </Tab>
                       <Tab title='Class' key='class'>
 

@@ -1,4 +1,4 @@
-import { ReactElement, useState, useEffect } from "react";
+import React, { ReactElement, useState, Component, useEffect } from "react";
 import { Image, Button, Card } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 import MSINav from "./msinav";
@@ -7,13 +7,18 @@ import Welcome from "../../assets/img/welcomeTeam.jpg";
 import EHome from "../../assets/img/EllipseHome.png";
 import EHalf from "../../assets/img/EllipseHalf.png";
 import EBlue from "../../assets/img/EllipseHalf-blue.png";
-
+import posed, { PoseGroup } from 'react-pose';
 import Footer from "./footer";
 import apiInstance from "../../util/api";
 import { getFile } from "../../util";
 import { Fade } from "react-awesome-reveal";
 import { useNavigate } from "react-router";
 // import Footer from '../../frontend/home/footer';
+
+
+// Define the animation for the text
+import { Wave } from 'react-animated-text';
+
 const Body = () => {
   const navigate = useNavigate();
   const [courseList, setCourseList] = useState([]);
@@ -74,7 +79,14 @@ const Body = () => {
             className='text-[50px] text-secondary font-[semibold] '
             style={{ color: "#BC1F40", fontWeight: "900" }}
           >
-            Welcome to MSI Academy
+            <Wave
+              effectDelay='1'
+              paused={location.pathname === '/' ? false : true}
+
+              text='Welcome To MSI Academy'
+              effect="stretch" effectChange={2}
+            />
+
           </h1>
           <p className='font-[regular] text-xl w-full md:w-[90%]'>
             MSI Academy, Myanmar Scholastic Innovation Academy, is fulfilling
@@ -109,11 +121,12 @@ const Body = () => {
           Courses We Offer
         </h1>
 
-        <div className='flex flex-col gap-32 items-center justify-center md:flex-row flex-wrap py-10'>
+        <div className='flex flex-col gap-20 items-center justify-center md:flex-row flex-wrap py-10'>
           {courseList.slice(0, 3).map((e) => (
             <div
               onClick={() => handleRoute(e)}
-              className='w-full hover:-translate-y-1 hover:scale-110 hover:rotate-1 hover:duration-500 md:w-[390px] h-full md:h-[610px]'
+
+              className='w-full hover:-translate-y-2 hover:scale-105 duration-500 md:w-[390px] h-full md:h-[610px]'
             >
               <div>
                 <Image

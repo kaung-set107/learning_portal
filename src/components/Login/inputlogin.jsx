@@ -102,7 +102,7 @@ export default function Login() {
           });
 
           navigate("/student", { state: { rol } });
-          window.location.reload()
+          // window.location.reload()
         } else if (res.data.data.roles[0].includes("admin")) {
           Swal.fire({
             icon: "success",
@@ -419,7 +419,7 @@ export default function Login() {
 
                       type='date'
 
-                      className="appearance-none border text-transparent border-gray-300 rounded-[12px] w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline custom-input"
+                      className="appearance-none border  border-gray-300 rounded-[12px] w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline custom-input"
                       ref={dateRef}
 
                     />

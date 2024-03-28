@@ -65,12 +65,12 @@ const Body = () => {
           Courses We Offer
         </h1>
 
-        <div className='flex gap-2 items-center justify-center lg:gap-32 flex-wrap py-10'>
+        <div className='flex gap-2 items-center justify-center lg:gap-20 flex-wrap py-10'>
           {courseList.map((e) => (
             <div
               onClick={() => handleRoute(e)}
               style={{ height: "470px" }}
-              className='w-full hover:-translate-y-1 hover:scale-110 hover:rotate-1 hover:duration-500 md:w-[390px] h-full md:h-[610px]'
+              className='w-full hover:-translate-y-2 hover:scale-105 duration-500 md:w-[390px] h-full md:h-[610px]'
             >
               <div>
                 <Image

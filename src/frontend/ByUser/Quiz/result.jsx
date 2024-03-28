@@ -14,7 +14,7 @@ import {
   faXmark,
   faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import Loading from "../../../assets/img/loading.gif";
+import Loading from "../../../assets/img/finalloading.gif";
 import { Stack } from "@mui/material";
 import moment from "moment-timezone";
 import Nav from "../../home/header";
@@ -182,7 +182,7 @@ export default function Result() {
                   Completed on
                 </span>
                 <span className='text-[20px] text-[#000] font-bold'>
-                  Monday, 6 November 2023, 6:34 PM
+                  {formattedDateTime?.split("GMT")[0]}
                 </span>
               </div>
               {/* 4 */}
@@ -223,11 +223,11 @@ export default function Result() {
                     10
                   )?.toFixed(2)}{" "}
                   out of 10.00 (
-                  {(quizResult.totalMark /
+                  {Math.round((quizResult.totalMark /
                     quizList
                       .filter((el) => el._id === quizID)
                       .map((i) => i.totalMark)) *
-                    100}
+                    100)}
                   %)
                 </span>
               </div>
@@ -262,15 +262,16 @@ export default function Result() {
                 </div>
                 {/* {console.log(updatedQuestionList, "up in bod")} */}
                 <div className='grid grid-cols-5 gap-3'>
-                  {updatedQuestionList.map((i, index) => (
+                  {updatedQuestionList.map((e, index) => (
                     <>
                       {/* correctList.every(item => caList.includes(item)) */}
-                      {i.correctAnswer.map((i) => (parseInt(i))).every(item => i.studentAnswer.map((i) => (parseInt(i))).includes(item))
+                      {e.correctAnswer.map((i) => (parseInt(i))).every(item => e.studentAnswer.map((i) => (parseInt(i))).includes(item))
                         ? (
                           <a
                             href={`#${quizNavigationID}`}
                             className='flex flex-col  h-[45px] w-[45px] bg-[#c6f4df] border-1 border-[#9FE7C9] rounded-lg '
                             style={{ padding: "2px 0px 26px 0px" }}
+
                             onClick={() => handleQuizNavigation(i)}
                           >
                             <span className='text-[14px] font-black text-[#000] flex justify-center items-center'>
@@ -289,7 +290,7 @@ export default function Result() {
                             href={`#${quizNavigationID}`}
                             className='flex flex-col  h-[45px] w-[45px] bg-[#FDE9EB] border-1 border-[#F66671] rounded-lg '
                             style={{ padding: "2px 0px 26px 0px" }}
-                            onClick={() => handleQuizNavigation(i)}
+                            onClick={() => handleQuizNavigation(e)}
                           >
                             <span className='text-[14px] font-black text-[#000] flex justify-center items-center'>
                               {index + 1}
@@ -321,6 +322,7 @@ export default function Result() {
                 style={{ padding: "24px 16px 24px 72px" }}
                 id={i._id.slice(-2)}
               >
+                {console.log(i.studentAnswer.map((i) => (parseInt(i)))[0] - 1, 'stu')}
                 <div>
                   <Card
                     className='flex justify-start mt-5 p-[24px] border-1 border-[#10C278] rounded-[12px]'
@@ -352,7 +354,7 @@ export default function Result() {
                             <label>
                               <span
                                 className={
-                                  parseInt(i.studentAnswer) - 1 === index
+                                  i.studentAnswer.map((i) => (parseInt(i)))[0] - 1 === index || i.studentAnswer.map((i) => (parseInt(i)))[1] - 1 === index || i.studentAnswer.map((i) => (parseInt(i)))[2] - 1 === index
                                     ? "text-[#00C853]"
                                     : "text-[#d6d3d3]"
                                 }
@@ -363,7 +365,7 @@ export default function Result() {
                               &nbsp;
                               <span
                                 className={
-                                  parseInt(i.studentAnswer) - 1 === index
+                                  i.studentAnswer.map((i) => (parseInt(i)))[0] - 1 === index || i.studentAnswer.map((i) => (parseInt(i)))[1] - 1 === index || i.studentAnswer.map((i) => (parseInt(i)))[2] - 1 === index
                                     ? "text-[#00C853]"
                                     : "text-[#d6d3d3]"
                                 }
@@ -415,7 +417,7 @@ export default function Result() {
                               <FontAwesomeIcon
                                 icon={faCircleXmark}
                                 className={
-                                  parseInt(i.studentAnswer) - 1 === index
+                                  i.studentAnswer.map((i) => (parseInt(i)))[0] - 1 === index || i.studentAnswer.map((i) => (parseInt(i)))[1] - 1 === index
                                     ? "text-[red]"
                                     : "text-[#d6d3d3]"
                                 }
@@ -423,7 +425,7 @@ export default function Result() {
                               &nbsp;
                               <span
                                 className={
-                                  parseInt(i.studentAnswer) - 1 === index
+                                  i.studentAnswer.map((i) => (parseInt(i)))[0] - 1 === index || i.studentAnswer.map((i) => (parseInt(i)))[1] - 1 === index
                                     ? "text-[red]"
                                     : "text-[#d6d3d3]"
                                 }
@@ -443,7 +445,7 @@ export default function Result() {
         </div>
       ) : (
         <div className='flex flex-col gap-10 items-center pt-[40px]'>
-          <Image src={Loading} className='transform-x-[-1]' />
+          <Image src={Loading} className='transform-x-[-1] w-[500px]' />
           <span className='text-[20px] font-semibold'>
             Please wait ! We are checking your Result
           </span>

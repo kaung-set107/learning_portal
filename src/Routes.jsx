@@ -7,7 +7,7 @@ import Booking from "./frontend/home/booking.jsx";
 import HomeCourse from "./frontend/home/home-course/home-course.jsx";
 import HomeCourseDetail from "./frontend/home/home-course/course-detail.jsx";
 import HomeSubjectDetail from "./frontend/home/home-course/home_subject_detail.jsx";
-
+import Test from './frontend/home/test.jsx'
 import Dashboard from "./pages/Dashboard/index.jsx";
 import Instructor from "./pages/Instructor/InstructorList";
 import InstructorAdd from "./pages/Instructor/InstructorAdd";
@@ -36,6 +36,9 @@ import StudentNo from "./frontend/ByUser/index";
 import MyCourseSubDetail from "./frontend/components/MyCourse/index.jsx";
 import MyCourseSubDetailID from "./frontend/components/MyCourse/index.jsx";
 
+// EntranceTestPage
+import EntranceTestPage from './frontend/ByUser/Quiz/entranceTest.jsx'
+
 import InstructorHome from "./frontend/ByInstructor/home";
 import LearningMaterial from "./frontend/pages/LearningMaterial/LMAdd";
 import Assignment from "./frontend/components/Assignment/AssignInput";
@@ -47,9 +50,21 @@ import SubjectDetail from "./pages/Subject/subjectDetail";
 import LMDetail from "./frontend/pages/LearningMaterial/LMDetail";
 import LearningMaterialAdmin from "./components/Subject/learnigMaterialInput";
 import Chart from "./frontend/ByUser/PieChart.jsx";
+
 import Batch from "./pages/Batch/batchList.jsx";
 import BatchCreate from "./pages/Batch/batchInput.jsx";
 import BatchUpdate from "./pages/Batch/batchUpdate.jsx";
+
+//Event
+import Event from './pages/Events/eventList.jsx'
+import EventCreate from './pages/Events/eventInput.jsx'
+import EventUpdate from './pages/Events/eventUpdate.jsx'
+
+//Testimonial
+import Testimonial from './pages/Testimonial/testimonialList.jsx'
+import TestimonialCreate from './pages/Testimonial/testimonialInput.jsx'
+import TestimonialUpdate from './pages/Testimonial/testimonialUpdate.jsx'
+
 //assign update
 import AssignmentUpdate from "./frontend/pages/Assignment/AssignmentUpdate";
 import LMUpdate from "./frontend/components/LearningMaterial/LMUpdateInput";
@@ -90,8 +105,10 @@ export default function RouteFile() {
           </ul>
         </div> */}
         <Routes>
-          <Route path="/login" element={<Login />}></Route>
-          <Route path="/" element={<FHome />}></Route>
+
+          <Route path='/login' element={<Login />}></Route>
+          <Route path='/' element={<FHome />}></Route>
+          <Route path='/test' element={<Test />}></Route>
 
           <Route path="/about" element={<About />}></Route>
           <Route path="/booking" element={<Booking />}></Route>
@@ -154,6 +171,7 @@ export default function RouteFile() {
             <Route path="/batch" element={<Batch />}></Route>
             <Route path="/batch-create" element={<BatchCreate />}></Route>
             <Route path="/batch-update/:id" element={<BatchUpdate />}></Route>
+
             {/* Subject*/}
             <Route path="/subject" element={<Subject />}></Route>
             <Route path="/subject-add" element={<SubjectAdd />}></Route>
@@ -205,6 +223,16 @@ export default function RouteFile() {
             <Route path="/instru-add" element={<InstructorAdd />} />
             <Route path="/instru-update/:id" element={<InstructorUpdate />} />
 
+            {/* Event */}
+            <Route path='/event' element={<Event />} />
+            <Route path='/event-create' element={<EventCreate />} />
+            <Route path='/event-update/:id' element={<EventUpdate />} />
+
+            {/* Testimonial */}
+            <Route path='/testimonial' element={<Testimonial />} />
+            <Route path='/testimonial-create' element={<TestimonialCreate />} />
+            <Route path='/testimonial-update/:id' element={<TestimonialUpdate />} />
+
             {/* Student */}
             <Route path="/student" element={<Student />} />
             <Route path="/student/:id" element={<StudentNo />} />
@@ -229,6 +257,9 @@ export default function RouteFile() {
             {/* Quiz Student */}
             <Route path="/quiz-page/:id" element={<QuizPage />}></Route>
             <Route path="/quiz-result" element={<QuizResult />}></Route>
+
+            {/* Placement Test */}
+            <Route path='/entranceTest-page' element={<EntranceTestPage />}></Route>
           </Route>
 
           {/* Exam */}

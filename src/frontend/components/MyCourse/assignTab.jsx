@@ -14,6 +14,7 @@ import CSV from '../../../assets/img/csv.png';
 import PPTX from '../../../assets/img/pptx.png';
 import DOCX from '../../../assets/img/docx.png';
 import apiInstance from "../../../util/api";
+import Loading from '../../../assets/img/finalloading.gif'
 export default function App() {
   const variant = 'bordered'
   const location = useLocation()
@@ -28,12 +29,22 @@ export default function App() {
   const [studentID, setStudentID] = useState('')
   const [batchID, setBatchID] = useState('')
 
+
   // console.log(assignmentList.map((i) => (i._id)), ' assign')
   // console.log(LoginStudentID, 'student id')
   const download = () => {
-    var element = document.createElement("a");
-    // link.download = "image";
-    element.click();
+    const file = getFile({ payload: i });
+
+    if (file) {
+      const url = URL.createObjectURL(file);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = file.originalname;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
   };
   const downloadPDF = (val) => {
     // Replace 'your-pdf-file.pdf' with the actual file path or URL
@@ -55,6 +66,7 @@ export default function App() {
   };
 
   useEffect(() => {
+
     const getStudentId = async () => {
       apiInstance.get('enrollments').then(res => {
         setStudentID(res.data.data.filter(el => el.course._id === courseId)[0].student)
@@ -168,7 +180,7 @@ export default function App() {
                         onClick={
                           item?.question.originalname?.split(".")[1] === "pdf"
                             ? () => downloadPDF(item.question)
-                            : () => download()
+                            : download
                         }>
                         <Image
                           radius="sm"
@@ -266,13 +278,13 @@ export default function App() {
                       {/* {item.assets.map((i) => (
                       <> */}
 
-                      <div className="sm:flex justify-start gap-5">
+                      {/* <div className="sm:flex justify-start gap-5">
                         <a
                           href={getFile({ payload: item?.assignment.question })}
                           onClick={
                             item?.assignment.question.originalname?.split(".")[1] === "pdf"
                               ? () => downloadPDF(item?.assignment.question)
-                              : () => download()
+                              : download
                           }>
                           <Image
                             radius="sm"
@@ -291,7 +303,7 @@ export default function App() {
                           />
                         </a>
                         <b className="text-[16px] text-[#4b4eff] font-semibold mt-3">{item?.assignment.question?.originalname}</b>
-                      </div>
+                      </div> */}
                       {/* </>
                     ))} */}
                     </div>
@@ -319,46 +331,53 @@ export default function App() {
             </div>
           }
         >
-          <div className='flex flex-col justify-start pt-10 w-[1560px] h-[204px] pl-10 pb-8 pr-10' >
-            {checkedList.map((item, index) => (
+          {!checkedList[0] ? (
+            <div className='flex flex-col gap-10 items-center pt-[40px]'>
+              <Image src={Loading} className='transform-x-[-1] w-[500px]' />
 
-              <div className='grid grid-cols-3 bg-[#215887]   p-12  border-4 border-l-red-500 ' key={item._id}>
-                <div className='flex justify-center text-[24px] text-[#fff] font-semibold items-center'>Assignment</div>
-                {item.assignment !== null && (
-                  <div className='flex flex-col gap-2 justify-start'>
-                    <span className='text-[32px] text-[#fff] font-semibold'>{item?.assignment.title}</span>
-                    <div className='text-[16px] text-[#fff] font-medium'>{item?.assignment.description}</div>
-                    <div className='flex flex-col  gap-1'>
-                      <span className='text-[16px] text-[#fff] font-semibold'>Reference link </span>
-                      <div className='grid grid-cols-3'>
-                        {JSON.parse(item?.assignment.links).map((e) => (
+            </div>
+
+          ) : (
+            <div className='flex flex-col justify-start pt-10 w-[1560px] h-[204px] pl-10 pb-8 pr-10' >
+              {checkedList.map((item, index) => (
+
+                <div className='grid grid-cols-3 bg-[#215887]   p-12  border-4 border-l-red-500 ' key={item._id}>
+                  <div className='flex justify-center text-[24px] text-[#fff] font-semibold items-center'>Assignment</div>
+                  {item.assignment !== null && (
+                    <div className='flex flex-col gap-2 justify-start'>
+                      <span className='text-[32px] text-[#fff] font-semibold'>{item?.assignment.title}</span>
+                      <div className='text-[16px] text-[#fff] font-medium'>{item?.assignment.description}</div>
+                      <div className='flex flex-col  gap-1'>
+                        <span className='text-[16px] text-[#fff] font-semibold'>Reference link </span>
+                        <div className='grid grid-cols-3'>
+                          {JSON.parse(item?.assignment.links).map((e) => (
 
 
-                          <div key={e} className="text-[16px] text-[#4b4eff] font-semibold px-3 ">
-                            <a target="_blank" rel='noreferrer' href={e.links}>
-                              {e.links}
-                            </a>
-                          </div>
+                            <div key={e} className="text-[16px] text-[#4b4eff] font-semibold px-3 ">
+                              <a target="_blank" rel='noreferrer' href={e.links}>
+                                {e.links}
+                              </a>
+                            </div>
 
-                        ))}
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                    <div className='flex flex-col'>
-                      <span className='text-[16px] text-[#fff] font-semibold'>Document File link </span>
-                      {/* {item.assets.map((i) => (
+                      <div className='flex flex-col'>
+                        <span className='text-[16px] text-[#fff] font-semibold'>Document File link </span>
+                        {/* {item.assets.map((i) => (
                       <> */}
 
-                      <div className="sm:flex justify-start gap-5">
+                        {/* <div className="sm:flex justify-start gap-5">
                         <a
-                          href={getFile({ payload: item?.assignment.question })}
+                          href={getFile({ payload: item?.assignment?.question })}
                           onClick={
-                            item?.assignment.question.originalname?.split(".")[1] === "pdf"
-                              ? () => downloadPDF(item?.assignment.question)
-                              : () => download()
+                            item?.assignment?.question.originalname?.split(".")[1] === "pdf"
+                              ? () => downloadPDF(item?.assignment?.question)
+                              : download
                           }>
                           <Image
                             radius="sm"
-                            alt={item?.assignment.question.title}
+                            alt={item?.assignment?.question.title}
                             className="object-cover w-[40px] h-[40px]"
                             src={
                               item?.assignment.question.originalname?.split(".")[1] === "pdf"
@@ -372,50 +391,63 @@ export default function App() {
                           />
                         </a>
                         <b className="text-[16px] text-[#4b4eff] font-semibold mt-3">{item?.assignment.question?.originalname}</b>
-                      </div>
-                      {/* </>
+                      </div> */}
+                        {/* </>
                     ))} */}
+                      </div>
+
                     </div>
-
-                  </div>
-                )}
+                  )}
 
 
 
-                <div className='flex flex-col gap-10 p-2 justify-start  bg-[#fff] w-[480px] h-[174px]  rounded-[4px]'>
-                  <div className="sm:flex justify-start gap-5">
-                    <a
-                      href={getFile({ payload: item?.checkedFile })}
-                      onClick={
-                        item?.checkedFile.originalname?.split(".")[1] === "pdf"
-                          ? () => downloadPDF(item?.checkedFile)
-                          : () => download()
-                      }>
-                      <Image
-                        radius="sm"
-                        alt={item?.checkedFile.title}
-                        className="object-cover w-[40px] h-[40px] border-1 border-indigo-400"
-                        src={
+                  <div className='flex flex-col gap-4 p-2 justify-start  bg-[#fff] w-[480px] h-[224px]  rounded-[4px]'>
+
+
+
+                    <span className='text-[25px] font-semibold'>GRADE - <b className='text-[30px] font-semibold text-green-400'>{item.grade}</b></span>
+
+                    <div className='flex flex-col bg-[#ca3b3b] w-[340px] h-auto rounded-t-[32px] rounded-r-[32px] rounded-b-[32px] rounded-l-[0px] text-[12px] font-normal p-4 text-[#fff] ml-3'>
+                      <b className='text-[16px]'>Teacher's Note</b>
+                      <span>
+                        Oh, hello! All perfectly.
+                        My remark is <b>{item.remark}</b>.
+                      </span> </div>
+                    <div className="sm:flex justify-end gap-2">
+                      <a
+                        href={getFile({ payload: item?.checkedFile })}
+                        onClick={
                           item?.checkedFile.originalname?.split(".")[1] === "pdf"
-                          && PdfPhoto
-                          || item?.checkedFile.originalname?.split(".")[1] === "xlsx"
-                          && ExcelPhoto || item?.checkedFile.originalname?.split(".")[1] === "csv"
-                          && CSV || item?.checkedFile.originalname?.split(".")[1] === "docx"
-                          && DOCX || item?.checkedFile.originalname?.split(".")[1] === "pptx"
-                          && PPTX
-                          || getFile({ payload: item?.checkedFile })
-                        }
-                      />
-                    </a>
-                    <b className="text-[16px] text-[#4b4eff] font-semibold mt-3">Your Assignment Result</b>
+                            ? () => downloadPDF(item?.checkedFile)
+                            : download
+                        }>
+                        <Image
+                          radius="sm"
+                          alt={item?.checkedFile.title}
+                          className="object-cover w-[40px] h-[40px] border-1 border-indigo-400"
+                          src={
+                            item?.checkedFile.originalname?.split(".")[1] === "pdf"
+                            && PdfPhoto
+                            || item?.checkedFile.originalname?.split(".")[1] === "xlsx"
+                            && ExcelPhoto || item?.checkedFile.originalname?.split(".")[1] === "csv"
+                            && CSV || item?.checkedFile.originalname?.split(".")[1] === "docx"
+                            && DOCX || item?.checkedFile.originalname?.split(".")[1] === "pptx"
+                            && PPTX
+                            || getFile({ payload: item?.checkedFile })
+                          }
+                        />
+                      </a>
+                      <b className="text-[16px] text-[#4b4eff] font-semibold mt-3">Feedback File</b>
+                    </div>
                   </div>
-                  <div className='bg-[red] w-[240px] h-[74px] rounded-t-[32px] rounded-r-[32px] rounded-b-[32px] rounded-l-[0px] text-[12px] font-normal p-4 text-[#fff] ml-12'>Oh, hello! All perfectly.
-                    I checked it and your Grade is <b>{item.grade}</b>.My remark is <b>{item.remark}</b>. </div>
-                </div>
-              </div>
 
-            ))}
-          </div>
+
+                </div>
+
+              ))}
+            </div>
+          )}
+
         </Tab >
       </Tabs >
     </div >

@@ -21,16 +21,18 @@ export default function Home() {
   const navigate = useNavigate();
   const [id, setId] = useState("");
   const [firstDefaultCourseId, setFirstDefaultCourseId] = useState("");
-  const StudentId = localStorage.getItem("id");
   const [coursesList, setCoursesList] = useState([]);
+  const [filterId, setFilterId] = useState([]);
+  const StudentId = localStorage.getItem("id");
+
   const [catList, setCatList] = useState([]);
   const [myCourseList, setMyCourseList] = useState([]);
   const [value, setValue] = useState("");
   const [activeTab, setActiveTab] = useState(0);
   const [courseId, setCourseId] = useState("");
-  const [filterId, setFilterId] = useState([]);
+
   const enr_id = myCourseList[0]?._id
-  console.log(enr_id, 'my')
+  // console.log(enr_id, 'my')
   const [enrollId, setEnrollId] = useState(enr_id)
 
   const filterSubList = filterId.filter(
@@ -47,7 +49,7 @@ export default function Home() {
   };
 
   const handleSubjectDetail = (data, enrollID) => {
-    console.log(data, 'hee hee')
+    // console.log(data, 'hee hee')
     navigate("/mycourse-sub-detail", { state: { data: data, enroll_id: handleTabClick() ? enrollID : enr_id } });
     // navigate("/mycourse-sub-detail/2", { state: { data: data } });
   };
@@ -60,8 +62,8 @@ export default function Home() {
   useEffect(() => {
     const getAssign = async () => {
       await apiInstance.get(`courses`).then((res) => {
-        console.log(res.data.data, "course res");
-        console.log(catList, "cat");
+        // console.log(res.data.data, "course res");
+        // console.log(catList, "cat");
         setCoursesList(res.data.data);
         // const count = res.data.data.filter((el) => el.subjects.length);
         // console.log(count, "count");
@@ -78,7 +80,7 @@ export default function Home() {
 
     const getEnrollment = async () => {
       await apiInstance.get(`enrollments`).then((res) => {
-        console.log(res.data.data.filter((el) => el.student === StudentId), "enroll id");
+        // console.log(res.data.data, "first id");
 
         setFirstDefaultCourseId(
           res.data.data.filter((el) => el.student === StudentId)[0].course._id
@@ -93,12 +95,11 @@ export default function Home() {
 
       });
     };
-
-    getCat();
     getEnrollment();
+    getCat();
 
     getAssign();
-  }, [firstDefaultCourseId]);
+  }, [firstDefaultCourseId, StudentId]);
 
 
   return (
@@ -225,8 +226,8 @@ export default function Home() {
                       .map((e) => (
                         <div
                           onClick={() => handleRoute(e)}
-                          style={{ height: "470px" }}
-                          className='min-w:[490px]  flex flex-col gap-3 hover:-translate-y-1 hover:rotate-1 hover:scale-110 duration-500'
+
+                          className='min-w:[490px] min-h:[463px] flex flex-col gap-3 hover:-translate-y-2  hover:scale-105 duration-500'
                         >
                           <div>
                             <Image
@@ -249,7 +250,7 @@ export default function Home() {
                                 style={{
                                   fontSize: "16px",
                                   fontWeight: "400px",
-                                  width: "500px",
+                                  width: "400px",
                                   height: "auto",
                                 }}
                               >

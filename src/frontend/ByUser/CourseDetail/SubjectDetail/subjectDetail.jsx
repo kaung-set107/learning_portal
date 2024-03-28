@@ -36,6 +36,7 @@ export default function CourseDetail(props) {
   const [subjectList, setSubjectList] = useState([]);
   const [teacherName, setTeacherName] = useState([]);
   const [teacherImage, setTeacherImage] = useState([]);
+  const [headVideoLink, setHeadVideoLink] = useState('')
   useEffect(() => {
     const getCourseDetail = async () => {
       await apiInstance.get("courses/" + props.id).then((res) => {
@@ -45,10 +46,11 @@ export default function CourseDetail(props) {
     };
     const getSubjects = async () => {
       await apiInstance.get("subjects").then((res) => {
-        console.log(
-          res.data.data.filter((el) => el._id === SubData._id)[0],
-          "c subject"
-        );
+        // console.log(
+        //   JSON.parse(res.data.data.filter((el) => el._id === SubData._id)[0].previewVideo)[0].links,
+        //   "c subject"
+        // );
+        setHeadVideoLink(JSON.parse(res.data.data.filter((el) => el._id === SubData._id)[0].previewVideo)[0].links?.split('/')[3])
         const Filter = res.data.data.filter((el) => el._id === SubData._id)[0];
         setTeacherName(Filter);
         const Img = getFile({
@@ -88,12 +90,17 @@ export default function CourseDetail(props) {
               </div>
               <div>
                 {" "}
+
                 <iframe
-                  src='https://www.youtube.com/embed/AJhplp3dct8'
+                  src={
+                    "https://www.youtube.com/embed/" +
+                    headVideoLink
+                  }
                   allowfullscreen=''
                   width='911'
                   height='306'
                   className='border'
+                  allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
                 ></iframe>
               </div>
             </div>

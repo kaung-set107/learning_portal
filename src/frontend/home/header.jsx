@@ -168,7 +168,7 @@ export default function App() {
             className='w-96 mt-5'
             style={{ borderRadius: "200px", width: "486px", padding: "12px" }}
           >
-            <Input
+            {/* <Input
               isClearable
               radius='lg'
               variant='underlined'
@@ -176,7 +176,7 @@ export default function App() {
               startContent={
                 <SearchIcon className='text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0 shadow-lg' />
               }
-            />
+            /> */}
           </div>
           <div className='flex gap-4 mt-5'>
             <div className='flex gap-5'>
