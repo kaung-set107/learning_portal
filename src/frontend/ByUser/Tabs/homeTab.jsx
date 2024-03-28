@@ -39,7 +39,7 @@ export default function Home() {
     (el) => el._id === (courseId ? courseId : firstDefaultCourseId)
 
   );
-  console.log(filterSubList, "f i");
+  // console.log(filterSubList, "f i");
 
   const handleTabClick = (ind, enroll_Id, courseid) => {
     setCourseId(courseid);
@@ -62,8 +62,8 @@ export default function Home() {
   useEffect(() => {
     const getAssign = async () => {
       await apiInstance.get(`courses`).then((res) => {
-        console.log(res.data.data, "course res");
-        console.log(catList, "cat");
+        // console.log(res.data.data, "course res");
+        // console.log(catList, "cat");
         setCoursesList(res.data.data);
         // const count = res.data.data.filter((el) => el.subjects.length);
         // console.log(count, "count");
@@ -80,7 +80,7 @@ export default function Home() {
 
     const getEnrollment = async () => {
       await apiInstance.get(`enrollments`).then((res) => {
-        console.log(res.data.data, "first id");
+        // console.log(res.data.data, "first id");
 
         setFirstDefaultCourseId(
           res.data.data.filter((el) => el.student === StudentId)[0].course._id

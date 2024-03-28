@@ -22,7 +22,7 @@ export default function AddBody() {
   const { state } = useLocation();
 
   const [list, setList] = useState([]);
-  console.log(location.pathname, "lllll");
+  // console.log(location.pathname, "lllll");
 
   const Val = location.state ? location.state.title : "English";
 
