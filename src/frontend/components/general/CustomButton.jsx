@@ -66,7 +66,7 @@ const CustomButton = (props) => {
     return (
         <Button onClick={handleOnClick} color={getColor()} isDisabled={isLoading} {...args} className={`border px-2 border-transparent hover:border-gray-700 h-[40px] hover:shadow-sm ${isLoading ? 'cursor-not-allowed' : ''}`}>
             {
-                isLoading ? <Loading size={"sm"} /> : <span className="flex items-center justify-center">{getContent()}</span>
+                isLoading ? <Loading color="default" size={"sm"} /> : <span className="flex items-center justify-center">{getContent()}</span>
             }
         </Button>
     )

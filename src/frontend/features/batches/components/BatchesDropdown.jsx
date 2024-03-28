@@ -1,65 +1,70 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 import { Select, SelectItem } from "@nextui-org/select";
-import Loading from "../../../components/general/Loading"
-import { batchesApi } from "../../batches/api"
+import Loading from "../../../components/general/Loading";
+import { batchesApi } from "../../batches/api";
 
 const BatchesDropdown = (props) => {
-    const [isLoading, setIsLoading] = useState(true)
-    const [batches, setBatches] = useState([])
+  const [isLoading, setIsLoading] = useState(true);
+  const [batches, setBatches] = useState([]);
 
-    const { setBatch, className } = props
+  const { filters, setBatch, className } = props;
 
-    const getBatches = async () => {
-        try {
-            let res = await batchesApi.getAll()
-            setBatches(res)
-        } catch (error) {
-            console.log(error)
-        } finally {
-            setIsLoading(false)
-        }
+  const getBatches = async () => {
+    setIsLoading(true);
+    try {
+      let res = await batchesApi.getAll({ subject: filters.subject._id });
+      setBatches(res);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
     }
+  };
 
-    const handleBatcheSelect = (id) => {
-        let batch = batches.data.find(e => e._id == id)
-        setBatch(batch)
-    }
+  const handleBatchSelect = (id) => {
+    let batch = batches.data.find((e) => e._id == id);
+    setBatch(batch);
+  };
 
-    useEffect(() => {
-        getBatches()
-    }, [])
+  useEffect(() => {
+    getBatches();
+  }, []);
 
-    let content
+  useEffect(() => {
+    getBatches();
+  }, [filters.subject]);
 
-    if (isLoading) {
-        content = (<Loading />)
-    }
+  let content;
 
-    if (!isLoading) {
-        content = (<div>
-            <Select
-                items={batches.data}
-                color="primary"
-                label="Batch"
-                placeholder="Select an batch"
-                className="max-w-xs"
-                onSelectionChange={e => handleBatcheSelect(e.currentKey)}
-            >
-                {(batch) => (
-                    <SelectItem key={batch._id} textValue={batch.title}>
-                        {`Batch: ${batch.name ?? 'Not Set!'}`}
-                    </SelectItem>
-                )}
-            </Select>
-        </div>)
-    }
+  if (isLoading) {
+    content = <Loading />;
+  }
 
-    return (
-        <div className={`${className}`}>
-            {content}
-        </div>
-    )
-}
+  if (!isLoading) {
+    content = (
+      <div>
+        <Select
+          items={batches.data}
+          color="primary"
+          label="Batch"
+          placeholder={
+            batches?.data?.length > 0 ? `Select a batch` : "No batch!"
+          }
+          className="max-w-xs"
+          onSelectionChange={(e) => handleBatchSelect(e.currentKey)}
+        >
+          {(batch) => (
+            <SelectItem key={batch._id}>
+              {`Batch: ${batch.name ?? "Not Set!"}`}
+            </SelectItem>
+          )}
+        </Select>
+      </div>
+    );
+  }
 
-export default BatchesDropdown
+  return <div className={`${className}`}>{content}</div>;
+};
+
+export default BatchesDropdown;
