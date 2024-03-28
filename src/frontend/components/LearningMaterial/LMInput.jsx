@@ -47,15 +47,17 @@ export default function DepartmentInputForm() {
     console.log([...newVideoLink, newData], "res");
   };
 
+  const DeleteVideo = async (val) => {
+    console.log(val, "val");
+    setNewVideoLink(newVideoLink.filter((el) => el.links !== val));
+  };
+
   const Delete = async (val) => {
     console.log(val, "val");
     setNewLink(newLink.filter((el) => el.links !== val));
   };
 
-  const DeleteVideo = async (val) => {
-    console.log(val, "val");
-    setNewVideoLink(newVideoLink.filter((el) => el.links !== val));
-  };
+
 
   const create = () => {
     const formData = new FormData();

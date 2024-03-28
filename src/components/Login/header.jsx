@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import Img from '../../assets/login.png'
-export default function Header ({
+export default function Header({
   heading,
   paragraph,
   linkName,

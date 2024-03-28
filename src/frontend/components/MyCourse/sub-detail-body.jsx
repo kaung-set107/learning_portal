@@ -25,15 +25,15 @@ const AddBody = ({ subData }) => {
     setActiveTab(tabNumber);
   };
   const location = useLocation();
-  console.log(location.state.data, "body");
+  // console.log(location.state?.data, "body");
 
-  const SubData = location.state.data;
+  const SubData = location.state?.data;
   //   console.log(SubData, "dat");
 
   return (
     <div>
       {/* body */}
-      <div className='flex flex-col gap-10 pl-[16px]'>
+      <div className='flex flex-col gap-5 p-12'>
         <Nav />
 
         <TabValueComponent
@@ -42,13 +42,16 @@ const AddBody = ({ subData }) => {
         />
 
         <div id='exam'>
-          {location.pathname === "/mycourse-sub-detail/1" && <Module />}
+          {activeTab === 1 && <Module />}
         </div>
         <div id='assignment'>
-          {location.pathname === "/mycourse-sub-detail/2" && <Assignment />}
+          {activeTab === 2 && <Assignment />}
         </div>
-        <div id='module'>
-          {location.pathname === "/mycourse-sub-detail/3" && <Exam />}
+        {/* <div id='test'>
+          {activeTab === 3 && <Assignment />}
+        </div> */}
+        <div id='exam'>
+          {activeTab === 4 && <Exam />}
         </div>
       </div>
     </div>

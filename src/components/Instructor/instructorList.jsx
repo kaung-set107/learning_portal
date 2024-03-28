@@ -29,7 +29,7 @@ export default function EmployeeTable() {
   const [empList, setEmpList] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [delID, setDelID] = useState(null);
-
+  const [dataCount, setDataCount] = useState('')
   const [page, setPage] = React.useState(1);
   const [pages, setPages] = React.useState(1);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -47,8 +47,12 @@ export default function EmployeeTable() {
   const onRowsChange = (event) => {
     const newRowsPerPage = parseInt(event.target.value);
     setRowsPerPage(newRowsPerPage);
-    setPages(Math.ceil(empList.length / newRowsPerPage));
-    setPage(1); // Reset the current page to 1 when rows per page changes
+    setPages(dataCount % rowsPerPage === 0
+      ? dataCount / rowsPerPage
+      : Math.floor(
+        dataCount / rowsPerPage
+      ) + 1)
+    setPage(1) // Reset the current page to 1 when rows per page changes
   };
   useEffect(() => {
     const getEmployee = async () => {
@@ -56,8 +60,13 @@ export default function EmployeeTable() {
         .get(`instructors`, { params: { limit: 80, rowsPerPage: rowsPerPage } })
         .then((res) => {
           setEmpList(res.data.data);
-          setPages(res.data._metadata.page_count);
-          console.log(res.data.data, "emp");
+          setDataCount(res.data.count)
+          setPages(res.data.count % rowsPerPage === 0
+            ? res.data.count / rowsPerPage
+            : Math.floor(
+              res.data.count / rowsPerPage
+            ) + 1)
+          setPage(1)
         });
     };
     getEmployee();

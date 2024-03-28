@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-
+import { faPlus, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default function PositionInputForm() {
-  const variant = "faded";
+  const variant = "bordered";
 
   const [instructorList, setInstructorList] = useState([]);
   const [courseList, setCourseList] = useState([]);
@@ -14,16 +15,13 @@ export default function PositionInputForm() {
   const [title, setTitle] = useState("");
   const [course, setCourse] = useState("");
   const [desc, setDesc] = useState("");
-  const [fee, setFee] = useState("");
-  const [duration, setDuration] = useState("");
+
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [instructor, setInstructor] = useState("");
-  const [studentAllow, setStudentAllow] = useState("");
-  const [currentStudent, setCurrentStudent] = useState("");
-  const [inAllow, setInAllow] = useState("");
-  const [inTime, setInTime] = useState("");
-  const [inPercent, setInPercent] = useState("");
+
+  const [videoLinks, setVideoLinks] = useState("");
+  const [newVideoLink, setNewVideoLink] = useState([]);
 
   const {
     register,
@@ -31,6 +29,19 @@ export default function PositionInputForm() {
     formState: { errors },
   } = useForm();
 
+  const AddVideo = (val) => {
+    console.log(val, "val");
+    const newData = {
+      links: val,
+    };
+    setNewVideoLink([...newVideoLink, newData]);
+    console.log([...newVideoLink, newData], "res");
+  };
+
+  const DeleteVideo = async (val) => {
+    console.log(val, "val");
+    setNewVideoLink(newVideoLink.filter((el) => el.links !== val));
+  };
   const handleImage = (e) => {
     if (e.target.files) {
       setImage(e.target.files[0]);
@@ -42,19 +53,13 @@ export default function PositionInputForm() {
 
     formData.append("title", title);
     formData.append("course", course);
-    formData.append("fee", fee);
     formData.append("description", desc);
     formData.append("image", image);
     formData.append("instructor", instructor);
-    formData.append("duration", duration);
     formData.append("fromDate", fromDate);
     formData.append("toDate", toDate);
-    formData.append("noOfStudentAllow", studentAllow);
-    formData.append("installmentAllow", inAllow);
-    formData.append("noOfEnrolledStudent", currentStudent);
-    formData.append("installmentTime", inTime);
-    formData.append("installmentPercent", inPercent);
 
+    formData.append("previewVideo", JSON.stringify(newVideoLink));
     apiInstance
       .post("subjects", formData, {
         headers: {
@@ -104,11 +109,10 @@ export default function PositionInputForm() {
           />
           <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-2'>
             <label
-              className={`text-sm font-semibold ${
-                errors.description && errors.description.type === "required"
-                  ? "text-[#f31260]"
-                  : ""
-              }`}
+              className={`text-sm font-semibold ${errors.description && errors.description.type === "required"
+                ? "text-[#f31260]"
+                : ""
+                }`}
             >
               Description
             </label>
@@ -126,11 +130,10 @@ export default function PositionInputForm() {
         <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
           <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-2'>
             <label
-              className={`text-sm font-semibold ${
-                errors.subject && errors.subject.type === "required"
-                  ? "text-[#f31260]"
-                  : ""
-              }`}
+              className={`text-sm font-semibold ${errors.subject && errors.subject.type === "required"
+                ? "text-[#f31260]"
+                : ""
+                }`}
             >
               Course
             </label>
@@ -153,11 +156,10 @@ export default function PositionInputForm() {
           </div>
           <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-2'>
             <label
-              className={`text-sm font-semibold ${
-                errors.instructor && errors.instructor.type === "required"
-                  ? "text-[#f31260]"
-                  : ""
-              }`}
+              className={`text-sm font-semibold ${errors.instructor && errors.instructor.type === "required"
+                ? "text-[#f31260]"
+                : ""
+                }`}
             >
               Instructor
             </label>
@@ -180,7 +182,7 @@ export default function PositionInputForm() {
           </div>
         </div>
 
-        <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
+        {/* <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
           <Input
             type='text'
             label='Student Allowed'
@@ -215,8 +217,8 @@ export default function PositionInputForm() {
               onChange: (e) => setCurrentStudent(e.target.value),
             })}
           />
-        </div>
-        <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
+        </div> */}
+        {/* <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
           <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-8'>
             <label>Installment Allowed</label>
             <RadioGroup
@@ -253,9 +255,9 @@ export default function PositionInputForm() {
               onChange: (e) => setInTime(e.target.value),
             })}
           />
-        </div>
+        </div> */}
 
-        <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
+        {/* <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
           <Input
             type='number'
             label='Installment %'
@@ -287,7 +289,7 @@ export default function PositionInputForm() {
               onChange: (e) => setFee(e.target.value),
             })}
           />
-        </div>
+        </div> */}
         <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
           <Input
             type='file'
@@ -297,16 +299,46 @@ export default function PositionInputForm() {
             labelPlacement='outside'
             onChange={handleImage}
           />
-          <Input
-            type='text'
-            label='Duration'
-            placeholder='Duration'
-            variant={variant}
-            onChange={(e) => setDuration(e.target.value)}
-            labelPlacement='outside'
-          />
+          <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+            <label className='text-sm font-semibold'>Video Links</label>
+            <Input
+              type='text'
+              variant={variant}
+              onChange={(e) => setVideoLinks(e.target.value)}
+              endContent={
+                <Button
+                  color='light'
+                  className='rounded-none text-sky-600'
+                  onClick={() => AddVideo(videoLinks)}
+                >
+                  Add
+                  <FontAwesomeIcon icon={faPlus} />
+                </Button>
+              }
+            />
+            {newVideoLink.map((i) => (
+              <div key={i} className='mt-3'>
+                <Input
+                  type='text'
+                  variant={variant}
+                  value={i.links}
+                  onChange={(e) => videoLinks(e.target.value)}
+                  endContent={
+                    <Button
+                      color='light'
+                      className='rounded-none text-red-700'
+                      onClick={() => DeleteVideo(i.links)}
+                    >
+                      <FontAwesomeIcon icon={faCircleXmark} />
+                    </Button>
+                  }
+                />
+              </div>
+            ))}
+          </div>
+
         </div>
-        <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
+        <div className='grid grid-cols-2 mb-6 md:mb-0 gap-4 mt-1'>
           <Input
             type='date'
             label='Start Date'
@@ -323,6 +355,7 @@ export default function PositionInputForm() {
             onChange={(e) => setToDate(e.target.value)}
             labelPlacement='outside'
           />
+          <div></div>
         </div>
 
         <div className='flex justify-center gap-10 py-4'>

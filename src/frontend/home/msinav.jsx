@@ -120,8 +120,8 @@ export default function App() {
                 to='/home-course'
                 className={
                   location.pathname === "/home-course" ||
-                  location.pathname === "/home-course-detail" ||
-                  location.pathname === "/home-sub-detail"
+                    location.pathname === "/home-course-detail" ||
+                    location.pathname === "/home-sub-detail"
                     ? "font-semibold text-lg"
                     : "text-lg"
                 }
@@ -133,11 +133,11 @@ export default function App() {
             <span>
               <Link
                 to='/event'
-                // className={
-                //   location.pathname === "/home-course"
-                //     ? "font-semibold text-lg"
-                //     : "text-lg"
-                // }
+              // className={
+              //   location.pathname === "/home-course"
+              //     ? "font-semibold text-lg"
+              //     : "text-lg"
+              // }
               >
                 Events
               </Link>
@@ -152,6 +152,18 @@ export default function App() {
                 }
               >
                 About
+              </Link>
+            </span>
+            <span>
+              <Link
+                to='/booking'
+                className={
+                  location.pathname === "/booking"
+                    ? "font-semibold text-lg"
+                    : "text-lg"
+                }
+              >
+                Booking
               </Link>
             </span>
             <span
@@ -191,8 +203,8 @@ export default function App() {
                     to='/home-course'
                     className={
                       location.pathname === "/home-course" ||
-                      location.pathname === "/home-course-detail" ||
-                      location.pathname === "/home-sub-detail"
+                        location.pathname === "/home-course-detail" ||
+                        location.pathname === "/home-sub-detail"
                         ? "font-semibold text-lg"
                         : "text-lg"
                     }
@@ -204,11 +216,11 @@ export default function App() {
                 <NavbarItem>
                   <Link
                     to='/event'
-                    // className={
-                    //   location.pathname === "/home-course"
-                    //     ? "font-semibold text-lg"
-                    //     : "text-lg"
-                    // }
+                    className={
+                      location.pathname === "/event"
+                        ? "font-semibold text-lg"
+                        : "text-lg"
+                    }
                   >
                     Events
                   </Link>
@@ -223,6 +235,18 @@ export default function App() {
                     }
                   >
                     About
+                  </Link>
+                </NavbarItem>
+                <NavbarItem>
+                  <Link
+                    to='/booking'
+                    className={
+                      location.pathname === "/booking"
+                        ? "font-semibold text-lg"
+                        : "text-lg"
+                    }
+                  >
+                    Booking
                   </Link>
                 </NavbarItem>
                 <NavbarItem

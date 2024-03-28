@@ -52,6 +52,7 @@ export default function category() {
           <label className='text-sm font-semibold'>Category Title</label>
           <Input
             type='text'
+            variant='bordered'
             placeholder='Enter your category title'
             onChange={(e) => setTitle(e.target.value)}
           />
@@ -61,6 +62,7 @@ export default function category() {
       <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
         <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
           <Textarea
+            variant='bordered'
             type='text'
             label='Description'
             placeholder='description'

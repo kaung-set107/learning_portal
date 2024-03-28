@@ -35,9 +35,9 @@ export default function AddBody() {
       >
         <TabValueComponent activeTabValue={handleTabClick} />
 
-        <div id='home'>{location.pathname === "/student" && <Home />}</div>
+        <div id='home'>{activeTab === 1 && <Home />}</div>
         <div id='profile'>
-          {location.pathname === "/student/2" && <MyprofileTab />}
+          {activeTab === 2 && <MyprofileTab />}
         </div>
         <div>{activeTab === 3 && <LearningProgress />}</div>
       </div>

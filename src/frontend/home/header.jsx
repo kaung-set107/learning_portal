@@ -1,11 +1,11 @@
 import { SearchIcon } from "../../components/Navbar/SearchIcon";
 // import AcmeLogo from "../../assets/lp.png";
 import { useState } from "react";
-
+import UserPng from '../../assets/img/user.png'
 import { getFile } from "../../util/index";
 import Theme from "../../components/ThemeSwitch/index";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faGear } from "@fortawesome/free-solid-svg-icons";
+import { faBell, faGear } from "@fortawesome/free-solid-svg-icons";
 import {
   Dropdown,
   DropdownTrigger,
@@ -23,6 +23,7 @@ import {
   Image,
   Input,
   Button,
+  Divider,
 } from "@nextui-org/react";
 import { AcmeLogo } from "./AcmeLogo.jsx";
 import { useEffect } from "react";
@@ -31,7 +32,7 @@ import apiInstance from "../../util/api";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import MSI from "../../assets/img/MSI.svg";
-
+import Student from '../../assets/img/student.jpg'
 export default function App() {
   const menuItems = [
     "Profile",
@@ -45,41 +46,67 @@ export default function App() {
     "Help & Feedback",
     "Log Out",
   ];
+  const noti = {
+    title: 'Notifications',
+
+    info: [{
+      img: Student,
+      message: 'Travis William made an announcement ',
+      time: 2,
+      status: false
+    },
+    {
+      img: Student,
+      message: 'Travis William made an announcement ',
+      time: 2,
+      status: false
+    }, {
+      img: Student,
+      message: 'Travis William made an announcement ',
+      time: 2,
+      status: false
+    },
+    {
+      img: Student,
+      message: 'Travis William made an announcement ',
+      time: 2,
+      status: false
+    },
+    {
+      img: Student,
+      message: 'Travis William made an announcement ',
+      time: 2,
+      status: false
+    },
+    {
+      img: Student,
+      message: 'Travis William made an announcement ',
+      time: 2,
+      status: false
+    },
+    {
+      img: Student,
+      message: 'Travis William made an announcement ',
+      time: 2,
+      status: false
+    }]
+  }
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState("/home");
+  const [seeAll, setSeeAll] = useState(false);
+  const [allRead, setAllRead] = useState(false);
   const navigate = useNavigate();
   const GetLoginData = localStorage.getItem("token");
-  // const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // const links = [
-  //   { href: "/", text: "Home" },
-  //   { href: "/course", text: "Course" },
-  //   { href: "/class", text: "Class" },
-  //   { href: "/sub", text: "Subjects" },
-  //   { href: "/contact", text: "Contact" },
-  //   { href: "/about", text: "About" },
-  //   // Add more links as needed
-  // ];
-  //   const menuItems = [
-  //   "Profile",
-  //   "Dashboard",
-  //   "Activity",
-  //   "Analytics",
-  //   "System",
-  //   "Deployments",
-  //   "My Settings",
-  //   "Team Settings",
-  //   "Help & Feedback",
-  //   "Log Out",
-  // ];
-
+  const [notiList, setNotiList] = useState([])
   const [list, setList] = useState([]);
   const [imgUrl, setImgUrl] = useState("");
   const [user, setUser] = useState(null);
   const [email, setEmail] = useState("");
 
-  const handleSelect = (val) => {
-    navigate("/student", { state: { val } });
+  const handleAllRead = () => {
+    apiInstance.put("notifications").then(function () {
+      console.log(res.data.data, 'res')
+    })
   };
 
   useEffect(() => {
@@ -101,10 +128,22 @@ export default function App() {
         }
       });
     };
+    const getNoti = async () => {
+      await apiInstance.get("notifications").then((res) => {
+        const sortedData = res.data.data.sort((a, b) => new Date(a.date) - new Date(b.date));
+        setNotiList(res.data.data);
+        console.log(sortedData, 'resss')
+
+      });
+    };
+    getNoti();
     getUser();
     getAssign();
   }, []);
 
+  const handleSeeAll = () => {
+    setSeeAll(!seeAll)
+  }
   const logout = () => {
     localStorage.removeItem("token");
     Swal.fire({
@@ -132,18 +171,84 @@ export default function App() {
             <Input
               isClearable
               radius='lg'
+              variant='underlined'
               placeholder='Type to search...'
               startContent={
-                <SearchIcon className='text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0' />
+                <SearchIcon className='text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0 shadow-lg' />
               }
             />
           </div>
           <div className='flex gap-4 mt-5'>
-            <div>
+            <div className='flex gap-5'>
+              <Dropdown>
+                <DropdownTrigger className='mt-2'>
+                  <FontAwesomeIcon icon={faBell} size='xl' />
+
+                </DropdownTrigger>
+                <DropdownMenu closeOnSelect={false} aria-label='Profile Actions' variant='flat' className='p-2 sticky-top'>
+                  <DropdownItem><span className='text-[20px] font-bold'>{noti.title}</span></DropdownItem>
+                  {seeAll ? (notiList.slice(0).reverse().map((item, index) => (
+
+                    <DropdownItem key={index} className='w-[430px]'>
+
+                      <div className='flex gap-4 p-5'>
+                        {allRead ? '' : (<div className={item.status === 'unread' && 'bg-indigo-600 rounded-full float-right w-[10px] h-[10px] mt-5'}></div>)}
+
+
+                        <div><Image src={UserPng} className='w-[70px] h-[65px] rounded-full' /></div>
+
+                        <div className=' flex flex-col gap-4 pt-2'>
+                          <div className=' gap-20'>
+                            <p className='w-[20px] flex'>{item.title}</p>
+                          </div>
+
+                          <span className='text-[#2C4AE7] text-[12px] font-medium'>{item.time} hours</span>
+                        </div>
+
+                      </div>
+
+                      <Divider></Divider>
+                    </DropdownItem>
+
+
+                  ))) : (notiList.slice(0, 3).reverse().map((item, index) => (
+
+                    <DropdownItem key={index} className='w-[430px]'>
+
+                      <div className='flex gap-4 p-5'>
+                        {allRead ? '' : (<div className={item.status === 'unread' && 'bg-indigo-600 rounded-full float-right w-[10px] h-[10px] mt-5'}></div>)}
+
+
+                        <div><Image src={UserPng} className='w-[70px] h-[65px] rounded-full' /></div>
+                        <div className=' flex flex-col gap-4 pt-2'>
+                          <div className=' gap-20'>
+                            <p className='w-[20px] flex'>{item.title}</p>
+                          </div>
+
+                          <span className='text-[#2C4AE7] text-[12px] font-medium'>{item.time} hours</span>
+                        </div>
+
+                      </div>
+
+                      <Divider></Divider>
+                    </DropdownItem>
+
+
+                  )))}
+
+                  <DropdownItem>
+                    <div className='flex justify-between p-4'>
+                      <span className='text-[#CA0008] text-[16px] font-medium mt-1' onClick={handleAllRead}>Mark All As Read</span>
+                      <Button color='primary' variant='bordered' onClick={handleSeeAll}>See All</Button>
+                    </div>
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
               <Dropdown placement='bottom-end'>
                 <DropdownTrigger className='mt-2'>
                   <FontAwesomeIcon icon={faGear} size='xl' />
                 </DropdownTrigger>
+
                 <DropdownMenu aria-label='Profile Actions' variant='flat'>
                   <DropdownItem key='profile' className=' gap-2'>
                     {GetLoginData ? (
@@ -160,7 +265,7 @@ export default function App() {
                   </DropdownItem>
                   <DropdownItem>
                     {location.pathname === "/" ||
-                    location.pathname === "/login" ? (
+                      location.pathname === "/login" ? (
                       <div className='hidden sm:flex hover:font-semibold'>
                         <Link
                           to='/register'
@@ -242,8 +347,8 @@ export default function App() {
                       index === 2
                         ? "primary"
                         : index === menuItems.length - 1
-                        ? "danger"
-                        : "foreground"
+                          ? "danger"
+                          : "foreground"
                     }
                     className='w-full'
                     href='#'
@@ -276,7 +381,7 @@ export default function App() {
             </DropdownMenu>
           </Dropdown> */}
         </div>
-      </div>
+      </div >
     </>
   );
 }

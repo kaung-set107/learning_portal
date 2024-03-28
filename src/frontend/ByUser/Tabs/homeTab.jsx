@@ -6,7 +6,7 @@ import {
   Image,
   Progress,
 } from "@nextui-org/react";
-
+// import { useSelector } from 'react-redux'
 import ReactStars from "react-rating-stars-component";
 import React, { useEffect, useState } from "react";
 import apiInstance from "../../../util/api";
@@ -16,6 +16,8 @@ import { Fade } from "react-awesome-reveal";
 import { Link, useNavigate } from "react-router-dom";
 import CourseDetail from "../CourseDetail/courseDetail";
 export default function Home() {
+  // const posts = useSelector(state => state.posts)
+  // console.log(posts, 'pos id')
   const navigate = useNavigate();
   const [id, setId] = useState("");
   const [firstDefaultCourseId, setFirstDefaultCourseId] = useState("");
@@ -27,19 +29,26 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState(0);
   const [courseId, setCourseId] = useState("");
   const [filterId, setFilterId] = useState([]);
+  const enr_id = myCourseList[0]?._id
+  console.log(enr_id, 'my')
+  const [enrollId, setEnrollId] = useState(enr_id)
 
   const filterSubList = filterId.filter(
     (el) => el._id === (courseId ? courseId : firstDefaultCourseId)
+
   );
   // console.log(filterSubList, "f i");
 
-  const handleTabClick = (ind, courseid) => {
+  const handleTabClick = (ind, enroll_Id, courseid) => {
     setCourseId(courseid);
     setActiveTab(ind);
+    setEnrollId(enroll_Id)
+    // console.log(enroll_Id, 'enr')
   };
 
-  const handleSubjectDetail = (data) => {
-    navigate("/mycourse-sub-detail/1", { state: { data: data } });
+  const handleSubjectDetail = (data, enrollID) => {
+    console.log(data, 'hee hee')
+    navigate("/mycourse-sub-detail", { state: { data: data, enroll_id: handleTabClick() ? enrollID : enr_id } });
     // navigate("/mycourse-sub-detail/2", { state: { data: data } });
   };
   //handle progress value
@@ -69,11 +78,8 @@ export default function Home() {
 
     const getEnrollment = async () => {
       await apiInstance.get(`enrollments`).then((res) => {
-        // console.log(StudentId, "s id");
-        // console.log(
-        //   res.data.data.filter((el) => el.student === StudentId)[0],
-        //   "enr waits"
-        // );
+        console.log(res.data.data.filter((el) => el.student === StudentId), "enroll id");
+
         setFirstDefaultCourseId(
           res.data.data.filter((el) => el.student === StudentId)[0].course._id
         );
@@ -84,7 +90,7 @@ export default function Home() {
             .map((i) => i.course)
         );
         // const count = res.data.data.filter((el) => el.subjects.length);
-        // console.log(count, "count");
+
       });
     };
 
@@ -94,10 +100,7 @@ export default function Home() {
     getAssign();
   }, [firstDefaultCourseId]);
 
-  // Rating Handle
-  const ratingChanged = (newRating) => {
-    // console.log(newRating);
-  };
+
   return (
     <div>
       {/* Home Page Wrap Start */}
@@ -123,7 +126,7 @@ export default function Home() {
                         }
                         color='primary'
                         variant='bordered'
-                        onClick={() => handleTabClick(index, item.course._id)}
+                        onClick={() => handleTabClick(index, item._id, item.course._id)}
                       >
                         {item.course?.title}
                       </Button>
@@ -137,7 +140,7 @@ export default function Home() {
                     {filterSubList[0]?.subjects.map((e, ind) => (
                       <div
                         className='flex gap-1 bg-[#e1ddec] rounded-[12px]'
-                        onClick={() => handleSubjectDetail(e)}
+                        onClick={() => handleSubjectDetail(e, enrollId)}
                       >
                         <div>
                           <Image
@@ -185,7 +188,7 @@ export default function Home() {
                                   aria-label='Loading...'
                                   value={45}
                                   className='mt-2'
-                                  // onChange={(e) => handleValue(e.target.value)}
+                                // onChange={(e) => handleValue(e.target.value)}
                                 />
                               </div>
                             </div>

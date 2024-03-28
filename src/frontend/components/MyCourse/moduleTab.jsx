@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
+  Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure,
+  Image,
   Divider,
   Accordion,
   AccordionItem,
@@ -15,34 +17,131 @@ import {
   RadioGroup,
 } from "@nextui-org/react";
 import QuizPage from "../../ByUser/Quiz/quizpage";
+
 import { getFile } from "../../../util";
 import BBAudio from "../../../assets/audio/bb.mp3";
 import apiInstance from "../../../util/api";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ExcelPhoto from "../../ByInstructor/images/excel.png";
+import PdfPhoto from "../../ByInstructor/images/pdf.png";
+import ZoomPic from '../../../assets/img/pic.jpg'
 import {
-  faCircleCheck,
+  faSquarePlus,
+  faCalendarDays,
+  faVideo,
   faAngleRight,
   faLock,
   faAngleLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
-export default function CourseDetail(props) {
+import MeetingModal from './newmeetingmodal'
+import CSV from '../../../assets/img/csv.png';
+import PPTX from '../../../assets/img/pptx.png';
+const CourseDetail = (props) => {
+  // const time = new Date().toLocaleTimeString()
+
+  // const [ctime, setTime] = useState(time)
+  // const UpdateTime = () => {
+  //   time = new Date().toLocaleTimeString()
+  //   setTime(time)
+  // }
+  // setInterval(UpdateTime)
+
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const tabRef = useRef();
   const location = useLocation();
   const navigate = useNavigate();
   const examData = location.state.data;
-  console.log(examData, "sub ii");
+  const enrollID = location.state.enroll_id;
+  // console.log(enrollID, "enrollID");
+  // console.log(examData, "sub ii");
   const courseData = location.state.courseData;
   // console.log(props.id, "id");
   const [showVideo, setShowVideo] = useState(false);
   const [teacherName, setTeacherName] = useState([]);
   const [teacherImage, setTeacherImage] = useState([]);
   const [showVideoList, setShowVideoList] = useState([]);
+  const [showDocumentList, setShowDocumentList] = useState([])
   const [LMDataList, setLMDataList] = useState([]);
   const [LMID, setLMID] = useState("");
   const [showQuiz, setShowQuiz] = useState(false);
+  const [showModal, setShowModal] = useState(false)
+
+  const upcomingMeeting = [{
+    title: 'IELTs',
+    date: '20-03-2024',
+    time: '7:00PM',
+  },
+  {
+    title: 'IELTs',
+    date: '20-03-2024',
+    time: '7:00PM',
+  }, {
+    title: 'IELTs',
+    date: '20-03-2024',
+    time: '7:00PM',
+  }]
+
+  const prevMeeting = [{
+    title: 'IELTs Basic',
+    date: '20-03-2024',
+    time: '7:00PM',
+  },
+  {
+    title: 'IELTs Basic',
+    date: '20-03-2024',
+    time: '7:00PM',
+  }, {
+    title: 'IELTs Basic',
+    date: '20-03-2024',
+    time: '7:00PM',
+  }]
+
+  const handleModal = () => {
+    setShowModal(true)
+  }
+  const download = (i) => {
+    // console.log(val, 'cv')
+
+    // const file = getFile({ payload: i });
+    var link = getFile({ payload: i })
+    var file = new Blob(
+      [
+        link,
+      ],
+      { type: "image/*" }
+    );
+
+    // if (val.split('.')[1] === 'jpg' || val.split('.')[1] === 'png' || val.split('.')[1] === 'jpeg') {
+    var element = document.createElement("a");
+
+    element.href = file;
+    element.download = `image.${i.originalname?.split('.')[1]}`;
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+
+  };
+  const downloadPDF = (val) => {
+    // Replace 'your-pdf-file.pdf' with the actual file path or URL
+    const pdfUrl = getFile({ payload: val });
+
+    // Create a link element
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(pdfUrl);
+    link.download = "downloaded-file.pdf";
+
+    // Append the link to the document
+    document.body.appendChild(link);
+
+    // Trigger a click on the link to start the download
+    link.click();
+
+    // Remove the link from the document
+    document.body.removeChild(link);
+  };
   useEffect(() => {
     // const getCourseDetail = async () => {
     //   await apiInstance.get("courses/" + props.id).then((res) => {
@@ -52,10 +151,10 @@ export default function CourseDetail(props) {
     // };
     const getSubjects = async () => {
       await apiInstance.get("subjects").then((res) => {
-        console.log(
-          res.data.data.filter((el) => el._id === examData._id)[0],
-          "c subject"
-        );
+        // console.log(
+        //   res.data.data.filter((el) => el._id === examData._id)[0],
+        //   "c subject"
+        // );
         const Filter = res.data.data.filter((el) => el._id === examData._id)[0];
         setTeacherName(Filter);
         const Img = getFile({
@@ -74,17 +173,22 @@ export default function CourseDetail(props) {
 
   // Handle Tabs
 
+
   const handleQuiz = (val) => {
     // navigate(`/quiz-page/${LMID}`);
     setShowQuiz(true);
   };
 
   const handleVideo = (data) => {
-    // console.log(data, "handleVideo");
+
+    // console.log(data, "heee");
     setLMID(data._id);
 
     setShowVideoList(JSON.parse(data.video));
+    setShowDocumentList(data.assets);
+    // console.log(data.assets, "document");
     setLMDataList(data);
+    // console.log(data, 'lm da')
     setShowVideo(true);
   };
 
@@ -141,10 +245,11 @@ export default function CourseDetail(props) {
                         Module {index + 1} ({item.title})
                       </span>
                     }
-                    //   startContent={
-                    //     <FontAwesomeIcon icon={faDesktop} size='xl' />
-                    //   }
+                  //   startContent={
+                  //     <FontAwesomeIcon icon={faDesktop} size='xl' />
+                  //   }
                   >
+                    {console.log(item.learningMaterials, 'lm data two')}
                     {item.learningMaterials.map((e) => (
                       <>
                         {/* Lock or Default Check */}
@@ -240,7 +345,7 @@ export default function CourseDetail(props) {
                     allowFullScreen
                     className=' w-full h-[442px]'
                     allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-                    // style={{ width:'1400px',height:'500px' }}
+                  // style={{ width:'1400px',height:'500px' }}
                   ></iframe>
                   <div className='flex justify-between pt-[20px]'>
                     <span className='w-[311px] h-[16px] text-[32px] text-[#0025A9] font-semibold'>
@@ -255,38 +360,69 @@ export default function CourseDetail(props) {
                   </div>
                   <div className='flex w-full flex-col pt-[20px]'>
                     <Tabs
+                      defaultSelectedKey='sum'
                       variant='light'
                       color='primary'
                       radius='full'
                       aria-label='Options'
                     >
-                      <Tab title='Summary'>
+                      <Tab title='Summary' key='sum'>
                         <div className='bg-[#EBF0FF] text-[#001769] rounded-lg w-full h-[auto] p-[20px] flex flex-col gap-2'>
-                          <span className='w-[902px] h-[24px] text-[20px] font-semibold'>
-                            Description: This chapter is all about the basics of
-                            IELTS
+
+                          <span className='w-[902px] h-[24px] text-[12px] sm:text-[16px] font-semibold'>
+                            This video is all about giving you the insights of IELTS with the best explanation.
                           </span>
-                          <span className='w-[902px] h-[24px] text-[20px] font-semibold'>
-                            Reference link: &nbsp;
-                            <a
-                              href='www.msi.com/basicofielts'
-                              className='text-[#3454FF]'
-                            >
-                              www.msi.com/basicofielts
-                            </a>
+
+
+                          <span className='w-[902px] h-[24px] pt-5 text-[20px] font-semibold'>
+                            Document Files
                           </span>
-                          <span className='w-[902px] h-[24px] text-[20px] font-semibold'>
-                            PDF File link: &nbsp;
-                            <a
-                              href='www.msi.com/basicofielts'
-                              className='text-[#3454FF]'
-                            >
-                              www.msi.com/basicofielts
-                            </a>
-                          </span>
+                          <div className='grid grid-cols-2 justify-start gap-5 pt-10'>
+                            {showVideo && showDocumentList.map((i) => (
+                              <div >
+
+                                <div className="sm:flex justify-start gap-5" key={i._id}>
+                                  <a
+                                    href={getFile({ payload: i })}
+                                    onClick={
+                                      i.originalname?.split(".")[1] === "pdf"
+                                        ? () => downloadPDF(i)
+                                        : () => download(i)
+                                    }>
+                                    <Image
+                                      radius="sm"
+                                      alt={i.title}
+                                      className="object-cover w-[40px] h-[40px]"
+                                      src={
+                                        i.originalname?.split(".")[1] === "pdf"
+                                        && PdfPhoto ||
+                                        (i.originalname?.split(".")[1] === "xlsx")
+                                        && ExcelPhoto || (i.originalname?.split(".")[1] === "csv")
+                                        && CSV || (i.originalname?.split(".")[1] === "pptx")
+                                        && PPTX ||
+                                        (i.originalname?.split(".")[1] === "png" || "jpg" || "jpeg") && getFile({ payload: i })
+                                      }
+                                    />
+                                  </a>
+                                  {/* <b className="mt-3">{i.originalname?.split(".")[1] === "pdf" && "Download.pdf" || i.originalname?.split(".")[1] === "xlsx" && "Download.xlsx" || i.originalname?.split(".")[1] === "jpg" && "Download.jpg"}</b> */}
+                                  <b className="mt-3">{i?.originalname?.split('.')[0]}</b>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                          <div className='pt-5'>
+                            <span className='text-[#000] text-[20px] font-semibold'>Class Note</span>
+                            <p className='flex justify-start text-[#000] text-[16px] font-semibold w-[842px] pt-2'>
+                              Lorem ipsum dolor sit amet consectetur. Pulvinar venenatis lobortis dignissim velit massa sit.
+                              Massa at gravida pulvinar sem. Vel nibh sed feugiat turpis sapien. Tempus donec et semper condimentum est congue.
+                              Lorem ipsum dolor sit amet consectetur. Pulvinar venenatis lobortis dignissim velit massa sit.
+                              Massa at gravida pulvinar sem. Vel nibh sed feugiat turpis sapien. Tempus donec et semper condimentum est congue.
+                            </p>
+                          </div>
                         </div>
+
                       </Tab>
-                      <Tab title='Survey'>
+                      <Tab title='Survey' key='suv'>
                         <div className='flex flex-col gap-10'>
                           <div className='bg-[#EBF0FF] rounded-lg w-full h-[auto] p-[16px]'>
                             <p className=''>
@@ -335,7 +471,7 @@ export default function CourseDetail(props) {
                           <Button color='primary'>Submit</Button>
                         </div>
                       </Tab>
-                      <Tab title='Review and Feedback'>
+                      <Tab title='Review and Feedback' key='r&f'>
                         <div className='pt-[24px]'>
                           <label className='text-[24px] font-bold text-[#0025A9]'>
                             Title
@@ -353,23 +489,126 @@ export default function CourseDetail(props) {
                           </div>
                         </div>
                       </Tab>
-                      <Tab title='Quiz'>
+                      <Tab title='Quiz' key='quiz'>
                         {/* Quiz Page */}
 
-                        <QuizPage LMID={LMID} />
+                        <QuizPage LMID={LMID} enrollID={enrollID} />
                       </Tab>
-                      <Tab title='Articles'>
+                      <Tab title='Class' key='class'>
+
                         <div className='flex flex-col gap-10'>
-                          <h1 className='text-[#0025A9] font-semibold text-[25px]'>
-                            IELTs Listening Test
-                          </h1>
-                          <AudioPlayer
-                            autoPlay={false}
-                            src={BBAudio}
-                            onPlay={(e) => console.log("onPlay")}
-                            // other props here
-                          />
+
+                          <div className='grid grid-cols-2 pt-10 w-full'>
+
+                            <div className='grid grid-cols-2 justify-center pt-32 items-center w-[300px] h-[400px]'>
+
+                              <div className='flex flex-col justify-center items-center gap-2'>
+                                <Button className='bg-orange-500 p-10 rounded-[20%] text-[#fff] w-[80px]' onPress={onOpen}><FontAwesomeIcon icon={faVideo} size='2xl' /></Button>
+                                <span className='text-[#000] text-[16px]' >New Meeting</span>
+                              </div>
+                              <div className='flex flex-col justify-center items-center gap-2'>
+                                <Button className='bg-blue-500 p-10 rounded-[20%] text-[#fff] w-[80px]'><FontAwesomeIcon icon={faSquarePlus} size='2xl' /></Button>
+                                <span className='text-[#000] text-[16px] '>Join</span>
+                              </div>
+                              <div className='flex flex-col justify-center items-center gap-2'>
+                                <div className='bg-blue-500 p-6 rounded-[20%] text-[#fff]'><FontAwesomeIcon icon={faCalendarDays} size='2xl' /></div>
+                                <span className='text-[#000] text-[16px] '>Schedule</span>
+                              </div>
+
+                            </div>
+
+                            <div className='flex flex-col gap-4 justify-end'>
+                              <div className='flex justify-center items-center' style={{
+                                backgroundImage: `url(${ZoomPic})`,
+                                backgroundPosition: "right",
+                                backgroundSize: "cover",
+                                backgroundAttachment: "scroll",
+                                backgroundRepeat: "no-repeat",
+                                padding: "64px 0px 160px 0px",
+                              }}><span className='text-[45px] text-[#fff]'></span></div>
+
+                              <div className='flex flex-col gap-4'>
+                                <span className='text-[20px] font-semibold text-[#0025A9]'>Upcoming Meeting</span>
+                                <div>
+                                  {upcomingMeeting.map((item, index) => (
+                                    <div key={item} className='grid grid-cols-3 text-[#000] p-1 text-[18px] '>
+                                      <div>{item.title}</div>
+                                      <div>{item.date}</div>
+                                      <div>{item.time}</div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                              <div className='flex flex-col gap-4'>
+                                <span className='text-[20px] font-semibold text-[#0025A9] '>Previous Meeting</span>
+                                <div>
+                                  {prevMeeting.map((item, index) => (
+                                    <div key={item} className='grid grid-cols-3 text-[#000] p-1 text-[18px] '>
+                                      <div>{item.title}</div>
+                                      <div>{item.date}</div>
+                                      <div>{item.time}</div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+
+                          </div>
                         </div>
+                        <div>
+                          <Modal
+                            backdrop="opaque"
+                            size='2xl'
+                            isOpen={isOpen}
+                            onOpenChange={onOpenChange}
+
+                            motionProps={{
+                              variants: {
+                                enter: {
+                                  y: 0,
+                                  opacity: 1,
+                                  transition: {
+                                    duration: 0.3,
+                                    ease: "easeOut",
+                                  },
+                                },
+                                exit: {
+                                  y: -20,
+                                  opacity: 0,
+                                  transition: {
+                                    duration: 0.2,
+                                    ease: "easeIn",
+                                  },
+                                },
+                              }
+                            }}
+                          >
+                            <ModalContent>
+                              {(onClose) => (
+                                <>
+                                  <ModalHeader className="flex flex-col gap-1 text-[24px]">New Meeting Create</ModalHeader>
+                                  <ModalBody>
+                                    <form className='flex flex-col gap-4'>
+                                      <Input type='text' label='Name' variant='bordered' />
+                                      <Input type='date' label='Date' className='text-transparent' variant='bordered' />
+                                      <Input type='time' label='Time' variant='bordered' />
+                                      <Input type='password' label='Password' variant='bordered' />
+                                    </form>
+                                  </ModalBody>
+                                  <ModalFooter>
+                                    <Button color="danger" variant="light" onPress={onClose}>
+                                      Close
+                                    </Button>
+                                    <Button color="primary" onPress={onClose}>
+                                      Create
+                                    </Button>
+                                  </ModalFooter>
+                                </>
+                              )}
+                            </ModalContent>
+                          </Modal>
+                        </div>
+
                       </Tab>
                     </Tabs>
                   </div>
@@ -382,4 +621,5 @@ export default function CourseDetail(props) {
   );
 }
 
+export default CourseDetail
 // Author:Kaung Set Hein

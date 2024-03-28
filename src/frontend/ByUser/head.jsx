@@ -20,7 +20,9 @@ const TabValueComponent = ({ activeTabValue }) => {
           }
           onClick={() => handleTabClick(1)}
         >
-          <Link to='/student'>Home</Link> &nbsp;
+          {location.pathname === '/course-detail' ? 'Home' : (<Link to='/student'>Home</Link>)}
+          {/* Home &nbsp; */}
+
           {/* <Badge content='9+' shape='circle' color='danger'>
               <NotificationIcon size={24} />
             </Badge> */}
@@ -33,7 +35,7 @@ const TabValueComponent = ({ activeTabValue }) => {
           }
           onClick={() => handleTabClick(2)}
         >
-          <Link to='/student/2'>My Profile</Link> &nbsp;
+          My Profile &nbsp;
           {/* <Badge content='9+' shape='circle' color='danger'>
               <NotificationIcon size={24} />
             </Badge> */}

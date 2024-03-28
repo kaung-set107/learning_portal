@@ -88,8 +88,8 @@ export default function PendingList() {
             res.data.counts.registerWaitingListCount % rowsPerPage === 0
               ? res.data.counts.registerWaitingListCount / rowsPerPage
               : Math.floor(
-                  res.data.counts.registerWaitingListCount / rowsPerPage
-                ) + 1
+                res.data.counts.registerWaitingListCount / rowsPerPage
+              ) + 1
           );
         });
     };
@@ -190,20 +190,20 @@ export default function PendingList() {
               <TableCell>{index + 1}</TableCell>
               <TableCell>
                 <div className='flex '>
-                  <Image
+                  {/* <Image
                     radius='sm'
-                    alt={item.image.originalname}
+                    alt={item?.image?.originalname}
                     className='object-cover w-[40px] h-[40px] rounded-lg border-2 border-blue-900'
                     src={getFile({ payload: item.image })}
-                  />
-                  <b className='py-3 px-1'>{item.name}</b>
+                  /> */}
+                  <b className='py-3 px-1'>{item?.name}</b>
                 </div>
               </TableCell>
-              <TableCell>{item.subject?.title}</TableCell>
-              <TableCell>{item.createAt?.split("T")[0]}</TableCell>
+              <TableCell>{item.course?.title}</TableCell>
+              <TableCell>{item.date?.split("T")[0]}</TableCell>
               <TableCell>{item.phone}</TableCell>
               <TableCell>{item.email}</TableCell>
-              <TableCell>{item.gender}</TableCell>
+              <TableCell>{item.gender ? item.gender : '-'}</TableCell>
               <TableCell>{item.address}</TableCell>
               {/* <TableCell>
                 <div className='relative flex items-center gap-2'>

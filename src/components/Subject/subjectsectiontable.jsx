@@ -23,7 +23,7 @@ import React, { useState } from 'react'
 import { useEffect } from 'react'
 import apiInstance from '../../util/api'
 import { EditIcon } from '../Table/editicon'
-import {EyeIcon} from '../Table/eyeicon'
+import { EyeIcon } from '../Table/eyeicon'
 import { DeleteIcon } from '../Table/deleteicon'
 import { Link } from 'react-router-dom'
 import { PlusIcon } from '../../assets/Icons/PlusIcon'
@@ -31,9 +31,9 @@ import { PlusIcon } from '../../assets/Icons/PlusIcon'
 
 
 
-export default function AttendanceTable (props) {
+export default function AttendanceTable(props) {
 
-    console.log(props.Id,'rrr')
+  console.log(props.Id, 'rrr')
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [delID, setDelID] = useState(null)
   const [page, setPage] = React.useState(1)
@@ -71,7 +71,7 @@ export default function AttendanceTable (props) {
         .then(res => {
           setSubjectList(res.data.data.subjectSections)
           console.log(res.data.data.subjectSections, 'att')
-        //   setPages(res.data._metadata.page_count)
+          //   setPages(res.data._metadata.page_count)
         })
     }
 
@@ -106,10 +106,10 @@ export default function AttendanceTable (props) {
     <>
       <div className='flex flex-row gap-5 justify-between'>
         <div className='flex gap-4 mb-3 flex-row'>
-       
+
         </div>
         <div className='flex gap-2 mb-3 flex-row'>
- 
+
           {/* <Link to='/subject-add'>
             <Button endContent={<PlusIcon />} color='primary'>
               Add
@@ -156,10 +156,10 @@ export default function AttendanceTable (props) {
       >
         <TableHeader>
           <TableColumn>No</TableColumn>
-                <TableColumn>Code</TableColumn>
+          <TableColumn>Code</TableColumn>
           <TableColumn>Title</TableColumn>
           <TableColumn>Subject</TableColumn>
-             <TableColumn>Description</TableColumn>
+          <TableColumn>Description</TableColumn>
 
           <TableColumn key='action'>Action</TableColumn>
         </TableHeader>
@@ -167,24 +167,24 @@ export default function AttendanceTable (props) {
           {items.map((item, index) => (
             <TableRow key={item._id}>
               <TableCell>{index + 1}</TableCell>
-                 <TableCell>
+              <TableCell>
                 {item?.code}
               </TableCell>
               <TableCell>
                 {item?.title}
               </TableCell>
-                 
+
               <TableCell>
                 {props.subject}
               </TableCell>
-           
+
               <TableCell>{item?.description}</TableCell>
-     
+
 
               <TableCell>
                 <div className='relative flex items-center gap-2'>
-                     <Tooltip content='Create Learning Material'>
-                    <Link to={ '/learn-mat/'+item._id } >
+                  <Tooltip content='Create Learning Material'>
+                    <Link to={'/learn-mat/' + item._id} >
                       <span className='text-lg text-default-400 cursor-pointer active:opacity-50'>
                         <PlusIcon />
                       </span>

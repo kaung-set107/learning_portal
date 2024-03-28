@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 // import { Link } from "@nextui-org/react";
 const TabValueComponent = ({ activeTabValue, detailData }) => {
-  console.log(detailData, "detail head");
+  // console.log(detailData, "detail head");
+  // console.log(activeTabValue, "activeTabValue head");
   const [activeTab, setActiveTab] = useState(1);
   const handleTabClick = (tabNumber) => {
     setActiveTab(tabNumber);
@@ -21,9 +22,9 @@ const TabValueComponent = ({ activeTabValue, detailData }) => {
           }
           onClick={() => handleTabClick(1)}
         >
-          <Link to={{ pathname: "/mycourse-sub-detail/1", state: detailData }}>
-            Module
-          </Link>{" "}
+
+          Module
+
           &nbsp;
           {/* <Badge content='9+' shape='circle' color='danger'>
               <NotificationIcon size={24} />
@@ -37,32 +38,33 @@ const TabValueComponent = ({ activeTabValue, detailData }) => {
           }
           onClick={() => handleTabClick(2)}
         >
-          <Link to={{ pathname: "/mycourse-sub-detail/2", state: detailData }}>
-            Assignments
-          </Link>{" "}
+
+          Assignments
+
           &nbsp;
           {/* <Badge content='9+' shape='circle' color='danger'>
               <NotificationIcon size={24} />
             </Badge> */}
         </div>
+
         <div
           className={
-            activeTab === 3
+            activeTab === 4
               ? "border-b-4 text-blue-800 bg-blue-100 py-3 border-indigo-500/75 w-48 text-center font-semibold duration-500"
               : "w-48 text-center font-semibold py-3"
           }
-          onClick={() => handleTabClick(3)}
+          onClick={() => handleTabClick(4)}
         >
-          <Link to={{ pathname: "/mycourse-sub-detail/3", state: detailData }}>
-            Exam
-          </Link>{" "}
+
+          Exam
+
           &nbsp;
           {/* <Badge content='9+' shape='circle' color='danger'>
               <NotificationIcon size={24} />
             </Badge> */}
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 export default TabValueComponent;

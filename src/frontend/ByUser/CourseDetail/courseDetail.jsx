@@ -21,6 +21,7 @@ import SubDetail from "./SubjectDetail/subjectDetail";
 import Nav from "../../home/header";
 import Head from "../head";
 export default function CourseDetail(props) {
+  const variant = "bordered"
   const navigate = useNavigate();
   const location = useLocation();
   const courseData = location.state.data;
@@ -515,12 +516,12 @@ export default function CourseDetail(props) {
               className='flex flex-col gap-10'
             >
               <div className='flex gap-2'>
-                <Input type='text' placeholder='First Name' />
-                <Input type='text' placeholder='Last Name' />
+                <Input type='text' placeholder='First Name' variant={variant} />
+                <Input type='text' placeholder='Last Name' variant={variant} />
               </div>
               <div className='flex gap-2'>
                 {" "}
-                <Input type='phone' placeholder='Phone Number' />
+                <Input type='phone' variant={variant} placeholder='Phone Number' />
               </div>
               <div>
                 <Button

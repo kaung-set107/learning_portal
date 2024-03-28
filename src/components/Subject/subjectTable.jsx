@@ -6,7 +6,7 @@ import {
   Modal,
 
   ModalContent,
-User,
+  User,
   Kbd,
   Button,
   ModalFooter,
@@ -23,17 +23,18 @@ import React, { useState } from 'react'
 import { useEffect } from 'react'
 import apiInstance from '../../util/api'
 import { EditIcon } from '../Table/editicon'
-import {EyeIcon} from '../Table/eyeicon'
+import { EyeIcon } from '../Table/eyeicon'
 import { DeleteIcon } from '../Table/deleteicon'
 import { Link } from 'react-router-dom'
 import { PlusIcon } from '../../assets/Icons/PlusIcon'
 
 import { getFile } from '../../util/index';
 
-export default function AttendanceTable () {
+export default function AttendanceTable() {
 
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [delID, setDelID] = useState(null)
+  const [dataCount, setDataCount] = useState("");
   const [page, setPage] = React.useState(1)
   const [pages, setPages] = React.useState(1)
   const [rowsPerPage, setRowsPerPage] = React.useState(15)
@@ -56,7 +57,11 @@ export default function AttendanceTable () {
   const onRowsChange = event => {
     const newRowsPerPage = parseInt(event.target.value)
     setRowsPerPage(newRowsPerPage)
-    setPages(Math.ceil(subjectList.length / newRowsPerPage))
+    setPages(dataCount % rowsPerPage === 0
+      ? dataCount / rowsPerPage
+      : Math.floor(
+        dataCount / rowsPerPage
+      ) + 1)
     setPage(1) // Reset the current page to 1 when rows per page changes
   }
 
@@ -68,8 +73,15 @@ export default function AttendanceTable () {
         .get(`subjects`, { params: { limit: 80, rowsPerPage: rowsPerPage } })
         .then(res => {
           setSubjectList(res.data.data)
-          console.log(res.data.data, 'att')
-        //   setPages(res.data._metadata.page_count)
+          console.log(res.data, 'att')
+          setDataCount(res.data.count)
+          setPages(res.data.count % rowsPerPage === 0
+            ? res.data.count / rowsPerPage
+            : Math.floor(
+              res.data.count / rowsPerPage
+            ) + 1)
+          setPage(1)
+          //   setPages(res.data._metadata.page_count)
         })
     }
 
@@ -168,7 +180,7 @@ export default function AttendanceTable () {
           </Button> */}
         </div>
         <div className='flex gap-2 mb-3 flex-row'>
- 
+
           <Link to='/subject-add'>
             <Button endContent={<PlusIcon />} color='primary'>
               Add
@@ -215,12 +227,12 @@ export default function AttendanceTable () {
       >
         <TableHeader>
           <TableColumn>No</TableColumn>
-                <TableColumn>Code</TableColumn>
+          <TableColumn>Code</TableColumn>
           <TableColumn>Title</TableColumn>
           <TableColumn>Course</TableColumn>
           <TableColumn>Image</TableColumn>
-           <TableColumn>Fee</TableColumn>
-             <TableColumn>Description</TableColumn>
+          <TableColumn>Fee</TableColumn>
+          <TableColumn>Description</TableColumn>
 
           <TableColumn key='action'>Action</TableColumn>
         </TableHeader>
@@ -228,35 +240,35 @@ export default function AttendanceTable () {
           {items.map((item, index) => (
             <TableRow key={item._id}>
               <TableCell>{index + 1}</TableCell>
-                 <TableCell>
+              <TableCell>
                 {item?.code}
               </TableCell>
               <TableCell>
                 {item?.title}
               </TableCell>
-                 
+
               <TableCell>
                 {item.course?.title}
               </TableCell>
               <TableCell>    <User
-                  avatarProps={{
-                    radius: "lg",
-                    src:
-                      item.image ? getFile({payload:item.image}) : '',
-                  }}
-               />
-         
-          
-             </TableCell>
-                        <TableCell>
+                avatarProps={{
+                  radius: "lg",
+                  src:
+                    item.image ? getFile({ payload: item.image }) : '',
+                }}
+              />
+
+
+              </TableCell>
+              <TableCell>
                 {item?.fee}
               </TableCell>
               <TableCell>{item?.description}</TableCell>
-     
+
 
               <TableCell>
                 <div className='relative flex items-center gap-2'>
-                     <Tooltip content='Edit Position'>
+                  <Tooltip content='Edit Position'>
                     <Link to={'/subject-detail/' + item._id}>
                       <span className='text-lg text-default-400 cursor-pointer active:opacity-50'>
                         <EyeIcon />

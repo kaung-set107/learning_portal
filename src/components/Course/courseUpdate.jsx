@@ -12,7 +12,7 @@ import { faCircleChevronLeft } from "@fortawesome/free-solid-svg-icons";
 export default function DepartmentInputForm() {
   const Id = useLocation().pathname.split("/")[2];
 
-  const variant = "faded";
+  const variant = "bordered";
 
   const { handleSubmit } = useForm();
   const [title, setTitle] = useState("");

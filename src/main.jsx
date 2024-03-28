@@ -3,7 +3,8 @@ import ReactDOM from "react-dom/client";
 import RouteFile from "./Routes";
 import { NextUIProvider } from "@nextui-org/react";
 import "./index.css";
-
+// import { Provider } from 'react-redux'
+// import { store } from './util/store/store'
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import WebFont from "webfontloader";
 
@@ -14,11 +15,13 @@ WebFont.load({
 });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  // <React.StrictMode>
+
     <NextUIProvider>
       <NextThemesProvider attribute='class' defaultTheme='light'>
         <RouteFile />
       </NextThemesProvider>
     </NextUIProvider>
-  </React.StrictMode>
+
+  // </React.StrictMode>
 );
