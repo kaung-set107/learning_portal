@@ -17,6 +17,7 @@ import { Fade } from "react-awesome-reveal";
 import EntranceTestPage from "../Quiz/entranceTest";
 import { Link, useNavigate } from "react-router-dom";
 import Loading from '../../../assets/img/finalloading.gif'
+import Success from '../../../assets/img/success.gif'
 export default function MyprofileTab() {
   const variant = 'bordered'
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -28,7 +29,7 @@ export default function MyprofileTab() {
 
   const navigate = useNavigate()
   const StudentId = localStorage.getItem("id");
-  console.log(StudentId, "stu id");
+  // console.log(StudentId, "stu id");
   const [student, setStudent] = useState([]);
   const [audioFile, setAudioFile] = useState(null);
   const [img, setImg] = useState("");
@@ -37,27 +38,34 @@ export default function MyprofileTab() {
   const [filterId, setFilterId] = useState([]);
   const [placeactiveTab, setPlaceActiveTab] = useState(0);
   const [courseId, setCourseId] = useState("");
-  const [batchId, setBatchId] = useState('')
-  const [showEnroll, setShowEnroll] = useState(false)
+  const [batchId, setBatchId] = useState([])
+  const [showGif, setShowGif] = useState(true);
+  const [image, setImage] = useState('')
+  // const [enrollId, setEnrollId] = useState(false)
   const [count, setCount] = useState(0)
   const [entranceTestResDataCheck, setEntranceTestResDataCheck] = useState([])
+  const handleImage = (e) => {
+    if (e.target.files) {
+      setImage(e.target.files[0]);
+      console.log(e.target.files, "file");
+    }
+  };
   // const enr_id = myCourseList[0]?._id
-  console.log(filterId, 'my')
-  const [enrollId, setEnrollId] = useState('')
+  // console.log(filterId, 'my')
+
   const filterSubList = filterId.filter(
-    (el) => el._id === (courseId ? courseId : firstDefaultCourseId)
+    (el) => el.course._id === (courseId ? courseId : firstDefaultCourseId)
 
   );
+  // console.log(filterSubList[0]?.course?.subjects, 'fil list for ent')
+  // const SubCount = count <= filterSubList[0]?.subjects?.length && count + 1
+  // if (count <= filterSubList[0]?.subjects?.length) {
 
-  const SubCount = count <= filterSubList[0]?.subjects?.length && count + 1
-  if (count <= filterSubList[0]?.subjects?.length) {
-    console.log(filterSubList[0]?.subjects, 'fil list for ent')
-  }
+  // }
 
   const handlePlaceTabClick = (ind, enroll_Id, courseid) => {
     setCourseId(courseid);
-    setPlaceActiveTab(ind);
-    setEnrollId(enroll_Id)
+
     // console.log(enroll_Id, 'enr')
   };
   useEffect(() => {
@@ -65,16 +73,16 @@ export default function MyprofileTab() {
     const Map1 = async () => {
       const list = {
         student: StudentId,
-        entranceTest: filterSubList[0]?.subjects.map((i) => (
+        entranceTest: filterSubList[0]?.course?.subjects.map((i) => (
           i.entranceTests[0]?._id
         ))
       }
 
       await apiInstance.get('entrance-test-results', list).then((res) => {
-        console.log(
-          res.data.data.filter(el => el.student._id === StudentId),
-          "stu map1"
-        );
+        // console.log(
+        //   res.data.data.filter(el => el.student._id === StudentId),
+        //   "stu map1"
+        // );
         setEntranceTestResDataCheck(res.data.data.filter(el => el.student._id === StudentId))
 
         // if (res.data.data.length === filterSubList[0]?.subjects?.length) {
@@ -104,17 +112,19 @@ export default function MyprofileTab() {
       });
     };
     const getEnrollment = async () => {
-      await apiInstance.get(`enrollment-waiting-lists`).then((res) => {
-        console.log(res.data.data.filter(el => el.course), "first id");
-        setBatchId(res.data.data.filter((el) => el.student === StudentId)[0]?.batch)
-        setEnrollId(res.data.data.filter((el) => el.student === StudentId)[0]._id)
+      const Stu = {
+        student: StudentId
+      }
+      await apiInstance.get(`enrollment-waiting-lists?student=${StudentId}`).then((res) => {
+        console.log(res.data.data.filter(el => el.batch), "first id");
+        setBatchId(res.data.data.filter(el => el.batch))
+
         setFirstDefaultCourseId(
-          res.data.data.filter((el) => el.student === StudentId)[0].course
+          res.data.data[0].course._id
         );
-        setMyCourseList(res.data.data.filter((el) => el.student === StudentId));
+        setMyCourseList(res.data.data);
         setFilterId(
-          res.data.data.filter(el => el.course).filter((el) => el.student === StudentId)
-            .map((i) => i.course)
+          res.data.data.filter((el) => el.course)
         );
         // const count = res.data.data.filter((el) => el.subjects.length);
 
@@ -132,7 +142,11 @@ export default function MyprofileTab() {
     getEntranceTestRes();
     getEnrollment();
     getAssign();
+    const timer = setTimeout(() => {
+      setShowGif(false);
+    }, 5000); // Change time duration as needed (in milliseconds)
 
+    return () => clearTimeout(timer);
   }, []);
 
 
@@ -155,10 +169,39 @@ export default function MyprofileTab() {
   };
 
   const handleEntrance = (e) => {
-    navigate("/entranceTest-page", { state: { entranceID: e, enrollID: enrollId, batchID: batchId } });
+    navigate("/entranceTest-page", { state: { entranceID: e, batchID: batchId[0].batch } });
   }
   // const dataToPass = { entranceID: entranceID, enrollID: enrollId, batchID: batchId };
 
+  //Payment
+  const handlePayment = () => {
+    const EnrWaitId = filterSubList[0]._id
+    console.log(filterSubList[0]._id, 'en wait id')
+    const formData = new FormData();
+
+
+    formData.append("image", image);
+
+
+    apiInstance
+      .post(`enrollment-waiting-lists/${EnrWaitId}/payment`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then(function () {
+        Swal.fire({
+          icon: "success",
+          title: "Enroll Payment Successful",
+          text: "",
+          confirmButtonText: "OK",
+          confirmButtonColor: "#3085d6",
+        });
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  }
   return (
     <div>
       <Fade>
@@ -335,10 +378,10 @@ export default function MyprofileTab() {
                           ))}
                         </div>
                         <div>
-                          {entranceTestResDataCheck.length !== filterSubList[0].subjects?.length ? (
+                          {entranceTestResDataCheck.length !== filterSubList[0]?.course?.subjects?.length ? (
                             filterSubList && (
                               <div className='grid grid-cols-2 gap-20 rounded-md pt-16 w-full'>
-                                {filterSubList[0]?.subjects.map((e, ind) => (
+                                {filterSubList[0]?.course?.subjects.map((e, ind) => (
                                   <div
                                     className='flex gap-1 bg-[#e1ddec] rounded-[12px]'
                                     onClick={() => handleSubjectDetail(e, enrollId)}
@@ -420,8 +463,13 @@ export default function MyprofileTab() {
                               </div>
                             )
                           ) : (
-                            <div>
-                              You can Enroll Now!
+                            <div className='shadow-lg p-20 flex flex-col gap-5 w-[900px]' style={{ backgroundImage: showGif && `url(${Success})`, backgroundRepeat: 'no-repeat', }}>
+                              <span className='text-[20px] font-medium'>You can Enroll Now!</span>
+                              <div className='flex justify-end'>
+                                <Button className='w-[30px]' onClick={() => setActiveTab(2)}>Go</Button>
+
+                              </div>
+
                             </div>
                           )}
 
@@ -437,14 +485,16 @@ export default function MyprofileTab() {
                 {
                   activeTab === 2 && (
                     <>
-                      {entranceTestResDataCheck.length !== filterSubList[0].subjects?.length ? (
+                      {entranceTestResDataCheck.length !== filterSubList[0]?.course?.subjects?.length ? (
                         <div>You cann't Enroll because you must answer for placement test.</div>
                       ) : (
                         <>
                           <div className='flex rounded-md'>
+
                             <div>
+
                               <Image
-                                src={EduRes}
+                                src={getFile({ payload: filterSubList[0]?.course?.image })}
                                 style={{
                                   width: "325px",
                                   height: "243px",
@@ -454,7 +504,7 @@ export default function MyprofileTab() {
 
                             <div className='flex flex-col gap-5 p-14 '>
                               <h1 className='text-xl font-semibold'>
-                                IELTs (Placement Test Result)
+                                {filterSubList[0]?.course?.title}
                               </h1>
                               <div>
                                 Completed date :{" "}
@@ -469,7 +519,7 @@ export default function MyprofileTab() {
                                 <span className='font-semibold'>IELTS Advance Level</span>
                               </div>
                               <div className='flex gap-5 justify-end'>
-                                <Button color='primary' onPress={onOpen} variant='solid'>
+                                <Button color='primary' onPress={onOpen} onClick={handlePayment} variant='solid'>
                                   Enroll Now!
                                 </Button>
                               </div>
@@ -517,7 +567,7 @@ export default function MyprofileTab() {
                                       <div>  <Input type='text' label="Class" variant={variant} /></div>
                                       <div>  <Input type='phone' label="Phone Number" variant={variant} /></div>
                                       <div>  <Input type='number' label="Transaction Number" variant={variant} /></div>
-                                      <div>  <Input type='file' accept="audio/*" onChange={handleAudioChange} label="" variant={variant} /></div>
+                                      <div>  <Input type='file' onChange={handleImage} label="" variant={variant} /></div>
                                     </form>
                                   </ModalBody>
                                   <ModalFooter>

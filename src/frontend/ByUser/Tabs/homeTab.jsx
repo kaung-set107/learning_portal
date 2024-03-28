@@ -32,7 +32,7 @@ export default function Home() {
   const [courseId, setCourseId] = useState("");
 
   const enr_id = myCourseList[0]?._id
-  // console.log(enr_id, 'my')
+  // console.log(StudentId, 'my')
   const [enrollId, setEnrollId] = useState(enr_id)
 
   const filterSubList = filterId.filter(
@@ -83,7 +83,7 @@ export default function Home() {
         // console.log(res.data.data, "first id");
 
         setFirstDefaultCourseId(
-          res.data.data.filter((el) => el.student === StudentId)[0].course._id
+          res.data.data.filter((el) => el.student === StudentId)[0]?.course._id
         );
         setMyCourseList(res.data.data.filter((el) => el.student === StudentId));
         setFilterId(

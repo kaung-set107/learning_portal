@@ -75,7 +75,7 @@ export default function Login() {
         //   confirmButtonColor: '#3085d6'
         // })
 
-        // console.log(res.data, "login res");
+        console.log(res.data.data, "login res");
         if (res.data.data.roles[0].includes("instructor")) {
           Swal.fire({
             icon: "success",

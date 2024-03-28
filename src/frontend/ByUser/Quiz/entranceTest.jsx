@@ -17,12 +17,12 @@ function EntranceTestPage() {
     const location = useLocation();
     // const { state } = props.location;
     // const { entranceTestID, enrollID, batchID } = state;
-    console.log(location.state.entranceID, 'e')
+    // console.log(location.state.entranceID, 'e')
     const subjectID = location.state.entranceID._id
     const QuizID = location.state.entranceID.entranceTests[0].quiz
     const entranceID = location.state.entranceID.entranceTests[0]._id
     const batchID = location.state.batchID
-    const enrollID = location.state.enrollID
+    // const enrollID = location.state.enrollID
     const [arr, setArr] = useState([]);
     const [timeLeft, setTimeLeft] = useState("");
     const [clicked, setClicked] = useState("");
@@ -221,7 +221,7 @@ function EntranceTestPage() {
         // console.log(studentAnswerList.filter(el => quizList.questions.find(i => i._id === el.id)), 'studentAnswerList')
         //Quiz-Result Create
         const data = {
-            enrollment: enrollID,
+            // enrollment: enrollID,
             quiz: QuizID,
             student: studentID,
             batch: batchID,
