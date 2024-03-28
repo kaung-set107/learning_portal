@@ -8,6 +8,7 @@ import SurveyCreateForm from "../../surveys/components/SurveyCreateForm";
 import SurveyUpdateForm from "../../surveys/components/SurveyUpdateForm";
 import SummaryForm from "../components/SummaryForm";
 import CustomButton from "../../../components/general/CustomButton";
+import QuizCreateForm from "../../quizzes/components/QuizCreateForm";
 
 const LearningMaterialBrief = () => {
   const { id } = useParams();
@@ -17,6 +18,7 @@ const LearningMaterialBrief = () => {
   const TabOptions = [
     { key: "summary", title: "Summary" },
     { key: "survey", title: "Survey" },
+    { key: "quiz", title: "Quiz" },
   ];
 
   const getLearningMaterial = async () => {
@@ -78,6 +80,9 @@ const LearningMaterialBrief = () => {
                   />
                 )}
               </div>
+            </Tab>
+            <Tab key={TabOptions[2].key} title={TabOptions[2].title}>
+              <QuizCreateForm/>
             </Tab>
           </Tabs>
         </div>

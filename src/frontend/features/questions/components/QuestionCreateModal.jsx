@@ -12,6 +12,7 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@nextui-org/react";
+import CustomMultiSelect from "../../../components/general/CustomMultiSelect";
 
 export default function QuestionCreateModal(props) {
   const { addQuestion } = props;
@@ -29,6 +30,7 @@ export default function QuestionCreateModal(props) {
   ];
 
   const answerTypes = [
+    { value: "text", label: "text" },
     { value: "radio", label: "radio" },
     { value: "checkbox", label: "checkbox" },
   ];
@@ -37,12 +39,13 @@ export default function QuestionCreateModal(props) {
     question: "",
     type: "",
     options: [],
-    answerType: "",
+    answerType: "text",
+    correctAnswer: [],
   });
 
   const handleSubmit = async (onClose) => {
     let modifiedOptions = formData.options.map((option) => ({
-      answer: option,
+      answer: option.value,
     }));
 
     let payload = {
@@ -52,6 +55,33 @@ export default function QuestionCreateModal(props) {
 
     addQuestion(payload);
     onClose();
+  };
+
+  const handleMultipleSelect = (e) => {
+    console.log(formData)
+    setFormData(prev => ({...prev, correctAnswer: [...prev.correctAnswer, e.currentKey]})) 
+  }
+
+  const onQuestionTypeChange = (e) => {
+    if (e.currentKey == "trueFalse") {
+      setFormData((prev) => ({
+        ...prev,
+        type: e.currentKey,
+        answerType: "radio",
+      }));
+    } else if (e.currentKey == "multipleChoice") {
+      setFormData((prev) => ({
+        ...prev,
+        type: e.currentKey,
+        answerType: "checkbox",
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        type: e.currentKey,
+        answerType: "text",
+      }));
+    }
   };
 
   return (
@@ -68,7 +98,7 @@ export default function QuestionCreateModal(props) {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Subject Section Create
+                Quiz Question Create
               </ModalHeader>
               <ModalBody>
                 <form>
@@ -89,6 +119,12 @@ export default function QuestionCreateModal(props) {
                     />
                   </div>
 
+                  <CustomMultiSelect
+                    selectedKeys={formData.correctAnswer}
+                    data={formData.options}
+                    setValues={handleMultipleSelect}
+                  />
+
                   <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
                     <Select
                       items={questionTypes}
@@ -96,9 +132,7 @@ export default function QuestionCreateModal(props) {
                       placeholder="Select an question type"
                       className="max-w-xs"
                       labelPlacement="outside"
-                      onSelectionChange={(e) =>
-                        setFormData((prev) => ({ ...prev, type: e.currentKey }))
-                      }
+                      onSelectionChange={(e) => onQuestionTypeChange(e)}
                     >
                       {(type) => (
                         <SelectItem key={type.value}>{type.label}</SelectItem>
@@ -108,13 +142,18 @@ export default function QuestionCreateModal(props) {
 
                   <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
                     <Select
+                      isDisabled
                       items={answerTypes}
+                      selectedKeys={[formData.answerType]}
                       label="Answer Type"
                       placeholder="Select an answer type"
                       className="max-w-xs"
                       labelPlacement="outside"
                       onSelectionChange={(e) =>
-                        setFormData((prev) => ({ ...prev, answerType: e.currentKey }))
+                        setFormData((prev) => ({
+                          ...prev,
+                          answerType: e.currentKey,
+                        }))
                       }
                     >
                       {(type) => (
@@ -137,7 +176,7 @@ export default function QuestionCreateModal(props) {
                       onClick={() =>
                         setFormData((prev) => {
                           let newOptions = [...prev.options];
-                          newOptions.push(option);
+                          newOptions.push({key: uuidv4(), value: option});
 
                           return { ...prev, options: newOptions };
                         })
@@ -151,10 +190,10 @@ export default function QuestionCreateModal(props) {
                       {formData.options.map((option, index) => {
                         return (
                           <div
-                            key={uuidv4()}
+                            key={option.key}
                             className="p-2 border rounded-xl flex justify-between items-center"
                           >
-                            <span>{option}</span>
+                            <span>{option.value}</span>
                             <CustomButton
                               onClick={() =>
                                 setFormData((prev) => {
