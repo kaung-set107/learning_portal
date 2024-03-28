@@ -8,12 +8,12 @@ const AssignmentsDropdown = (props) => {
   const [isLoading, setIsLoading] = useState(true)
   const [assignments, setAssignments] = useState([])
 
-  const { setCurrentAssignment, className, subject, ...args } = props
+  const { filters, setAssignment, className, subject, ...args } = props
 
   const getAssignments = async () => {
     setIsLoading(true)
     try {
-      let res = await assignmentsApi.getAll({subject})
+      let res = await assignmentsApi.getAll({subject, batch: filters.batch?._id})
       setAssignments(res)
     } catch (error) {
       console.log(error)
@@ -24,12 +24,12 @@ const AssignmentsDropdown = (props) => {
 
   const handleAssignmentSelect = (id) => {
     let assignment = assignments.data.find(e => e._id == id)
-    setCurrentAssignment(assignment)
+    setAssignment(assignment)
   }
 
   useEffect(() => {
     getAssignments()
-  }, [subject])
+  }, [subject, filters.batch])
 
   useEffect(() => {
     getAssignments()
@@ -48,7 +48,7 @@ const AssignmentsDropdown = (props) => {
         items={assignments.data}
         color="primary"
         label="Assignment"
-        placeholder="Select an assignment"
+        placeholder={assignments?.data?.length > 0 ? `Select an assignment` : 'No Assignment!'}
         className="max-w-xs"
         onSelectionChange={e => handleAssignmentSelect(e.currentKey)}
       >

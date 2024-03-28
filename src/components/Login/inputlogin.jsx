@@ -64,8 +64,8 @@ export default function Login() {
       .post("auth/login", data)
       .then((res) => {
         localStorage.setItem("token", res.data.token);
-        localStorage.setItem("id", res.data.data.student);
-        localStorage.setItem("user", res.data.data);
+        localStorage.setItem("id", res.data.data.student._id);
+        localStorage.setItem("user", JSON.stringify(res.data.data));
         setLoading("login");
         // Swal.fire({
         //   icon: 'success',

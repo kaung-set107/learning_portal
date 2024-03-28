@@ -15,7 +15,7 @@ WebFont.load({
 });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  // <React.StrictMode>
 
     <NextUIProvider>
       <NextThemesProvider attribute='class' defaultTheme='light'>
@@ -23,5 +23,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       </NextThemesProvider>
     </NextUIProvider>
 
-  </React.StrictMode>
+  // </React.StrictMode>
 );

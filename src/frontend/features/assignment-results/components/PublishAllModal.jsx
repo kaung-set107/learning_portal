@@ -5,7 +5,7 @@ import { subjectSectionsApi } from "../api";
 import CustomButton from "../../../components/general/CustomButton";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Checkbox } from "@nextui-org/react";
 
-export default function SubjectSectionCreateModal(props) {
+export default function PublishAllModal(props) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     let { subjectId, successCallback } = props
