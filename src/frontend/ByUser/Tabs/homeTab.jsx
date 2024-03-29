@@ -218,8 +218,8 @@ export default function Home() {
                     {item?.title} Courses
                   </div>
                   <div
-                    className='grid grid-cols-2 gap-10 pt-10 md:grid-cols-3'
-                    style={{ width: "1440px", height: "auto" }}
+                    className='grid grid-cols-2 gap-10 pt-10 md:grid-cols-3 w-full'
+
                   >
                     {coursesList
                       .filter((el) => el?.category?._id === item?._id)
