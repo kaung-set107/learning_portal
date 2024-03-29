@@ -24,13 +24,13 @@ const get = async (payload) => {
 };
 
 const create = async (payload) => {
-  const res = await apiInstance.post(baseUrl, getFormData(payload));
+  const res = await apiInstance.post(baseUrl, payload);
   console.log(baseName, res);
   return res.data;
 };
 
 const update = async (payload) => {
-  const res = await apiInstance.put(baseUrl + `/${payload._id}`, getFormData(payload));
+  const res = await apiInstance.put(baseUrl + `/${payload._id}`, payload);
   console.log(baseName, res);
   return res.data;
 };

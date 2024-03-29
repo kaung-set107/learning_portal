@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import {  Input, Card, CardBody } from "@nextui-org/react";
+import { Input, Card, CardBody } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import CustomButton from "../../../components/general/CustomButton";
 import SubHeading from "../../../components/general/typography/SubHeading";
@@ -9,6 +9,7 @@ import QuestionCreateModal from "../../questions/components/QuestionCreateModal"
 import QuestionList from "../../questions/components/QuestionList";
 import { showError, showSuccess } from "../../../../util/noti";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../../components/general/Loading";
 
 const SurveyUpdateForm = (props) => {
   const { type, learningMaterial, successCallback } = props;
@@ -43,7 +44,9 @@ const SurveyUpdateForm = (props) => {
   });
 
   const goToResult = (id) => {
-    navigate(`/by-instructor/surveys/${id}/survey-results`, { state: { survey: id } });
+    navigate(`/by-instructor/surveys/${id}/survey-results`, {
+      state: { survey: id },
+    });
   };
 
   const addQuestion = (data) => {
@@ -90,15 +93,19 @@ const SurveyUpdateForm = (props) => {
 
   // for update
   const fillData = () => {
+    console.log(learningMaterial)
+
     setQuestions(() => {
       return [...learningMaterial.survey.questions];
     });
+
 
     setFormData((prev) => {
       return {
         ...prev,
         title: learningMaterial.survey.title,
         description: learningMaterial.survey.description,
+        questions: learningMaterial.survey.questions,
         numOfQuestions: learningMaterial.survey.numOfQuestions,
         status: learningMaterial.survey.status,
         isLoading: false,
@@ -111,107 +118,119 @@ const SurveyUpdateForm = (props) => {
   }, []);
   // for update
 
-  return (
-    <div>
-      <Card>
-        <CardBody>
-          <div className="flex justify-between items-center">
-            <SubHeading title="Survey Update Form" />
-            <CustomButton
-              size="sm"
-              onClick={() => goToResult(learningMaterial.survey._id)}
-              isLoading={isSubmitting}
-              title="Results"
-            />
-          </div>
-          <form>
-            <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
-              <Input
-                type="text"
-                label="Title"
-                placeholder="title"
-                variant={variant}
-                value={formData.title}
-                onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, title: e.target.value }))
-                }
-                labelPlacement="outside"
+  let content;
+
+  if (false) {
+    content = (
+      <div>
+        <Loading />
+      </div>
+    );
+  } else {
+    content = (
+      <div>
+        <Card>
+          <CardBody>
+            <div className="flex justify-between items-center">
+              <SubHeading title="Survey Update Form" />
+              <CustomButton
+                size="sm"
+                onClick={() => goToResult(learningMaterial.survey._id)}
+                isLoading={isSubmitting}
+                title="Results"
               />
             </div>
-            <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
-              <Input
-                type="text"
-                label="Description"
-                placeholder="description"
-                variant={variant}
-                value={formData.description}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    description: e.target.value,
-                  }))
-                }
-                labelPlacement="outside"
-              />
-            </div>
-            <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
-              <Input
-                type="number"
-                label="Number of questions"
-                placeholder="Number of questions"
-                variant={variant}
-                value={formData.numOfQuestions}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    numOfQuestions: e.target.value,
-                  }))
-                }
-                labelPlacement="outside"
-              />
-            </div>
-            <div className="flex w-full flex-wrap md:flex-nowrap mb-6 gap-4 mt-3">
-              <Select
-                items={status}
-                label="Status"
-                placeholder="Select an status"
-                className="max-w-xs"
-                selectedKeys={[formData.status]}
-                labelPlacement="outside"
-                onSelectionChange={(e) =>
-                  setFormData((prev) => ({ ...prev, status: e.currentKey }))
-                }
-              >
-                {(status) => (
-                  <SelectItem key={status.value}>{status.label}</SelectItem>
-                )}
-              </Select>
-            </div>
-            <div className="mb-3">
-              <div className="flex w-full items-center justify-between">
-                <h3 className="text-lg font-bold">Questions</h3>
-                <QuestionCreateModal addQuestion={addQuestion} />
-              </div>
-              <div className="mt-3">
-                <QuestionList
-                  questions={questions}
-                  setQuestions={setQuestions}
+            <form>
+              <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
+                <Input
+                  type="text"
+                  label="Title"
+                  placeholder="title"
+                  variant={variant}
+                  value={formData.title}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, title: e.target.value }))
+                  }
+                  labelPlacement="outside"
                 />
               </div>
-            </div>
-            <div className="flex justify-center gap-5 mt-8">
-              <CustomButton
-                color="primary"
-                onClick={handleSubmit}
-                isLoading={isSubmitting}
-                title="Update"
-              />
-            </div>
-          </form>
-        </CardBody>
-      </Card>
-    </div>
-  );
+              <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
+                <Input
+                  type="text"
+                  label="Description"
+                  placeholder="description"
+                  variant={variant}
+                  value={formData.description}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      description: e.target.value,
+                    }))
+                  }
+                  labelPlacement="outside"
+                />
+              </div>
+              <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
+                <Input
+                  type="number"
+                  label="Number of questions"
+                  placeholder="Number of questions"
+                  variant={variant}
+                  value={formData.numOfQuestions}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      numOfQuestions: e.target.value,
+                    }))
+                  }
+                  labelPlacement="outside"
+                />
+              </div>
+              <div className="flex w-full flex-wrap md:flex-nowrap mb-6 gap-4 mt-3">
+                <Select
+                  items={status}
+                  label="Status"
+                  placeholder="Select an status"
+                  className="max-w-xs"
+                  selectedKeys={[formData.status]}
+                  labelPlacement="outside"
+                  onSelectionChange={(e) =>
+                    setFormData((prev) => ({ ...prev, status: e.currentKey }))
+                  }
+                >
+                  {(status) => (
+                    <SelectItem key={status.value}>{status.label}</SelectItem>
+                  )}
+                </Select>
+              </div>
+              <div className="mb-3">
+                <div className="flex w-full items-center justify-between">
+                  <h3 className="text-lg font-bold">Questions</h3>
+                  <QuestionCreateModal addQuestion={addQuestion} />
+                </div>
+                <div className="mt-3">
+                  <QuestionList
+                    questions={questions}
+                    setQuestions={setQuestions}
+                  />
+                </div>
+              </div>
+              <div className="flex justify-center gap-5 mt-8">
+                <CustomButton
+                  color="primary"
+                  onClick={handleSubmit}
+                  isLoading={isSubmitting}
+                  title="Update"
+                />
+              </div>
+            </form>
+          </CardBody>
+        </Card>
+      </div>
+    );
+  }
+
+  return content;
 };
 
 export default SurveyUpdateForm;

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Input, Card, CardBody } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomButton from "../../../components/general/CustomButton";
 import SubHeading from "../../../components/general/typography/SubHeading";
 import { Select, SelectItem } from "@nextui-org/select";
@@ -9,8 +9,8 @@ import QuestionCreateModal from "../../questions/components/QuestionCreateModal"
 import QuestionList from "../../questions/components/QuestionList";
 import { showError, showSuccess } from "../../../../util/noti";
 
-const QuizCreate = (props) => {
-  const { type, successCallback } = props;
+const QuizUpdateForm = (props) => {
+  const { type, successCallback, quizData } = props;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [questions, setQuestions] = useState([]);
@@ -29,7 +29,7 @@ const QuizCreate = (props) => {
   ];
 
   const [formData, setFormData] = useState({
-    title: "",
+    title: "testing",
     description: "",
     questions: [],
     numOfQuestions: 0,
@@ -58,6 +58,7 @@ const QuizCreate = (props) => {
     // if(type === 'learningMaterial') {
     //     payload['learningMaterial'] = learningMaterial._id
     // }
+    payload._id = quizData._id;
     payload.questions = questions;
     payload.type = type;
     payload[type] = props[type]._id;
@@ -68,11 +69,11 @@ const QuizCreate = (props) => {
   const handleSubmit = async () => {
     let payload = preparePayload();
     // alert(JSON.stringify(payload));
-    console.log(payload)
-    return;
+    console.log(payload);
+    // return;
     try {
       setIsSubmitting(true);
-      let res = await quizzesApi.create(payload);
+      let res = await quizzesApi.update(payload);
       await successCallback();
       showSuccess({ text: res.message, type: "noti-box" });
     } catch (error) {
@@ -83,11 +84,44 @@ const QuizCreate = (props) => {
     }
   };
 
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      numOfQuestions: questions.length,
+      totalMark: questions.length,
+    }));
+  }, [questions]);
+
+  const fillData = () => {
+    setFormData((prev) => {
+      return {
+        ...prev,
+        title: quizData.title,
+        description: quizData.description,
+        questions: quizData.questions,
+        examDate: quizData.examDate,
+        duration: quizData.duration,
+        totalMark: quizData.totalMark,
+        passMark: quizData.passMark,
+        creditMark: quizData.creditMark,
+        distinctionMark: quizData.distinctionMark,
+        numOfQuestions: quizData.numOfQuestions,
+        status: quizData.status,
+      };
+    });
+
+    setQuestions(quizData.questions);
+  };
+
+  useEffect(() => {
+    fillData();
+  }, [quizData]);
+
   return (
     <div>
       <Card>
         <CardBody>
-          <SubHeading title="Survey Create Form" />
+          <SubHeading title="Quiz Update Form" />
           <form>
             <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
               <Input
@@ -98,6 +132,19 @@ const QuizCreate = (props) => {
                 value={formData.title}
                 onChange={(e) =>
                   setFormData((prev) => ({ ...prev, title: e.target.value }))
+                }
+                labelPlacement="outside"
+              />
+            </div>
+            <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
+              <Input
+                type="text"
+                label="Duration"
+                placeholder="duration"
+                variant={variant}
+                value={formData.duration}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, duration: e.target.value }))
                 }
                 labelPlacement="outside"
               />
@@ -120,6 +167,7 @@ const QuizCreate = (props) => {
             </div>
             <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
               <Input
+                isDisabled
                 type="number"
                 label="Number of questions"
                 placeholder="Number of questions"
@@ -134,12 +182,78 @@ const QuizCreate = (props) => {
                 labelPlacement="outside"
               />
             </div>
+            <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
+              <Input
+                isDisabled
+                type="number"
+                label="Total Mark"
+                placeholder="Total Mark"
+                variant={variant}
+                value={formData.totalMark}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    totalMark: e.target.value,
+                  }))
+                }
+                labelPlacement="outside"
+              />
+            </div>
+            <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
+              <Input
+                type="number"
+                label="Pass Mark"
+                placeholder="Pass Mark"
+                variant={variant}
+                value={formData.passMark}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    passMark: e.target.value,
+                  }))
+                }
+                labelPlacement="outside"
+              />
+            </div>
+            <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
+              <Input
+                type="number"
+                label="Credit Mark"
+                placeholder="Credit Mark"
+                variant={variant}
+                value={formData.creditMark}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    creditMark: e.target.value,
+                  }))
+                }
+                labelPlacement="outside"
+              />
+            </div>
+            <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
+              <Input
+                type="number"
+                label="Distinction Mark"
+                placeholder="Distinction Mark"
+                variant={variant}
+                value={formData.distinctionMark}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    distinctionMark: e.target.value,
+                  }))
+                }
+                labelPlacement="outside"
+              />
+            </div>
             <div className="flex w-full flex-wrap md:flex-nowrap mb-6 gap-4 mt-3">
               <Select
                 items={status}
                 label="Status"
                 placeholder="Select an status"
                 className="max-w-xs"
+                selectedKeys={[formData.status]}
                 labelPlacement="outside"
                 onSelectionChange={(e) =>
                   setFormData((prev) => ({ ...prev, status: e.currentKey }))
@@ -150,6 +264,7 @@ const QuizCreate = (props) => {
                 )}
               </Select>
             </div>
+
             <div className="mb-3">
               <div className="flex w-full items-center justify-between">
                 <h3 className="text-lg font-bold">Questions</h3>
@@ -167,7 +282,7 @@ const QuizCreate = (props) => {
                 color="primary"
                 onClick={handleSubmit}
                 isLoading={isSubmitting}
-                title="Create"
+                title="Update"
               />
             </div>
           </form>
@@ -177,4 +292,4 @@ const QuizCreate = (props) => {
   );
 };
 
-export default QuizCreate;
+export default QuizUpdateForm;

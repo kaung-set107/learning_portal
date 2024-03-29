@@ -9,6 +9,7 @@ import SurveyUpdateForm from "../../surveys/components/SurveyUpdateForm";
 import SummaryForm from "../components/SummaryForm";
 import CustomButton from "../../../components/general/CustomButton";
 import QuizCreateForm from "../../quizzes/components/QuizCreateForm";
+import QuizUpdateForm from "../../quizzes/components/QuizUpdateForm";
 
 const LearningMaterialBrief = () => {
   const { id } = useParams();
@@ -82,7 +83,20 @@ const LearningMaterialBrief = () => {
               </div>
             </Tab>
             <Tab key={TabOptions[2].key} title={TabOptions[2].title}>
-              <QuizCreateForm/>
+              {!learningMaterial.quiz ? (
+                <QuizCreateForm
+                  type="learningMaterial"
+                  learningMaterial={learningMaterial}
+                  successCallback={getLearningMaterial}
+                />
+              ) : (
+                <QuizUpdateForm
+                  quizData={learningMaterial.quiz}
+                  type="learningMaterial"
+                  learningMaterial={learningMaterial}
+                  successCallback={getLearningMaterial}
+                />
+              )}
             </Tab>
           </Tabs>
         </div>

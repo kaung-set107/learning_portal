@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Input, Card, CardBody } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomButton from "../../../components/general/CustomButton";
 import SubHeading from "../../../components/general/typography/SubHeading";
 import { Select, SelectItem } from "@nextui-org/select";
@@ -29,7 +29,7 @@ const QuizCreateForm = (props) => {
   ];
 
   const [formData, setFormData] = useState({
-    title: "",
+    title: "testing",
     description: "",
     questions: [],
     numOfQuestions: 0,
@@ -68,6 +68,7 @@ const QuizCreateForm = (props) => {
   const handleSubmit = async () => {
     let payload = preparePayload();
     // alert(JSON.stringify(payload));
+    // console.log(payload);
     // return;
     try {
       setIsSubmitting(true);
@@ -81,6 +82,14 @@ const QuizCreateForm = (props) => {
       setIsSubmitting(false);
     }
   };
+
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      numOfQuestions: questions.length,
+      totalMark: questions.length,
+    }));
+  }, [questions]);
 
   return (
     <div>
@@ -104,6 +113,19 @@ const QuizCreateForm = (props) => {
             <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
               <Input
                 type="text"
+                label="Duration"
+                placeholder="duration"
+                variant={variant}
+                value={formData.duration}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, duration: e.target.value }))
+                }
+                labelPlacement="outside"
+              />
+            </div>
+            <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
+              <Input
+                type="text"
                 label="Description"
                 placeholder="description"
                 variant={variant}
@@ -119,6 +141,7 @@ const QuizCreateForm = (props) => {
             </div>
             <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
               <Input
+                isDisabled
                 type="number"
                 label="Number of questions"
                 placeholder="Number of questions"
@@ -135,6 +158,7 @@ const QuizCreateForm = (props) => {
             </div>
             <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
               <Input
+              isDisabled
                 type="number"
                 label="Total Mark"
                 placeholder="Total Mark"
@@ -213,7 +237,6 @@ const QuizCreateForm = (props) => {
                 )}
               </Select>
             </div>
-
 
             <div className="mb-3">
               <div className="flex w-full items-center justify-between">

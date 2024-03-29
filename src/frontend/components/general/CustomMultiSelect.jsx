@@ -2,12 +2,11 @@
 import {Select, SelectItem} from "@nextui-org/select";
 
 export default function CustomMultiSelect(props) {
-    const {data, selectedKeys, setValues} = props
+    const {data, selectedKeys, setValues, ...args} = props
 
   return (
     <Select
-      label="Favorite Animal"
-      placeholder="Select an animal"
+      {...args}
       selectionMode="multiple"
       selectedKeys={selectedKeys}
       onSelectionChange={setValues}

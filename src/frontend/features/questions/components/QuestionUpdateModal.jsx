@@ -11,6 +11,8 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@nextui-org/react";
+import { v4 as uuidv4 } from "uuid";
+import CustomMultiSelect from "../../../components/general/CustomMultiSelect";
 
 export default function QuestionUpdateModal(props) {
   const { questionData } = props;
@@ -30,10 +32,11 @@ export default function QuestionUpdateModal(props) {
   const answerTypes = [
     { value: "radio", label: "radio" },
     { value: "checkbox", label: "checkbox" },
+    { value: "text", label: "text" },
   ];
 
   const [formData, setFormData] = useState({
-    question: "",
+    questions: [],
     type: "",
     options: [],
     answerType: "",
@@ -42,37 +45,101 @@ export default function QuestionUpdateModal(props) {
     isOpen: false,
   });
 
+  const optionRemoveHandler = (index) => {
+    setFormData((prev) => {
+      let newOptions = [...prev.options];
+      newOptions = prev.options.filter(
+        (value, key) => key !== index
+      );
+
+      let newCorrectAnswer = [...prev.correctAnswer]
+      newCorrectAnswer = prev.correctAnswer.filter(each => each !== prev.options[index].key)
+
+      return { ...prev, options: newOptions, correctAnswer: newCorrectAnswer };
+    })
+  }
+
   const handleSubmit = async (onClose) => {
     let modifiedOptions = formData.options.map((option) => ({
-      answer: option,
+      answer: option.value,
     }));
+
+    let modifiedCorrectAnswers = formData.correctAnswer.map((each) => {
+      let value;
+      formData.options.map((option, oIndex) => {
+        if (option.key === each) value = oIndex;
+      });
+
+      return value + 1;
+    });
 
     let payload = {
       ...formData,
       options: modifiedOptions,
+      correctAnswer: modifiedCorrectAnswers,
     };
 
     delete payload.isLoading;
     delete payload.isOpen;
 
-    console.log(questionData)
+    console.log(questionData);
 
     questionData.updateQuestions(payload);
     onClose();
   };
 
+  const onQuestionTypeChange = (e) => {
+    if (e.currentKey == "trueFalse") {
+      setFormData((prev) => ({
+        ...prev,
+        type: e.currentKey,
+        answerType: "radio",
+      }));
+    } else if (e.currentKey == "multipleChoice") {
+      setFormData((prev) => ({
+        ...prev,
+        type: e.currentKey,
+        answerType: "checkbox",
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        type: e.currentKey,
+        answerType: "text",
+      }));
+    }
+  };
+
   const fillData = () => {
-    let modifiedOptions = questionData.options.map((option) => option.answer);
+    let modifiedOptions = questionData.options.map((option) => ({
+      key: uuidv4(),
+      value: option.answer,
+    }));
+
+    let modifiedCorrectAnswer = questionData.correctAnswer.map((ans) => {
+      // let item = modifiedOptions.filter((each) => each.value === ans)[0];
+      // console.log(item);
+      // return item.key;
+      return modifiedOptions[ans - 1].key;
+    });
 
     setFormData((prev) => {
       return {
         ...prev,
         ...questionData,
         options: modifiedOptions,
+        correctAnswer: modifiedCorrectAnswer,
         isLoading: false,
         isOpen: true,
       };
     });
+  };
+
+  const handleMultipleSelect = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      correctAnswer: [...e],
+    }));
   };
 
   useEffect(() => {
@@ -103,7 +170,7 @@ export default function QuestionUpdateModal(props) {
             {(onClose) => (
               <>
                 <ModalHeader className="flex flex-col gap-1">
-                  Question Update
+                  Quiz Question Create
                 </ModalHeader>
                 <ModalBody>
                   <form>
@@ -124,20 +191,40 @@ export default function QuestionUpdateModal(props) {
                       />
                     </div>
 
+                    <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-9 gap-4 mt-3">
+                      <Input
+                        type="text"
+                        label="Mark"
+                        placeholder="mark"
+                        variant={variant}
+                        value={formData.mark}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            mark: e.target.value,
+                          }))
+                        }
+                        labelPlacement="outside"
+                      />
+                    </div>
+
+                    <CustomMultiSelect
+                      label="Correct Answer"
+                      placeholder="Select correct answer"
+                      labelPlacement="outside"
+                      selectedKeys={formData.correctAnswer}
+                      data={formData.options}
+                      setValues={handleMultipleSelect}
+                    />
+
                     <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
                       <Select
                         items={questionTypes}
                         label="Question Type"
                         placeholder="Select an question type"
-                        selectedKeys={[formData.type]}
                         className="max-w-xs"
                         labelPlacement="outside"
-                        onSelectionChange={(e) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            type: e.currentKey,
-                          }))
-                        }
+                        onSelectionChange={(e) => onQuestionTypeChange(e)}
                       >
                         {(type) => (
                           <SelectItem key={type.value}>{type.label}</SelectItem>
@@ -147,11 +234,12 @@ export default function QuestionUpdateModal(props) {
 
                     <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
                       <Select
+                        isDisabled
                         items={answerTypes}
+                        selectedKeys={[formData.answerType]}
                         label="Answer Type"
                         placeholder="Select an answer type"
                         className="max-w-xs"
-                        selectedKeys={[formData.answerType]}
                         labelPlacement="outside"
                         onSelectionChange={(e) =>
                           setFormData((prev) => ({
@@ -180,7 +268,7 @@ export default function QuestionUpdateModal(props) {
                         onClick={() =>
                           setFormData((prev) => {
                             let newOptions = [...prev.options];
-                            newOptions.push(option);
+                            newOptions.push({ key: uuidv4(), value: option });
 
                             return { ...prev, options: newOptions };
                           })
@@ -194,21 +282,12 @@ export default function QuestionUpdateModal(props) {
                         {formData.options.map((option, index) => {
                           return (
                             <div
-                              key={option}
+                              key={option.key}
                               className="p-2 border rounded-xl flex justify-between items-center"
                             >
-                              <span>{option}</span>
+                              <span>{option.value}</span>
                               <CustomButton
-                                onClick={() =>
-                                  setFormData((prev) => {
-                                    let newOptions = [...prev.options];
-                                    newOptions = prev.options.filter(
-                                      (value, key) => key !== index
-                                    );
-
-                                    return { ...prev, options: newOptions };
-                                  })
-                                }
+                                onClick={() => optionRemoveHandler(index)}
                                 type="delete"
                                 size="sm"
                                 iconOnly
@@ -233,7 +312,7 @@ export default function QuestionUpdateModal(props) {
                   </Button>
                   <CustomButton
                     onClick={() => handleSubmit(onClose)}
-                    type="edit"
+                    color="primary"
                     title="Update"
                   />
                 </ModalFooter>

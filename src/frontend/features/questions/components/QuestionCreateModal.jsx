@@ -41,16 +41,42 @@ export default function QuestionCreateModal(props) {
     options: [],
     answerType: "text",
     correctAnswer: [],
+    mark: 1,
   });
+
+  const optionRemoveHandler = (index) => {
+    setFormData((prev) => {
+      let newOptions = [...prev.options];
+      newOptions = prev.options.filter(
+        (value, key) => key !== index
+      );
+
+      let newCorrectAnswer = [...prev.correctAnswer]
+      newCorrectAnswer = prev.correctAnswer.filter(each => each !== prev.options[index].key)
+
+      return { ...prev, options: newOptions, correctAnswer: newCorrectAnswer };
+    })
+  }
 
   const handleSubmit = async (onClose) => {
     let modifiedOptions = formData.options.map((option) => ({
       answer: option.value,
     }));
 
+    let modifiedCorrectAnswers = formData.correctAnswer.map((each) => {
+      let value;
+      formData.options.map((option, oIndex) => {
+        if (option.key === each) value = oIndex;
+      });
+      if (!isNaN(value + 1)) {
+        return value + 1;
+      }
+    });
+
     let payload = {
       ...formData,
       options: modifiedOptions,
+      correctAnswer: modifiedCorrectAnswers,
     };
 
     addQuestion(payload);
@@ -58,9 +84,11 @@ export default function QuestionCreateModal(props) {
   };
 
   const handleMultipleSelect = (e) => {
-    console.log(formData)
-    setFormData(prev => ({...prev, correctAnswer: [...prev.correctAnswer, e.currentKey]})) 
-  }
+    setFormData((prev) => ({
+      ...prev,
+      correctAnswer: [...e],
+    }));
+  };
 
   const onQuestionTypeChange = (e) => {
     if (e.currentKey == "trueFalse") {
@@ -119,7 +147,27 @@ export default function QuestionCreateModal(props) {
                     />
                   </div>
 
+                  <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-9 gap-4 mt-3">
+                    <Input
+                      type="text"
+                      label="Mark"
+                      placeholder="mark"
+                      variant={variant}
+                      value={formData.mark}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          mark: e.target.value,
+                        }))
+                      }
+                      labelPlacement="outside"
+                    />
+                  </div>
+
                   <CustomMultiSelect
+                    label="Correct Answer"
+                    placeholder="Select correct answer"
+                    labelPlacement="outside"
                     selectedKeys={formData.correctAnswer}
                     data={formData.options}
                     setValues={handleMultipleSelect}
@@ -176,7 +224,7 @@ export default function QuestionCreateModal(props) {
                       onClick={() =>
                         setFormData((prev) => {
                           let newOptions = [...prev.options];
-                          newOptions.push({key: uuidv4(), value: option});
+                          newOptions.push({ key: uuidv4(), value: option });
 
                           return { ...prev, options: newOptions };
                         })
@@ -195,16 +243,7 @@ export default function QuestionCreateModal(props) {
                           >
                             <span>{option.value}</span>
                             <CustomButton
-                              onClick={() =>
-                                setFormData((prev) => {
-                                  let newOptions = [...prev.options];
-                                  newOptions = prev.options.filter(
-                                    (value, key) => key !== index
-                                  );
-
-                                  return { ...prev, options: newOptions };
-                                })
-                              }
+                              onClick={() => optionRemoveHandler(index)}
                               type="delete"
                               size="sm"
                               iconOnly

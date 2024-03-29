@@ -499,7 +499,7 @@ const CourseDetail = (props) => {
                             </span>
                           </div>
 
-                          {surveyData.questions.map((item, index) => (
+                          {surveyData?.questions.map((item, index) => (
                             <div className='bg-[#EBF0FF] rounded-lg w-full h-[auto] p-[16px]'>
 
                               <p className=''>
