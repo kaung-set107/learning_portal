@@ -220,7 +220,7 @@ export default function DepartmentUpdateInput() {
                   fontWeight: "500",
                   fontSize: "18px",
                 }}
-                // className='sm:ml-10 md:ml-5'
+              // className='sm:ml-10 md:ml-5'
               >
                 {student.subject?.title}
               </span>
@@ -239,7 +239,7 @@ export default function DepartmentUpdateInput() {
                   fontWeight: "500",
                   fontSize: "18px",
                 }}
-                // className='sm:ml-10 md:ml-5'
+              // className='sm:ml-10 md:ml-5'
               >
                 {new Date(student.student?.date).toLocaleDateString("en-US", {
                   day: "numeric",
@@ -262,7 +262,7 @@ export default function DepartmentUpdateInput() {
                   fontWeight: "500",
                   fontSize: "18px",
                 }}
-                // className='sm:ml-10 md:ml-5'
+              // className='sm:ml-10 md:ml-5'
               >
                 Lorem ipsum dolor sit amet consectetur. Lectus eros molestie id
                 eget nisl leo. Tempor cursus diam venenatis maecenas
@@ -283,7 +283,7 @@ export default function DepartmentUpdateInput() {
                   fontWeight: "500",
                   fontSize: "18px",
                 }}
-                // className='sm:ml-10 md:ml-5'
+              // className='sm:ml-10 md:ml-5'
               >
                 Lorem ipsum dolor sit amet consectetur. Lectus eros molestie id
                 eget nisl leo. Tempor cursus diam venenatis maecenas
@@ -331,8 +331,7 @@ export default function DepartmentUpdateInput() {
               </ModalHeader>
               <ModalBody>
                 <div style={{ fontWeight: "500px", fontSize: "16px" }}>
-                  Congratulations! Your registration with MSI Academy is now
-                  approved.
+                  Approve this student !
                 </div>
 
                 <div className='py-1'>

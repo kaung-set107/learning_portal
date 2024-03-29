@@ -10,7 +10,7 @@ import apiInstance from "../../../util/api";
 import ResultPage from "./result";
 // import Swal from 'sweetalert2';
 // import Result from './result'
-const QuizPage = ({ LMID, enrollID, batchID }) => {
+const QuizPage = ({ QuizID, enrollID, batchID }) => {
   const a = ['a', 'b']
   const b = ['a', 'b', 'c']
   const [arr, setArr] = useState([]);
@@ -36,13 +36,13 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
   const [trueAnswerList, setTrueAnswerList] = useState([]);
   // const [trueAnswer, setTrueAnswer] = useState('')
   const [studentID, setStudentID] = useState("");
-  const [studentAnswer, setStudentAnswer] = useState("");
+  const [multiTrueAnswerList, setMultiTrueAnswerList] = useState([]);
   const [caList, setCaList] = useState([])
   const [multiAns, setMultiAns] = useState([])
   const [count, setCount] = useState('')
   const [number, setNumber] = useState(0);
 
-  // console.log(count, 'multiAnswerList')
+  // console.log(trueAnswerList, 'trueAnswerList')
   const [final, setFinal] = useState('')
 
   const [studentAnswerList, setStudentAnswerList] = useState([]);
@@ -58,8 +58,8 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
 
 
   //Multiple
-  // console.log(objectMap, 'last mul')
-  const MulTotalMark = trueAnswerList.map((i) => i.markTotal).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+  // console.log(multiTrueAnswerList.filter(el => el.id), 'last mul')
+  const MulTotalMark = multiTrueAnswerList.filter(el => el.id).map((i) => i.markTotal).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
   // console.log(MulTotalMark, "mul mark");
 
 
@@ -71,17 +71,18 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
     const item = localStorage.getItem('hello');
 
     const getQuiz = async () => {
-      await apiInstance.get("quizzes").then((res) => {
+      await apiInstance.get("quizzes/" + QuizID).then((res) => {
+        // console.log(res.data.data, 'quizList')
         if (
-          res.data.data.filter((el) => el.learningMaterial === LMID)[0] !==
+          res.data.data !==
           undefined
         ) {
           setQuizList(
-            res.data.data.filter((el) => el.learningMaterial === LMID)[0]
+            res.data.data
           );
           // console.log(res.data.data.filter((el) => el.learningMaterial === LMID)[0], 'quizList')
           setTimeLeft(
-            res.data.data.filter((el) => el.learningMaterial === LMID)[0]
+            res.data.data
               .duration * 60
           );
         }
@@ -202,8 +203,8 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
             ?.studentAnswer : studentAnswerList.filter((el) => el.id === i._id)[0]?.studentAnswer.slice(-(i.correctAnswer.length)),
         };
       }),
-      totalMark: quizList.questions[counter].type === 'trueFalse' ? TotalMark : MulTotalMark,
-      status: quizList.questions[counter].type === 'trueFalse' ? (TotalMark === quizList.passMark && "pass") || (TotalMark > quizList.passMark && "distinction") || ((TotalMark < quizList.passMark && TotalMark === quizList.creditMark) && "credit") || (TotalMark < quizList.creditMark && "fail") : (MulTotalMark === quizList.passMark && "pass") || (MulTotalMark > quizList.passMark && "distinction") || ((MulTotalMark < quizList.passMark && MulTotalMark === quizList.creditMark) && "credit") || (MulTotalMark < quizList.creditMark && "fail"),
+      totalMark: TotalMark + MulTotalMark,
+      status: ((TotalMark + MulTotalMark) === quizList.passMark && "pass") || ((TotalMark + MulTotalMark) > quizList.passMark && "distinction") || (((TotalMark + MulTotalMark) < quizList.passMark && (TotalMark + MulTotalMark) === quizList.creditMark) && "credit") || ((TotalMark + MulTotalMark) < quizList.creditMark && "fail"),
     };
     // alert(JSON.stringify(data));
     apiInstance
@@ -323,9 +324,9 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
         // Usage
         const uniqueObjects = getUniqueById(newFormSubmissions);
         // console.log(uniqueObjects, 'mul real');
-        setTrueAnswerList(uniqueObjects);
+        setMultiTrueAnswerList(uniqueObjects);
 
-        // console.log(uniqueObjects, 'setTrueAnswerList')
+        console.log(uniqueObjects, 'setMulTrueAnswerList')
         // console.log(quiz.questions.filter(el=>el.correctAnswer === val+1))
         setIsCorrect("Correct");
       } else {
@@ -431,49 +432,52 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
                       {quizList.questions[counter].options.map((e, i) => (
                         <>
                           {quizList.questions[counter].type === 'trueFalse' ? (
-                            < div
-                              key={i}
-                              className='text-lg font-semibold ml-10'
-                              onClick={() =>
-                                handleAns(
-                                  i,
-                                  e,
-                                  quizList.questions[counter].correctAnswer,
-                                  counter,
-                                  quizList.questions[counter].mark,
-                                  quizList.questions[counter]._id
+                            <div className='flex gap-2 text-[18px] font-normal'>
+                              < div
+                                key={i}
+                                className='text-lg font-semibold ml-10'
+                                onClick={() =>
+                                  handleAns(
+                                    i,
+                                    e,
+                                    quizList.questions[counter].correctAnswer,
+                                    counter,
+                                    quizList.questions[counter].mark,
+                                    quizList.questions[counter]._id
 
-                                )
-                              }
-                            >
-                              {showTimer && (
-                                <div>
-                                  {/* True False Quiz */}
+                                  )
+                                }
+                              >
+                                {showTimer && (
 
-                                  <input
-                                    type='radio'
-                                    name='answer_group'
-                                    value={e.answer}
-                                    disabled={
-                                      clicked === ""
-                                        ? ""
-                                        : selectedOption === e.answer
+                                  <div>
+                                    {/* True False Quiz */}
+
+                                    <input
+                                      type='radio'
+                                      className='w-[20px] h-[20px]'
+                                      name='answer_group'
+                                      value={e.answer}
+                                      disabled={
+                                        clicked === ""
                                           ? ""
-                                          : true
-                                    }
-                                  // onChange={(event) =>
-                                  //   handleOptionSelect(event, e, i)
-                                  // }
-                                  />
+                                          : selectedOption === e.answer
+                                            ? ""
+                                            : true
+                                      }
+                                    // onChange={(event) =>
+                                    //   handleOptionSelect(event, e, i)
+                                    // }
+                                    />
+                                  </div>
 
 
-                                  &nbsp;
 
-                                  {e.answer}
-
-                                </div>
-                              )}
+                                )}
+                              </div>
+                              <span>  {e.answer}</span>
                             </div>
+
                           ) : (
                             < div
                               key={i}
@@ -491,38 +495,38 @@ const QuizPage = ({ LMID, enrollID, batchID }) => {
                             // }
                             >
                               {showTimer && (
-                                <div>
+                                <div className='flex gap-2 text-[18px] font-normal'>
+                                  <div>
 
-                                  {/* Multiple Choice Quiz */}
-                                  <input
-                                    type='checkbox'
-                                    name='answer_group'
-                                    value={e.answer}
-                                    // checked={multiAns.map((i, ind) => (selectedItem.map((e, ine) => (ine === ind))))}
-                                    disabled={
-                                      number >= quizList.questions[counter].correctAnswer?.length ? true : ''
+                                    {/* Multiple Choice Quiz */}
+                                    <input
+                                      type='checkbox'
+                                      name='answer_group'
+                                      value={e.answer}
+                                      // checked={multiAns.map((i, ind) => (selectedItem.map((e, ine) => (ine === ind))))}
+                                      disabled={
+                                        number >= quizList.questions[counter].correctAnswer?.length ? true : ''
 
 
-                                    }
-                                    className='w-[15px] h-[15px]'
-                                    onClick={(event) =>
-                                      handleCheckboxSelect(event,
+                                      }
+                                      className='w-[20px] h-[20px]'
+                                      onClick={(event) =>
+                                        handleCheckboxSelect(event,
 
-                                        i,
-                                        e,
-                                        quizList.questions[counter].correctAnswer,
-                                        counter,
-                                        quizList.questions[counter].mark,
-                                        quizList.questions[counter]._id
-                                      )
-                                    }
-                                  />
+                                          i,
+                                          e,
+                                          quizList.questions[counter].correctAnswer,
+                                          counter,
+                                          quizList.questions[counter].mark,
+                                          quizList.questions[counter]._id
+                                        )
+                                      }
+                                    />
 
-                                  &nbsp;
-
-                                  {e.answer}
-
+                                  </div>
+                                  <span> {e.answer}</span>
                                 </div>
+
                               )}
                             </div>)}
 

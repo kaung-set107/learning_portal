@@ -18,6 +18,7 @@ import EntranceTestPage from "../Quiz/entranceTest";
 import { Link, useNavigate } from "react-router-dom";
 import Loading from '../../../assets/img/finalloading.gif'
 import Success from '../../../assets/img/success.gif'
+import Swal from "sweetalert2";
 export default function MyprofileTab() {
   const variant = 'bordered'
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -41,9 +42,11 @@ export default function MyprofileTab() {
   const [batchId, setBatchId] = useState([])
   const [showGif, setShowGif] = useState(true);
   const [image, setImage] = useState('')
+  const [transactionNo, setTransactionNo] = useState('')
   // const [enrollId, setEnrollId] = useState(false)
-  const [count, setCount] = useState(0)
+  const [showError, setShowError] = useState(false)
   const [entranceTestResDataCheck, setEntranceTestResDataCheck] = useState([])
+  const [enrollment, setEnrollment] = useState([])
   const handleImage = (e) => {
     if (e.target.files) {
       setImage(e.target.files[0]);
@@ -79,10 +82,10 @@ export default function MyprofileTab() {
       }
 
       await apiInstance.get('entrance-test-results', list).then((res) => {
-        // console.log(
-        //   res.data.data.filter(el => el.student._id === StudentId),
-        //   "stu map1"
-        // );
+        console.log(
+          res.data.data.filter(el => el.student._id === StudentId)[0],
+          "stu map1"
+        );
         setEntranceTestResDataCheck(res.data.data.filter(el => el.student._id === StudentId))
 
         // if (res.data.data.length === filterSubList[0]?.subjects?.length) {
@@ -111,12 +114,12 @@ export default function MyprofileTab() {
         // console.log(count, "count");
       });
     };
-    const getEnrollment = async () => {
+    const getEnrollmentWait = async () => {
       const Stu = {
         student: StudentId
       }
       await apiInstance.get(`enrollment-waiting-lists?student=${StudentId}`).then((res) => {
-        console.log(res.data.data.filter(el => el.batch), "first id");
+        console.log(res.data.data, "first id");
         setBatchId(res.data.data.filter(el => el.batch))
 
         setFirstDefaultCourseId(
@@ -139,8 +142,20 @@ export default function MyprofileTab() {
 
       });
     };
-    getEntranceTestRes();
+    const getEnrollment = async () => {
+      await apiInstance.get(`enrollments?student=${StudentId}`).then((res) => {
+        console.log(res.data.data, "enro list");
+
+
+        setEnrollment(res.data.data);
+
+        // const count = res.data.data.filter((el) => el.subjects.length);
+
+      });
+    };
     getEnrollment();
+    getEntranceTestRes();
+    getEnrollmentWait();
     getAssign();
     const timer = setTimeout(() => {
       setShowGif(false);
@@ -173,18 +188,34 @@ export default function MyprofileTab() {
   }
   // const dataToPass = { entranceID: entranceID, enrollID: enrollId, batchID: batchId };
 
+  const handleError = () => {
+    setShowError(true)
+    setTimeout(() => {
+      setShowError(false);
+    }, 5000); // 10 seconds in milliseconds
+
+    Swal.fire({
+      icon: "error",
+      title: "Sorry!",
+      text: "You must choose Payment Image!",
+      showCancelButton: false,
+      showConfirmButton: false,
+      timer: 3000,
+    });
+  }
   //Payment
   const handlePayment = () => {
     const EnrWaitId = filterSubList[0]._id
-    console.log(filterSubList[0]._id, 'en wait id')
+
     const formData = new FormData();
-
-
-    formData.append("image", image);
+    formData.append("paymentImage", image);
+    formData.append("course", myCourseList[0].course._id);
+    formData.append("student", StudentId);
+    formData.append("paymentTransaction", transactionNo);
 
 
     apiInstance
-      .post(`enrollment-waiting-lists/${EnrWaitId}/payment`, formData, {
+      .put(`enrollment-waiting-lists/${EnrWaitId}/payment`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -347,7 +378,7 @@ export default function MyprofileTab() {
             </Badge> */}
               </div>
             </div>
-            {myCourseList[0] ? (
+            {myCourseList[0] || enrollment ? (
               <>
                 {activeTab === 1 && (
                   <div className=''>
@@ -479,6 +510,7 @@ export default function MyprofileTab() {
                     </>
 
 
+
                   </div>
                 )
                 }
@@ -518,11 +550,22 @@ export default function MyprofileTab() {
                                 You got :{" "}
                                 <span className='font-semibold'>IELTS Advance Level</span>
                               </div>
-                              <div className='flex gap-5 justify-end'>
-                                <Button color='primary' onPress={onOpen} onClick={handlePayment} variant='solid'>
-                                  Enroll Now!
-                                </Button>
-                              </div>
+                              {myCourseList[0]?.paymentImage ? (
+                                <div className='flex gap-5 justify-end'>
+                                  <Button className='bg-gray-300 cursor-not-allowed' variant='solid'>
+                                    Enroll Now!
+                                  </Button>
+                                </div>
+                              ) : (
+                                <div className='flex gap-5 justify-end'>
+                                  <Button color='primary' onPress={onOpen} variant='solid'>
+                                    Enroll Now!
+                                  </Button>
+                                </div>
+                              )}
+
+
+
                             </div>
                           </div>
 
@@ -560,23 +603,44 @@ export default function MyprofileTab() {
 
                                   <ModalBody>
                                     <form className='flex flex-col gap-4 pt-3'>
-                                      <div className='flex gap-4'>
-                                        <Input type='text' label="First Name" variant={variant} />
-                                        <Input type='text' label="Last Name" variant={variant} />
+
+                                      <div>
+                                        <label>Student Name</label>
+                                        <Input type='text' variant={variant} value={student?.name} />
                                       </div>
-                                      <div>  <Input type='text' label="Class" variant={variant} /></div>
-                                      <div>  <Input type='phone' label="Phone Number" variant={variant} /></div>
-                                      <div>  <Input type='number' label="Transaction Number" variant={variant} /></div>
-                                      <div>  <Input type='file' onChange={handleImage} label="" variant={variant} /></div>
+                                      <div>
+                                        <label>Phone Number</label>
+                                        <Input type='text' variant={variant} value={student?.phone} />
+                                      </div>
+                                      <div>
+                                        <label>Course</label>
+                                        <Input type='text' value={myCourseList[0].course?.title} variant={variant} />
+                                      </div>
+
+                                      <div>
+                                        <label>Transaction Number</label>
+                                        <Input type='number' variant={variant} onChange={(e) => setTransactionNo(e.target.value)} />
+                                      </div>
+                                      <div>  <Input type='file' onChange={handleImage} className={showError ? 'border-1 border-red-400 rounded-xl' : ''} label="" variant={variant} /></div>
+
+
+
                                     </form>
                                   </ModalBody>
                                   <ModalFooter>
                                     <Button color="danger" variant="light" onPress={onClose}>
                                       Close
                                     </Button>
-                                    <Button color="primary" onPress={onClose}>
-                                      Confirm
-                                    </Button>
+                                    {image ? (
+                                      <Button color="primary" onClick={handlePayment}>
+                                        Confirm
+                                      </Button>
+                                    ) : (
+                                      <Button color="primary" onClick={handleError}>
+                                        Confirm
+                                      </Button>
+                                    )}
+
                                   </ModalFooter>
                                 </>
                               )}
@@ -603,38 +667,47 @@ export default function MyprofileTab() {
                 }
                 {
                   activeTab === 3 && (
-                    <div className='flex rounded-md'>
-                      <div>
-                        <Image
-                          src={Course}
-                          style={{
-                            width: "325px",
-                            height: "243px",
-                          }}
-                        />
-                      </div>
+                    <div className='grid grid-cols-2 '>
+                      {
+                        enrollment.map((item) => (
+                          <div className='flex rounded-md'>
+                            <div>
+                              <Image
+                                src={getFile({ payload: item?.course?.image })}
+                                style={{
+                                  width: "325px",
+                                  height: "243px",
+                                }}
+                              />
 
-                      <div className='flex flex-col gap-5 p-14 '>
-                        <h1 className='text-xl font-semibold'>
-                          IELTs (Advance Level)
-                        </h1>
-                        <div>
-                          Total Lessons: <span className='font-semibold'>35</span>
-                        </div>
-                      </div>
+                            </div>
+
+                            <div className='flex flex-col gap-5 p-14 '>
+                              <h1 className='text-xl font-semibold'>
+                                {item?.course?.title}
+                              </h1>
+                              <div>
+                                Total Lessons: <span className='font-semibold'>35</span>
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                      }
                     </div>
+
+
                   )
                 }
               </>
 
-            ) : (
-              <div className='flex flex-col gap-10 items-center pt-[40px]'>
+            ) :
+              (<div className='flex flex-col gap-10 items-center pt-[40px]'>
                 <Image src={Loading} className='transform-x-[-1] w-[350px] h-[250px]' />
                 <span className='text-[20px] font-semibold'>
                   Please wait ... !
                 </span>
-              </div>
-            )}
+              </div>)
+            }
 
           </div >
         </div >

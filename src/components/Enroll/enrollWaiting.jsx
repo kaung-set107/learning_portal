@@ -87,8 +87,8 @@ export default function PendingList() {
             res.data.counts.enrollmentWaitingListCount % rowsPerPage === 0
               ? res.data.counts.enrollmentWaitingListCount / rowsPerPage
               : Math.floor(
-                  res.data.counts.enrollmentWaitingListCount / rowsPerPage
-                ) + 1
+                res.data.counts.enrollmentWaitingListCount / rowsPerPage
+              ) + 1
           );
         });
     };
@@ -172,8 +172,8 @@ export default function PendingList() {
               <TableCell>{index + 1}</TableCell>
               <TableCell>{item?.code}</TableCell>
               <TableCell>{item.student?.name}</TableCell>
-              <TableCell>{item.subject?.title}</TableCell>
-              <TableCell>{item?.student?.date?.split("T")[0]}</TableCell>
+              <TableCell>{item.course?.title}</TableCell>
+              <TableCell>{item?.student?.joinedDate?.split("T")[0]}</TableCell>
               <TableCell>{item.student?.phone}</TableCell>
               <TableCell>{item.student?.email}</TableCell>
               <TableCell>{item.student?.gender}</TableCell>

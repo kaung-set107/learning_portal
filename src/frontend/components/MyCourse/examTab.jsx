@@ -42,7 +42,8 @@ export default function CourseDetail(props) {
   const [showFinal, setShowFinal] = useState(false);
   const [showOrigin, setShowOrigin] = useState(true);
   const [teacherName, setTeacherName] = useState([]);
-  const [teacherImage, setTeacherImage] = useState([]);
+  const [nestedExamVal, setNestedExamVal] = useState([]);
+  const [showNestedOrigin, setShowNestedOrigin] = useState(true)
 
   const [value, setValue] = useState([])
   const handleExam = (val) => {
@@ -58,6 +59,11 @@ export default function CourseDetail(props) {
     setValue(val)
   }
 
+  const handleNestedExam = (val) => {
+    setNestedExamVal(val)
+    setShowNestedOrigin(false)
+    console.log(val)
+  }
 
   useEffect(() => {
 
@@ -77,8 +83,9 @@ export default function CourseDetail(props) {
   }, []);
 
   const handleBack = () => {
-    setShowOrigin(true)
-    setShowMid(false)
+    setShowNestedOrigin(true)
+    setShowMid(true)
+    setNestedExamVal('')
     setShowFinal(false)
   };
 
@@ -100,145 +107,167 @@ export default function CourseDetail(props) {
       )}
 
       {showMid && (
+        <>
+          {showNestedOrigin && (<div className='flex flex-col gap-12'>
+            <div className='bg-[#215887] w-[1360px] p-12 rounded-lg text-[24px] font-semibold text-[#fff]' onClick={() => handleNestedExam(1)}>In App Exam</div>
+            <div className='bg-[#ED1D25] w-[1360px] p-12 rounded-lg text-[24px] font-semibold text-[#fff]' onClick={() => handleNestedExam(2)} >Outside App Exam</div>
+            <div className='bg-[#FFB700] w-[1360px] p-12 rounded-lg text-[24px] font-semibold text-[#fff]' onClick={() => handleNestedExam(3)} >Openbook Exam</div>
+          </div>)}
 
-        <div className="flex justify-center items-center w-full flex-col mb-20">
-          <Tabs aria-label="Options" color="primary" variant="bordered">
-            <Tab
-              key="new"
-              title={
-                <div className="flex items-center space-x-2">
-                  <FontAwesomeIcon icon={faFireFlameCurved} size='xl' />
-                  <span>New</span>
-                </div>
-              }
-            >
-              <div className='h-[308px] w-full flex flex-col gap-5 pl-16'>
-                <div className='flex flex-col gap-5'>
-                  <div className='flex justify-between'>
-                    <span className='text-[40px] font-bold'>Mid-Term Exam</span>
-                    <Button className='flex justify-center w-10' onClick={handleBack}>Back</Button>
-                  </div>
+          {nestedExamVal && !showNestedOrigin && (
+            <div className="flex justify-center items-center w-full flex-col mb-20">
+              <Tabs aria-label="Options" color="primary" variant="bordered">
+                <Tab
+                  key="new"
+                  title={
+                    <div className="flex items-center space-x-2">
+                      <FontAwesomeIcon icon={faFireFlameCurved} size='xl' />
+                      <span>New</span>
+                    </div>
+                  }
+                >
+                  <div className='h-[308px] w-full flex flex-col gap-5 pl-16'>
+                    <div className='flex flex-col gap-5'>
+                      <div className='flex justify-between'>
+                        <span className='text-[40px] font-bold'>Mid-Term Exam</span>
+                        <Button className='flex justify-center w-10' onClick={handleBack}>Back</Button>
+                      </div>
 
-                  <div className='text-[24px] font-semibold flex flex-col gap-2 ml-[30px]'>
-                    <div >
-                      <li>Must be able to answer the Project Management (Week-4) Quiz.</li>
-                      <li>Must have passed (90%).</li>
-                      <li>There is no number of times, but the opportunity to answer</li>
+                      <div className='text-[24px] font-semibold flex flex-col gap-2 ml-[30px]'>
+                        <div >
+                          <li>Must be able to answer the Project Management (Week-4) Quiz.</li>
+                          <li>Must have passed (90%).</li>
+                          <li>There is no number of times, but the opportunity to answer</li>
 
-                      <li className='w-[1315px]'>In answering, if you take the quiz for the first (2) times and want to take it again for the (3rd) time, you can answer it immediately, and you can take the quiz for the (3rd) time only after 5 (5) hours have passed.</li>
+                          <li className='w-[1315px]'>In answering, if you take the quiz for the first (2) times and want to take it again for the (3rd) time, you can answer it immediately, and you can take the quiz for the (3rd) time only after 5 (5) hours have passed.</li>
 
 
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <span className='text-[#ED1D25] text-[24px] font-bold'> Note. . After taking the first (2) exams, you will be able to retake the exam only after 5 (5) hours have passed.</span>
+                    </div>
+                    <div className='flex justify-center p-5'>
+                      {
+                        value.showToStudent === false ? (
+                          <Button color='primary' disabled className='flex justify-center w-40 items-center cursor-not-allowed opacity-60' >Start</Button>
+
+                        ) : (
+                          <Button color='primary' className='flex justify-center w-40 items-center' onClick={handleBack}>Start</Button>
+
+                        )
+                      }
                     </div>
                   </div>
-                </div>
-                <div>
-                  <span className='text-[#ED1D25] text-[24px] font-bold'> Note. . After taking the first (2) exams, you will be able to retake the exam only after 5 (5) hours have passed.</span>
-                </div>
-                <div className='flex justify-center p-5'>
-                  {
-                    value.showToStudent === false ? (
-                      <Button color='primary' disabled className='flex justify-center w-40 items-center cursor-not-allowed opacity-60' >Start</Button>
-
-                    ) : (
-                      <Button color='primary' className='flex justify-center w-40 items-center' onClick={handleBack}>Start</Button>
-
-                    )
+                </Tab>
+                <Tab
+                  key="complete"
+                  title={
+                    <div className="flex items-center space-x-2">
+                      <FontAwesomeIcon icon={faStar} size='xl' />
+                      <span>Complete</span>
+                    </div>
                   }
-                </div>
-              </div>
-            </Tab>
-            <Tab
-              key="complete"
-              title={
-                <div className="flex items-center space-x-2">
-                  <FontAwesomeIcon icon={faStar} size='xl' />
-                  <span>Complete</span>
-                </div>
-              }
-            ></Tab>
-            <Tab
-              key="result"
-              title={
-                <div className="flex items-center space-x-2">
-                  <FontAwesomeIcon icon={faCheck} size='xl' />
-                  <span>Result</span>
-                </div>
-              }
-            ></Tab>
-          </Tabs>
-        </div>
+                ></Tab>
+                <Tab
+                  key="result"
+                  title={
+                    <div className="flex items-center space-x-2">
+                      <FontAwesomeIcon icon={faCheck} size='xl' />
+                      <span>Result</span>
+                    </div>
+                  }
+                ></Tab>
+              </Tabs>
+            </div>
+          )}
+
+        </>
+
       )
       }
 
       {
         showFinal && (
+          <>
+            {showNestedOrigin && (<div className='flex flex-col gap-12'>
+              <div className='bg-[#215887] w-[1360px] p-12 rounded-lg text-[24px] font-semibold text-[#fff]' onClick={() => handleNestedExam(1)}>In App Exam</div>
+              <div className='bg-[#ED1D25] w-[1360px] p-12 rounded-lg text-[24px] font-semibold text-[#fff]' onClick={() => handleNestedExam(2)} >Outside App Exam</div>
+              <div className='bg-[#FFB700] w-[1360px] p-12 rounded-lg text-[24px] font-semibold text-[#fff]' onClick={() => handleNestedExam(3)} >Openbook Exam</div>
+            </div>)}
 
-          <div className="flex justify-center items-center w-full flex-col mb-20">
-            <Tabs aria-label="Options" color="primary" variant="bordered">
-              <Tab
-                key="new"
-                title={
-                  <div className="flex items-center space-x-2">
-                    <FontAwesomeIcon icon={faFireFlameCurved} size='xl' />
-                    <span>New</span>
-                  </div>
-                }
-              >
-                <div className='h-[308px] w-full flex flex-col gap-5 pl-16'>
-                  <div className='flex flex-col gap-5'>
-                    <div className='flex justify-between'>
-                      <span className='text-[40px] font-bold'>Final Exam</span>
-                      <Button className='flex justify-center w-10' onClick={handleBack}>Back</Button>
-                    </div>
+            {nestedExamVal && !showNestedOrigin && (
+              <div className="flex justify-center items-center w-full flex-col mb-20">
+                <Tabs aria-label="Options" color="primary" variant="bordered">
+                  <Tab
+                    key="new"
+                    title={
+                      <div className="flex items-center space-x-2">
+                        <FontAwesomeIcon icon={faFireFlameCurved} size='xl' />
+                        <span>New</span>
+                      </div>
+                    }
+                  >
+                    <div className='h-[308px] w-full flex flex-col gap-5 pl-16'>
+                      <div className='flex flex-col gap-5'>
+                        <div className='flex justify-between'>
+                          <span className='text-[40px] font-bold'>Final Exam</span>
+                          <Button className='flex justify-center w-10' onClick={handleBack}>Back</Button>
+                        </div>
 
-                    <div className='text-[24px] font-semibold flex flex-col gap-2 ml-[30px]'>
-                      <div >
-                        <li>Must be able to answer the Project Management (Week-4) Quiz.</li>
-                        <li>Must have passed (90%).</li>
-                        <li>There is no number of times, but the opportunity to answer</li>
+                        <div className='text-[24px] font-semibold flex flex-col gap-2 ml-[30px]'>
+                          <div >
+                            <li>Must be able to answer the Project Management (Week-4) Quiz.</li>
+                            <li>Must have passed (90%).</li>
+                            <li>There is no number of times, but the opportunity to answer</li>
 
-                        <li className='w-[1315px]'>In answering, if you take the quiz for the first (2) times and want to take it again for the (3rd) time, you can answer it immediately, and you can take the quiz for the (3rd) time only after 5 (5) hours have passed.</li>
+                            <li className='w-[1315px]'>In answering, if you take the quiz for the first (2) times and want to take it again for the (3rd) time, you can answer it immediately, and you can take the quiz for the (3rd) time only after 5 (5) hours have passed.</li>
 
 
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <span className='text-[#ED1D25] text-[24px] font-bold'> Note. . After taking the first (2) exams, you will be able to retake the exam only after 5 (5) hours have passed.</span>
+                      </div>
+                      <div className='flex justify-center p-5'>
+                        {
+                          value.showToStudent === false ? (
+                            <Button color='primary' disabled className='flex justify-center w-40 items-center cursor-not-allowed opacity-60' >Start</Button>
+
+                          ) : (
+                            <Button color='primary' className='flex justify-center w-40 items-center' onClick={handleBack}>Start</Button>
+
+                          )
+                        }
                       </div>
                     </div>
-                  </div>
-                  <div>
-                    <span className='text-[#ED1D25] text-[24px] font-bold'> Note. . After taking the first (2) exams, you will be able to retake the exam only after 5 (5) hours have passed.</span>
-                  </div>
-                  <div className='flex justify-center p-5'>
-                    {
-                      value.showToStudent === false ? (
-                        <Button color='primary' disabled className='flex justify-center w-40 items-center cursor-not-allowed opacity-60' >Start</Button>
-
-                      ) : (
-                        <Button color='primary' className='flex justify-center w-40 items-center' onClick={handleBack}>Start</Button>
-
-                      )
+                  </Tab>
+                  <Tab
+                    key="complete"
+                    title={
+                      <div className="flex items-center space-x-2">
+                        <FontAwesomeIcon icon={faStar} size='xl' />
+                        <span>Complete</span>
+                      </div>
                     }
-                  </div>
-                </div>
-              </Tab>
-              <Tab
-                key="complete"
-                title={
-                  <div className="flex items-center space-x-2">
-                    <FontAwesomeIcon icon={faStar} size='xl' />
-                    <span>Complete</span>
-                  </div>
-                }
-              ></Tab>
-              <Tab
-                key="result"
-                title={
-                  <div className="flex items-center space-x-2">
-                    <FontAwesomeIcon icon={faCheck} size='xl' />
-                    <span>Result</span>
-                  </div>
-                }
-              ></Tab>
-            </Tabs>
-          </div>
+                  ></Tab>
+                  <Tab
+                    key="result"
+                    title={
+                      <div className="flex items-center space-x-2">
+                        <FontAwesomeIcon icon={faCheck} size='xl' />
+                        <span>Result</span>
+                      </div>
+                    }
+                  ></Tab>
+                </Tabs>
+              </div>
+            )}
+
+          </>
+
         )
       }
 

@@ -59,14 +59,14 @@ const CourseDetail = (props) => {
   // console.log(enrollID, "enrollID");
   // console.log(examData, "sub ii");
   const courseData = location.state.courseData;
-  // console.log(props.id, "id");
+
   const [showVideo, setShowVideo] = useState(false);
   const [teacherName, setTeacherName] = useState([]);
   const [surveyData, setSurveyData] = useState([]);
   const [showVideoList, setShowVideoList] = useState([]);
   const [showDocumentList, setShowDocumentList] = useState([])
   const [LMDataList, setLMDataList] = useState([]);
-  const [LMID, setLMID] = useState("");
+  const [QuizID, setQuizID] = useState("");
   const [arr, setArr] = useState([]);
   const [showModal, setShowModal] = useState(false)
   const [batchID, setBatchID] = useState('')
@@ -182,15 +182,15 @@ const CourseDetail = (props) => {
 
   const handleVideo = (data) => {
 
-    // console.log(data, "heee");
-    setLMID(data._id);
+    console.log(data, "heee");
+    setQuizID(data.quiz);
 
     setShowVideoList(JSON.parse(data.video));
     setShowDocumentList(data.assets);
     // console.log(data.assets, "document");
     setLMDataList(data);
     setSurveyData(data.survey)
-    // console.log(data, 'lm da')
+    console.log(data, 'lm da')
     setShowVideo(true);
   };
 
@@ -477,14 +477,56 @@ const CourseDetail = (props) => {
                               </div>
                             ))}
                           </div>
-                          <div className='pt-5'>
-                            <span className='text-[#000] text-[20px] font-semibold'>Class Note</span>
-                            <p className='flex justify-start text-[#000] text-[16px] font-semibold w-[842px] pt-2'>
-                              Lorem ipsum dolor sit amet consectetur. Pulvinar venenatis lobortis dignissim velit massa sit.
-                              Massa at gravida pulvinar sem. Vel nibh sed feugiat turpis sapien. Tempus donec et semper condimentum est congue.
-                              Lorem ipsum dolor sit amet consectetur. Pulvinar venenatis lobortis dignissim velit massa sit.
-                              Massa at gravida pulvinar sem. Vel nibh sed feugiat turpis sapien. Tempus donec et semper condimentum est congue.
-                            </p>
+                          <div className='pt-5 flex flex-col gap-10'>
+                            <div>
+                              <span className='text-[#000] text-[20px] font-semibold'>Class Note</span>
+                              <p className='flex justify-start text-[#000] text-[16px] font-semibold w-[842px] pt-2'>
+                                {LMDataList?.summaryNote}
+                              </p>
+                            </div>
+                            <div className='flex gap-10 w-full'>
+                              <div className='flex flex-col gap-2 items-center'>
+                                <span className=' text-[#000] text-[20px] font-semibold mt-5 w-full'>Files  </span>
+                                <p className=' text-[#000] text-[16px] font-semibold w-[842px] pt-2'>
+                                  {LMDataList.summaryFile && LMDataList.summaryFile.map((i, index) => (
+                                    <div className="sm:flex justify-start gap-5" key={i._id}>
+                                      <a
+                                        href={getFile({ payload: i })}
+                                        onClick={
+                                          i.originalname?.split(".")[1] === "pdf"
+                                            ? () => downloadPDF(i)
+                                            : download
+                                        }>
+                                        <Image
+                                          radius="sm"
+                                          alt={i.title}
+                                          className="object-cover w-[40px] h-[40px]"
+                                          src={
+                                            i.originalname?.split(".")[1] === "pdf"
+                                            && PdfPhoto ||
+                                            (i.originalname?.split(".")[1] === "xlsx")
+                                            && ExcelPhoto || (i.originalname?.split(".")[1] === "csv")
+                                            && CSV || (i.originalname?.split(".")[1] === "pptx")
+                                            && PPTX || (i.originalname?.split(".")[1] === "docx")
+                                            && DOCX ||
+                                            (i.originalname?.split(".")[1] === "png" || "jpg" || "jpeg") && getFile({ payload: i })
+                                          }
+                                        />
+                                      </a>
+                                      {/* <b className="mt-3">{i.originalname?.split(".")[1] === "pdf" && "Download.pdf" || i.originalname?.split(".")[1] === "xlsx" && "Download.xlsx" || i.originalname?.split(".")[1] === "jpg" && "Download.jpg"}</b> */}
+                                      <b className="mt-3">{i?.originalname?.split('.')[0]}</b>
+                                    </div>
+                                  ))}
+
+                                </p>
+                              </div>
+                              <div className='flex flex-col gap-2 items-center mt-5'>
+                                <span className='text-[#000] text-[20px] font-semibold'>Description</span>
+                                <span>{LMDataList?.description}</span>
+                              </div>
+                            </div>
+
+
                           </div>
                         </div>
 
@@ -499,7 +541,7 @@ const CourseDetail = (props) => {
                             </span>
                           </div>
 
-                          {surveyData.questions.map((item, index) => (
+                          {surveyData?.questions.map((item, index) => (
                             <div className='bg-[#EBF0FF] rounded-lg w-full h-[auto] p-[16px]'>
 
                               <p className=''>
@@ -640,7 +682,7 @@ const CourseDetail = (props) => {
                       <Tab title='Quiz' key='quiz'>
                         {/* Quiz Page */}
 
-                        <QuizPage LMID={LMID} enrollID={enrollID} batchID={batchID} />
+                        <QuizPage QuizID={QuizID} enrollID={enrollID} batchID={batchID} />
                       </Tab>
                       <Tab title='Class' key='class'>
 
