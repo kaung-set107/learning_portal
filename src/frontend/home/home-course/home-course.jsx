@@ -65,19 +65,19 @@ const Body = () => {
           Courses We Offer
         </h1>
 
-        <div className='flex gap-2 items-center justify-center lg:gap-20 flex-wrap py-10'>
+        <div className='flex  items-center justify-around lg:gap-20 flex-wrap py-10'>
           {courseList.map((e) => (
             <div
               onClick={() => handleRoute(e)}
-              style={{ height: "470px" }}
-              className='w-full  md:w-[390px] h-full md:h-[610px]'
+
+              className='w-full  md:w-[490px] h-[520px] '
             >
               <div>
                 <Image
                   // style={{ width: "500px", height: "280px" }}
                   alt={e.image?.originalname}
                   src={getFile({ payload: e.image })}
-                  className='w-full h-full md:w-[500px] md:h-[280px] hover:-translate-y-2 hover:scale-105 duration-500'
+                  className='w-full h-full md:w-[500px] md:h-[340px] hover:-translate-y-2 hover:scale-105 duration-500'
                 />
                 <div className='flex p-5 flex-col justify-start flex-grow '>
                   <span

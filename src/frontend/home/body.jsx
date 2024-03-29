@@ -122,19 +122,19 @@ const Body = () => {
           Courses We Offer
         </h1>
 
-        <div className='flex flex-col gap-20 items-center justify-center md:flex-row flex-wrap py-10'>
+        <div className='flex flex-col gap-20 items-center justify-between md:flex-row flex-wrap py-10'>
           {courseList.slice(0, 3).map((e) => (
             <div
               onClick={() => handleRoute(e)}
 
-              className='w-full  md:w-[390px] h-full md:h-[610px]'
+              className='w-full  md:w-[490px] h-full md:h-[610px]'
             >
               <div>
                 <Image
                   // style={{ width: "500px", height: "280px" }}
                   alt={e.image?.originalname}
                   src={getFile({ payload: e.image })}
-                  className='w-full h-full sm:w-[500px] sm:h-[280px] hover:-translate-y-2 hover:scale-105 duration-500'
+                  className='w-full h-full sm:w-[500px] sm:h-[380px] hover:-translate-y-2 hover:scale-105 duration-500'
                 />
                 <div className='flex p-5 flex-col justify-start flex-grow '>
                   <span

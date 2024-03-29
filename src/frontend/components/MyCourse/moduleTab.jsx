@@ -26,6 +26,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ExcelPhoto from "../../ByInstructor/images/excel.png";
 import PdfPhoto from "../../ByInstructor/images/pdf.png";
 import ZoomPic from '../../../assets/img/pic.jpg'
+import Loading from '../../../assets/img/finalloading.gif'
 import {
   faSquarePlus,
   faCalendarDays,
@@ -262,107 +263,115 @@ const CourseDetail = (props) => {
     <>
       <div className='flex '>
         <div className=' border-2 w-[426px] h-[1168px] border-[#ffffff] border-r-[#d2d2ca] '>
-          <div>
-            {examData.subjectSections.map((item, index) => (
-              <div>
-                <Accordion
-                  motionProps={{
-                    variants: {
-                      enter: {
-                        y: 0,
-                        opacity: 1,
-                        height: "auto",
-                        transition: {
-                          height: {
-                            type: "spring",
-                            stiffness: 500,
-                            damping: 30,
-                            duration: 1,
+          {examData.subjectSections[0] ? (
+            <div>
+              {examData.subjectSections.map((item, index) => (
+                <div>
+                  <Accordion
+                    motionProps={{
+                      variants: {
+                        enter: {
+                          y: 0,
+                          opacity: 1,
+                          height: "auto",
+                          transition: {
+                            height: {
+                              type: "spring",
+                              stiffness: 500,
+                              damping: 30,
+                              duration: 1,
+                            },
+                            opacity: {
+                              easings: "ease",
+                              duration: 1,
+                            },
                           },
-                          opacity: {
-                            easings: "ease",
-                            duration: 1,
+                        },
+                        exit: {
+                          y: -10,
+                          opacity: 0,
+                          height: 0,
+                          transition: {
+                            height: {
+                              easings: "ease",
+                              duration: 0.25,
+                            },
+                            opacity: {
+                              easings: "ease",
+                              duration: 0.3,
+                            },
                           },
                         },
                       },
-                      exit: {
-                        y: -10,
-                        opacity: 0,
-                        height: 0,
-                        transition: {
-                          height: {
-                            easings: "ease",
-                            duration: 0.25,
-                          },
-                          opacity: {
-                            easings: "ease",
-                            duration: 0.3,
-                          },
-                        },
-                      },
-                    },
-                  }}
-                >
-                  <AccordionItem
-                    key='1'
-                    aria-label='Accordion 1'
-                    title={
-                      <span className='text-[20px] font-bold text-[#0025A9]'>
-                        Module {index + 1} ({item.title})
-                      </span>
-                    }
-                  //   startContent={
-                  //     <FontAwesomeIcon icon={faDesktop} size='xl' />
-                  //   }
+                    }}
                   >
-                    {console.log(item.learningMaterials, 'lm data two')}
-                    {item.learningMaterials.map((e) => (
-                      <>
-                        {/* Lock or Default Check */}
-                        {e.showToStudent ? (
-                          <div
-                            onClick={() => handleVideo(e)}
-                            className='py-2 hover:cursor-pointer'
-                          >
-                            <div className='flex gap-2 justify-between px-4 py-3 align-[center] m-auto text-sm w-[362px] h-[60px] bg-[#EBF0FF] rounded-[8px]'>
-                              <div className='flex'>
-                                <span className='flex gap-6  ml-3 mt-[3px]  p-[4px] text-[#0025A9] text-[14px] font-semibold'>
-                                  {e.duration} mins
-                                </span>
-                                <span className='flex gap-6 p-[4px]  ml-3 text-[#0025A9] text-[20px] font-semibold  border-3 h-[32px] border-[#EBF0FF] border-l-[#0025A9]'>
-                                  {e.title}
-                                </span>
-                              </div>
-                              <span className='flex gap-6 p-[4px] text-[#8aee58]'></span>
-                            </div>
-                          </div>
-                        ) : (
-                          <div className='py-2  hover:cursor-not-allowed'>
+                    <AccordionItem
+                      key='1'
+                      aria-label='Accordion 1'
+                      title={
+                        <span className='text-[20px] font-bold text-[#0025A9]'>
+                          Module {index + 1} ({item.title})
+                        </span>
+                      }
+                    //   startContent={
+                    //     <FontAwesomeIcon icon={faDesktop} size='xl' />
+                    //   }
+                    >
+                      {console.log(item.learningMaterials, 'lm data two')}
+                      {item.learningMaterials.map((e) => (
+                        <>
+                          {/* Lock or Default Check */}
+                          {e.showToStudent ? (
                             <div
-                              // onClick={() => setInc(true)}
-                              className='flex gap-2 justify-between px-4 py-3 align-[center] m-auto text-sm w-[362px] h-[60px] bg-[#EBF0FF] rounded-[8px]'
+                              onClick={() => handleVideo(e)}
+                              className='py-2 hover:cursor-pointer'
                             >
-                              <div className='flex'>
-                                <span className='flex gap-6  ml-3 mt-[3px]  p-[4px] text-[#A9A9A9] text-[14px] font-normal'>
-                                  {e.duration} mins
-                                </span>
-                                <span className='flex gap-6 p-[4px]  ml-3 text-[#A9A9A9] text-[20px] font-normal  border-3 h-[32px] border-[#EBF0FF] border-l-[#A9A9A9]'>
-                                  {e.title}
+                              <div className='flex gap-2 justify-between px-4 py-3 align-[center] m-auto text-sm w-[362px] h-[60px] bg-[#EBF0FF] rounded-[8px]'>
+                                <div className='flex'>
+                                  <span className='flex gap-6  ml-3 mt-[3px]  p-[4px] text-[#0025A9] text-[14px] font-semibold'>
+                                    {e.duration} mins
+                                  </span>
+                                  <span className='flex gap-6 p-[4px]  ml-3 text-[#0025A9] text-[20px] font-semibold  border-3 h-[32px] border-[#EBF0FF] border-l-[#0025A9]'>
+                                    {e.title}
+                                  </span>
+                                </div>
+                                <span className='flex gap-6 p-[4px] text-[#8aee58]'></span>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className='py-2  hover:cursor-not-allowed'>
+                              <div
+                                // onClick={() => setInc(true)}
+                                className='flex gap-2 justify-between px-4 py-3 align-[center] m-auto text-sm w-[362px] h-[60px] bg-[#EBF0FF] rounded-[8px]'
+                              >
+                                <div className='flex'>
+                                  <span className='flex gap-6  ml-3 mt-[3px]  p-[4px] text-[#A9A9A9] text-[14px] font-normal'>
+                                    {e.duration} mins
+                                  </span>
+                                  <span className='flex gap-6 p-[4px]  ml-3 text-[#A9A9A9] text-[20px] font-normal  border-3 h-[32px] border-[#EBF0FF] border-l-[#A9A9A9]'>
+                                    {e.title}
+                                  </span>
+                                </div>
+                                <span className='flex gap-6 p-[4px] text-[#A9A9A9] '>
+                                  <FontAwesomeIcon icon={faLock} size='xl' />
                                 </span>
                               </div>
-                              <span className='flex gap-6 p-[4px] text-[#A9A9A9] '>
-                                <FontAwesomeIcon icon={faLock} size='xl' />
-                              </span>
                             </div>
-                          </div>
-                        )}
-                      </>
-                    ))}
-                  </AccordionItem>
-                </Accordion>
-              </div>
-            ))}
-          </div>
+                          )}
+                        </>
+                      ))}
+                    </AccordionItem>
+                  </Accordion>
+                </div>
+              ))}
+            </div>
+          ) : (<div className='flex flex-col gap-10 items-center pt-[40px]'>
+            <Image src={Loading} className='transform-x-[-1] w-[350px] h-[250px]' />
+            <span className='text-[20px] font-semibold'>
+              Please wait ... !
+            </span>
+          </div>)}
+
         </div>
         <div className='flex flex-col gap-10 pl-[20px] w-full pr-[32px]'>
           <div>

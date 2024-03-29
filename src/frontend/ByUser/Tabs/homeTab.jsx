@@ -15,6 +15,7 @@ import Course from "../../../assets/img/course.jpg";
 import { Fade } from "react-awesome-reveal";
 import { Link, useNavigate } from "react-router-dom";
 import CourseDetail from "../CourseDetail/courseDetail";
+import Loading from '../../../assets/img/finalloading.gif'
 export default function Home() {
   // const posts = useSelector(state => state.posts)
   // console.log(posts, 'pos id')
@@ -115,91 +116,100 @@ export default function Home() {
               <h1 style={{ fontSize: "40px", fontWeight: "600" }}>
                 My Courses
               </h1>
-              <div className='flex flex-row gap-4'>
-                {myCourseList.map((item, index) => (
-                  <>
-                    <div key={item._id}>
-                      <Button
-                        className={
-                          activeTab === index
-                            ? "  bg-blue-200 py-3 border-indigo-500/75 w-52 text-center  duration-500"
-                            : "w-52 text-center"
-                        }
-                        color='primary'
-                        variant='bordered'
-                        onClick={() => handleTabClick(index, item._id, item.course._id)}
-                      >
-                        {item.course?.title}
-                      </Button>
-                    </div>
-                  </>
-                ))}
-              </div>
-              <div>
-                {filterSubList && (
-                  <div className='grid grid-cols-2 gap-20 rounded-md pt-16 w-full'>
-                    {filterSubList[0]?.subjects.map((e, ind) => (
-                      <div
-                        className='flex gap-1 bg-[#e1ddec] rounded-[12px]'
-                        onClick={() => handleSubjectDetail(e, enrollId)}
-                      >
-                        <div>
-                          <Image
-                            src={getFile({ payload: e.image })}
-                            style={{
-                              width: "300px",
-                              height: "200px",
-                            }}
-                          />
+              {myCourseList[0] ? (
+                <>
+                  <div className='flex flex-row gap-4'>
+                    {myCourseList.map((item, index) => (
+                      <>
+                        <div key={item._id}>
+                          <Button
+                            className={
+                              activeTab === index
+                                ? "  bg-blue-200 py-3 border-indigo-500/75 w-52 text-center  duration-500"
+                                : "w-52 text-center"
+                            }
+                            color='primary'
+                            variant='bordered'
+                            onClick={() => handleTabClick(index, item._id, item.course._id)}
+                          >
+                            {item.course?.title}
+                          </Button>
                         </div>
-
-                        <div className='flex flex-col gap-5 '>
-                          <div className='flex flex-col gap-10 p-7'>
-                            <div className='flex flex-col gap-4'>
-                              <h1
+                      </>
+                    ))}
+                  </div>
+                  <div>
+                    {filterSubList && (
+                      <div className='grid grid-cols-2 gap-20 rounded-md pt-16 w-full'>
+                        {filterSubList[0]?.subjects.map((e, ind) => (
+                          <div
+                            className='flex gap-1 bg-[#e1ddec] rounded-[12px]'
+                            onClick={() => handleSubjectDetail(e, enrollId)}
+                          >
+                            <div>
+                              <Image
+                                src={getFile({ payload: e.image })}
                                 style={{
-                                  fontSize: "20px",
-                                  fontWeight: "600",
+                                  width: "300px",
+                                  height: "200px",
                                 }}
-                              >
-                                {e.title}
-                              </h1>
-                              <div>
-                                Total Lessons:{" "}
-                                <span className='font-semibold'>35</span>
-                              </div>
+                              />
                             </div>
 
-                            <div className='flex flex-col gap-2'>
-                              <div
-                                style={{
-                                  fontSize: "16px",
-                                  fontWeight: "500",
-                                  color: "#05F",
-                                  width: "120px",
-                                  height: "19px",
-                                }}
-                                className='ml-24'
-                              >
-                                <div>45% completed</div>
-                              </div>
-                              <div>
-                                <Progress
-                                  size='sm'
-                                  aria-label='Loading...'
-                                  value={45}
-                                  className='mt-2'
-                                // onChange={(e) => handleValue(e.target.value)}
-                                />
+                            <div className='flex flex-col gap-5 '>
+                              <div className='flex flex-col gap-10 p-7'>
+                                <div className='flex flex-col gap-4'>
+                                  <h1
+                                    style={{
+                                      fontSize: "20px",
+                                      fontWeight: "600",
+                                    }}
+                                  >
+                                    {e.title}
+                                  </h1>
+                                  <div>
+                                    Total Lessons:{" "}
+                                    <span className='font-semibold'>35</span>
+                                  </div>
+                                </div>
+
+                                <div className='flex flex-col gap-2'>
+                                  <div
+                                    style={{
+                                      fontSize: "16px",
+                                      fontWeight: "500",
+                                      color: "#05F",
+                                      width: "120px",
+                                      height: "19px",
+                                    }}
+                                    className='ml-24'
+                                  >
+                                    <div>45% completed</div>
+                                  </div>
+                                  <div>
+                                    <Progress
+                                      size='sm'
+                                      aria-label='Loading...'
+                                      value={45}
+                                      className='mt-2'
+                                    // onChange={(e) => handleValue(e.target.value)}
+                                    />
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+                    )}
+                  </div></>
+              ) : (<div className='flex flex-col gap-10 items-center pt-[40px]'>
+                <Image src={Loading} className='transform-x-[-1] w-[350px] h-[250px]' />
+                <span className='text-[20px] font-semibold'>
+                  Please wait ... !
+                </span>
+              </div>)}
+
             </div>
           </div>
           {/* All Course Section */}
