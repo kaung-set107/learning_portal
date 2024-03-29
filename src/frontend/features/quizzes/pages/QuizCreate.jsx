@@ -1,18 +1,17 @@
 /* eslint-disable react/prop-types */
 import { Input, Card, CardBody } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CustomButton from "../../../components/general/CustomButton";
 import SubHeading from "../../../components/general/typography/SubHeading";
 import { Select, SelectItem } from "@nextui-org/select";
-import { surveysApi } from "../data";
+import { quizzesApi } from "../api";
 import QuestionCreateModal from "../../questions/components/QuestionCreateModal";
 import QuestionList from "../../questions/components/QuestionList";
 import { showError, showSuccess } from "../../../../util/noti";
-import { useNavigate } from "react-router-dom";
 
-const SurveyUpdateForm = (props) => {
-  const { type, learningMaterial, successCallback } = props;
-  const navigate = useNavigate();
+const QuizCreate = (props) => {
+  const { type, successCallback } = props;
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [questions, setQuestions] = useState([]);
 
@@ -27,10 +26,6 @@ const SurveyUpdateForm = (props) => {
       value: "unfinished",
       label: "unfinished",
     },
-    {
-      value: "expired",
-      label: "expired",
-    },
   ];
 
   const [formData, setFormData] = useState({
@@ -38,15 +33,14 @@ const SurveyUpdateForm = (props) => {
     description: "",
     questions: [],
     numOfQuestions: 0,
+    examDate: "",
+    duration: 1,
     status: "unfinished",
-    isLoading: false,
+    totalMark: 0,
+    passMark: 0,
+    creditMark: 0,
+    distinctionMark: 0,
   });
-
-  const goToResult = (id) => {
-    navigate(`/by-instructor/surveys/${id}/survey-results`, {
-      state: { survey: id },
-    });
-  };
 
   const addQuestion = (data) => {
     let newQuestions = [...questions];
@@ -68,18 +62,17 @@ const SurveyUpdateForm = (props) => {
     payload.type = type;
     payload[type] = props[type]._id;
 
-    delete payload.isLoading;
-
     return payload;
   };
 
   const handleSubmit = async () => {
     let payload = preparePayload();
     // alert(JSON.stringify(payload));
-    // return;
+    console.log(payload)
+    return;
     try {
       setIsSubmitting(true);
-      let res = await surveysApi.create(payload);
+      let res = await quizzesApi.create(payload);
       await successCallback();
       showSuccess({ text: res.message, type: "noti-box" });
     } catch (error) {
@@ -90,47 +83,11 @@ const SurveyUpdateForm = (props) => {
     }
   };
 
-  // for update
-  const fillData = () => {
-    console.log(learningMaterial);
-
-    setQuestions(() => {
-      return [...learningMaterial.survey.questions];
-    });
-
-    setFormData((prev) => {
-      return {
-        ...prev,
-        title: learningMaterial.survey.title,
-        description: learningMaterial.survey.description,
-        questions: learningMaterial.survey.questions,
-        numOfQuestions: learningMaterial.survey.numOfQuestions,
-        status: learningMaterial.survey.status,
-        isLoading: false,
-      };
-    });
-  };
-
-  useEffect(() => {
-    fillData();
-  }, []);
-  // for update
-
-  let content;
-
-  content = (
+  return (
     <div>
       <Card>
         <CardBody>
-          <div className="flex justify-between items-center">
-            <SubHeading title="Survey Update Form" />
-            <CustomButton
-              size="sm"
-              onClick={() => goToResult(learningMaterial.survey._id)}
-              isLoading={isSubmitting}
-              title="Results"
-            />
-          </div>
+          <SubHeading title="Survey Create Form" />
           <form>
             <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
               <Input
@@ -183,7 +140,6 @@ const SurveyUpdateForm = (props) => {
                 label="Status"
                 placeholder="Select an status"
                 className="max-w-xs"
-                selectedKeys={[formData.status]}
                 labelPlacement="outside"
                 onSelectionChange={(e) =>
                   setFormData((prev) => ({ ...prev, status: e.currentKey }))
@@ -211,7 +167,7 @@ const SurveyUpdateForm = (props) => {
                 color="primary"
                 onClick={handleSubmit}
                 isLoading={isSubmitting}
-                title="Update"
+                title="Create"
               />
             </div>
           </form>
@@ -219,8 +175,6 @@ const SurveyUpdateForm = (props) => {
       </Card>
     </div>
   );
-
-  return content;
 };
 
-export default SurveyUpdateForm;
+export default QuizCreate;

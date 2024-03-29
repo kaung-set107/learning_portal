@@ -11,28 +11,7 @@ const QuestionList = (props) => {
   const [currentQuestionData, setCurrentQuestionData] = useState({});
 
   const { questions, setQuestions } = props;
-  // const [questions, setQuestions] = useState([
-  //   {
-  //     question: "test",
-  //     type: "trueFalse",
-  //     options: [
-  //       {
-  //         answer: "test",
-  //       },
-  //     ],
-  //     answerType: "radio",
-  //   },
-  //   {
-  //     question: "test2",
-  //     type: "trueFalse",
-  //     options: [
-  //       {
-  //         answer: "test2",
-  //       },
-  //     ],
-  //     answerType: "radio",
-  //   },
-  // ]);
+  console.log(props);
 
   const handleEditButtonClick = (index) => {
     setCurrentQuestionData({
@@ -56,7 +35,7 @@ const QuestionList = (props) => {
   };
 
   const removeQuestion = (index) => {
-    console.log('here')
+    console.log("here");
     setQuestions((prev) => prev.filter((each, i) => i !== index));
   };
 
@@ -84,10 +63,17 @@ const QuestionList = (props) => {
                     />
                   </div>
                   <div className="space-y-3">
+                    <ListInfo title={`No - ${index + 1}`} />
                     <div className="space-y-1">
                       <ListInfo title="Question" />
                       <ListDetail title={question.question} />
                     </div>
+                    {question.mark && (
+                      <div className="space-y-1">
+                        <ListInfo title="Mark" />
+                        <ListDetail title={question.mark} />
+                      </div>
+                    )}
                     <div>
                       <ListInfo title="Answer Type" />
                       <ListDetail title={question.answerType} />
@@ -100,6 +86,20 @@ const QuestionList = (props) => {
                         })}
                       </ul>
                     </div>
+                    {question.correctAnswer && (
+                      <div>
+                        <ListInfo title="Correct Answers" />
+                        <ul>
+                          {question.correctAnswer.map((each) => {
+                            return (
+                              <li key={uuidv4()}>
+                                {question.options[each - 1].answer}
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    )}
                   </div>
                 </div>
               );

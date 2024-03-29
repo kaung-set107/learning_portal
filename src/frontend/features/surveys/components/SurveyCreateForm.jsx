@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Button, Input, Card, CardBody } from "@nextui-org/react";
-import { Link } from "@nextui-org/react";
+import { Input, Card, CardBody } from "@nextui-org/react";
 import { useState } from "react";
 import CustomButton from "../../../components/general/CustomButton";
 import SubHeading from "../../../components/general/typography/SubHeading";
@@ -161,9 +160,6 @@ const SurveyCreateForm = (props) => {
               </div>
             </div>
             <div className="flex justify-center gap-5 mt-8">
-              <Link href="/instructor">
-                <Button color="danger">Cancel</Button>
-              </Link>
               <CustomButton
                 color="primary"
                 onClick={handleSubmit}

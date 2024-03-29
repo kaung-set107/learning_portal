@@ -73,20 +73,22 @@ export default function SummaryForm(props) {
               />
             </div>
 
-            <div className="mb-3">
-              <label className="font-semibold mb-2 block">
-                Uploaded Summary File
-              </label>
-              <div>
-                <div className="border p-2 rounded-xl">
-                  <div className="bg-gray-100 p-3 rounded-xl border">
-                    {previousSummaryFiles.length > 0 && (
-                      <FileLoader file={previousSummaryFiles[0]} />
-                    )}
+            {previousSummaryFiles && (
+              <div className="mb-3">
+                <label className="font-semibold mb-2 block">
+                  Uploaded Summary File
+                </label>
+                <div>
+                  <div className="border p-2 rounded-xl">
+                    <div className="bg-gray-100 p-3 rounded-xl border">
+                      {previousSummaryFiles?.length > 0 && (
+                        <FileLoader file={previousSummaryFiles[0]} />
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
 
             <div className="mb-3">
               <label className="font-semibold mb-2 block">Summary File</label>

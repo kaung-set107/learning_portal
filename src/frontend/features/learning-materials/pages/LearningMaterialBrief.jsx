@@ -8,6 +8,9 @@ import SurveyCreateForm from "../../surveys/components/SurveyCreateForm";
 import SurveyUpdateForm from "../../surveys/components/SurveyUpdateForm";
 import SummaryForm from "../components/SummaryForm";
 import CustomButton from "../../../components/general/CustomButton";
+import QuizCreateForm from "../../quizzes/components/QuizCreateForm";
+import QuizUpdateForm from "../../quizzes/components/QuizUpdateForm";
+import LearningMaterialDetailCard from "../components/LearningMaterialDetailCard";
 
 const LearningMaterialBrief = () => {
   const { id } = useParams();
@@ -15,8 +18,10 @@ const LearningMaterialBrief = () => {
   const [learningMaterial, setLearningMaterial] = useState({});
 
   const TabOptions = [
+    { key: "detail", title: "Detail" },
     { key: "summary", title: "Summary" },
     { key: "survey", title: "Survey" },
+    { key: "quiz", title: "Quiz" },
   ];
 
   const getLearningMaterial = async () => {
@@ -54,6 +59,9 @@ const LearningMaterialBrief = () => {
         <div className="space-y-6">
           <Tabs aria-label="Options">
             <Tab key={TabOptions[0].key} title={TabOptions[0].title}>
+              <LearningMaterialDetailCard data={learningMaterial} />
+            </Tab>
+            <Tab key={TabOptions[1].key} title={TabOptions[1].title}>
               <div>
                 <SummaryForm
                   learningMaterial={learningMaterial}
@@ -61,7 +69,7 @@ const LearningMaterialBrief = () => {
                 />
               </div>
             </Tab>
-            <Tab key={TabOptions[1].key} title={TabOptions[1].title}>
+            <Tab key={TabOptions[2].key} title={TabOptions[2].title}>
               <div>
                 {!learningMaterial.survey && (
                   <SurveyCreateForm
@@ -78,6 +86,22 @@ const LearningMaterialBrief = () => {
                   />
                 )}
               </div>
+            </Tab>
+            <Tab key={TabOptions[3].key} title={TabOptions[3].title}>
+              {!learningMaterial.quiz ? (
+                <QuizCreateForm
+                  type="learningMaterial"
+                  learningMaterial={learningMaterial}
+                  successCallback={getLearningMaterial}
+                />
+              ) : (
+                <QuizUpdateForm
+                  quizData={learningMaterial.quiz}
+                  type="learningMaterial"
+                  learningMaterial={learningMaterial}
+                  successCallback={getLearningMaterial}
+                />
+              )}
             </Tab>
           </Tabs>
         </div>
