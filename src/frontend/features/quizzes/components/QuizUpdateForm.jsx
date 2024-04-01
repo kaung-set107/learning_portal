@@ -8,6 +8,7 @@ import { quizzesApi } from "../api";
 import QuestionCreateModal from "../../questions/components/QuestionCreateModal";
 import QuestionList from "../../questions/components/QuestionList";
 import { showError, showSuccess } from "../../../../util/noti";
+import { useNavigate } from "react-router-dom";
 
 const QuizUpdateForm = (props) => {
   const { type, successCallback, quizData } = props;
@@ -15,18 +16,26 @@ const QuizUpdateForm = (props) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [questions, setQuestions] = useState([]);
 
+  const navigate = useNavigate();
+
   const variant = "bordered";
 
   const status = [
     {
-      value: "finished",
-      label: "finished",
+      value: "expired",
+      label: "expired",
     },
     {
       value: "unfinished",
       label: "unfinished",
     },
   ];
+
+  const goToResult = (id) => {
+    navigate(`/by-instructor/quizzes/${id}/quiz-results`, {
+      state: { quiz: id },
+    }); 
+  };
 
   const [formData, setFormData] = useState({
     title: "testing",
@@ -121,7 +130,15 @@ const QuizUpdateForm = (props) => {
     <div>
       <Card>
         <CardBody>
-          <SubHeading title="Quiz Update Form" />
+          <div className="flex justify-between items-center">
+            <SubHeading title="Quiz Update Form" />
+            <CustomButton
+              size="sm"
+              onClick={() => goToResult(quizData._id)}
+              isLoading={isSubmitting}
+              title="Results"
+            />
+          </div>
           <form>
             <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
               <Input

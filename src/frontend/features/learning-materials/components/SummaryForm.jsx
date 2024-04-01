@@ -45,7 +45,7 @@ export default function SummaryForm(props) {
 
   useEffect(() => {
     setFormData((prev) => {
-      return { ...prev, summaryNote: learningMaterial.summaryNote };
+      return { ...prev, summaryNote: learningMaterial.summaryNote ?? '' };
     });
     setPreviousSummaryFiles(learningMaterial.summaryFile);
   }, [learningMaterial]);

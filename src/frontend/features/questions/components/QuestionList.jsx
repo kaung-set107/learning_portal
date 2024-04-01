@@ -11,7 +11,6 @@ const QuestionList = (props) => {
   const [currentQuestionData, setCurrentQuestionData] = useState({});
 
   const { questions, setQuestions } = props;
-  console.log(props);
 
   const handleEditButtonClick = (index) => {
     setCurrentQuestionData({
@@ -21,7 +20,6 @@ const QuestionList = (props) => {
   };
 
   const updateQuestions = (index) => (data) => {
-    console.log(data);
 
     setQuestions((prev) =>
       prev.map((each, i) => {
@@ -35,7 +33,6 @@ const QuestionList = (props) => {
   };
 
   const removeQuestion = (index) => {
-    console.log("here");
     setQuestions((prev) => prev.filter((each, i) => i !== index));
   };
 
@@ -86,7 +83,7 @@ const QuestionList = (props) => {
                         })}
                       </ul>
                     </div>
-                    {question.correctAnswer && (
+                    {question.correctAnswer && question.correctAnswer.length > 0 && (
                       <div>
                         <ListInfo title="Correct Answers" />
                         <ul>

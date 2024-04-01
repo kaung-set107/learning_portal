@@ -19,8 +19,8 @@ const QuizCreateForm = (props) => {
 
   const status = [
     {
-      value: "finished",
-      label: "finished",
+      value: "expired",
+      label: "expired",
     },
     {
       value: "unfinished",

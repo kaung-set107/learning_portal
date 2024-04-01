@@ -24,8 +24,8 @@ export default function QuestionUpdateModal(props) {
 
   const questionTypes = [
     { value: "trueFalse", label: "trueFalse" },
-    { value: "fillInTheBlank", label: "fillInTheBlank" },
-    { value: "openQuestion", label: "openQuestion" },
+    // { value: "fillInTheBlank", label: "fillInTheBlank" },
+    // { value: "openQuestion", label: "openQuestion" },
     { value: "multipleChoice", label: "multipleChoice" },
   ];
 
