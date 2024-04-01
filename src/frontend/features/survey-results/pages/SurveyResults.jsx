@@ -15,7 +15,6 @@ const SurveyResults = () => {
   const [isFetching, setIsFetching] = useState(true);
   const [surveyResults, setSurveyResults] = useState([]);
   const [survey, setSurvey] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -95,7 +94,7 @@ const SurveyResults = () => {
         </div>
         <div>
           <div>
-            <CustomTable src={surveyResults} tableData={tableData} isStriped />
+            <CustomTable isLoading={isFetching} src={surveyResults} tableData={tableData} isStriped />
           </div>
         </div>
       </div>

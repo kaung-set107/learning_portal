@@ -96,6 +96,8 @@ import LearningMaterialBrief from "./frontend/features/learning-materials/pages/
 import SurveyResults from "./frontend/features/survey-results/pages/SurveyResults.jsx";
 import InstructorQuizCreate from "./frontend/features/quizzes/pages/QuizCreate.jsx";
 import SurveyResult from "./frontend/features/survey-results/pages/SurveyResult.jsx";
+import QuizResults from "./frontend/features/quiz-results/pages/QuizResults.jsx";
+import InstructorQuizResult from "./frontend/features/quiz-results/pages/QuizResult.jsx";
 export default function RouteFile() {
   console.log(localStorage.getItem("user"), "local use");
   return (
@@ -216,6 +218,8 @@ export default function RouteFile() {
 
               <Route path="quizzes">
                 <Route path="create" element={<InstructorQuizCreate />}/>
+                <Route path=":id/quiz-results" element={<QuizResults />} />
+                <Route path=":id/quiz-results/:resultId" element={<InstructorQuizResult />} />
               </Route>
               {/* <Route path='/instructor' element={<InstructorHome />}></Route> */}
               {/* <Route path='/assign' element={<Assignment />}></Route> */}

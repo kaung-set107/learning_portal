@@ -123,7 +123,7 @@ const LearningMaterials = () => {
             </div>
             <div>
                 <div>
-                    <CustomTable src={learningMaterials} tableData={tableData} isStriped />
+                    <CustomTable isLoading={isFetching} src={learningMaterials} tableData={tableData} isStriped />
                 </div>
             </div>
         </div>)

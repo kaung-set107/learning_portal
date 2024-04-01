@@ -230,6 +230,7 @@ const AssignmentResults = () => {
         <div>
           <div>
             <CustomTable
+              isLoading={isFetching}
               src={assignmentResults}
               tableData={tableData}
               isStriped
