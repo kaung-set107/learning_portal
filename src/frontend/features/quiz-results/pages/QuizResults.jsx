@@ -8,22 +8,25 @@ import { quizResultsApi } from "../api";
 import { useNavigate, useParams } from "react-router-dom";
 import CustomButton from "../../../components/general/CustomButton";
 import { quizzesApi } from "../../quizzes/api";
-import { showError, showSuccess } from "../../../../util/noti";
+import { showError } from "../../../../util/noti";
+import BatchesDropdown from "../../batches/components/BatchesDropdown";
 
 const QuizResults = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isFetching, setIsFetching] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [quizResults, setQuizResults] = useState([]);
   const [quiz, setQuiz] = useState({});
-
+  const [filters, setFilters] = useState({
+    batch: "",
+  });
+  
   const navigate = useNavigate();
   const { id } = useParams();
 
   const getQuizResults = async () => {
     setIsFetching(true);
     try {
-      let res = await quizResultsApi.getAll({ quiz: quiz._id });
+      let res = await quizResultsApi.getAll({ quiz: quiz._id, batch: filters.batch?._id });
       console.log(res);
       setQuizResults(res);
     } catch (error) {
@@ -45,19 +48,23 @@ const QuizResults = () => {
     }
   };
 
-  const handleQuizResultDelete = async (id) => {
-    setIsSubmitting(true);
-    try {
-      let res = await quizResultsApi.remove({ _id: id });
-      console.log(res);
-      showSuccess({ text: res.message, type: "noti-box" });
-      getQuizResults();
-    } catch (error) {
-      showError({ axiosResponse: error });
-    } finally {
-      setIsSubmitting(false);
-    }
+  const fetchData = () => {
+    getQuizResults();
   };
+
+  // const handleQuizResultDelete = async (id) => {
+  //   setIsSubmitting(true);
+  //   try {
+  //     let res = await quizResultsApi.remove({ _id: id });
+  //     console.log(res);
+  //     showSuccess({ text: res.message, type: "noti-box" });
+  //     getQuizResults();
+  //   } catch (error) {
+  //     showError({ axiosResponse: error });
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // };
 
   const getViewButton = (resultId) => {
     return (
@@ -118,6 +125,22 @@ const QuizResults = () => {
         </div>
         <div className="flex items-center justify-between mb-12">
           <TableHeading title={`${quiz.title}'s Quiz Results`} />
+        </div>
+        <div className="flex justify-between items-center mb-3">
+          <div>
+            <BatchesDropdown
+              className="shrink-0 w-[200px]"
+              filters={filters}
+              setBatch={(value) =>
+                setFilters((prev) => ({ ...prev, batch: value }))
+              }
+            />
+          </div>
+          <CustomButton
+            onClick={() => fetchData()}
+            isLoading={isFetching}
+            title="Fetch"
+          />
         </div>
         <div>
           <div>
