@@ -73,6 +73,13 @@ const CourseDetail = (props) => {
   const [batchID, setBatchID] = useState('')
   const [studentAnswerList, setStudentAnswerList] = useState([]);
   const [responses, setResponses] = useState({});
+  const [activeTab, setActiveTab] = useState(0);
+  const [surveyDisabled, setSurveyDisabled] = useState([])
+  const handleTabChange = (index) => {
+    setActiveTab(index);
+    // Perform any action or refresh the component here
+    console.log("Tab changed to:", index);
+  };
   const upcomingMeeting = [{
     title: 'IELTs',
     date: '20-03-2024',
@@ -139,12 +146,12 @@ const CourseDetail = (props) => {
     document.body.removeChild(link);
   };
   useEffect(() => {
-    // const getCourseDetail = async () => {
-    //   await apiInstance.get("courses/" + props.id).then((res) => {
-    //     // console.log(res.data.data.subjects, "c detail");
-    //     setSubjectList(res.data.data.subjects);
-    //   });
-    // };
+    const getSurveyResult = async () => {
+      await apiInstance.get(`survey-results?student=${StudentId}&survey=${surveyData._id}`).then((res) => {
+        console.log(res.data.data, "survey res detail");
+        setSurveyDisabled(res.data.data);
+      });
+    };
     const getSubjects = async () => {
       await apiInstance.get("subjects").then((res) => {
         // console.log(
@@ -169,7 +176,7 @@ const CourseDetail = (props) => {
     };
     getEnrol();
     getSubjects();
-    // getCourseDetail();
+    getSurveyResult()
   }, []);
 
   const handleBack = () => {
@@ -181,8 +188,8 @@ const CourseDetail = (props) => {
 
 
 
-  const handleVideo = (data) => {
-
+  const handleVideo = (data, index) => {
+    setActiveTab(prevKey => prevKey + 1);
     console.log(data, "heee");
     setQuizID(data.quiz);
 
@@ -193,6 +200,7 @@ const CourseDetail = (props) => {
     setSurveyData(data.survey)
     console.log(data, 'lm da')
     setShowVideo(true);
+
   };
 
   const handleResult = () => {
@@ -323,7 +331,7 @@ const CourseDetail = (props) => {
                           {/* Lock or Default Check */}
                           {e.showToStudent ? (
                             <div
-                              onClick={() => handleVideo(e)}
+                              onClick={() => handleVideo(e, index)}
                               className='py-2 hover:cursor-pointer'
                             >
                               <div className='flex gap-2 justify-between px-4 py-3 align-[center] m-auto text-sm w-[362px] h-[60px] bg-[#EBF0FF] rounded-[8px]'>
@@ -435,13 +443,15 @@ const CourseDetail = (props) => {
                   </div>
                   <div className='flex w-full flex-col pt-[20px]'>
                     <Tabs
-                      defaultSelectedKey='sum'
+
                       variant='light'
                       color='primary'
                       radius='full'
-                      aria-label='Options'
+                      defaultSelectedKey={activeTab !== 0 ? 'sum' : ''}
+
+
                     >
-                      <Tab title='Summary' key='sum'>
+                      <Tab title='Summary' value={0} key='sum'>
                         <div className='bg-[#EBF0FF] text-[#001769] rounded-lg w-full h-[auto] p-[20px] flex flex-col gap-2'>
 
                           <span className='w-[902px] h-[24px] text-[12px] sm:text-[16px] font-semibold'>
@@ -540,7 +550,7 @@ const CourseDetail = (props) => {
                         </div>
 
                       </Tab>
-                      <Tab title='Survey' key='suv'>
+                      <Tab title='Survey' value={1} key='suv'>
 
                         <div className='flex flex-col gap-10'>
                           <div className='flex flex-col gap-2 pt-5'>
@@ -550,40 +560,45 @@ const CourseDetail = (props) => {
                             </span>
                           </div>
 
-                          {surveyData?.questions.map((item, index) => (
-                            <div className='bg-[#EBF0FF] rounded-lg w-full h-[auto] p-[16px]'>
+                          {surveyDisabled[0]?.survey?._id === surveyData?._id ? (
+                            <div className='bg-slate-200 rounded-lg p-10 shadow-md '>
+                              <span className='text-[25px] font-semibold '>Your survey is already taken!.</span>
+                            </div>
+                          ) : (
+                            surveyData?.questions.map((item, index) => (
+                              <div className='bg-[#EBF0FF] rounded-lg w-full h-[auto] p-[16px]'>
 
-                              <p className=''>
-                                {/* To show question */}
-                                <span className='text-[16px] font-semibold text-[#0025A9]'>
-                                  {item?.question}
-                                </span>
+                                <p className=''>
+                                  {/* To show question */}
+                                  <span className='text-[16px] font-semibold text-[#0025A9]'>
+                                    {item?.question}
+                                  </span>
 
 
-                                <>
-                                  {item.type === 'trueFalse' ? (
-                                    < div
-                                      key={item._id}
-                                      className='text-lg font-semibold ml-10'
+                                  <>
+                                    {item.type === 'trueFalse' ? (
+                                      < div
+                                        key={item._id}
+                                        className='text-lg font-semibold ml-10'
 
-                                    >
+                                      >
 
-                                      <div className='flex flex-col gap-2'>
-                                        {/* True False Quiz */}
-                                        {item.options.map((ans) => (
+                                        <div className='flex flex-col gap-2'>
+                                          {/* True False Quiz */}
+                                          {item.options.map((ans) => (
 
-                                          <label className='flex gap-2'>
-                                            <input
-                                              type="radio"
-                                              name={item._id}
-                                              value={ans.answer}
-                                              onChange={() => handleAns(item, ans.answer)}
-                                              checked={responses[item._id] === ans.answer}
-                                            />
-                                            {ans.answer}
-                                          </label>
-                                        ))}
-                                        {/* <label className='flex gap-2'>
+                                            <label className='flex gap-2'>
+                                              <input
+                                                type="radio"
+                                                name={item._id}
+                                                value={ans.answer}
+                                                onChange={() => handleAns(item, ans.answer)}
+                                                checked={responses[item._id] === ans.answer}
+                                              />
+                                              {ans.answer}
+                                            </label>
+                                          ))}
+                                          {/* <label className='flex gap-2'>
                                           <input
                                             type="radio"
                                             name={item._id}
@@ -594,70 +609,72 @@ const CourseDetail = (props) => {
                                         </label> */}
 
 
-                                        &nbsp;
-                                        {/* 
+                                          &nbsp;
+                                          {/* 
                                           {ans.answer} */}
 
+                                        </div>
+
                                       </div>
+                                    ) : (
+                                      < div
+                                        key={ind}
+                                        className='text-lg font-semibold ml-10'
+                                        onChange={() =>
+                                          handleAns(
+                                            i,
+                                            e,
+                                            item,
 
-                                    </div>
-                                  ) : (
-                                    < div
-                                      key={ind}
-                                      className='text-lg font-semibold ml-10'
-                                      onChange={() =>
-                                        handleAns(
-                                          i,
-                                          e,
-                                          item,
+                                          )
+                                        }
+                                      >
 
-                                        )
-                                      }
-                                    >
+                                        <div>
 
-                                      <div>
-
-                                        {/* Multiple Choice Quiz */}
-                                        <input
-                                          type='checkbox'
-                                          name='answer_group'
-                                          value={ans.answer}
-                                          // checked={multiAns.map((i, ind) => (selectedItem.map((e, ine) => (ine === ind))))}
-                                          // disabled={
-                                          //   number >= quizList.questions[counter].correctAnswer?.length ? true : ''
+                                          {/* Multiple Choice Quiz */}
+                                          <input
+                                            type='checkbox'
+                                            name='answer_group'
+                                            value={ans.answer}
+                                            // checked={multiAns.map((i, ind) => (selectedItem.map((e, ine) => (ine === ind))))}
+                                            // disabled={
+                                            //   number >= quizList.questions[counter].correctAnswer?.length ? true : ''
 
 
+                                            // }
+                                            className='w-[15px] h-[15px]'
+                                          // onClick={(event) =>
+                                          //   handleCheckboxSelect(event,
+
+                                          //     i,
+                                          //     e,
+                                          //     quizList.questions[counter].correctAnswer,
+                                          //     counter,
+                                          //     quizList.questions[counter].mark,
+                                          //     quizList.questions[counter]._id
+                                          //   )
                                           // }
-                                          className='w-[15px] h-[15px]'
-                                        // onClick={(event) =>
-                                        //   handleCheckboxSelect(event,
+                                          />
 
-                                        //     i,
-                                        //     e,
-                                        //     quizList.questions[counter].correctAnswer,
-                                        //     counter,
-                                        //     quizList.questions[counter].mark,
-                                        //     quizList.questions[counter]._id
-                                        //   )
-                                        // }
-                                        />
+                                          &nbsp;
 
-                                        &nbsp;
+                                          {ans.answer}
 
-                                        {ans.answer}
+                                        </div>
 
-                                      </div>
-
-                                    </div>)}
+                                      </div>)}
 
 
-                                </>
+                                  </>
 
 
-                                {/* To show answer radio */}
-                              </p>
-                            </div>
-                          ))}
+                                  {/* To show answer radio */}
+                                </p>
+                              </div>
+                            ))
+                          )}
+
 
 
                         </div>
@@ -665,12 +682,17 @@ const CourseDetail = (props) => {
                           {/* <Button color='primary' variant='bordered' onClick={handleClear}>
                             Cancel
                           </Button> */}
-                          <Button color='primary' onClick={handleResult}>Submit</Button>
+                          {surveyDisabled[0]?.survey?._id === surveyData?._id ? (
+                            ''
+                          ) : (
+                            <Button color='primary' onClick={handleResult}>Submit</Button>
+                          )}
+
                         </div>
 
 
                       </Tab>
-                      <Tab title='Review and Feedback' key='r&f'>
+                      <Tab title='Review and Feedback' value={2} key='r&f'>
                         <div className='pt-[24px]'>
                           <label className='text-[24px] font-bold text-[#0025A9]'>
                             Title
@@ -688,12 +710,12 @@ const CourseDetail = (props) => {
                           </div>
                         </div>
                       </Tab>
-                      <Tab title='Quiz' key='quiz'>
+                      <Tab title='Quiz' value={3} key='quiz'>
                         {/* Quiz Page */}
 
                         <QuizPage QuizID={QuizID} enrollID={enrollID} batchID={batchID} />
                       </Tab>
-                      <Tab title='Class' key='class'>
+                      <Tab title='Class' value={4} key='class'>
 
                         <div className='flex flex-col gap-10'>
 

@@ -29,6 +29,7 @@ export default function Result() {
   const [LMList, setLMList] = useState([]);
   const [subList, setSubList] = useState([]);
   const [quizNavigationID, setQuizNavigationID] = useState("");
+  const [originMark, setOriginMark] = useState('')
   // console.log(quizID, 'id')
 
   useEffect(() => {
@@ -50,6 +51,7 @@ export default function Result() {
 
         // console.log(res.data.data.filter(el=>el?.student === dataFromLocalStorage)[res.data.data.filter(el=>el?.student === dataFromLocalStorage).length - 1],'result')
         setQuizList(res.data.data);
+
         //   setPages(res.data._metadata.page_count)
       });
     };
@@ -72,36 +74,42 @@ export default function Result() {
     getStudent();
 
     const getResult = async () => {
-      await apiInstance.get("quiz-results").then((res) => {
+      await apiInstance.get(`quiz-results`).then((res) => {
         console.log(res.data.data, 'res quiz mul')
         setQuizID(
-          res.data.data.filter((el) => el.student === dataFromLocalStorage)[
-            res.data.data.filter((el) => el?.student === dataFromLocalStorage)
+          res.data.data.filter((el) => el.student?._id === dataFromLocalStorage)[
+            res.data.data.filter((el) => el?.student?.id === dataFromLocalStorage)
               .length - 1
-          ].quiz
+          ]?.quiz
         );
-        // console.log(
-        //   res.data.data.filter((el) => el?.student === dataFromLocalStorage)[
-        //     res.data.data.filter((el) => el?.student === dataFromLocalStorage)
-        //       .length - 1
-        //   ],
-        //   "result"
-        // );
+        console.log(
+          res.data.data.filter((el) => el.student?._id === dataFromLocalStorage)[
+            res.data.data.filter((el) => el?.student?._id === dataFromLocalStorage)
+              .length - 1
+          ]?.quiz,
+          "result"
+        );
         const timer = setTimeout(() => {
           setQuizResult(
-            res.data.data.filter((el) => el?.student === dataFromLocalStorage)[
-            res.data.data.filter((el) => el?.student === dataFromLocalStorage)
+            res.data.data.filter((el) => el?.student?._id === dataFromLocalStorage)[
+            res.data.data.filter((el) => el?.student?._id === dataFromLocalStorage)
               .length - 1
             ]
           );
         }, 5000);
 
         setUpdatedQuestionList(
-          res.data.data.filter((el) => el?.student === dataFromLocalStorage)[
-            res.data.data.filter((el) => el?.student === dataFromLocalStorage)
+          res.data.data.filter((el) => el?.student?._id === dataFromLocalStorage)[
+            res.data.data.filter((el) => el?.student?._id === dataFromLocalStorage)
               .length - 1
           ].updatedQuestions
         );
+        const marks = res.data.data.filter((el) => el?.student?._id === dataFromLocalStorage)[
+          res.data.data.filter((el) => el?.student?._id === dataFromLocalStorage)
+            .length - 1
+        ].updatedQuestions
+
+        setOriginMark(marks.reduce((acc, val) => acc + val.mark, 0))
         return () => clearTimeout(timer);
         //   setPages(res.data._metadata.page_count)
       });
@@ -133,7 +141,7 @@ export default function Result() {
   return (
     <>
       <Nav />
-      {quizResult.status ? (
+      {quizResult?.status ? (
         <div className='mx-auto mt-5 mb-5'>
           <div className='py-3 mt-3 flex flex-row gap-5'>
             <Tooltip content='Back to Quiz '>
@@ -201,9 +209,7 @@ export default function Result() {
                 </span>
                 <span className='text-[20px] text-[#000] font-bold'>
                   {quizResult.totalMark} /{" "}
-                  {quizList
-                    .filter((el) => el._id === quizID)
-                    .map((i) => i.totalMark)}
+                  {originMark}
                 </span>
               </div>
               {/* 6 */}
@@ -215,18 +221,14 @@ export default function Result() {
                   {/* 5.67 out of 10.00 (57%) */}
                   {(
                     (((quizResult.totalMark /
-                      quizList
-                        .filter((el) => el._id === quizID)
-                        .map((i) => i.totalMark)) *
+                      originMark) *
                       100) /
                       100) *
                     10
                   )?.toFixed(2)}{" "}
                   out of 10.00 (
                   {Math.round((quizResult.totalMark /
-                    quizList
-                      .filter((el) => el._id === quizID)
-                      .map((i) => i.totalMark)) *
+                    originMark) *
                     100)}
                   %)
                 </span>

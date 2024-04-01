@@ -281,7 +281,7 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
   };
 
   const handleCheckboxSelect = (event, index, data, correct, counter, mark, counterId) => {
-
+    setNextAnswer(false);
     setIndex(index + 1);
     // console.log(counter, 'll')
 
