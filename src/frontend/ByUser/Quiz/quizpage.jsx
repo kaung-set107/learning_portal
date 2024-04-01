@@ -14,7 +14,8 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
   const a = ['a', 'b']
   const b = ['a', 'b', 'c']
   const [arr, setArr] = useState([]);
-  const [timeLeft, setTimeLeft] = useState("");
+  const [timeLeft, setTimeLeft] = useState('');
+  const [timer, setTimer] = useState(0);
   const [clicked, setClicked] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
   const [index, setIndex] = useState("");
 
   const [selectedOption, setSelectedOption] = useState("");
-  const [selectedCheckbox, setSelectedCheckbox] = useState("");
+  const [disabledQuiz, setDisabledQuiz] = useState([]);
   const [showResult, setShowResult] = useState(false);
   const [oneHour, setOneHour] = useState("");
   const [showTimer, setShowTimer] = useState(false);
@@ -89,31 +90,59 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
 
       });
     };
+
+    const getQuizRes = async () => {
+      await apiInstance.get(`quiz-results?student=${studentID}&batch=${batchID}&quiz=${QuizID}`).then((res) => {
+        // console.log(res.data.data, 'quiz res List')
+        setDisabledQuiz(res.data.data)
+
+      });
+    };
+    getQuizRes();
     getQuiz();
 
 
     const dataFromLocalStorage = localStorage.getItem("id");
     setStudentID(dataFromLocalStorage);
 
-  }, [count]);
+    let interval = null;
+    if (showTimer) {
+      interval = setInterval(() => {
+        setTimer(prevTimer => {
+          if (prevTimer >= 30) {
+            handleResult();// Stop the timer when it reaches 30 seconds
+            return prevTimer; // Return current timer value
+          } else {
+            return prevTimer + 1; // Increment timer value by 1 second
+          }
+        });
+      }, 1000);
+    } else {
+      clearInterval(interval);
+    }
+
+    return () => clearInterval(interval);
+
+
+  }, [count, showTimer]);
+
 
   const handleStart = () => {
-    setShowTimer(true);
+    // setShowTimer(true);
+    setShowTimer(prev => !prev);
+    // const timerInterval = setInterval(() => {
+    //   setTimeLeft((prevTime) => {
+    //     if (prevTime === 0) {
+    //       clearInterval(timerInterval);
 
-    const timerInterval = setInterval(() => {
-      setTimeLeft((prevTime) => {
-        if (prevTime === 0) {
-          clearInterval(timerInterval);
+    //       nextQuestion();
+    //       return 10; // Reset timer for the next question
+    //     }
+    //     return prevTime - 1;
+    //   });
+    // }, 1000);
 
-          nextQuestion();
-          return 10; // Reset timer for the next question
-        }
-        return prevTime - 1;
-      });
-    }, 1000);
-
-    // Clear interval when the component unmounts or when moving to the next question
-    return () => clearInterval(timerInterval);
+    // return () => clearInterval(timerInterval);
   };
 
   const nextQuestion = (studentAnswer, cas, ind) => {
@@ -360,9 +389,9 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
   }
 
 
-
   const displayMinutes = Math.floor(timeLeft / 60);
   const displaySeconds = timeLeft % 60;
+
   return (
     <div className='mx-auto'>
       {showOrigin && (
@@ -376,15 +405,24 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
                 <Button color='primary' variant='bordered'>
                   Cancel
                 </Button>
-                {quizList.questions ? (
-                  <Button color='primary' onClick={handleStart}>
-                    Start Quiz
-                  </Button>
+                {disabledQuiz[0]?.student?._id === studentID ? (
+                  <div>
+                    <Button color='default' className='cursor-not-allowed'>
+                      Start Quiz
+                    </Button>
+                  </div>
                 ) : (
-                  <Button color='light'>
-                    Start Quiz <Spinner size='sm' />
-                  </Button>
+                  quizList.questions ? (
+                    <Button color='primary' checked={showTimer} onClick={handleStart}>
+                      Start Quiz
+                    </Button>
+                  ) : (
+                    <Button color='light'>
+                      Start Quiz <Spinner size='sm' />
+                    </Button>
+                  )
                 )}
+
               </div>
             </div>
           )}
@@ -402,9 +440,7 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
                       {quizList.questions[counter].mark}{" "}
                     </span>
                     <span className='p-[20px] text-[20px] font-light'>
-                      Time : {displayMinutes < 10 ? "0" : ""}
-                      {displayMinutes}:{displaySeconds < 10 ? "0" : ""}
-                      {displaySeconds}
+                      Time :{timer}
                     </span>
                   </div>
 

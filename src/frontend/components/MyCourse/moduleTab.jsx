@@ -27,6 +27,7 @@ import ExcelPhoto from "../../ByInstructor/images/excel.png";
 import PdfPhoto from "../../ByInstructor/images/pdf.png";
 import ZoomPic from '../../../assets/img/pic.jpg'
 import Loading from '../../../assets/img/finalloading.gif'
+import Swal from "sweetalert2";
 import {
   faSquarePlus,
   faCalendarDays,
@@ -75,11 +76,7 @@ const CourseDetail = (props) => {
   const [responses, setResponses] = useState({});
   const [activeTab, setActiveTab] = useState(0);
   const [surveyDisabled, setSurveyDisabled] = useState([])
-  const handleTabChange = (index) => {
-    setActiveTab(index);
-    // Perform any action or refresh the component here
-    console.log("Tab changed to:", index);
-  };
+
   const upcomingMeeting = [{
     title: 'IELTs',
     date: '20-03-2024',
@@ -147,8 +144,8 @@ const CourseDetail = (props) => {
   };
   useEffect(() => {
     const getSurveyResult = async () => {
-      await apiInstance.get(`survey-results?student=${StudentId}&survey=${surveyData._id}`).then((res) => {
-        console.log(res.data.data, "survey res detail");
+      await apiInstance.get(`survey-results?student=${StudentId}&survey=${surveyData._id}&batch=${batchID}`).then((res) => {
+        // console.log(res.data.data, "survey res detail");
         setSurveyDisabled(res.data.data);
       });
     };
@@ -177,7 +174,7 @@ const CourseDetail = (props) => {
     getEnrol();
     getSubjects();
     getSurveyResult()
-  }, []);
+  }, [surveyDisabled, surveyData, activeTab]);
 
   const handleBack = () => {
     navigate("/course-detail", { state: { data: courseData } });
@@ -189,8 +186,8 @@ const CourseDetail = (props) => {
 
 
   const handleVideo = (data, index) => {
-    setActiveTab(prevKey => prevKey + 1);
-    console.log(data, "heee");
+    setActiveTab(1);
+    // console.log(data, "heee");
     setQuizID(data.quiz);
 
     setShowVideoList(JSON.parse(data.video));
@@ -198,14 +195,14 @@ const CourseDetail = (props) => {
     // console.log(data.assets, "document");
     setLMDataList(data);
     setSurveyData(data.survey)
-    console.log(data, 'lm da')
+    // console.log(data, 'lm da')
     setShowVideo(true);
 
   };
 
   const handleResult = () => {
 
-    console.log(studentAnswerList, 'studentAnswerList');
+    // console.log(studentAnswerList, 'studentAnswerList');
 
     // console.log(studentAnswerList.filter(el => quizList.questions.find(i => i._id === el.id)), 'studentAnswerList')
     //Quiz-Result Create
@@ -215,7 +212,7 @@ const CourseDetail = (props) => {
 
       survey: surveyData._id,
       student: StudentId,
-
+      batch: batchID,
       answerDate: Date.now(),
       updatedQuestions: surveyData.questions.map((i) => {
         return {
@@ -234,7 +231,14 @@ const CourseDetail = (props) => {
     apiInstance
       .post("survey-results", data)
       .then(function () {
-
+        Swal.fire({
+          icon: "success",
+          title: "Successful",
+          text: "Created survey!",
+          showConfirmButton: false,
+          showCancelButton: false,
+          timer: 3000
+        });
         // navigate("/quiz-result");
       })
       .catch((error) => {
@@ -260,12 +264,7 @@ const CourseDetail = (props) => {
     // }, 'final else radio')
   };
 
-  const handleClear = () => {
-    setResponses({
-      ...responses,
-      [item._id]: ''
-    });
-  }
+
 
   return (
     <>
@@ -325,7 +324,7 @@ const CourseDetail = (props) => {
                     //     <FontAwesomeIcon icon={faDesktop} size='xl' />
                     //   }
                     >
-                      {console.log(item.learningMaterials, 'lm data two')}
+
                       {item.learningMaterials.map((e) => (
                         <>
                           {/* Lock or Default Check */}
@@ -447,10 +446,11 @@ const CourseDetail = (props) => {
                       variant='light'
                       color='primary'
                       radius='full'
-                      defaultSelectedKey={activeTab !== 0 ? 'sum' : ''}
+                      defaultSelectedKey='sum'
 
 
                     >
+
                       <Tab title='Summary' value={0} key='sum'>
                         <div className='bg-[#EBF0FF] text-[#001769] rounded-lg w-full h-[auto] p-[20px] flex flex-col gap-2'>
 
