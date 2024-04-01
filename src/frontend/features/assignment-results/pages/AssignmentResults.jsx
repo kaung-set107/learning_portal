@@ -75,8 +75,8 @@ const AssignmentResults = () => {
   const getAssignmentResults = async (defaultPayload) => {
     let payload = {
       ...{
-        assignment: filters.assignment._id,
-        batch: filters.batch._id,
+        assignment: filters.assignment?._id,
+        batch: filters.batch?._id,
         status: filters.status,
       },
       ...defaultPayload,
@@ -178,7 +178,7 @@ const AssignmentResults = () => {
               setFilters((prev) => ({ ...prev, subject: value }))
             }
           />
-          {filters.subject._id && (
+          {filters.subject && filters.subject?._id && (
             <BatchesDropdown
               className="shrink-0 w-[200px]"
               filters={filters}
@@ -187,7 +187,7 @@ const AssignmentResults = () => {
               }
             />
           )}
-          {filters.subject._id && (
+          {filters.subject && filters.subject?._id && (
             <AssignmentsDropdown
               subject={filters.subject._id}
               className="shrink-0 w-[200px]"
@@ -209,13 +209,13 @@ const AssignmentResults = () => {
           {<Chip>Status: {filters.status}</Chip>}
           {
             <>
-              {Object.keys(filters.assignment).length > 0 && (
+              {filters.assignment && Object.keys(filters.assignment).length > 0 && (
                 <Chip>Assignment: {filters.assignment.title}</Chip>
               )}
-              {Object.keys(filters.batch).length > 0 && (
+              {filters.batch && Object.keys(filters.batch).length > 0 && (
                 <Chip>Batch: {filters.batch.name}</Chip>
               )}
-              {Object.keys(filters.subject).length > 0 && (
+              {filters.subject && Object.keys(filters.subject).length > 0 && (
                 <Chip>Subject: {filters.subject.title}</Chip>
               )}
               <button

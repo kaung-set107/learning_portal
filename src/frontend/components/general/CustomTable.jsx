@@ -7,11 +7,9 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Button,
 } from "@nextui-org/react";
 import { useMemo, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import ProgressBar from "../general/ProgressBar";
 import Loading from "./Loading";
 
 export default function CustomTable(props) {
@@ -37,21 +35,25 @@ export default function CustomTable(props) {
 
   return (
     <>
+      <div className="relative">
+        {
+          isLoading && (
+            <>
+              <div className="w-full h-full backdrop-blur z-10 absolute top-0"></div>
+              <div className="bg-white p-3 flex items-center justify-center shadow border absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 z-20">
+                <div className="text-center">
+                  <div className="mb-3">
+                    <Loading />
+                  </div>
+                  <span>Loading New Data</span>
+                </div>
+              </div>
+            </>
+          )
+        }
       <Table
         {...args}
         aria-label="Example table with client side pagination"
-        bottomContent={
-          <div className="flex w-full justify-center">
-            <Pagination
-              showControls
-              showShadow
-              color="secondary"
-              page={page}
-              total={getTotal()}
-              onChange={(page) => setPage(page)}
-            />
-          </div>
-        }
         classNames={{
           wrapper: "min-h-[222px] relative",
         }}
@@ -66,21 +68,7 @@ export default function CustomTable(props) {
           })}
         </TableHeader>
         <TableBody
-          isLoading={isLoading}
-          loadingContent={
-            <>
-            <div className="backdrop-blur w-full h-full absolute top-0">
-            </div>
-            <div className="bg-white p-3 flex items-center justify-center shadow border absolute z-10">
-              <div className="text-center">
-                <div className="mb-3">
-                <Loading />
-                </div>
-                <span>Loading New Data</span>
-              </div>
-            </div>
-            </>
-          }
+          // className="overflow-scroll"
           emptyContent={"No rows to display."}
         >
           {items.map((each) => {
@@ -104,6 +92,19 @@ export default function CustomTable(props) {
           })}
         </TableBody>
       </Table>
+      </div>
+      <div className="flex justify-between">
+        <div className="inline-block mx-auto my-3 p-3 rounded-xl border shadow">
+          <Pagination
+            showControls
+            showShadow
+            color="secondary"
+            page={page}
+            total={getTotal()}
+            onChange={(page) => setPage(page)}
+          />
+        </div>
+      </div>
     </>
   );
 }

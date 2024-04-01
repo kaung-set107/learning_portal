@@ -48,6 +48,7 @@ const AssignmentsDropdown = (props) => {
         items={assignments.data}
         color="primary"
         label="Assignment"
+        selectedKeys={[filters.assignment?._id]}
         placeholder={assignments?.data?.length > 0 ? `Select an assignment` : 'No Assignment!'}
         className="max-w-xs"
         onSelectionChange={e => handleAssignmentSelect(e.currentKey)}
