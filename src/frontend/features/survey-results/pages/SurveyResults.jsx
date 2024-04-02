@@ -9,12 +9,16 @@ import { useNavigate, useParams } from "react-router-dom";
 import CustomButton from "../../../components/general/CustomButton";
 import { surveysApi } from "../../surveys/data";
 import { showError } from "../../../../util/noti";
+import BatchesDropdown from "../../batches/components/BatchesDropdown";
 
 const SurveyResults = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isFetching, setIsFetching] = useState(true);
   const [surveyResults, setSurveyResults] = useState([]);
   const [survey, setSurvey] = useState({});
+  const [filters, setFilters] = useState({
+    batch: "",
+  });
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -22,7 +26,7 @@ const SurveyResults = () => {
   const getSurveyResults = async () => {
     setIsFetching(true);
     try {
-      let res = await surveyResultsApi.getAll({ survey: survey._id });
+      let res = await surveyResultsApi.getAll({ survey: survey._id, batch: filters.batch?._id });
       console.log(res);
       setSurveyResults(res);
     } catch (error) {
@@ -42,6 +46,9 @@ const SurveyResults = () => {
       console.log(error);
       showError({ axiosResponse: error });
     }
+  };
+  const fetchData = () => {
+    getSurveyResults();
   };
 
   const getViewButton = (resultId) => {
@@ -89,12 +96,34 @@ const SurveyResults = () => {
         <div className="flex items-center justify-between mb-12">
           <CustomButton type="back" title={`Back to Learning Material`} />
         </div>
+
+        <div className="flex justify-between items-center mb-3">
+          <div>
+            <BatchesDropdown
+              className="shrink-0 w-[200px]"
+              filters={filters}
+              setBatch={(value) =>
+                setFilters((prev) => ({ ...prev, batch: value }))
+              }
+            />
+          </div>
+          <CustomButton
+            onClick={() => fetchData()}
+            isLoading={isFetching}
+            title="Fetch"
+          />
+        </div>
         <div className="flex items-center justify-between mb-12">
           <TableHeading title={`${survey.title}'s Survey Results`} />
         </div>
         <div>
           <div>
-            <CustomTable isLoading={isFetching} src={surveyResults} tableData={tableData} isStriped />
+            <CustomTable
+              isLoading={isFetching}
+              src={surveyResults}
+              tableData={tableData}
+              isStriped
+            />
           </div>
         </div>
       </div>

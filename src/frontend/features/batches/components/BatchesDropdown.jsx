@@ -13,7 +13,7 @@ const BatchesDropdown = (props) => {
   const getBatches = async () => {
     setIsLoading(true);
     try {
-      let res = await batchesApi.getAll({ subject: filters.subject._id });
+      let res = await batchesApi.getAll({ course: filters.subject?.course });
       setBatches(res);
     } catch (error) {
       console.log(error);
@@ -32,6 +32,7 @@ const BatchesDropdown = (props) => {
   }, []);
 
   useEffect(() => {
+    console.log('hers')
     getBatches();
   }, [filters.subject]);
 
@@ -51,6 +52,7 @@ const BatchesDropdown = (props) => {
           placeholder={
             batches?.data?.length > 0 ? `Select a batch` : "No batch!"
           }
+          selectedKeys={[filters.batch?._id]}
           className="max-w-xs"
           onSelectionChange={(e) => handleBatchSelect(e.currentKey)}
         >

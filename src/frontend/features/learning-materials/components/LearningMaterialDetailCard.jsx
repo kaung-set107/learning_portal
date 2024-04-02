@@ -28,7 +28,7 @@ const LearningMaterialDetailCard = (props) => {
                     <>
                       <span className="mr-3 font-bold">{lindex + 1}</span>
                       <div
-                        key={uuidv4}
+                        key={uuidv4()}
                         className="p-2 inline-block bg-white rounded-xl border"
                       >
                         <ListDetail title={`${link.links}`} />
@@ -42,7 +42,6 @@ const LearningMaterialDetailCard = (props) => {
               <ListInfo className="min-w-[200px]" title="Video" />
               <div>
                 <div
-                  key={uuidv4}
                   className="p-2 inline-block bg-white rounded-xl border"
                 >
                   <ListDetail title={JSON.parse(data.video)[0].links} />

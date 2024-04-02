@@ -29,7 +29,7 @@ const SubjectBrief = () => {
   const TabOptions = [
     { key: "assignment", title: "Assignment" },
     { key: "subject-sections", title: "Subject Sections" },
-    { key: "exam", title: "Exam" },
+    // { key: "exam", title: "Exam" },
   ];
 
   const getSubject = async () => {
@@ -240,7 +240,7 @@ const SubjectBrief = () => {
                   </div>
                 </div>
               </Tab>
-              <Tab key={TabOptions[2].key} title={TabOptions[2].title}>
+              {/* <Tab key={TabOptions[2].key} title={TabOptions[2].title}>
                 <div>
                   <div className="flex items-center justify-between pb-3">
                     <SubHeading title="Exams" className="mb-3" />
@@ -265,7 +265,7 @@ const SubjectBrief = () => {
                     })}
                   </div>
                 </div>
-              </Tab>
+              </Tab> */}
             </Tabs>
           </div>
         </div>

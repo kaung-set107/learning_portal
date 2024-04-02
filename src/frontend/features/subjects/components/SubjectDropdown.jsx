@@ -45,7 +45,7 @@ const SubjectsDropdown = (props) => {
         <Select
           {...args}
           items={subjects.data}
-          selectedKeys={[filters.subject._id]}
+          selectedKeys={[filters?.subject?._id]}
           color="primary"
           label="Subject"
           placeholder="Select an subject"
