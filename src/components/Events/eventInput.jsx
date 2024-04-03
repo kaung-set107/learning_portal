@@ -6,6 +6,7 @@ import { faCircleChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Select, SelectItem } from '@nextui-org/select'
+import FileBase64 from 'react-file-base64';
 export default function Event() {
     const variant = 'bordered';
     const [title, setTitle] = useState("");
@@ -17,32 +18,23 @@ export default function Event() {
     const [subTitle, setSubTitle] = useState('')
     const [startDate, setStartDate] = useState('')
     const [endDate, setEndDate] = useState('')
-    const handleImage = (e) => {
-        if (e.target.files) {
-            setImage(e.target.files[0]);
-            console.log(e.target.files, "file");
-        }
-    };
+    const [listData, setListData] = useState({})
+
+
     const create = () => {
-        const formData = new FormData();
-
-        formData.append("title", title);
-        formData.append("description", description);
-        formData.append("image", image);
-        formData.append("subTitle", subTitle);
-        formData.append("location", location);
-        formData.append("venue", venue);
-        formData.append("remark", remark);
-        formData.append("startDate", startDate);
-        formData.append("endDate", endDate);
-
-
+        const data = {
+            title: title,
+            description: description,
+            image: listData.selectedFile?.split('base64,')[1],
+            subTitle: subTitle,
+            location: location,
+            venue: venue,
+            remark: remark,
+            startDate: startDate,
+            endDate: endDate
+        }
         apiInstance
-            .post("events", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            })
+            .post("events", data)
             .then(function () {
                 Swal.fire({
                     icon: "success",
@@ -94,16 +86,9 @@ export default function Event() {
                         onChange={(e) => setLocation(e.target.value)}
                     />
                 </div>
-                <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+                <div className='flex flex-col w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-2 sm:gap-4'>
                     <label className='text-sm font-semibold'>Event Photo</label>
-                    <Input
-                        type='file'
-                        onChange={handleImage}
-                        multiple
-                        placeholder=' '
-                        labelPlacement='outside'
-                        variant={variant}
-                    />
+                    <FileBase64 type="file" multiple={false} onDone={({ base64 }) => setListData({ ...listData, selectedFile: base64 })} />
                 </div>
                 <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
                     <label className='text-sm font-semibold'>Start Date</label>

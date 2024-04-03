@@ -112,7 +112,8 @@ export default function Login() {
             showConfirmButton: false,
             timer: 3000,
           });
-          navigate("/home");
+          navigate("/instru");
+          window.location.reload()
           setLoading(false);
           return setArr(res.data.data);
         }

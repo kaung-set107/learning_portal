@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import MSINav from "./msinav";
 import { Testimonials } from "./home_components/Testimonials";
 import Welcome from "../../assets/img/welcomeTeam.jpg";
+import Thingyan from "../../assets/img/thing.jpg";
 import EHome from "../../assets/img/EllipseHome.png";
 import EHalf from "../../assets/img/EllipseHalf.png";
 import EBlue from "../../assets/img/EllipseHalf-blue.png";
@@ -17,7 +18,7 @@ import { useNavigate } from "react-router";
 
 
 // Define the animation for the text
-import { Wave } from 'react-animated-text';
+// import { Wave } from 'react-animated-text';
 
 const Body = () => {
   const navigate = useNavigate();
@@ -25,13 +26,8 @@ const Body = () => {
   const [catList, setCatList] = useState([]);
   const [value, setValue] = useState("");
   const [id, setId] = useState("");
-  const [events, setEvents] = useState([
-    {
-      _id: "1",
-      title: "MSI Academy Education Center - Graduration Ceremony",
-      createdAt: "November 12, 2022",
-      shortDescription: "GRADUATION CEREMONY",
-    },
+  const [eventList, setEventList] = useState([
+
   ]);
 
   useEffect(() => {
@@ -53,6 +49,16 @@ const Body = () => {
       });
     };
 
+    const getEvent = async () => {
+      await apiInstance.get(`events`).then((res) => {
+        // console.log(res.data.data, "ev res");
+        setEventList(res.data.data);
+        // const count = res.data.data.filter((el) => el.subjects.length);
+        // console.log(count, "count");
+      });
+    };
+
+    getEvent();
     getCat();
 
     getAssign();
@@ -75,19 +81,18 @@ const Body = () => {
           alt=''
         />
 
-        <div className='w-full px-5 md:m-0 lg:w-[490px] leading-[60px] mt-10'>
+        {/* <img
+          src={Thingyan}
+          className='absolute top-0 left-0 z-0 w-[150px] md:w-[250px]'
+          alt=''
+        /> */}
+        {/* <div className='w-full px-5 md:m-0 lg:w-[490px] leading-[60px] mt-10'>
           <h1
             className='text-[50px] text-secondary font-[semibold] '
             style={{ color: "#BC1F40", fontWeight: "900" }}
           >
-            <Wave
-              effectDelay='1'
-              paused={location.pathname === '/' ? false : true}
-
-              text='Welcome To MSI Academy'
-              effect="stretch" effectChange={2}
-            />
-
+        
+            Welcome To MSI Academy
           </h1>
           <p className='font-[regular] text-xl w-full md:w-[90%]'>
             MSI Academy, Myanmar Scholastic Innovation Academy, is fulfilling
@@ -97,9 +102,9 @@ const Body = () => {
             specializations and engaging the career life style in accordance
             with students' apptitude.
           </p>
-        </div>
-        <div className='px-5 py-10 z-0'>
-          <Image src={Welcome} />
+        </div> */}
+        <div className='flex justify-center'>
+          <Image src={Thingyan} className='w-[1200px] h-[370px]' />
         </div>
 
         <img
@@ -109,14 +114,14 @@ const Body = () => {
         />
       </div>
 
-      <div className='p-5 md:p-10 relative'>
+      <div className=' p-5 md:p-10 relative'>
         <img
           src={EBlue}
-          className='absolute bottom-0 left-0 z-0 w-[150px] md:w-[250px]'
+          className='absolute bottom-0 left-0 z-20 w-[150px] md:w-[250px]'
           alt=''
         />
         <h1
-          className='text-[40px] font-[semibold] py-5'
+          className='text-[40px] font-[semibold] py-0 sm:py-5'
           style={{ color: "#BC1F40", fontWeight: "900" }}
         >
           Courses We Offer
@@ -201,38 +206,45 @@ const Body = () => {
           </Link>
         </div>
         <div className='flex items-center justify-around flex-wrap'>
-          {events?.map((b, index) => {
-            return (
-              <Link href={`/events/${b._id}`} key={index}>
-                <div className='relative cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 my-10'>
-                  <Image
-                    src={Welcome}
-                    className='object-cover w-full h-full z-10 rounded-[24px]'
-                    width={320}
-                    height={354}
-                  />
-                  <div
-                    className='h-[200px] flex flex-col items-start justify-center absolute bottom-1 w-full p-5 z-20 rounded-[24px]'
-                    style={{
-                      background:
-                        "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 125.65%)",
-                    }}
-                  >
-                    <h3 className=' text-[20px]  text-white font-semibold '>
-                      {b.title}
-                    </h3>
-                    <p className='font-[light] text-[15px] text-white'>
-                      {b.createdAt}
-                    </p>
-                  </div>
+          {eventList?.map((b, index) => (
+            <Link href={`/events/${b._id}`} key={index}>
+              <div className='relative cursor-pointer hover:translate-y-1 hover:scale-110 duration-500'>
+                <Image
+                  src={`data:image/jpeg;base64,${b?.image}`}
+                  className=' w-[600px]  rounded-[24px]'
+                // width={620}
+                // height={354}
+                />
+                <div
+                  className='h-[250px] flex flex-col items-start justify-center absolute bottom-0 w-full p-2 z-50 rounded-[24px]'
+                  style={{
+                    background:
+                      "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 125.65%)",
+                  }}
+                >
+                  <h3 className=' text-[20px]  text-white font-semibold '>
+                    {b.title}
+                  </h3>
+                  <p className='font-[light] text-[15px] text-white'>
+                    {b.startDate?.split('T')[0]}
+                  </p>
                 </div>
-              </Link>
-            );
-          })}
+              </div>
+            </Link>
+          )
+
+
+
+          )}
         </div>
       </div>
-      <Testimonials />
-      <Footer />
+      <div className='mt-4'>
+        <Testimonials />
+      </div>
+      <div className='mt-4'>
+        <Footer />
+      </div>
+
     </>
   );
 };

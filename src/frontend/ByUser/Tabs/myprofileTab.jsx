@@ -6,11 +6,14 @@ import {
   faPhoneVolume,
   faUser,
   faClock,
+  faPenToSquare,
+  faVenusMars
 } from "@fortawesome/free-solid-svg-icons";
+
 import apiInstance from "../../../util/api";
 import { getFile } from "../../../util";
 import HoverCarousel from "hover-carousel";
-import Edu from "../../../assets/img/edu.jpg";
+import Person from "../../../assets/img/user.png";
 import EduRes from "../../../assets/img/edures.jpg";
 import Course from "../../../assets/img/course.jpg";
 import { Fade } from "react-awesome-reveal";
@@ -238,8 +241,11 @@ export default function MyprofileTab() {
       <Fade>
         {/* Profile Facts */}
         <div className='flex gap-20 py-32'>
-          <div>
+          <div className=''>
+
+
             <Image
+
               radius='sm'
               style={{
                 borderRadius: "200px",
@@ -247,8 +253,11 @@ export default function MyprofileTab() {
                 height: "268px",
               }}
               className='w-full h-full'
-              src={img}
+              src={img ? img : Person}
             />
+            <div className='pl-[120px] hover:text-blue-400' >
+              <FontAwesomeIcon icon={faPenToSquare} size='2xl' className='-z-30' />
+            </div>
           </div>
           <div className='px-10' style={{ width: "760px", height: "268px" }}>
             <div
@@ -304,7 +313,7 @@ export default function MyprofileTab() {
                   })}
                 </span>
               </div>
-              <div className='py-4 mb-10'>
+              <div className='py-4'>
                 <span
                   style={{
                     fontWeight: "500",
@@ -314,6 +323,18 @@ export default function MyprofileTab() {
                 >
                   <FontAwesomeIcon icon={faUser} size='xl' />
                   &nbsp;{student?.code}
+                </span>
+              </div>
+              <div className='py-4 mb-10'>
+                <span
+                  style={{
+                    fontWeight: "500",
+                    fontSize: "18px",
+                  }}
+                  className='flex gap-8'
+                >
+                  <FontAwesomeIcon icon={faVenusMars} size='xl' />
+                  Male
                 </span>
               </div>
             </div>

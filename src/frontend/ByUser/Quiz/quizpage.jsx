@@ -1,5 +1,7 @@
 import Countdown from "react-countdown";
 // import { quiz } from "./quiz";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import _isEqual from 'lodash/isEqual';
 import { useState, useEffect } from "react";
 import { Card, Button, Spinner } from "@nextui-org/react";
@@ -38,7 +40,7 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
   // const [trueAnswer, setTrueAnswer] = useState('')
   const [studentID, setStudentID] = useState("");
   const [multiTrueAnswerList, setMultiTrueAnswerList] = useState([]);
-  const [caList, setCaList] = useState([])
+  const [showToast, setShowToast] = useState(true)
   const [multiAns, setMultiAns] = useState([])
   const [count, setCount] = useState('')
   const [number, setNumber] = useState(0);
@@ -57,7 +59,13 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
     .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
   // console.log(TotalMark, "trueF mark");
 
+  const notify = () => toast.error("You are Fail!",);
+  const handleShowFail = () => {
+    setShowToast(true)
+    setShowTimer(false)
 
+    notify()
+  }
   //Multiple
   // console.log(multiTrueAnswerList.filter(el => el.id), 'last mul')
   const MulTotalMark = multiTrueAnswerList.filter(el => el.id).map((i) => i.markTotal).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
@@ -110,7 +118,12 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
       interval = setInterval(() => {
         setTimer(prevTimer => {
           if (prevTimer >= 30) {
-            handleResult();// Stop the timer when it reaches 30 seconds
+            if (((TotalMark + MulTotalMark) === quizList.passMark && "pass") || ((TotalMark + MulTotalMark) > quizList.passMark && "credit")) {
+              handleResult();
+            } else {
+              handleShowFail()
+
+            } // Stop the timer when it reaches 30 seconds
             return prevTimer; // Return current timer value
           } else {
             return prevTimer + 1; // Increment timer value by 1 second
@@ -124,26 +137,13 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
     return () => clearInterval(interval);
 
 
-  }, [count, showTimer]);
+  }, [count, showTimer, disabledQuiz]);
 
 
   const handleStart = () => {
     // setShowTimer(true);
     setShowTimer(prev => !prev);
-    // const timerInterval = setInterval(() => {
-    //   setTimeLeft((prevTime) => {
-    //     if (prevTime === 0) {
-    //       clearInterval(timerInterval);
-
-    //       nextQuestion();
-    //       return 10; // Reset timer for the next question
-    //     }
-    //     return prevTime - 1;
-    //   });
-    // }, 1000);
-
-    // return () => clearInterval(timerInterval);
-  };
+  }
 
   const nextQuestion = (studentAnswer, cas, ind) => {
     //cas
@@ -176,7 +176,12 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
         setCounter(nextQuestion);
       } else {
         setCounter(0);
-        handleResult();
+        if (((TotalMark + MulTotalMark) === quizList.passMark && "pass") || ((TotalMark + MulTotalMark) > quizList.passMark && "credit")) {
+          handleResult();
+        } else {
+          handleShowFail()
+        }
+
         // console.log(TotalMark, "in next");
       }
 
@@ -207,7 +212,7 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
 
   const handleResult = () => {
 
-    console.log(studentAnswerList, 'studentAnswerList');
+    // console.log(studentAnswerList, 'studentAnswerList');
 
     // console.log(studentAnswerList.filter(el => quizList.questions.find(i => i._id === el.id)), 'studentAnswerList')
     //Quiz-Result Create
@@ -233,7 +238,7 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
         };
       }),
       totalMark: TotalMark + MulTotalMark,
-      status: ((TotalMark + MulTotalMark) === quizList.passMark && "pass") || ((TotalMark + MulTotalMark) > quizList.passMark && "distinction") || (((TotalMark + MulTotalMark) < quizList.passMark && (TotalMark + MulTotalMark) === quizList.creditMark) && "credit") || ((TotalMark + MulTotalMark) < quizList.creditMark && "fail"),
+      status: ((TotalMark + MulTotalMark) === quizList.passMark && "pass") || ((TotalMark + MulTotalMark) > quizList.passMark && "credit") || ((TotalMark + MulTotalMark) < quizList.creditMark && "fail"),
     };
     // alert(JSON.stringify(data));
     apiInstance
@@ -241,6 +246,8 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
       .then(function () {
 
         navigate("/quiz-result");
+
+
       })
       .catch((error) => {
         console.log(error);
@@ -251,7 +258,6 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
     setShowOrigin(false);
     setShowResult(true);
   };
-
 
   const handleAns = (val, studentChoose, ca, index, mark, counterid) => {
     setNextAnswer(false);
@@ -355,7 +361,7 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
         // console.log(uniqueObjects, 'mul real');
         setMultiTrueAnswerList(uniqueObjects);
 
-        console.log(uniqueObjects, 'setMulTrueAnswerList')
+        // console.log(uniqueObjects, 'setMulTrueAnswerList')
         // console.log(quiz.questions.filter(el=>el.correctAnswer === val+1))
         setIsCorrect("Correct");
       } else {
@@ -375,7 +381,7 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
 
       // Usage
       const stuList = getUniqueById(mainArray);
-      console.log(stuList, 'final final')
+      // console.log(stuList, 'final final')
       setStudentAnswerList(stuList);
     } else {
       setNumber('')
@@ -383,7 +389,7 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
       const multi = multiAns.filter(data => data !== counterId)
       setMultiAns(multi)
 
-      console.log(multi, 'ma tu tar')
+      // console.log(multi, 'ma tu tar')
     }
 
   }
@@ -394,37 +400,58 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
 
   return (
     <div className='mx-auto'>
+      <div>
+        {showToast && (
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss={false}
+            draggable
+            pauseOnHover={false}
+            theme="dark"
+            transition:Flip
+          />
+        )}
+
+      </div>
       {showOrigin && (
         <>
           {!showTimer && (
-            <div className='bg-[#EBF0FF] rounded-lg w-full h-[auto] p-[20px] flex flex-col gap-20'>
-              <span className='w-[902px] h-[24px] text-[20px] font-semibold'>
-                This quiz will test your basic knowledge on IELTS
-              </span>
-              <div className='flex justify-end gap-2'>
-                <Button color='primary' variant='bordered'>
-                  Cancel
-                </Button>
-                {disabledQuiz[0]?.student?._id === studentID ? (
-                  <div>
-                    <Button color='default' className='cursor-not-allowed'>
-                      Start Quiz
-                    </Button>
-                  </div>
-                ) : (
-                  quizList.questions ? (
-                    <Button color='primary' checked={showTimer} onClick={handleStart}>
-                      Start Quiz
-                    </Button>
+            <>
+              <div className='bg-[#EBF0FF] rounded-lg w-full h-[auto] p-[20px] flex flex-col gap-20'>
+                <span className='w-[902px] h-[24px] text-[20px] font-semibold'>
+                  This quiz will test your basic knowledge on IELTS
+                </span>
+                <div className='flex justify-end gap-2'>
+                  <Button color='primary' variant='bordered'>
+                    Cancel
+                  </Button>
+                  {disabledQuiz[0]?.student?._id === studentID ? (
+                    <div>
+                      <Button color='default' className='cursor-not-allowed'>
+                        Start Quiz
+                      </Button>
+                    </div>
                   ) : (
-                    <Button color='light'>
-                      Start Quiz <Spinner size='sm' />
-                    </Button>
-                  )
-                )}
+                    quizList.questions ? (
+                      <Button color='primary' checked={showTimer} onClick={handleStart}>
+                        Start Quiz
+                      </Button>
+                    ) : (
+                      <Button color='light'>
+                        Start Quiz <Spinner size='sm' />
+                      </Button>
+                    )
+                  )}
 
+                </div>
               </div>
-            </div>
+
+            </>
           )}
 
           {showTimer && (

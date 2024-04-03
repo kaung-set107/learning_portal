@@ -144,7 +144,7 @@ const CourseDetail = (props) => {
   };
   useEffect(() => {
     const getSurveyResult = async () => {
-      await apiInstance.get(`survey-results?student=${StudentId}&survey=${surveyData._id}&batch=${batchID}`).then((res) => {
+      await apiInstance.get(`survey-results?student=${StudentId}&survey=${surveyData?._id}&batch=${batchID}`).then((res) => {
         // console.log(res.data.data, "survey res detail");
         setSurveyDisabled(res.data.data);
       });
@@ -195,7 +195,7 @@ const CourseDetail = (props) => {
     // console.log(data.assets, "document");
     setLMDataList(data);
     setSurveyData(data.survey)
-    // console.log(data, 'lm da')
+    console.log(data, 'lm da')
     setShowVideo(true);
 
   };

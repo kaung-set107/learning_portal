@@ -184,21 +184,24 @@ export default function PendingList() {
               <TableCell>{index + 1}</TableCell>
               <TableCell>
                 <div className='flex '>
-                  <Image
-                    radius='sm'
-                    alt={item.image.originalname}
-                    className='object-cover w-[40px] h-[40px] rounded-lg border-2 border-blue-900'
-                    src={getFile({ payload: item.image })}
-                  />
+                  {item.image && (
+                    <Image
+                      radius='sm'
+                      alt={item?.image?.originalname}
+                      className='object-cover w-[40px] h-[40px] rounded-lg border-2 border-blue-900'
+                      src={getFile({ payload: item?.image })}
+                    />
+                  )}
+
                   <b className='py-3 px-1'>{item.name}</b>
                 </div>
               </TableCell>
-              <TableCell>{item.subject}</TableCell>
-              <TableCell>{item.createAt?.split("T")[0]}</TableCell>
-              <TableCell>{item.phone}</TableCell>
-              <TableCell>{item.email}</TableCell>
-              <TableCell>{item.gender}</TableCell>
-              <TableCell>{item.address}</TableCell>
+              <TableCell>{item?.subject}</TableCell>
+              <TableCell>{item?.createAt?.split("T")[0]}</TableCell>
+              <TableCell>{item?.phone}</TableCell>
+              <TableCell>{item?.email}</TableCell>
+              <TableCell>{item?.gender}</TableCell>
+              <TableCell>{item?.address}</TableCell>
               {/* <TableCell>
                 <div className='relative flex items-center gap-2'>
                   <Tooltip content='Edit Department'>

@@ -6,31 +6,26 @@ import { faCircleChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Select, SelectItem } from '@nextui-org/select'
+import FileBase64 from 'react-file-base64';
 export default function Testimonial() {
     const variant = 'bordered';
     const [title, setTitle] = useState("");
     const [image, setImage] = useState('')
+    const [listData, setListData] = useState({})
     const [description, setDescription] = useState('')
-    const handleImage = (e) => {
-        if (e.target.files) {
-            setImage(e.target.files[0]);
-            console.log(e.target.files, "file");
-        }
-    };
+    // console.log(
+    //     listData.selectedFile?.split('base64,')[1]
+    // )
     const create = () => {
-        const formData = new FormData();
-
-        formData.append("title", title);
-        formData.append("description", description);
-        formData.append("image", image);
-
+        const data = {
+            title: title,
+            image: listData.selectedFile?.split('base64,')[1], //image to base64
+            description: description
+        }
 
         apiInstance
-            .post("testimonials", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            })
+            .post("testimonials", data)
+
             .then(function () {
                 Swal.fire({
                     icon: "success",
@@ -56,32 +51,28 @@ export default function Testimonial() {
 
             <div className='flex flex-col mx-8 w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
                 <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-                    <label className='text-sm font-semibold'>Title</label>
+                    <label className='text-sm font-semibold'>Name</label>
                     <Input
                         type='text'
                         variant='bordered'
-                        placeholder='Enter your  title'
+                        placeholder='Enter name ...'
                         onChange={(e) => setTitle(e.target.value)}
                     />
                 </div>
 
-                <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-                    <label className='text-sm font-semibold'>Event Photo</label>
-                    <Input
-                        type='file'
-                        onChange={handleImage}
-                        multiple
-                        placeholder=' '
-                        labelPlacement='outside'
-                        variant={variant}
-                    />
+                <div className='flex flex-col w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-2'>
+                    <label className='text-sm font-semibold'>Photo</label>
+
+                    <FileBase64 type="file" multiple={false} onDone={({ base64 }) => setListData({ ...listData, selectedFile: base64 })} />
+
                 </div>
 
             </div>
 
             <div className='mx-8 flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
-                <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+                <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 '>
                     <Textarea
+                        className='text-sm font-semibold'
                         variant='bordered'
                         type='text'
                         label='Description'

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import apiInstance from "../../util/api";
-import { Card, Input, Button, Textarea, Checkbox } from "@nextui-org/react";
+import { Card, Input, Button, Textarea, Checkbox, Image } from "@nextui-org/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useLocation } from "react-router-dom";
+import FileBase64 from 'react-file-base64';
 export default function Eventupdate() {
     const uselocation = useLocation()
     const eventId = uselocation.pathname?.split('/')[2]
@@ -19,36 +20,29 @@ export default function Eventupdate() {
     const [subTitle, setSubTitle] = useState('')
     const [startDate, setStartDate] = useState('')
     const [endDate, setEndDate] = useState('')
-    const handleImage = (e) => {
-        if (e.target.files) {
-            setImage(e.target.files[0]);
-            // console.log(e.target.files, "file");
-        }
-    };
-    const create = () => {
-        const formData = new FormData();
+    const [listData, setListData] = useState({})
+    const [oldImage, setOldImage] = useState('')
 
-        formData.append("title", title);
-        formData.append("description", description);
-        formData.append("image", image);
-        formData.append("subTitle", subTitle);
-        formData.append("location", location);
-        formData.append("venue", venue);
-        formData.append("remark", remark);
-        formData.append("startDate", startDate);
-        formData.append("endDate", endDate);
+    const create = () => {
+        const data = {
+            title: title,
+            description: description,
+            image: listData ? listData.selectedFile?.split('base64,')[1] : oldImage,
+            subTitle: subTitle,
+            location: location,
+            venue: venue,
+            remark: remark,
+            startDate: startDate,
+            endDate: endDate
+        }
 
 
         apiInstance
-            .put(`events/${eventId}`, formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            })
+            .put(`events/${eventId}`, data)
             .then(function () {
                 Swal.fire({
                     icon: "success",
-                    title: "Event Create Successful",
+                    title: "Event Update Successful",
                     text: "",
                     confirmButtonText: "OK",
                     confirmButtonColor: "#3085d6",
@@ -74,6 +68,7 @@ export default function Eventupdate() {
                     setVenue(res.data.data?.venue)
                     setStartDate(res.data.data?.startDate?.split('T')[0])
                     setEndDate(res.data.data?.endDate?.split('T')[0])
+                    setOldImage(res.data.data?.image)
 
 
                 });
@@ -119,16 +114,10 @@ export default function Eventupdate() {
                         onChange={(e) => setLocation(e.target.value)}
                     />
                 </div>
-                <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+                <div className='flex flex-col w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-2 sm:gap-4'>
                     <label className='text-sm font-semibold'>Event Photo</label>
-                    <Input
-                        type='file'
-                        onChange={handleImage}
-
-                        placeholder=' '
-                        labelPlacement='outside'
-                        variant={variant}
-                    />
+                    <FileBase64 type="file" multiple={false} onDone={({ base64 }) => setListData({ ...listData, selectedFile: base64 })} />
+                    <Image src={`data:image/jpeg;base64,${listData.selectedFile ? listData.selectedFile?.split('base64,')[1] : oldImage}`} className='w-[60px] h-[60px]' />
                 </div>
                 <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
                     <label className='text-sm font-semibold'>Start Date</label>

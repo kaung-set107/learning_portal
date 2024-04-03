@@ -148,7 +148,7 @@ export default function Batch() {
             <div className='mx-8 flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-5'>
 
                 <Checkbox isSelected={isSelected} onValueChange={setIsSelected}>
-                    Current Branch ?
+                    Current Batch ?
                 </Checkbox>
             </div>
 

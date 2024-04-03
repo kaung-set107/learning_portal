@@ -21,7 +21,8 @@ export default function App() {
   const LoginStudentID = localStorage.getItem('id')
 
   const assignmentList = location.state.data.assignments
-  const courseId = location.state.data.course
+  const courseId = location.state.data
+  console.log(courseId, 'c')
   const enrollID = location.state.enroll_id;
   const [completeList, setCompleteList] = useState([])
   const [checkedList, setCheckedList] = useState([])
@@ -69,9 +70,10 @@ export default function App() {
 
     const getStudentId = async () => {
       apiInstance.get('enrollments').then(res => {
-        setStudentID(res.data.data.filter(el => el.course._id === courseId)[0].student)
-        setBatchID((res.data.data.filter(el => el.course._id === courseId)[0].student === LoginStudentID) ? (res.data.data.filter(el => el.course._id === courseId)[0].batch) : (''))
-        // console.log((res.data.data.filter(el => el.course._id === courseId)[0].student === LoginStudentID) ? (res.data.data.filter(el => el.course._id === courseId)[0].batch) : (''), 'hee')
+        console.log((res.data.data.filter(el => el.course._id === courseId)), 'hee')
+        // setStudentID(res.data.data.filter(el => el.course._id === courseId)[0].student)
+        setBatchID(res.data.data.filter(el => el.student === LoginStudentID) ? res.data.data.filter(el => el.student === LoginStudentID)[0]?.batch : (''))
+
       }
 
 
@@ -88,7 +90,7 @@ export default function App() {
         console.log(res.data.data.filter(el => el.status === "published"), 'stttututtu')
 
         setCompleteList(res.data.data.filter(el => el.status === "submitted").filter(el => el.student._id === studentID).filter(el => el.assignment !== null))
-        setCheckedList(res.data.data.filter(el => el.status === "published").filter(el => el.student._id === studentID).filter(el => el.assignment !== null))
+        setCheckedList(res.data.data.filter(el => el.status === "published").filter(el => el.student._id === LoginStudentID).filter(el => el.assignment !== null))
         console.log(res.data.data.filter(el => el.status === "published").filter(el => el.student._id === studentID).filter(el => el.assignment !== null), 'check')
       }
 
@@ -96,7 +98,7 @@ export default function App() {
     }
     getStudentId()
     getAssignRes()
-  }, [completeList, checkedList])
+  }, [])
 
   const handleImage = (e) => {
     if (e.target.files) {
@@ -109,7 +111,7 @@ export default function App() {
     formData.append("file", image);
     formData.append("assignment", assId);
     formData.append("submissionDate", Date.now());
-    formData.append("student", studentID);
+    formData.append("student", LoginStudentID);
     formData.append("enrollment", enrollID);
     formData.append("batch", batchID);
 
@@ -353,8 +355,8 @@ export default function App() {
                           {JSON.parse(item?.assignment.links).map((e) => (
 
 
-                            <div key={e} className="text-[16px] text-[#4b4eff] font-semibold px-3 ">
-                              <a target="_blank" rel='noreferrer' href={e.links}>
+                            <div key={e} className="text-[16px] text-[#edeef4] font-semibold px-3 ">
+                              <a target="_blank" rel='noreferrer' href={e.links} className='underline'>
                                 {e.links}
                               </a>
                             </div>
@@ -365,35 +367,35 @@ export default function App() {
                       <div className='flex flex-col'>
                         <span className='text-[16px] text-[#fff] font-semibold'>Document File link </span>
                         {/* {item.assets.map((i) => (
-                      <> */}
+                          <>
 
-                        {/* <div className="sm:flex justify-start gap-5">
-                        <a
-                          href={getFile({ payload: item?.assignment?.question })}
-                          onClick={
-                            item?.assignment?.question.originalname?.split(".")[1] === "pdf"
-                              ? () => downloadPDF(item?.assignment?.question)
-                              : download
-                          }>
-                          <Image
-                            radius="sm"
-                            alt={item?.assignment?.question.title}
-                            className="object-cover w-[40px] h-[40px]"
-                            src={
-                              item?.assignment.question.originalname?.split(".")[1] === "pdf"
-                              && PdfPhoto ||
-                              item?.assignment.question.originalname?.split(".")[1] === "xlsx"
-                              && ExcelPhoto ||
-                              item?.assignment.question.originalname?.split(".")[1] === "csv"
-                              && CSV
-                              || getFile({ payload: item?.assignment.question })
-                            }
-                          />
-                        </a>
-                        <b className="text-[16px] text-[#4b4eff] font-semibold mt-3">{item?.assignment.question?.originalname}</b>
-                      </div> */}
-                        {/* </>
-                    ))} */}
+                            <div className="sm:flex justify-start gap-5">
+                              <a
+                                href={getFile({ payload: item?.assignment?.question })}
+                                onClick={
+                                  item?.assignment?.question.originalname?.split(".")[1] === "pdf"
+                                    ? () => downloadPDF(item?.assignment?.question)
+                                    : download
+                                }>
+                                <Image
+                                  radius="sm"
+                                  alt={item?.assignment?.question.title}
+                                  className="object-cover w-[40px] h-[40px]"
+                                  src={
+                                    item?.assignment.question.originalname?.split(".")[1] === "pdf"
+                                    && PdfPhoto ||
+                                    item?.assignment.question.originalname?.split(".")[1] === "xlsx"
+                                    && ExcelPhoto ||
+                                    item?.assignment.question.originalname?.split(".")[1] === "csv"
+                                    && CSV
+                                    || getFile({ payload: item?.assignment.question })
+                                  }
+                                />
+                              </a>
+                              <b className="text-[16px] text-[#4b4eff] font-semibold mt-3">{item?.assignment.question?.originalname}</b>
+                            </div>
+                          </>
+                        ))} */}
                       </div>
 
                     </div>
@@ -401,15 +403,15 @@ export default function App() {
 
 
 
-                  <div className='flex flex-col gap-4 p-2 justify-start  bg-[#fff] w-[480px] h-[224px]  rounded-[4px]'>
+                  <div className='flex flex-col gap-4 p-2 justify-start  bg-[#fff] w-[480px] h-[260px]  rounded-[4px]'>
 
 
 
-                    <span className='text-[25px] font-semibold'>GRADE - <b className='text-[30px] font-semibold text-green-400'>{item.grade}</b></span>
+                    <span className='text-[25px] font-semibold'>Mark - <b className='text-[30px] font-semibold text-green-400'>{item.grade}</b></span>
 
                     <div className='flex flex-col bg-[#ca3b3b] w-[340px] h-auto rounded-t-[32px] rounded-r-[32px] rounded-b-[32px] rounded-l-[0px] text-[12px] font-normal p-4 text-[#fff] ml-3'>
                       <b className='text-[16px]'>Teacher's Note</b>
-                      <span>
+                      <span className='text-[16px]'>
                         Oh, hello! All perfectly.
                         My remark is <b>{item.remark}</b>.
                       </span> </div>
