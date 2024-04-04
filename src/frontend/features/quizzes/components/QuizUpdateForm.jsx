@@ -34,7 +34,7 @@ const QuizUpdateForm = (props) => {
   const goToResult = (id) => {
     navigate(`/by-instructor/quizzes/${id}/quiz-results`, {
       state: { quiz: id },
-    }); 
+    });
   };
 
   const [formData, setFormData] = useState({
@@ -289,6 +289,10 @@ const QuizUpdateForm = (props) => {
               </div>
               <div className="mt-3">
                 <QuestionList
+                  successCallback={successCallback}
+                  srcId={quizData._id}
+                  imageUploadApi={quizzesApi.updateQuestionImage}
+                  questionRemoveApi={quizzesApi.removeQuestion}
                   questions={questions}
                   setQuestions={setQuestions}
                 />

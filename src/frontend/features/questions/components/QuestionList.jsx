@@ -6,11 +6,22 @@ import ListDetail from "../../../components/general/typography/ListDetail";
 import CustomButton from "../../../components/general/CustomButton";
 import QuestionUpdateModal from "./QuestionUpdateModal";
 import { useState } from "react";
+import QuestionImageUploadModal from "./QuestionImageUploadModal";
+import { getFile } from "../../../../util";
+import { showError, showSuccess } from "../../../../util/noti";
 
 const QuestionList = (props) => {
   const [currentQuestionData, setCurrentQuestionData] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { questions, setQuestions } = props;
+  const {
+    srcId,
+    questions,
+    setQuestions,
+    imageUploadApi,
+    questionRemoveApi,
+    successCallback,
+  } = props;
 
   const handleEditButtonClick = (index) => {
     setCurrentQuestionData({
@@ -20,7 +31,6 @@ const QuestionList = (props) => {
   };
 
   const updateQuestions = (index) => (data) => {
-
     setQuestions((prev) =>
       prev.map((each, i) => {
         if (i === index) {
@@ -32,8 +42,17 @@ const QuestionList = (props) => {
     );
   };
 
-  const removeQuestion = (index) => {
-    setQuestions((prev) => prev.filter((each, i) => i !== index));
+  const removeQuestion = async (index) => {
+    setIsSubmitting(true);
+    try {
+      const res = await questionRemoveApi({ _id: srcId, questionIndex: index });
+      await successCallback()
+      showSuccess({ text: res.message });
+    } catch (error) {
+      showError({ axiosResponse: error });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -46,6 +65,14 @@ const QuestionList = (props) => {
               return (
                 <div key={uuidv4()} className="p-3 border rounded-xl relative">
                   <div className="absolute right-1 top-1 gap-3 flex">
+                    {srcId && imageUploadApi && (
+                      <QuestionImageUploadModal
+                        successCallback={successCallback}
+                        srcId={srcId}
+                        questionIndex={index}
+                        uploadApi={imageUploadApi}
+                      />
+                    )}
                     <CustomButton
                       iconOnly
                       type="edit"
@@ -55,6 +82,7 @@ const QuestionList = (props) => {
                     <CustomButton
                       iconOnly
                       type="delete"
+                      isLoading={isSubmitting}
                       onClick={() => removeQuestion(index)}
                       title="Remove"
                     />
@@ -65,6 +93,23 @@ const QuestionList = (props) => {
                       <ListInfo title="Question" />
                       <ListDetail title={question.question} />
                     </div>
+                    {question.images && (
+                      <div className="space-y-1">
+                        <ListInfo title="Uploaded Images" />
+                        <div className="my-2 p-3 border bg-gray-50 rounded-xl flex gap-3">
+                          {question.images.map((image) => {
+                            return (
+                              <div key={uuidv4()}>
+                                <img
+                                  src={getFile({ payload: image })}
+                                  className="w-[200px] h-[200px] border bg-gray-50 rounded-xl"
+                                />
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
                     {question.mark && (
                       <div className="space-y-1">
                         <ListInfo title="Mark" />
@@ -83,20 +128,21 @@ const QuestionList = (props) => {
                         })}
                       </ul>
                     </div>
-                    {question.correctAnswer && question.correctAnswer.length > 0 && (
-                      <div>
-                        <ListInfo title="Correct Answers" />
-                        <ul>
-                          {question.correctAnswer.map((each) => {
-                            return (
-                              <li key={uuidv4()}>
-                                {question.options[each - 1].answer}
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </div>
-                    )}
+                    {question.correctAnswer &&
+                      question.correctAnswer.length > 0 && (
+                        <div>
+                          <ListInfo title="Correct Answers" />
+                          <ul>
+                            {question.correctAnswer.map((each) => {
+                              return (
+                                <li key={uuidv4()}>
+                                  {question.options[each - 1].answer}
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </div>
+                      )}
                   </div>
                 </div>
               );

@@ -8,7 +8,7 @@ import Loading from "./Loading";
 
 /* eslint-disable react/prop-types */
 const CustomButton = (props) => {
-    const { isLoading, iconOnly, textOnly, title, type, onClick, ...args } = props
+    const { isLoading, iconOnly, textOnly, title, type, onClick, isDisabled, ...args } = props
 
     const navigate = useNavigate()
 
@@ -64,7 +64,7 @@ const CustomButton = (props) => {
     }
 
     return (
-        <Button onClick={handleOnClick} color={getColor()} isDisabled={isLoading} {...args} className={`border px-2 border-transparent hover:border-gray-700 h-[40px] hover:shadow-sm ${isLoading ? 'cursor-not-allowed' : ''}`}>
+        <Button onClick={handleOnClick} color={getColor()} isDisabled={isLoading || isDisabled} {...args} className={`border px-2 border-transparent hover:border-gray-700 h-[40px] hover:shadow-sm ${isLoading ? 'cursor-not-allowed' : ''} ${isDisabled ? 'bg-gray-300' : ''}`}>
             {
                 isLoading ? <Loading color="default" size={"sm"} /> : <span className="flex items-center justify-center">{getContent()}</span>
             }
