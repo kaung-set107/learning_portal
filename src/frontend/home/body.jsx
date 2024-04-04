@@ -82,16 +82,16 @@ const Body = () => {
         />
 
         {/* <img
-          src={Thingyan}
+          src={Welcome}
           className='absolute top-0 left-0 z-0 w-[150px] md:w-[250px]'
           alt=''
         /> */}
-        {/* <div className='w-full px-5 md:m-0 lg:w-[490px] leading-[60px] mt-10'>
+        <div className='w-full px-5 md:m-0 lg:w-[490px] leading-[60px] mt-10'>
           <h1
             className='text-[50px] text-secondary font-[semibold] '
             style={{ color: "#BC1F40", fontWeight: "900" }}
           >
-        
+
             Welcome To MSI Academy
           </h1>
           <p className='font-[regular] text-xl w-full md:w-[90%]'>
@@ -102,9 +102,9 @@ const Body = () => {
             specializations and engaging the career life style in accordance
             with students' apptitude.
           </p>
-        </div> */}
+        </div>
         <div className='flex justify-center'>
-          <Image src={Thingyan} className='w-[1200px] h-[370px]' />
+          <Image src={Welcome} className='w-[500px] h-[400px]' />
         </div>
 
         <img
