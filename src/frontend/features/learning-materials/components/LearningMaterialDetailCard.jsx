@@ -22,10 +22,10 @@ const LearningMaterialDetailCard = (props) => {
             </ListBox>
             <ListBox className="flex-col gap-2">
               <ListInfo className="min-w-[200px]" title="Links" />
-              <div>
+              <div className="flex flex-col gap-3">
                 {JSON.parse(data.links).map((link, lindex) => {
                   return (
-                    <>
+                    <div className="flex items-center" key={uuidv4()}>
                       <span className="mr-3 font-bold">{lindex + 1}</span>
                       <div
                         key={uuidv4()}
@@ -33,7 +33,7 @@ const LearningMaterialDetailCard = (props) => {
                       >
                         <ListDetail title={`${link.links}`} />
                       </div>
-                    </>
+                    </div>
                   );
                 })}
               </div>
