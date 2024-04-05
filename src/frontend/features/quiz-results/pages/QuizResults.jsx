@@ -10,18 +10,20 @@ import CustomButton from "../../../components/general/CustomButton";
 import { quizzesApi } from "../../quizzes/api";
 import { showError } from "../../../../util/noti";
 import BatchesDropdown from "../../batches/components/BatchesDropdown";
+import { batchesApi } from "../../batches/api";
 
 const QuizResults = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isFetching, setIsFetching] = useState(true);
   const [quizResults, setQuizResults] = useState([]);
   const [quiz, setQuiz] = useState({});
+  const [currentBatch, setCurrentBatch] = useState()
   const [filters, setFilters] = useState({
     batch: "",
   });
   
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { id, quizId } = useParams();
 
   const getQuizResults = async () => {
     setIsFetching(true);
@@ -39,7 +41,7 @@ const QuizResults = () => {
 
   const getQuiz = async () => {
     try {
-      let res = await quizzesApi.get({ _id: id });
+      let res = await quizzesApi.get({ _id: quizId });
       console.log(res);
       setQuiz(res.data);
     } catch (error) {
@@ -47,6 +49,17 @@ const QuizResults = () => {
       showError({ axiosResponse: error });
     }
   };
+
+  const getCurrentBatch = async () => {
+    try {
+      let res = await batchesApi.getCurrentBatchBySubject({ subject: id });
+      setCurrentBatch(res.data)
+      setFilters(prev => ({...prev, batch: res.data}))
+    } catch (error) {
+      console.log(error);
+      showError({ axiosResponse: error });
+    }
+  }
 
   const fetchData = () => {
     getQuizResults();
@@ -95,12 +108,13 @@ const QuizResults = () => {
 
   useEffect(() => {
     getQuiz();
+    getCurrentBatch();
   }, []);
 
   useEffect(() => {
     console.log(quiz);
-    if (quiz._id) getQuizResults();
-  }, [quiz]);
+    if(quiz._id && filters.batch) getQuizResults();
+  }, [filters, quiz]);
 
   let content;
 

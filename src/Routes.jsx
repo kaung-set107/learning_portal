@@ -203,23 +203,29 @@ export default function RouteFile() {
               <Route path="subjects">
                 <Route index element={<Subjects />} />
                 <Route path=":id/brief" element={<SubjectBrief />} />
+                <Route path=":id/subject-sections/:subjectSectionId/learning-materials" element={<LearningMaterials />} />
+                <Route path=":id/subject-sections/:subjectSectionId/learning-materials/:learningMaterialId/brief" element={<LearningMaterialBrief />} />
+                <Route path=":id/subject-sections/:subjectSectionId/learning-materials/:learningMaterialId/survey-results" element={<SurveyResults />} />
+                <Route path=":id/subject-sections/:subjectSectionId/learning-materials/:learningMaterialId/survey-results/:resultId" element={<SurveyResult />} />
+                <Route path=":id/subject-sections/:subjectSectionId/learning-materials/:learningMaterialId/quizzes/:quizId/quiz-results" element={<QuizResults />} />
+                <Route path=":id/subject-sections/:subjectSectionId/learning-materials/:learningMaterialId/quizzes/:quizId/quiz-results/:resultId" element={<QuizResult />} />
               </Route>
               <Route path="assignment-results">
                 <Route index element={<AssignmentResults />} />
               </Route>
               <Route path="surveys">
-                <Route path=":id/survey-results" element={<SurveyResults />} />
-                <Route path=":id/survey-results/:resultId" element={<SurveyResult />} />
+                {/* <Route path=":id/survey-results" element={<SurveyResults />} /> */}
+                {/* <Route path=":id/survey-results/:resultId" element={<SurveyResult />} /> */}
               </Route>
               <Route path="learning-materials">
-                <Route index element={<LearningMaterials />} />
-                <Route path=":id/brief" element={<LearningMaterialBrief />} />
+                {/* <Route index element={<LearningMaterials />} /> */}
+                {/* <Route path=":id/brief" element={<LearningMaterialBrief />} /> */}
               </Route>
 
               <Route path="quizzes">
                 <Route path="create" element={<InstructorQuizCreate />}/>
-                <Route path=":id/quiz-results" element={<QuizResults />} />
-                <Route path=":id/quiz-results/:resultId" element={<InstructorQuizResult />} />
+                {/* <Route path=":id/quiz-results" element={<QuizResults />} /> */}
+                {/* <Route path=":id/quiz-results/:resultId" element={<InstructorQuizResult />} /> */}
               </Route>
               {/* <Route path='/instructor' element={<InstructorHome />}></Route> */}
               {/* <Route path='/assign' element={<Assignment />}></Route> */}

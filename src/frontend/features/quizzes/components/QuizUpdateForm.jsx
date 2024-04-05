@@ -8,7 +8,7 @@ import { quizzesApi } from "../api";
 import QuestionCreateModal from "../../questions/components/QuestionCreateModal";
 import QuestionList from "../../questions/components/QuestionList";
 import { showError, showSuccess } from "../../../../util/noti";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const QuizUpdateForm = (props) => {
   const { type, successCallback, quizData } = props;
@@ -17,6 +17,8 @@ const QuizUpdateForm = (props) => {
   const [questions, setQuestions] = useState([]);
 
   const navigate = useNavigate();
+
+  const {id, subjectSectionId, learningMaterialId} = useParams()
 
   const variant = "bordered";
 
@@ -31,10 +33,8 @@ const QuizUpdateForm = (props) => {
     },
   ];
 
-  const goToResult = (id) => {
-    navigate(`/by-instructor/quizzes/${id}/quiz-results`, {
-      state: { quiz: id },
-    });
+  const goToResult = (quizId) => {
+    navigate(`/by-instructor/subjects/${id}/subject-sections/${subjectSectionId}/learning-materials/${learningMaterialId}/quizzes/${quizId}/quiz-results`);
   };
 
   const [formData, setFormData] = useState({

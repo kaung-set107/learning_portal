@@ -17,7 +17,7 @@ import SubjectSectionUpdateModal from "../../subject-sections/components/Subject
 import { subjectSectionsApi } from "../../subject-sections/api";
 import { showError, showSuccess } from "../../../../util/noti";
 import { dateForDisplay } from "../../../../util/Util";
-import ExamCreateModal from "../../exams/component/ExamCreateModal";
+// import ExamCreateModal from "../../exams/component/ExamCreateModal";
 
 const SubjectBrief = () => {
   const navigate = useNavigate();
@@ -51,9 +51,7 @@ const SubjectBrief = () => {
   };
 
   const goToLearningMaterials = (data) => {
-    navigate("/by-instructor/learning-materials", {
-      state: { subjectSection: data.subjectSection, subject: subject.data },
-    });
+    navigate(`/by-instructor/subjects/${id}/subject-sections/${data.subjectSection._id}/learning-materials`);
   };
 
   const handleAssignmentDelete = async (id) => {
