@@ -17,12 +17,14 @@ import {
 } from "@nextui-org/react";
 
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import apiInstance from "../../util/api";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import MSI from "../../assets/img/MSI.svg";
 export default function App() {
+  const location = useLocation()
+  const ID = location.pathname.split('/')[2]
   const menuItems = [
     { link: "#", title: "Home" },
     { link: "#", title: "Courses" },
@@ -85,94 +87,103 @@ export default function App() {
 
   return (
     <>
-      <div className='sticky top-0 bg-white z-50 shadow-lg mx-auto  w-[375px] sm:w-[100%]'>
-        <div className='flex gap-10 justify-between sm:justify-around items-center '>
+      <div className='sticky top-0 bg-white z-50 shadow-lg mx-auto  w-[375px] sm:w-[100%] xl:w-[100%] 2xl:w-[100%]'>
+        <div className='flex sm:gap-10 xl:gap-5 2xl:gap-96 justify-between sm:justify-around 2xl:justify-around items-center'>
           <div className='align-left'>
             <Image
               src={MSI}
-              className={isMenuOpen ? "hidden" : "w-[200px] sm:w-[300px]"}
+              className={isMenuOpen ? "hidden" : "w-[200px] sm:w-[300px] xl:w-[200px] 2xl:w-[250px]"}
             />
           </div>
           <div
-            className='hidden md:flex justify-evenly gap-10'
+            className='hidden md:flex justify-evenly 2xl:justify-end gap-10 w-[486px] xl:[380px] 2xl:w-[260px]'
             style={{
               borderRadius: "200px",
-              width: "486px",
+
               padding: "12px",
               fontSize: "18px",
               color: "#224362",
             }}
           >
-            <span>
+            <span className='hover:-translate-y-1 hover:scale-110 duration-500'>
               <Link
                 to='/'
                 className={
                   location.pathname === "/"
-                    ? "font-semibold text-lg"
-                    : "text-lg"
+                    ? "font-semibold text-[18px] xl:text-[16px] 2xl:text-[20px]"
+                    : "text-[18px] xl:text-[16px] 2xl:text-[20px]"
                 }
               >
                 Home
               </Link>
             </span>
-            <span>
+            <span className='hover:-translate-y-1 hover:scale-110 duration-500'>
               <Link
                 to='/home-course'
                 className={
                   location.pathname === "/home-course" ||
                     location.pathname === "/home-course-detail" ||
                     location.pathname === "/home-sub-detail"
-                    ? "font-semibold text-lg"
-                    : "text-lg"
+                    ? "font-semibold text-[18px] xl:text-[16px] 2xl:text-[20px]"
+                    : "text-[18px] xl:text-[16px] 2xl:text-[20px]"
                 }
               >
                 {" "}
                 Courses
               </Link>
             </span>
-            <span>
+            <span className='hover:-translate-y-1 hover:scale-110 duration-500'>
               <Link
-                to='/event'
-              // className={
-              //   location.pathname === "/home-course"
-              //     ? "font-semibold text-lg"
-              //     : "text-lg"
-              // }
+                to='/events'
+                className={
+                  location.pathname === '/events' || location.pathname === `/events/${ID}`
+                    ? "font-semibold text-[18px] xl:text-[16px] 2xl:text-[20px]"
+                    : "text-[18px] xl:text-[16px] 2xl:text-[20px] "
+                }
               >
                 Events
               </Link>
             </span>
-            <span>
+            <span className='hover:-translate-y-1 hover:scale-110 duration-500'>
               <Link
                 to='/about'
                 className={
                   location.pathname === "/about"
-                    ? "font-semibold text-lg"
-                    : "text-lg"
+                    ? "font-semibold text-[18px] xl:text-[16px] 2xl:text-[20px]"
+                    : "text-[18px] xl:text-[16px] 2xl:text-[20px]"
                 }
               >
                 About
               </Link>
             </span>
-            <span>
+            <span className='hover:-translate-y-1 hover:scale-110 duration-500'>
               <Link
                 to='/booking'
                 className={
                   location.pathname === "/booking"
-                    ? "font-semibold text-lg"
-                    : "text-lg"
+                    ? "font-semibold text-[18px] xl:text-[16px] 2xl:text-[20px]"
+                    : "text-[18px] xl:text-[16px] 2xl:text-[20px]"
                 }
               >
                 Booking
               </Link>
             </span>
             <span
-              onClick={() => handleTab(5)}
-              className={activeTab === 5 ? "font-semibold text-lg" : "text-lg"}
+              className='hover:-translate-y-1 hover:scale-110 duration-500'
             >
-              Contact
+              <Link
+                to='/contact'
+                className={
+                  location.pathname === "/contact"
+                    ? "font-semibold text-[18px] xl:text-[16px] 2xl:text-[20px]"
+                    : "text-[18px] xl:text-[16px] 2xl:text-[20px]"
+                }
+              >
+                Contact
+              </Link>
+
             </span>
-            <span>
+            <span className='hover:-translate-y-1 hover:scale-110 duration-500 text-[18px] xl:text-[16px] 2xl:text-[20px] '>
               <Link to='/login'>Login</Link>
             </span>
           </div>
@@ -215,9 +226,9 @@ export default function App() {
                 </NavbarItem>
                 <NavbarItem>
                   <Link
-                    to='/event'
+                    to='/events'
                     className={
-                      location.pathname === "/event"
+                      location.pathname === '/events' || location.pathname === `/events/${ID}`
                         ? "font-semibold text-lg"
                         : "text-lg"
                     }

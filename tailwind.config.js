@@ -15,7 +15,11 @@ export default {
         rotate: {
         '17': '65deg',
       }
-    }
+    },
+    container: {
+        center: true,
+     
+    },
   },
   darkMode: 'class',
   plugins: [nextui(

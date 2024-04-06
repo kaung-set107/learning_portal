@@ -725,7 +725,7 @@ export default function CourseDetail(props) {
                 padding: "64px 0px 89px 40px",
                 position: "absolute",
               }}
-              className='flex flex-col gap-1'
+              className='flex flex-col gap-1 ml-2'
             >
               <span
                 style={{
@@ -760,12 +760,12 @@ export default function CourseDetail(props) {
             </div>
             <div
               style={{
-                width: "380px",
+                width: "382px",
                 height: "152px",
                 backgroundColor: "#FFF",
 
                 position: "absolute",
-                left: "301px",
+                left: "293px",
                 marginTop: "8rem",
               }}
               className='-rotate-17'

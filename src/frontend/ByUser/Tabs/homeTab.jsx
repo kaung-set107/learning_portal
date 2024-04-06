@@ -6,12 +6,13 @@ import {
   Image,
   Progress,
 } from "@nextui-org/react";
+
 // import { useSelector } from 'react-redux'
 import ReactStars from "react-rating-stars-component";
 import React, { useEffect, useState } from "react";
 import apiInstance from "../../../util/api";
 import { getFile } from "../../../util";
-import Course from "../../../assets/img/course.jpg";
+import LoginGif from "../../../assets/img/login.gif";
 import { Fade } from "react-awesome-reveal";
 import { Link, useNavigate } from "react-router-dom";
 import CourseDetail from "../CourseDetail/courseDetail";
@@ -31,7 +32,7 @@ export default function Home() {
   const [value, setValue] = useState("");
   const [activeTab, setActiveTab] = useState(0);
   const [courseId, setCourseId] = useState("");
-
+  const [showPage, setShowPage] = useState(false);
   const enr_id = myCourseList[0]?._id
   // console.log(StudentId, 'my')
   const [enrollId, setEnrollId] = useState(enr_id)
@@ -100,10 +101,12 @@ export default function Home() {
     getCat();
 
     getAssign();
+
   }, [firstDefaultCourseId, StudentId]);
 
 
   return (
+
     <div>
       {/* Home Page Wrap Start */}
       {value === "detail" ? (
@@ -111,6 +114,8 @@ export default function Home() {
       ) : (
         <div className='flex flex-col pt-16 pr-0' id='home'>
           <div>
+
+
             {/* My Course at Home Header */}
             <div className='flex flex-col gap-4'>
               <h1 style={{ fontSize: "40px", fontWeight: "600" }}>
@@ -341,5 +346,6 @@ export default function Home() {
 
       {/* Home Page Wrap End */}
     </div>
+
   );
 }

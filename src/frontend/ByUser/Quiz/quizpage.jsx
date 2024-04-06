@@ -65,11 +65,10 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
     .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
   // console.log(TotalMark, "trueF mark");
 
-  const notify = () => toast.error("You are Fail!",);
+  const notify = () => toast.error("You are Fail!");
   const handleShowFail = () => {
     setShowToast(true)
     setShowTimer(false)
-
     notify()
   }
   //Multiple

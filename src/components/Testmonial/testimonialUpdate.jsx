@@ -86,7 +86,7 @@ export default function Eventupdate() {
                 <div className='flex flex-col w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-2'>
                     <label className='text-sm font-semibold'>Event Photo</label>
                     <FileBase64 type="file" multiple={false} onDone={({ base64 }) => setListData({ ...listData, selectedFile: base64 })} />
-                    <Image src={`data:image/jpeg;base64,${listData ? listData.selectedFile?.split('base64,')[1] : oldImage}`} className='w-[60px] h-[60px]' />
+                    <Image src={`data:image/jpeg;base64,${listData.selectedFile ? listData.selectedFile?.split('base64,')[1] : oldImage}`} className='w-[60px] h-[60px]' />
                 </div>
 
             </div>
@@ -111,7 +111,7 @@ export default function Eventupdate() {
                     <Link to='/category'>Cancel</Link>
                 </Button>
                 <Button color='primary' onClick={create}>
-                    Register
+                    Update
                 </Button>
             </div>
         </div>
