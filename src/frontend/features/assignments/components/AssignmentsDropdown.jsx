@@ -29,7 +29,7 @@ const AssignmentsDropdown = (props) => {
 
   useEffect(() => {
     getAssignments()
-  }, [subject, filters.batch])
+  }, [subject])
 
   useEffect(() => {
     getAssignments()

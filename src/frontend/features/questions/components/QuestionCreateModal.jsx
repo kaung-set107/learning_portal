@@ -149,7 +149,7 @@ export default function QuestionCreateModal(props) {
                     />
                   </div>
 
-                  <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-9 gap-4 mt-3">
+                  <div className="flex w-full flex-wrap md:flex-nowrap gap-4 mt-3">
                     <Input
                       type="text"
                       label="Mark"
@@ -164,6 +164,43 @@ export default function QuestionCreateModal(props) {
                       }
                       labelPlacement="outside"
                     />
+                  </div>
+
+                  <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
+                    <Select
+                      items={questionTypes}
+                      label="Question Type"
+                      placeholder="Select an question type"
+                      className="max-w-xs"
+                      labelPlacement="outside"
+                      onSelectionChange={(e) => onQuestionTypeChange(e)}
+                    >
+                      {(type) => (
+                        <SelectItem key={type.value}>{type.label}</SelectItem>
+                      )}
+                    </Select>
+                  </div>
+
+                  <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-9 gap-4 mt-3">
+                    <Select
+                      isDisabled
+                      items={answerTypes}
+                      selectedKeys={[formData.answerType]}
+                      label="Answer Type"
+                      placeholder="Select an answer type"
+                      className="max-w-xs"
+                      labelPlacement="outside"
+                      onSelectionChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          answerType: e.currentKey,
+                        }))
+                      }
+                    >
+                      {(type) => (
+                        <SelectItem key={type.value}>{type.label}</SelectItem>
+                      )}
+                    </Select>
                   </div>
 
                   <CustomMultiSelect
@@ -190,43 +227,6 @@ export default function QuestionCreateModal(props) {
                       }
                       labelPlacement="outside"
                     />
-                  </div>
-
-                  <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
-                    <Select
-                      items={questionTypes}
-                      label="Question Type"
-                      placeholder="Select an question type"
-                      className="max-w-xs"
-                      labelPlacement="outside"
-                      onSelectionChange={(e) => onQuestionTypeChange(e)}
-                    >
-                      {(type) => (
-                        <SelectItem key={type.value}>{type.label}</SelectItem>
-                      )}
-                    </Select>
-                  </div>
-
-                  <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
-                    <Select
-                      isDisabled
-                      items={answerTypes}
-                      selectedKeys={[formData.answerType]}
-                      label="Answer Type"
-                      placeholder="Select an answer type"
-                      className="max-w-xs"
-                      labelPlacement="outside"
-                      onSelectionChange={(e) =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          answerType: e.currentKey,
-                        }))
-                      }
-                    >
-                      {(type) => (
-                        <SelectItem key={type.value}>{type.label}</SelectItem>
-                      )}
-                    </Select>
                   </div>
 
                   <div className="flex items-end w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
