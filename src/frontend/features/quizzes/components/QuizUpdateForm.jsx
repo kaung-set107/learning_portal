@@ -49,6 +49,7 @@ const QuizUpdateForm = (props) => {
     passMark: 0,
     creditMark: 0,
     distinctionMark: 0,
+    deletedQuestions: []
   });
 
   const addQuestion = (data) => {
@@ -64,6 +65,8 @@ const QuizUpdateForm = (props) => {
       ...formData,
     };
 
+    if(!(payload.deletedQuestions && payload.deletedQuestions.length > 0)) delete payload.deletedQuestions
+
     // if(type === 'learningMaterial') {
     //     payload['learningMaterial'] = learningMaterial._id
     // }
@@ -74,6 +77,15 @@ const QuizUpdateForm = (props) => {
 
     return payload;
   };
+
+  const resetPayload = () => {
+    setFormData(prev => {
+      return {
+        ...prev,
+        deletedQuestions: [] 
+      }
+    })
+  }
 
   const handleSubmit = async () => {
     let payload = preparePayload();
@@ -90,6 +102,7 @@ const QuizUpdateForm = (props) => {
       showError({ axiosResponse: error });
     } finally {
       setIsSubmitting(false);
+      resetPayload()
     }
   };
 
@@ -293,6 +306,8 @@ const QuizUpdateForm = (props) => {
                   srcId={quizData._id}
                   imageUploadApi={quizzesApi.updateQuestionImage}
                   questionRemoveApi={quizzesApi.removeQuestion}
+                  deletedQuestions={formData.deletedQuestions}
+                  setDeletedQuestions={(data) => setFormData(prev => ({...prev, deletedQuestions: data}))}
                   questions={questions}
                   setQuestions={setQuestions}
                 />

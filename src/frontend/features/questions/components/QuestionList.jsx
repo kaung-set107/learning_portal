@@ -1,27 +1,19 @@
 /* eslint-disable react/prop-types */
-import { Card, CardBody } from "@nextui-org/react";
-import { v4 as uuidv4 } from "uuid";
-import ListInfo from "../../../components/general/typography/ListInfo";
-import ListDetail from "../../../components/general/typography/ListDetail";
-import CustomButton from "../../../components/general/CustomButton";
-import QuestionUpdateModal from "./QuestionUpdateModal";
-import { useState } from "react";
-import QuestionImageUploadModal from "./QuestionImageUploadModal";
-import { getFile } from "../../../../util";
-import { showError, showSuccess } from "../../../../util/noti";
+import { Card, CardBody } from '@nextui-org/react';
+import { v4 as uuidv4 } from 'uuid';
+import ListInfo from '../../../components/general/typography/ListInfo';
+import ListDetail from '../../../components/general/typography/ListDetail';
+import CustomButton from '../../../components/general/CustomButton';
+import QuestionUpdateModal from './QuestionUpdateModal';
+import { useState } from 'react';
+import QuestionImageUploadModal from './QuestionImageUploadModal';
+import { getFile } from '../../../../util';
 
 const QuestionList = (props) => {
   const [currentQuestionData, setCurrentQuestionData] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const {
-    srcId,
-    questions,
-    setQuestions,
-    imageUploadApi,
-    questionRemoveApi,
-    successCallback,
-  } = props;
+  const { srcId, questions, setQuestions, imageUploadApi, successCallback, setDeletedQuestions, deletedQuestions } =
+    props;
 
   const handleEditButtonClick = (index) => {
     setCurrentQuestionData({
@@ -43,20 +35,10 @@ const QuestionList = (props) => {
   };
 
   const removeQuestion = async (index) => {
-    if(questions[index].images) {
-      setIsSubmitting(true);
-      try {
-        const res = await questionRemoveApi({ _id: srcId, questionIndex: index });
-        await successCallback()
-        showSuccess({ text: res.message , type: 'noti-box'});
-      } catch (error) {
-        showError({ axiosResponse: error });
-      } finally {
-        setIsSubmitting(false);
-      }
-    } else {
-      setQuestions(prev => prev.filter((question, qindex) => qindex !== index))
-    }
+    setQuestions((prev) => {
+      if(questions[index]?.status !== 'new') setDeletedQuestions([...deletedQuestions, questions[index]])
+      return prev.filter((question, qindex) => qindex !== index)
+    });
   };
 
   return (
@@ -86,7 +68,6 @@ const QuestionList = (props) => {
                     <CustomButton
                       iconOnly
                       type="delete"
-                      isLoading={isSubmitting}
                       onClick={() => removeQuestion(index)}
                       title="Remove"
                     />
