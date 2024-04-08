@@ -20,6 +20,7 @@ import {
     TableBody,
     TableRow,
     TableCell,
+    Image,
     Chip
 } from "@nextui-org/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -169,13 +170,13 @@ export default function BatchList() {
                 </TableHeader>
                 <TableBody emptyContent={"No Positions to display."} >
                     {items.map((item, index) => (
-                        <TableRow key={item._id} >
+                        <TableRow key={item._id}>
                             <TableCell>{index + 1}</TableCell>
                             <TableCell>{item?.code}</TableCell>
 
                             <TableCell>{item?.title}</TableCell>
 
-                            <TableCell>{item?.noOfEnrolledStudent}</TableCell>
+                            <TableCell className=''><Image src={`data:image/jpeg;base64,${item?.image}`} className='w-[40px] h-[30px]' /></TableCell>
 
 
                             <TableCell className='w-52'>

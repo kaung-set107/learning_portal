@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { faPlus, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { SelectItem, Select } from "@nextui-org/select";
 export default function PositionInputForm() {
   const variant = "bordered";
 
@@ -14,12 +15,14 @@ export default function PositionInputForm() {
   const [image, setImage] = useState("");
   const [title, setTitle] = useState("");
   const [course, setCourse] = useState("");
-  const [desc, setDesc] = useState("");
 
+  const [desc, setDesc] = useState('')
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
-  const [instructor, setInstructor] = useState("");
-
+  const [instructors, setInstructors] = useState('');
+  // const [data, setData] = useState([]);
+  // const dataArr = [...data, instructors?.split(',')]
+  console.log(JSON.stringify({ data: instructors?.split(',') }), 'inst')
   const [videoLinks, setVideoLinks] = useState("");
   const [newVideoLink, setNewVideoLink] = useState([]);
 
@@ -55,7 +58,7 @@ export default function PositionInputForm() {
     formData.append("course", course);
     formData.append("description", desc);
     formData.append("image", image);
-    formData.append("instructor", instructor);
+    formData.append("instructors", JSON.stringify({ data: instructors?.split(',') }));
     formData.append("fromDate", fromDate);
     formData.append("toDate", toDate);
 
@@ -66,6 +69,7 @@ export default function PositionInputForm() {
           "Content-Type": "multipart/form-data",
         },
       })
+
       .then(function () {
         Swal.fire({
           icon: "success",
@@ -155,15 +159,32 @@ export default function PositionInputForm() {
             </select>
           </div>
           <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-2'>
-            <label
+            {/* <label
               className={`text-sm font-semibold ${errors.instructor && errors.instructor.type === "required"
                 ? "text-[#f31260]"
                 : ""
                 }`}
             >
               Instructor
-            </label>
-            <select
+            </label> */}
+            <Select
+              label="Select Instructor"
+              // placeholder="Select Instructor"
+              selectionMode="multiple"
+              className="w-full"
+              {...register("instructor", {
+                required: true,
+                onChange: (e) => setInstructors(e.target.value),
+              })}
+            >
+
+              {instructorList.map((item) => (
+                <SelectItem key={item._id} value={item._id}>
+                  {item.name}
+                </SelectItem>
+              ))}
+            </Select>
+            {/* <select
               {...register("instructor", {
                 required: true,
                 onChange: (e) => setInstructor(e.target.value),
@@ -175,10 +196,10 @@ export default function PositionInputForm() {
                 <option key={item._id} value={item._id}>
                   {item.name}
                 </option>
-              ))}
-              {/* <option value="Male">Department 1</option>
+              ))} */}
+            {/* <option value="Male">Department 1</option>
                 <option value="Female">Department 2</option> */}
-            </select>
+
           </div>
         </div>
 
@@ -366,7 +387,7 @@ export default function PositionInputForm() {
             Register
           </Button>
         </div>
-      </form>
-    </div>
+      </form >
+    </div >
   );
 }

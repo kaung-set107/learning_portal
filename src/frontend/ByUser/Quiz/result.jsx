@@ -252,12 +252,15 @@ export default function Result() {
                 <div>
                   {studentList.map((i) => (
                     <div className='flex gap-5 justify-start items-center'>
-                      <Image
-                        radius='sm'
-                        alt={i.image.originalname}
-                        className='w-[40px] h-[40px] rounded-[100px]'
-                        src={getFile({ payload: i.image })}
-                      />
+                      {i.image && (
+                        <Image
+                          radius='sm'
+                          alt={i.image.originalname}
+                          className='w-[40px] h-[40px] rounded-[100px]'
+                          src={getFile({ payload: i.image })}
+                        />
+                      )}
+
                       <span>{i.name}</span>
                     </div>
                   ))}

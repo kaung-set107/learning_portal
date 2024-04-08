@@ -1,18 +1,23 @@
 import Countdown from "react-countdown";
 // import { quiz } from "./quiz";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import _isEqual from 'lodash/isEqual';
 import { useState, useEffect } from "react";
-import { Card, Button, Spinner } from "@nextui-org/react";
+import { Card, Button, Spinner, Image, useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Divider } from "@nextui-org/react";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 import { useLocation, useNavigate } from "react-router-dom";
 import apiInstance from "../../../util/api";
-import ResultPage from "./result";
+import ResultPage from './quizResultDetail'
 // import Swal from 'sweetalert2';
+import ResultUFO from '../../../assets/img/ufo.gif'
+import Loading from '../../../assets/img/finalloading.gif'
 // import Result from './result'
 const QuizPage = ({ QuizID, enrollID, batchID }) => {
   const a = ['a', 'b']
   const b = ['a', 'b', 'c']
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [arr, setArr] = useState([]);
   const [timeLeft, setTimeLeft] = useState('');
   const [timer, setTimer] = useState(0);
@@ -38,13 +43,16 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
   // const [trueAnswer, setTrueAnswer] = useState('')
   const [studentID, setStudentID] = useState("");
   const [multiTrueAnswerList, setMultiTrueAnswerList] = useState([]);
-  const [caList, setCaList] = useState([])
+  const [showToast, setShowToast] = useState(true)
   const [multiAns, setMultiAns] = useState([])
   const [count, setCount] = useState('')
   const [number, setNumber] = useState(0);
-
+  const [loading, setLoading] = useState(true)
+  setTimeout(() => {
+    setLoading(false);
+  }, 3000);
   // console.log(trueAnswerList, 'trueAnswerList')
-  const [final, setFinal] = useState('')
+  const [size, setSize] = useState('')
 
   const [studentAnswerList, setStudentAnswerList] = useState([]);
   // const arrList = [...arr, trueAnswerList.filter((el) => el.id === quizList.questions[counter]._id)[1]]
@@ -57,7 +65,12 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
     .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
   // console.log(TotalMark, "trueF mark");
 
-
+  const notify = () => toast.error("You are Fail!");
+  const handleShowFail = () => {
+    setShowToast(true)
+    setShowTimer(false)
+    notify()
+  }
   //Multiple
   // console.log(multiTrueAnswerList.filter(el => el.id), 'last mul')
   const MulTotalMark = multiTrueAnswerList.filter(el => el.id).map((i) => i.markTotal).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
@@ -110,7 +123,12 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
       interval = setInterval(() => {
         setTimer(prevTimer => {
           if (prevTimer >= 30) {
-            handleResult();// Stop the timer when it reaches 30 seconds
+            if (((TotalMark + MulTotalMark) === quizList.passMark && "pass") || ((TotalMark + MulTotalMark) > quizList.passMark && "credit")) {
+              handleResult();
+            } else {
+              handleShowFail()
+
+            } // Stop the timer when it reaches 30 seconds
             return prevTimer; // Return current timer value
           } else {
             return prevTimer + 1; // Increment timer value by 1 second
@@ -124,26 +142,13 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
     return () => clearInterval(interval);
 
 
-  }, [count, showTimer]);
+  }, [count, showTimer, disabledQuiz]);
 
 
   const handleStart = () => {
     // setShowTimer(true);
     setShowTimer(prev => !prev);
-    // const timerInterval = setInterval(() => {
-    //   setTimeLeft((prevTime) => {
-    //     if (prevTime === 0) {
-    //       clearInterval(timerInterval);
-
-    //       nextQuestion();
-    //       return 10; // Reset timer for the next question
-    //     }
-    //     return prevTime - 1;
-    //   });
-    // }, 1000);
-
-    // return () => clearInterval(timerInterval);
-  };
+  }
 
   const nextQuestion = (studentAnswer, cas, ind) => {
     //cas
@@ -176,7 +181,12 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
         setCounter(nextQuestion);
       } else {
         setCounter(0);
-        handleResult();
+        if (((TotalMark + MulTotalMark) === quizList.passMark && "pass") || ((TotalMark + MulTotalMark) > quizList.passMark && "credit")) {
+          handleResult();
+        } else {
+          handleShowFail()
+        }
+
         // console.log(TotalMark, "in next");
       }
 
@@ -207,7 +217,7 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
 
   const handleResult = () => {
 
-    console.log(studentAnswerList, 'studentAnswerList');
+    // console.log(studentAnswerList, 'studentAnswerList');
 
     // console.log(studentAnswerList.filter(el => quizList.questions.find(i => i._id === el.id)), 'studentAnswerList')
     //Quiz-Result Create
@@ -233,7 +243,7 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
         };
       }),
       totalMark: TotalMark + MulTotalMark,
-      status: ((TotalMark + MulTotalMark) === quizList.passMark && "pass") || ((TotalMark + MulTotalMark) > quizList.passMark && "distinction") || (((TotalMark + MulTotalMark) < quizList.passMark && (TotalMark + MulTotalMark) === quizList.creditMark) && "credit") || ((TotalMark + MulTotalMark) < quizList.creditMark && "fail"),
+      status: ((TotalMark + MulTotalMark) === quizList.passMark && "pass") || ((TotalMark + MulTotalMark) > quizList.passMark && "credit") || ((TotalMark + MulTotalMark) < quizList.creditMark && "fail"),
     };
     // alert(JSON.stringify(data));
     apiInstance
@@ -241,6 +251,8 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
       .then(function () {
 
         navigate("/quiz-result");
+
+
       })
       .catch((error) => {
         console.log(error);
@@ -251,7 +263,6 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
     setShowOrigin(false);
     setShowResult(true);
   };
-
 
   const handleAns = (val, studentChoose, ca, index, mark, counterid) => {
     setNextAnswer(false);
@@ -355,7 +366,7 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
         // console.log(uniqueObjects, 'mul real');
         setMultiTrueAnswerList(uniqueObjects);
 
-        console.log(uniqueObjects, 'setMulTrueAnswerList')
+        // console.log(uniqueObjects, 'setMulTrueAnswerList')
         // console.log(quiz.questions.filter(el=>el.correctAnswer === val+1))
         setIsCorrect("Correct");
       } else {
@@ -375,7 +386,7 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
 
       // Usage
       const stuList = getUniqueById(mainArray);
-      console.log(stuList, 'final final')
+      // console.log(stuList, 'final final')
       setStudentAnswerList(stuList);
     } else {
       setNumber('')
@@ -383,212 +394,288 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
       const multi = multiAns.filter(data => data !== counterId)
       setMultiAns(multi)
 
-      console.log(multi, 'ma tu tar')
+      // console.log(multi, 'ma tu tar')
     }
 
   }
 
+  const handleQuizRes = (val) => {
+    console.log(val)
+    setSize(val)
+    onOpen()
+  }
 
   const displayMinutes = Math.floor(timeLeft / 60);
   const displaySeconds = timeLeft % 60;
 
   return (
     <div className='mx-auto'>
-      {showOrigin && (
-        <>
-          {!showTimer && (
-            <div className='bg-[#EBF0FF] rounded-lg w-full h-[auto] p-[20px] flex flex-col gap-20'>
-              <span className='w-[902px] h-[24px] text-[20px] font-semibold'>
-                This quiz will test your basic knowledge on IELTS
-              </span>
-              <div className='flex justify-end gap-2'>
-                <Button color='primary' variant='bordered'>
-                  Cancel
-                </Button>
-                {disabledQuiz[0]?.student?._id === studentID ? (
-                  <div>
-                    <Button color='default' className='cursor-not-allowed'>
-                      Start Quiz
-                    </Button>
-                  </div>
-                ) : (
-                  quizList.questions ? (
-                    <Button color='primary' checked={showTimer} onClick={handleStart}>
-                      Start Quiz
-                    </Button>
-                  ) : (
-                    <Button color='light'>
-                      Start Quiz <Spinner size='sm' />
-                    </Button>
-                  )
-                )}
 
-              </div>
-            </div>
+      <>
+        <div>
+          {showToast && (
+            <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss={false}
+              draggable
+              pauseOnHover={false}
+              theme="dark"
+              transition:Flip
+            />
           )}
 
-          {showTimer && (
-            <>
-              <div className='h-[317px]'>
-                <div className='p-[24px] border-1 border-[#10C278] rounded-[12px] flex flex-col gap-10'>
-                  <div className='flex justify-between'>
-                    <span className='text-[20px] font-semibold p-[10px]'>
-                      Question
-                    </span>
-                    <span className='flex justify-center text-[16px] text-[#BDFFE2] font-medium bg-[#10C278] rounded-[24px] p-[1px] w-[180px] items-center  text-center'>
-                      Mark {quizList.questions[counter].mark} out of{" "}
-                      {quizList.questions[counter].mark}{" "}
-                    </span>
-                    <span className='p-[20px] text-[20px] font-light'>
-                      Time :{timer}
-                    </span>
-                  </div>
+        </div>
+        {showOrigin && (
+          <>
+            {!showTimer && (
+              <>
 
-                </div>
-                {/* Qusetion And Answer Section */}
-                <Card
-                  className='mt-5 p-[24px] border-1 border-[#10C278] rounded-[12px]'
-                  key={counter}
-                >
-                  <div>
-                    <div className='flex gap-5  text-lg py-3 px-3'>
-                      <div>
-                        <b>({counter + 1})</b> &nbsp;
-                        {quizList.questions[counter].question}
+
+
+
+                {disabledQuiz[0]?.student?._id ? (
+                  <>
+                    {loading ? (
+                      <div className='flex flex-col gap-10 items-center pt-[40px]'>
+                        <Image src={Loading} className='transform-x-[-1] w-[350px] h-[250px]' />
+                        <span className='text-[20px] font-semibold'>
+                          Please wait ... !
+                        </span>
                       </div>
 
+                    ) : (
+                      <div className='flex gap-32 justify-start items-center' >
+                        <Image src={ResultUFO} className='w-[300px] h-[300px]' />
+                        <div className='flex flex-col gap-4 w-[400px]'>
+                          <span className=' text-[20px] font-semibold'>You have already finished QUIZ.</span>
+                          <div className=' hover:-translate-y-1 hover:scale-110 duration-500 flex justify-end'>
+                            <Button color='primary' onPress={() => handleQuizRes('5xl')} className=''>See Result</Button>
+                          </div>
 
-                      <span className='underline'>(Choose <b className='text-[green]'>{quizList.questions[counter].correctAnswer.length}</b> answer!)</span>
+                        </div>
+                      </div>
+                    )}
+
+                  </>
+
+                ) : (
+                  <>
+                    {loading ? (
+                      <div className='flex flex-col gap-10 items-center pt-[40px]'>
+                        <Image src={Loading} className='transform-x-[-1] w-[350px] h-[250px]' />
+                        <span className='text-[20px] font-semibold'>
+                          Please wait ... !
+                        </span>
+                      </div>
+
+                    ) : (
+                      <div className='bg-[#EBF0FF] rounded-lg w-full h-[auto] p-[20px] flex flex-col gap-20'>
+                        <span className='w-[902px] h-[24px] text-[20px] font-semibold'>
+                          This quiz will test your basic knowledge on IELTS
+                        </span>
+                        <div className='flex justify-end gap-2'>
+                          <Button color='primary' variant='bordered'>
+                            Cancel
+                          </Button>
+                          {disabledQuiz[0]?.student?._id === studentID ? (
+                            <div>
+                              <Button color='default' className='cursor-not-allowed'>
+                                Start Quiz
+                              </Button>
+                            </div>
+                          ) : (
+                            quizList.questions ? (
+                              <Button color='primary' checked={showTimer} onClick={handleStart}>
+                                Start Quiz
+                              </Button>
+                            ) : (
+                              <Button color='light'>
+                                Start Quiz <Spinner size='sm' />
+                              </Button>
+                            )
+                          )}
+
+                        </div>
+                      </div>
+                    )}
+                  </>
+
+                )
+
+                }
+
+
+
+              </>
+            )}
+
+            {showTimer && (
+              <>
+                <div className='h-[317px]'>
+                  <div className='p-[24px] border-1 border-[#10C278] rounded-[12px] flex flex-col gap-10'>
+                    <div className='flex justify-between'>
+                      <span className='text-[20px] font-semibold p-[10px]'>
+                        Question
+                      </span>
+                      <span className='flex justify-center text-[16px] text-[#BDFFE2] font-medium bg-[#10C278] rounded-[24px] p-[1px] w-[180px] items-center  text-center'>
+                        Mark {quizList.questions[counter].mark} out of{" "}
+                        {quizList.questions[counter].mark}{" "}
+                      </span>
+                      <span className='p-[20px] text-[20px] font-light'>
+                        Time :{timer}
+                      </span>
                     </div>
+
+                  </div>
+                  {/* Qusetion And Answer Section */}
+                  <Card
+                    className='mt-5 p-[24px] border-1 border-[#10C278] rounded-[12px]'
+                    key={counter}
+                  >
                     <div>
-                      <img src={quizList.questions[counter].questionPic} />
-                    </div>
-                    <div className='mt-5'>
+                      <div className='flex gap-5  text-lg py-3 px-3'>
+                        <div>
+                          <b>({counter + 1})</b> &nbsp;
+                          {quizList.questions[counter].question}
+                        </div>
 
-                      {quizList.questions[counter].options.map((e, i) => (
-                        <>
-                          {quizList.questions[counter].type === 'trueFalse' ? (
-                            <div className='flex gap-2 text-[18px] font-normal'>
+
+                        <span className='underline'>(Choose <b className='text-[green]'>{quizList.questions[counter].correctAnswer.length}</b> answer!)</span>
+                      </div>
+                      <div>
+                        <img src={quizList.questions[counter].questionPic} />
+                      </div>
+                      <div className='mt-5'>
+
+                        {quizList.questions[counter].options.map((e, i) => (
+                          <>
+                            {quizList.questions[counter].type === 'trueFalse' ? (
+                              <div className='flex gap-2 text-[18px] font-normal'>
+                                < div
+                                  key={i}
+                                  className='text-lg font-semibold ml-10'
+                                  onClick={() =>
+                                    handleAns(
+                                      i,
+                                      e,
+                                      quizList.questions[counter].correctAnswer,
+                                      counter,
+                                      quizList.questions[counter].mark,
+                                      quizList.questions[counter]._id
+
+                                    )
+                                  }
+                                >
+                                  {showTimer && (
+
+                                    <div>
+                                      {/* True False Quiz */}
+
+                                      <input
+                                        type='radio'
+                                        className='w-[20px] h-[20px]'
+                                        name='answer_group'
+                                        value={e.answer}
+                                        disabled={
+                                          clicked === ""
+                                            ? ""
+                                            : selectedOption === e.answer
+                                              ? ""
+                                              : true
+                                        }
+                                      // onChange={(event) =>
+                                      //   handleOptionSelect(event, e, i)
+                                      // }
+                                      />
+                                    </div>
+
+
+
+                                  )}
+                                </div>
+                                <span>  {e.answer}</span>
+                              </div>
+
+                            ) : (
                               < div
                                 key={i}
                                 className='text-lg font-semibold ml-10'
-                                onClick={() =>
-                                  handleAns(
-                                    i,
-                                    e,
-                                    quizList.questions[counter].correctAnswer,
-                                    counter,
-                                    quizList.questions[counter].mark,
-                                    quizList.questions[counter]._id
+                              // onChange={() =>
+                              //   handleAns(
+                              //     i,
+                              //     e,
+                              //     quizList.questions[counter].correctAnswer,
+                              //     counter,
+                              //     quizList.questions[counter].mark,
+                              //     quizList.questions[counter]._id
 
-                                  )
-                                }
+                              //   )
+                              // }
                               >
                                 {showTimer && (
+                                  <div className='flex gap-2 text-[18px] font-normal'>
+                                    <div>
 
-                                  <div>
-                                    {/* True False Quiz */}
+                                      {/* Multiple Choice Quiz */}
+                                      <input
+                                        type='checkbox'
+                                        name='answer_group'
+                                        value={e.answer}
+                                        // checked={multiAns.map((i, ind) => (selectedItem.map((e, ine) => (ine === ind))))}
+                                        disabled={
+                                          number >= quizList.questions[counter].correctAnswer?.length ? true : ''
 
-                                    <input
-                                      type='radio'
-                                      className='w-[20px] h-[20px]'
-                                      name='answer_group'
-                                      value={e.answer}
-                                      disabled={
-                                        clicked === ""
-                                          ? ""
-                                          : selectedOption === e.answer
-                                            ? ""
-                                            : true
-                                      }
-                                    // onChange={(event) =>
-                                    //   handleOptionSelect(event, e, i)
-                                    // }
-                                    />
+
+                                        }
+                                        className='w-[20px] h-[20px]'
+                                        onClick={(event) =>
+                                          handleCheckboxSelect(event,
+
+                                            i,
+                                            e,
+                                            quizList.questions[counter].correctAnswer,
+                                            counter,
+                                            quizList.questions[counter].mark,
+                                            quizList.questions[counter]._id
+                                          )
+                                        }
+                                      />
+
+                                    </div>
+                                    <span> {e.answer}</span>
                                   </div>
-
-
 
                                 )}
-                              </div>
-                              <span>  {e.answer}</span>
-                            </div>
-
-                          ) : (
-                            < div
-                              key={i}
-                              className='text-lg font-semibold ml-10'
-                            // onChange={() =>
-                            //   handleAns(
-                            //     i,
-                            //     e,
-                            //     quizList.questions[counter].correctAnswer,
-                            //     counter,
-                            //     quizList.questions[counter].mark,
-                            //     quizList.questions[counter]._id
-
-                            //   )
-                            // }
-                            >
-                              {showTimer && (
-                                <div className='flex gap-2 text-[18px] font-normal'>
-                                  <div>
-
-                                    {/* Multiple Choice Quiz */}
-                                    <input
-                                      type='checkbox'
-                                      name='answer_group'
-                                      value={e.answer}
-                                      // checked={multiAns.map((i, ind) => (selectedItem.map((e, ine) => (ine === ind))))}
-                                      disabled={
-                                        number >= quizList.questions[counter].correctAnswer?.length ? true : ''
+                              </div>)}
 
 
-                                      }
-                                      className='w-[20px] h-[20px]'
-                                      onClick={(event) =>
-                                        handleCheckboxSelect(event,
+                          </>
 
-                                          i,
-                                          e,
-                                          quizList.questions[counter].correctAnswer,
-                                          counter,
-                                          quizList.questions[counter].mark,
-                                          quizList.questions[counter]._id
-                                        )
-                                      }
-                                    />
+                        ))}
+                      </div >
+                    </div>
+                    <div className='py-3'>
 
-                                  </div>
-                                  <span> {e.answer}</span>
-                                </div>
-
-                              )}
-                            </div>)}
-
-
-                        </>
-
-                      ))}
-                    </div >
-                  </div>
-                  <div className='py-3'>
-
-                    <Button
-                      color='secondary'
-                      size='sm'
-                      className='ml-10 rounded-md mt-3'
-                      onClick={() =>
-                        nextQuestion(
-                          multiAns,
-                          quizList.questions[counter].correctAnswer,
-                          counter
-                        )
-                      }
-                    >
-                      Next
-                    </Button>
-                    {/* ) : (
+                      <Button
+                        color='secondary'
+                        size='sm'
+                        className='ml-10 rounded-md mt-3'
+                        onClick={() =>
+                          nextQuestion(
+                            multiAns,
+                            quizList.questions[counter].correctAnswer,
+                            counter
+                          )
+                        }
+                      >
+                        Next
+                      </Button>
+                      {/* ) : (
                       <Button
                         size='sm'
                         className='ml-10 rounded-md mt-3'
@@ -604,15 +691,45 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
                         Next
                       </Button>
                     )} */}
-                  </div>
-                </Card>
-              </div>
-            </>
-          )
-          }
-        </>
-      )}
-      {/* {showResult && <ResultPage />} */}
+                    </div>
+                  </Card>
+                </div>
+              </>
+            )
+            }
+          </>
+        )}
+      </>
+
+      <div>
+        <Modal
+          size={size}
+          isOpen={isOpen}
+          onClose={onClose}
+          scrollBehavior='outside'
+        >
+          <ModalContent>
+            {(onClose) => (
+              <>
+                <ModalHeader className="flex flex-col gap-1 text-[30px] font-bold">Your Quiz Result</ModalHeader>
+                <Divider></Divider>
+                <ModalBody>
+                  <ResultPage data={disabledQuiz[0]} />
+                  {/* {console.log(disabledQuiz[0], 'data')} */}
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="danger" variant="bordered" onPress={onClose}>
+                    Close
+                  </Button>
+
+                </ModalFooter>
+              </>
+            )}
+          </ModalContent>
+        </Modal>
+      </div>
+
+
     </div >
   );
 };

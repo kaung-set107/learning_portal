@@ -42,3 +42,7 @@ body{
 /* input[type='date']::-webkit-datetime-edit{
   color:transparent;
 } */
+
+.contact{
+background-color: #BC1F40;
+}

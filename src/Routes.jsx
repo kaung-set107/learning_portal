@@ -1,6 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Login from "./pages/Login/login";
 // Home Web Page
+import Contact from './frontend/home/contactUs.jsx'
+import EventPage from './frontend/home/eventPage.jsx'
+import EventDetailPage from './frontend/home/eventDetail.jsx'
 import FHome from "./frontend/home/body";
 import About from "./frontend/home/about.jsx";
 import Booking from "./frontend/home/booking.jsx";
@@ -118,6 +121,9 @@ export default function RouteFile() {
           <Route path='/test' element={<Test />}></Route>
 
           <Route path="/about" element={<About />}></Route>
+          <Route path="/contact" element={<Contact />}></Route>
+          <Route path="/events" element={<EventPage />}></Route>
+          <Route path="/events/:id" element={<EventDetailPage />}></Route>
           <Route path="/booking" element={<Booking />}></Route>
           <Route path="/home-course" element={<HomeCourse />}></Route>
           <Route
@@ -226,6 +232,7 @@ export default function RouteFile() {
                 <Route path="create" element={<InstructorQuizCreate />}/>
                 {/* <Route path=":id/quiz-results" element={<QuizResults />} /> */}
                 {/* <Route path=":id/quiz-results/:resultId" element={<InstructorQuizResult />} /> */}
+
               </Route>
               {/* <Route path='/instructor' element={<InstructorHome />}></Route> */}
               {/* <Route path='/assign' element={<Assignment />}></Route> */}

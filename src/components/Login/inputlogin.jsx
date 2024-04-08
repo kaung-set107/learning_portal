@@ -75,7 +75,7 @@ export default function Login() {
         //   confirmButtonColor: '#3085d6'
         // })
 
-        console.log(res.data, "login res");
+        // console.log(res.data, "login res");
         if (res.data.data.roles[0].includes("instructor")) {
           Swal.fire({
             icon: "success",
@@ -90,18 +90,23 @@ export default function Login() {
         } else if (res.data.data.roles[0].includes("student")) {
           const rol = res.data.data.roles[0];
           setArr(res.data.data);
+
           Swal.fire({
             icon: "success",
             title: "Login Successful",
-            text: "Welcome Student!",
+            text: "Welcome Admin!",
             showCancelButton: false,
             showConfirmButton: false,
             timer: 3000,
-            // confirmButtonText: 'OK',
-            // confirmButtonColor: '#3085d6'
           });
-
           navigate("/student", { state: { rol } });
+
+          const timer = setTimeout(() => {
+            window.location.reload()
+          }, 2000); // 3000 milliseconds = 3 seconds
+
+          return () => clearTimeout(timer);
+
           // window.location.reload()
         } else if (res.data.data.roles[0].includes("admin")) {
           Swal.fire({
@@ -112,7 +117,8 @@ export default function Login() {
             showConfirmButton: false,
             timer: 3000,
           });
-          navigate("/home");
+          navigate("/instru");
+          window.location.reload()
           setLoading(false);
           return setArr(res.data.data);
         }
