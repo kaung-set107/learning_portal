@@ -387,7 +387,7 @@ const Result = ({ data }) => {
                             >
                                 <div id={i._id.slice(-2)}>
                                     <Card
-                                        className='flex justify-start mt-5 p-[24px] border-1 border-[#F01D1E] rounded-[12px]'
+                                        className='flex justify-start mt-5 p-[24px] w-[800px] border-1 border-[#F01D1E] rounded-[12px]'
                                         key={i}
                                     >
                                         <div>

@@ -76,7 +76,7 @@ const CourseDetail = (props) => {
   const [responses, setResponses] = useState({});
   const [activeTab, setActiveTab] = useState(0);
   const [surveyDisabled, setSurveyDisabled] = useState([])
-
+  const [showDisable, setShowDisable] = useState(false);
   const upcomingMeeting = [{
     title: 'IELTs',
     date: '20-03-2024',
@@ -143,12 +143,15 @@ const CourseDetail = (props) => {
     document.body.removeChild(link);
   };
   useEffect(() => {
-    const getSurveyResult = async () => {
-      await apiInstance.get(`survey-results?student=${StudentId}&survey=${surveyData?._id}&batch=${batchID}`).then((res) => {
-        // console.log(res.data.data, "survey res detail");
-        setSurveyDisabled(res.data.data);
-      });
-    };
+    // const getSurveyResult = async () => {
+
+    //   await apiInstance.get(`survey-results?student=${StudentId}&survey=${surveyData?._id}&batch=${batchID}`).then((res) => {
+    //     // console.log(res.data.data, "survey res detail");
+    //     setSurveyDisabled(res.data.data);
+    //   });
+
+    // };
+
     const getSubjects = async () => {
       await apiInstance.get("subjects").then((res) => {
         // console.log(
@@ -161,6 +164,7 @@ const CourseDetail = (props) => {
 
       });
     };
+
     const getEnrol = async () => {
       await apiInstance.get("enrollments").then((res) => {
         // console.log(
@@ -173,8 +177,13 @@ const CourseDetail = (props) => {
     };
     getEnrol();
     getSubjects();
-    getSurveyResult()
-  }, [surveyDisabled, surveyData, activeTab]);
+
+    // getSurveyResult()
+
+
+  }, [
+    surveyData, activeTab
+  ]);
 
   const handleBack = () => {
     navigate("/course-detail", { state: { data: courseData } });
@@ -195,11 +204,18 @@ const CourseDetail = (props) => {
     // console.log(data.assets, "document");
     setLMDataList(data);
     setSurveyData(data.survey)
-    console.log(data, 'lm da')
+    // console.log(data, 'lm da')
     setShowVideo(true);
 
   };
 
+  const handleSurRes = async () => {
+    await apiInstance.get(`survey-results?student=${StudentId}&survey=${surveyData?._id}&batch=${batchID}`).then((res) => {
+      // console.log(res.data.data, "survey res detail");
+      setSurveyDisabled(res.data.data);
+    });
+
+  }
   const handleResult = () => {
 
     // console.log(studentAnswerList, 'studentAnswerList');
@@ -231,6 +247,7 @@ const CourseDetail = (props) => {
     apiInstance
       .post("survey-results", data)
       .then(function () {
+        handleSurRes()
         Swal.fire({
           icon: "success",
           title: "Successful",
@@ -239,6 +256,7 @@ const CourseDetail = (props) => {
           showCancelButton: false,
           timer: 3000
         });
+
         // navigate("/quiz-result");
       })
       .catch((error) => {

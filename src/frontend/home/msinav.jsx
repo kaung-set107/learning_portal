@@ -62,7 +62,7 @@ export default function App() {
       await apiInstance.get("user/" + userID).then((res) => {
         setUser(res.data.data);
         setEmail(res.data.data.email);
-        console.log(res.data.data);
+        console.log(res.data.data, 'hi');
         if (res.data.data.image) {
           setImgUrl(res.data.data);
         }
@@ -261,12 +261,18 @@ export default function App() {
                   </Link>
                 </NavbarItem>
                 <NavbarItem
-                  onClick={() => handleTab(5)}
-                  className={
-                    activeTab === 5 ? "font-semibold text-lg" : "text-lg"
-                  }
+
                 >
-                  Contact
+                  <Link
+                    to='/contact'
+                    className={
+                      location.pathname === "/contact"
+                        ? "font-semibold text-lg"
+                        : "text-lg"
+                    }
+                  >
+                    Contact
+                  </Link>
                 </NavbarItem>
                 <NavbarItem>
                   <Link to='/login'>Login</Link>

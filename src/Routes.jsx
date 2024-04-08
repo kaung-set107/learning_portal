@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Login from "./pages/Login/login";
 // Home Web Page
+import Contact from './frontend/home/contactUs.jsx'
 import EventPage from './frontend/home/eventPage.jsx'
 import EventDetailPage from './frontend/home/eventDetail.jsx'
 import FHome from "./frontend/home/body";
@@ -120,6 +121,7 @@ export default function RouteFile() {
           <Route path='/test' element={<Test />}></Route>
 
           <Route path="/about" element={<About />}></Route>
+          <Route path="/contact" element={<Contact />}></Route>
           <Route path="/events" element={<EventPage />}></Route>
           <Route path="/events/:id" element={<EventDetailPage />}></Route>
           <Route path="/booking" element={<Booking />}></Route>

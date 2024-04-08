@@ -107,7 +107,7 @@ const Body = () => {
 
         <img
           src={EHome}
-          className="absolute top-20 -rotate-45 -left-32  w-[250px] md:w-[250px]"
+          className="absolute top-12 -rotate-17 -left-32 w-[200px] h-[100px]  sm:w-[250px]"
           alt=""
         />
         <div className='w-[654px] flex flex-col gap-10  mt-10'>
@@ -145,12 +145,12 @@ const Body = () => {
 
         </div>
         <div className=''>
-          <Image src={MSIHead} className='w-[464px] h-[454px]' />
+          <Image src={MSIHead} className='sm:w-[464px] sm:h-[454px]' />
         </div>
 
         <img
           src={EHalf}
-          className="absolute bottom-0 right-0 z-10 w-[100px] md:w-[120px] top-[450px]"
+          className="absolute bottom-0 right-0 z-10 w-[100px]  top-[450px]"
           alt=""
         />
 
@@ -324,7 +324,7 @@ const Body = () => {
         </div>
 
       </div >
-      <div className='pt-0 sm:pt-[150px] 2xl:pt-[0px] mx-2'>
+      <div className='pt-0 sm:pt-[150px] 2xl:pt-[100px] mx-2'>
         <Testimonials />
       </div>
       <div className='mt-4 mx-2'>
