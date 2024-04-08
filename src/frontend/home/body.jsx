@@ -316,7 +316,7 @@ const Body = () => {
           )}
         </div>
         <div className='flex justify-center '>
-          <Link to='/events'>
+          <Link href='/events'>
             <button className='text-[#18181B] text-[16px] hover:text-primary font-semibold border-1 border-blue-700 p-2 rounded-lg sm:hover:-translate-y-1 sm:hover:scale:110 duration-500'>
               See All Events &nbsp; <FontAwesomeIcon icon={faArrowUpRightFromSquare} className='text-[blue]' />
             </button>
