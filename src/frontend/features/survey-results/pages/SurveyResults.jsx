@@ -5,28 +5,39 @@ import TableHeading from "../../../components/general/typography/TableHeading";
 import { getTableData } from "../data";
 import Loading from "../../../components/general/Loading";
 import { surveyResultsApi } from "../api";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import CustomButton from "../../../components/general/CustomButton";
 import { surveysApi } from "../../surveys/data";
 import { showError } from "../../../../util/noti";
 import BatchesDropdown from "../../batches/components/BatchesDropdown";
+import { batchesApi } from "../../batches/api";
 
 const SurveyResults = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isFetching, setIsFetching] = useState(true);
   const [surveyResults, setSurveyResults] = useState([]);
   const [survey, setSurvey] = useState({});
+  const [currentBatch, setCurrentBatch] = useState()
   const [filters, setFilters] = useState({
     batch: "",
   });
 
   const navigate = useNavigate();
-  const { id } = useParams();
+
+  const {id} = useParams()
+
+  const {
+    state: { survey: surveyId },
+  } = useLocation();
 
   const getSurveyResults = async () => {
     setIsFetching(true);
     try {
-      let res = await surveyResultsApi.getAll({ survey: survey._id, batch: filters.batch?._id });
+      console.log('here', filters)
+      let res = await surveyResultsApi.getAll({
+        survey: survey._id,
+        batch: filters.batch?._id,
+      });
       console.log(res);
       setSurveyResults(res);
     } catch (error) {
@@ -39,7 +50,7 @@ const SurveyResults = () => {
 
   const getSurvey = async () => {
     try {
-      let res = await surveysApi.get({ _id: id });
+      let res = await surveysApi.get({ _id: surveyId });
       console.log(res);
       setSurvey(res.data);
     } catch (error) {
@@ -47,6 +58,18 @@ const SurveyResults = () => {
       showError({ axiosResponse: error });
     }
   };
+
+  const getCurrentBatch = async () => {
+    try {
+      let res = await batchesApi.getCurrentBatchBySubject({ subject: id });
+      setCurrentBatch(res.data)
+      setFilters(prev => ({...prev, batch: res.data}))
+    } catch (error) {
+      console.log(error);
+      showError({ axiosResponse: error });
+    }
+  }
+
   const fetchData = () => {
     getSurveyResults();
   };
@@ -68,12 +91,16 @@ const SurveyResults = () => {
 
   useEffect(() => {
     getSurvey();
+    getCurrentBatch()
   }, []);
 
   useEffect(() => {
-    console.log(survey);
-    if (survey._id) getSurveyResults();
-  }, [survey]);
+    
+    if(Object.keys(survey).length > 0 && filters.batch) {
+      if (survey._id) getSurveyResults();
+    }
+
+  }, [survey, filters]);
 
   let content;
 

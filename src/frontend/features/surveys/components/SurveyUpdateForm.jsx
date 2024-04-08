@@ -8,13 +8,14 @@ import { surveysApi } from "../data";
 import QuestionCreateModal from "../../questions/components/QuestionCreateModal";
 import QuestionList from "../../questions/components/QuestionList";
 import { showError, showSuccess } from "../../../../util/noti";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const SurveyUpdateForm = (props) => {
   const { type, learningMaterial, successCallback } = props;
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [questions, setQuestions] = useState([]);
+  const {id, subjectSectionId, learningMaterialId} = useParams()
 
   const variant = "bordered";
 
@@ -42,9 +43,9 @@ const SurveyUpdateForm = (props) => {
     isLoading: false,
   });
 
-  const goToResult = (id) => {
-    navigate(`/by-instructor/surveys/${id}/survey-results`, {
-      state: { survey: id },
+  const goToResult = (surveyId) => {
+    navigate(`/by-instructor/subjects/${id}/subject-sections/${subjectSectionId}/learning-materials/${learningMaterialId}/survey-results`, {
+      state: { survey: surveyId },
     });
   };
 

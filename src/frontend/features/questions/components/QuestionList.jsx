@@ -1,16 +1,19 @@
 /* eslint-disable react/prop-types */
-import { Card, CardBody } from "@nextui-org/react";
-import { v4 as uuidv4 } from "uuid";
-import ListInfo from "../../../components/general/typography/ListInfo";
-import ListDetail from "../../../components/general/typography/ListDetail";
-import CustomButton from "../../../components/general/CustomButton";
-import QuestionUpdateModal from "./QuestionUpdateModal";
-import { useState } from "react";
+import { Card, CardBody } from '@nextui-org/react';
+import { v4 as uuidv4 } from 'uuid';
+import ListInfo from '../../../components/general/typography/ListInfo';
+import ListDetail from '../../../components/general/typography/ListDetail';
+import CustomButton from '../../../components/general/CustomButton';
+import QuestionUpdateModal from './QuestionUpdateModal';
+import { useState } from 'react';
+import QuestionImageUploadModal from './QuestionImageUploadModal';
+import { getFile } from '../../../../util';
 
 const QuestionList = (props) => {
   const [currentQuestionData, setCurrentQuestionData] = useState({});
 
-  const { questions, setQuestions } = props;
+  const { srcId, questions, setQuestions, imageUploadApi, successCallback, setDeletedQuestions, deletedQuestions } =
+    props;
 
   const handleEditButtonClick = (index) => {
     setCurrentQuestionData({
@@ -20,7 +23,6 @@ const QuestionList = (props) => {
   };
 
   const updateQuestions = (index) => (data) => {
-
     setQuestions((prev) =>
       prev.map((each, i) => {
         if (i === index) {
@@ -32,8 +34,11 @@ const QuestionList = (props) => {
     );
   };
 
-  const removeQuestion = (index) => {
-    setQuestions((prev) => prev.filter((each, i) => i !== index));
+  const removeQuestion = async (index) => {
+    setQuestions((prev) => {
+      if(questions[index]?.status !== 'new') setDeletedQuestions([...deletedQuestions, questions[index]])
+      return prev.filter((question, qindex) => qindex !== index)
+    });
   };
 
   return (
@@ -46,6 +51,14 @@ const QuestionList = (props) => {
               return (
                 <div key={uuidv4()} className="p-3 border rounded-xl relative">
                   <div className="absolute right-1 top-1 gap-3 flex">
+                    {srcId && imageUploadApi && question?.status !== 'new' && (
+                      <QuestionImageUploadModal
+                        successCallback={successCallback}
+                        srcId={srcId}
+                        questionIndex={index}
+                        uploadApi={imageUploadApi}
+                      />
+                    )}
                     <CustomButton
                       iconOnly
                       type="edit"
@@ -65,6 +78,23 @@ const QuestionList = (props) => {
                       <ListInfo title="Question" />
                       <ListDetail title={question.question} />
                     </div>
+                    {question.images && (
+                      <div className="space-y-1">
+                        <ListInfo title="Uploaded Images" />
+                        <div className="my-2 p-3 border bg-gray-50 rounded-xl flex gap-3">
+                          {question.images.map((image) => {
+                            return (
+                              <div key={uuidv4()}>
+                                <img
+                                  src={getFile({ payload: image })}
+                                  className="w-[200px] h-[200px] border bg-gray-50 rounded-xl"
+                                />
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
                     {question.mark && (
                       <div className="space-y-1">
                         <ListInfo title="Mark" />
@@ -76,6 +106,10 @@ const QuestionList = (props) => {
                       <ListDetail title={question.answerType} />
                     </div>
                     <div>
+                      <ListInfo title="Correct Answer Description" />
+                      <ListDetail title={question.correctAnswerDescription} />
+                    </div>
+                    <div>
                       <ListInfo title="Options" />
                       <ul>
                         {question.options.map((option) => {
@@ -83,20 +117,21 @@ const QuestionList = (props) => {
                         })}
                       </ul>
                     </div>
-                    {question.correctAnswer && question.correctAnswer.length > 0 && (
-                      <div>
-                        <ListInfo title="Correct Answers" />
-                        <ul>
-                          {question.correctAnswer.map((each) => {
-                            return (
-                              <li key={uuidv4()}>
-                                {question.options[each - 1].answer}
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </div>
-                    )}
+                    {question.correctAnswer &&
+                      question.correctAnswer.length > 0 && (
+                        <div>
+                          <ListInfo title="Correct Answers" />
+                          <ul>
+                            {question.correctAnswer.map((each) => {
+                              return (
+                                <li key={uuidv4()}>
+                                  {question.options[each - 1].answer}
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </div>
+                      )}
                   </div>
                 </div>
               );

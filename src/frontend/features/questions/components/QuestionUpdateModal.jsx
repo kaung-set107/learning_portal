@@ -42,22 +42,23 @@ export default function QuestionUpdateModal(props) {
     answerType: "",
     description: "",
     isLoading: true,
+    correctAnswerDescription: "",
     isOpen: false,
   });
 
   const optionRemoveHandler = (index) => {
     setFormData((prev) => {
       let newOptions = [...prev.options];
-      newOptions = prev.options.filter(
-        (value, key) => key !== index
+      newOptions = prev.options.filter((value, key) => key !== index);
+
+      let newCorrectAnswer = [...prev.correctAnswer];
+      newCorrectAnswer = prev.correctAnswer.filter(
+        (each) => each !== prev.options[index].key
       );
 
-      let newCorrectAnswer = [...prev.correctAnswer]
-      newCorrectAnswer = prev.correctAnswer.filter(each => each !== prev.options[index].key)
-
       return { ...prev, options: newOptions, correctAnswer: newCorrectAnswer };
-    })
-  }
+    });
+  };
 
   const handleSubmit = async (onClose) => {
     let modifiedOptions = formData.options.map((option) => ({
@@ -216,6 +217,23 @@ export default function QuestionUpdateModal(props) {
                       data={formData.options}
                       setValues={handleMultipleSelect}
                     />
+
+                    <div className="flex w-full flex-wrap md:flex-nowrap gap-4 mt-3">
+                      <Input
+                        type="text"
+                        label="Correct Answer Description"
+                        placeholder="correctAnswerDescription"
+                        variant={variant}
+                        value={formData.correctAnswerDescription}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            correctAnswerDescription: e.target.value,
+                          }))
+                        }
+                        labelPlacement="outside"
+                      />
+                    </div>
 
                     <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
                       <Select

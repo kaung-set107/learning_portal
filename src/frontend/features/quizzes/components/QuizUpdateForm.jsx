@@ -8,7 +8,7 @@ import { quizzesApi } from "../api";
 import QuestionCreateModal from "../../questions/components/QuestionCreateModal";
 import QuestionList from "../../questions/components/QuestionList";
 import { showError, showSuccess } from "../../../../util/noti";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const QuizUpdateForm = (props) => {
   const { type, successCallback, quizData } = props;
@@ -17,6 +17,8 @@ const QuizUpdateForm = (props) => {
   const [questions, setQuestions] = useState([]);
 
   const navigate = useNavigate();
+
+  const {id, subjectSectionId, learningMaterialId} = useParams()
 
   const variant = "bordered";
 
@@ -31,10 +33,8 @@ const QuizUpdateForm = (props) => {
     },
   ];
 
-  const goToResult = (id) => {
-    navigate(`/by-instructor/quizzes/${id}/quiz-results`, {
-      state: { quiz: id },
-    }); 
+  const goToResult = (quizId) => {
+    navigate(`/by-instructor/subjects/${id}/subject-sections/${subjectSectionId}/learning-materials/${learningMaterialId}/quizzes/${quizId}/quiz-results`);
   };
 
   const [formData, setFormData] = useState({
@@ -49,6 +49,7 @@ const QuizUpdateForm = (props) => {
     passMark: 0,
     creditMark: 0,
     distinctionMark: 0,
+    deletedQuestions: []
   });
 
   const addQuestion = (data) => {
@@ -64,6 +65,8 @@ const QuizUpdateForm = (props) => {
       ...formData,
     };
 
+    if(!(payload.deletedQuestions && payload.deletedQuestions.length > 0)) delete payload.deletedQuestions
+
     // if(type === 'learningMaterial') {
     //     payload['learningMaterial'] = learningMaterial._id
     // }
@@ -74,6 +77,15 @@ const QuizUpdateForm = (props) => {
 
     return payload;
   };
+
+  const resetPayload = () => {
+    setFormData(prev => {
+      return {
+        ...prev,
+        deletedQuestions: [] 
+      }
+    })
+  }
 
   const handleSubmit = async () => {
     let payload = preparePayload();
@@ -90,6 +102,7 @@ const QuizUpdateForm = (props) => {
       showError({ axiosResponse: error });
     } finally {
       setIsSubmitting(false);
+      resetPayload()
     }
   };
 
@@ -289,6 +302,12 @@ const QuizUpdateForm = (props) => {
               </div>
               <div className="mt-3">
                 <QuestionList
+                  successCallback={successCallback}
+                  srcId={quizData._id}
+                  imageUploadApi={quizzesApi.updateQuestionImage}
+                  questionRemoveApi={quizzesApi.removeQuestion}
+                  deletedQuestions={formData.deletedQuestions}
+                  setDeletedQuestions={(data) => setFormData(prev => ({...prev, deletedQuestions: data}))}
                   questions={questions}
                   setQuestions={setQuestions}
                 />

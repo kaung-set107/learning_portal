@@ -40,10 +40,17 @@ const remove = async (payload) => {
   return res.data;
 };
 
+const getCurrentBatchBySubject = async (payload) => {
+  const res = await apiInstance.get(baseUrl + `/current-batch-by-subject`, {params: payload});
+  console.log(baseName, res);
+  return res.data;
+};
+
 export const batchesApi = {
   getAll,
   get,
   create,
   update,
   remove,
+  getCurrentBatchBySubject
 };

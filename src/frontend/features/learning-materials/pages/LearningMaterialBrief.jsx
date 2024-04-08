@@ -13,7 +13,7 @@ import QuizUpdateForm from "../../quizzes/components/QuizUpdateForm";
 import LearningMaterialDetailCard from "../components/LearningMaterialDetailCard";
 
 const LearningMaterialBrief = () => {
-  const { id } = useParams();
+  const { learningMaterialId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [learningMaterial, setLearningMaterial] = useState({});
 
@@ -26,7 +26,7 @@ const LearningMaterialBrief = () => {
 
   const getLearningMaterial = async () => {
     try {
-      let res = await learningMaterialApi.get({ _id: id });
+      let res = await learningMaterialApi.get({ _id: learningMaterialId });
       console.log(res);
       setLearningMaterial(res.data);
     } catch (error) {
