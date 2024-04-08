@@ -208,7 +208,7 @@ export default function RouteFile() {
                 <Route path=":id/subject-sections/:subjectSectionId/learning-materials/:learningMaterialId/survey-results" element={<SurveyResults />} />
                 <Route path=":id/subject-sections/:subjectSectionId/learning-materials/:learningMaterialId/survey-results/:resultId" element={<SurveyResult />} />
                 <Route path=":id/subject-sections/:subjectSectionId/learning-materials/:learningMaterialId/quizzes/:quizId/quiz-results" element={<QuizResults />} />
-                <Route path=":id/subject-sections/:subjectSectionId/learning-materials/:learningMaterialId/quizzes/:quizId/quiz-results/:resultId" element={<QuizResult />} />
+                <Route path=":id/subject-sections/:subjectSectionId/learning-materials/:learningMaterialId/quizzes/:quizId/quiz-results/:resultId" element={<InstructorQuizResult />} />
               </Route>
               <Route path="assignment-results">
                 <Route index element={<AssignmentResults />} />

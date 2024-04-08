@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { quizResultsApi } from "../api";
 import { useEffect, useState } from "react";
 import Loading from "../../../components/general/Loading";
@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import { dateForDisplay } from "../../../../util/Util";
 import CustomButton from "../../../components/general/CustomButton";
 import UserProfileCard from "../../learning-materials/components/UserProfileCard";
+import QuizNavigation from "../components/QuizNavigation";
 
 const getStudentAnswers = (ans, options) => {
   return (
@@ -31,6 +32,9 @@ const QuizResult = () => {
   const { resultId } = useParams();
   const [quizResult, setQuizResult] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+
+  const navigate = useNavigate();
+  const { id, quizId, subjectSectionId, learningMaterialId } = useParams();
 
   const getTotalMark = () => {
     return quizResult.updatedQuestions.reduce(
@@ -64,6 +68,10 @@ const QuizResult = () => {
     }
   };
 
+  const goToQuizResults = () => {
+    navigate(`/by-instructor/subjects/${id}/subject-sections/${subjectSectionId}/learning-materials/${learningMaterialId}/quizzes/${quizId}/quiz-results`)
+  }
+
   useEffect(() => {
     getQuizResult();
   }, []);
@@ -80,25 +88,34 @@ const QuizResult = () => {
     content = (
       <div>
         <div className="flex items-center justify-between mb-12">
-          <CustomButton type="back" title={`Back to quiz-results`} />
+          <CustomButton type="back" onClick={goToQuizResults} title={`Back to quiz-results`} />
         </div>
         <Card>
           <CardBody>
             <h3 className="mb-3 text-2xl font-bold">
               {`${quizResult.quiz.title}'s Result`}
             </h3>
-            <div className="mb-3 p-3 border rounded-xl flex gap-3">
-              <div className="p-3 border rounded-xl">
-                <ListInfo className="mb-1" title="Code" />
-                <ListDetail title={quizResult.code} />
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <div className="mb-3 p-3 border rounded-xl flex gap-3">
+                  <div className="p-3 border rounded-xl">
+                    <ListInfo className="mb-1" title="Code" />
+                    <ListDetail title={quizResult.code} />
+                  </div>
+                  <div className="p-3 border rounded-xl">
+                    <ListInfo className="mb-1" title="Answer Date" />
+                    <ListDetail title={dateForDisplay(quizResult.answerDate)} />
+                  </div>
+                </div>
+                <div className="mb-3 p-3 border rounded-xl flex gap-3">
+                  <UserProfileCard data={quizResult.student} />
+                </div>
               </div>
-              <div className="p-3 border rounded-xl">
-                <ListInfo className="mb-1" title="Answer Date" />
-                <ListDetail title={dateForDisplay(quizResult.answerDate)} />
+              <div className="mb-3 p-3 border rounded-xl flex gap-3">
+                <QuizNavigation
+                  updatedQuestions={quizResult.updatedQuestions}
+                />
               </div>
-            </div>
-            <div className="mb-3 p-3 border rounded-xl flex gap-3">
-              <UserProfileCard data={quizResult.student} />
             </div>
             <div className="flex justify-between items-center mb-3">
               <h3 className="mb-3 text-xl font-semibold">Results</h3>
@@ -110,8 +127,11 @@ const QuizResult = () => {
               {quizResult.updatedQuestions.map((each, index) => {
                 return (
                   <div
+                    id={each._id}
                     key={uuidv4()}
-                    className={`p-3 border rounded-xl ${isCorrect(each) ? 'bg-green-200' : 'bg-red-200'}`}
+                    className={`p-3 border rounded-xl ${
+                      isCorrect(each) ? "bg-green-200" : "bg-red-200"
+                    }`}
                   >
                     <ListInfo
                       className="mb-2 text-lg"

@@ -17,18 +17,22 @@ const QuizResults = () => {
   const [isFetching, setIsFetching] = useState(true);
   const [quizResults, setQuizResults] = useState([]);
   const [quiz, setQuiz] = useState({});
-  const [currentBatch, setCurrentBatch] = useState()
+  // eslint-disable-next-line no-unused-vars
+  const [currentBatch, setCurrentBatch] = useState();
   const [filters, setFilters] = useState({
     batch: "",
   });
-  
+
   const navigate = useNavigate();
-  const { id, quizId } = useParams();
+  const { id, quizId, subjectSectionId, learningMaterialId } = useParams();
 
   const getQuizResults = async () => {
     setIsFetching(true);
     try {
-      let res = await quizResultsApi.getAll({ quiz: quiz._id, batch: filters.batch?._id });
+      let res = await quizResultsApi.getAll({
+        quiz: quiz._id,
+        batch: filters.batch?._id,
+      });
       console.log(res);
       setQuizResults(res);
     } catch (error) {
@@ -53,13 +57,13 @@ const QuizResults = () => {
   const getCurrentBatch = async () => {
     try {
       let res = await batchesApi.getCurrentBatchBySubject({ subject: id });
-      setCurrentBatch(res.data)
-      setFilters(prev => ({...prev, batch: res.data}))
+      setCurrentBatch(res.data);
+      setFilters((prev) => ({ ...prev, batch: res.data }));
     } catch (error) {
       console.log(error);
       showError({ axiosResponse: error });
     }
-  }
+  };
 
   const fetchData = () => {
     getQuizResults();
@@ -85,7 +89,7 @@ const QuizResults = () => {
         title="View"
         onClick={() =>
           navigate(
-            `/by-instructor/quizzes/${quiz._id}/quiz-results/${resultId}`
+            `/by-instructor/subjects/${id}/subject-sections/${subjectSectionId}/learning-materials/${learningMaterialId}/quizzes/${quizId}/quiz-results/${resultId}`
           )
         }
       />
@@ -113,7 +117,7 @@ const QuizResults = () => {
 
   useEffect(() => {
     console.log(quiz);
-    if(quiz._id && filters.batch) getQuizResults();
+    if (quiz._id && filters.batch) getQuizResults();
   }, [filters, quiz]);
 
   let content;
