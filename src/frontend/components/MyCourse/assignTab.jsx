@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Tabs, Tab, Input, Button, Image, Spinner } from "@nextui-org/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faFireFlameCurved, faStar, faCheck, faImage
+  faFireFlameCurved, faStar, faCheck, faImage, faTriangleExclamation
 } from "@fortawesome/free-solid-svg-icons";
 import Pic from '../../../assets/img/pic.jpg'
 import Swal from "sweetalert2";
@@ -29,7 +29,18 @@ export default function App() {
   const [image, setImage] = useState("");
   const [studentID, setStudentID] = useState('')
   const [batchID, setBatchID] = useState('')
+  const timestamp = Date.now();
 
+  // Convert the timestamp to a Date object
+  const currentDate = new Date(timestamp);
+
+  // Extract year, month, and day from the Date object
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Adding 1 to month since it's zero-based
+  const day = String(currentDate.getDate()).padStart(2, '0');
+
+  // Format the date as "YYYY-MM-DD"
+  const formattedDate = `${year}-${month}-${day}`;
 
   // console.log(assignmentList.map((i) => (i._id)), ' assign')
   // console.log(LoginStudentID, 'student id')
@@ -212,28 +223,36 @@ export default function App() {
                   </div>
 
                 </div>
-
-                <div className='flex flex-col gap-4  justify-center'>
-                  <Input
-                    type='file'
-
-                    placeholder='$..'
-                    variant={variant}
-                    className='text-[#fff] w-96 border-indigo-500' endContent={
-                      < FontAwesomeIcon icon={faImage} size='xl' />
-                    }
-                    labelPlacement='outside'
-                    onChange={handleImage}
-                  />
-
-                  <div className='flex justify-start gap-2'>
-                    <Button>Cancel</Button>
-
-                    <Button color='primary' onClick={() => handleCreateAssignment(item._id)}>Upload</Button>
-
-
+                {item?.dueDate?.split('T')[0] < formattedDate ? (
+                  <div className=' shadow-warning-100 text-[20px] items-center font-medium flex gap-2 justify-center'>
+                    <FontAwesomeIcon icon={faTriangleExclamation} size='2xl' className='text-[red]' />
+                    <span className='mt-5 text-[white]'>The project was completed a week past its deadline. </span>
                   </div>
-                </div>
+                ) : (
+                  <>
+                    <div className='flex flex-col gap-4  justify-center'>
+                      <Input
+                        type='file'
+
+                        placeholder='$..'
+                        variant={variant}
+                        className='text-[#fff] w-96 border-indigo-500' endContent={
+                          <FontAwesomeIcon icon={faImage} size='xl' />
+                        }
+                        labelPlacement='outside'
+                        onChange={handleImage}
+                      />
+
+                      <div className='flex justify-start gap-2'>
+                        <Button>Cancel</Button>
+
+                        <Button color='primary' onClick={() => handleCreateAssignment(item._id)}>Upload</Button>
+
+
+                      </div>
+                    </div></>
+                )}
+
               </div>
 
             ))}

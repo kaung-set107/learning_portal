@@ -107,7 +107,7 @@ const Body = () => {
 
         <img
           src={EHome}
-          className="absolute top-12 -rotate-17 -left-32 w-[200px] h-[100px]  sm:w-[250px]"
+          className="absolute sm:top-16 -rotate-17 -left-36 w-[200px] h-[100px]  sm:w-[250px] sm:h-[150px]"
           alt=""
         />
         <div className='w-[654px] flex flex-col gap-10  mt-10'>

@@ -12,6 +12,7 @@ import { Link, useLocation } from "react-router-dom";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
+import ExamPage from './examPage'
 // import apiInstance from "../../util/api";
 import Exam from "./examTab";
 import Assignment from "./assignTab";
@@ -19,12 +20,14 @@ import Module from "./moduleTab";
 import TabValueComponent from "./sub-detail-head";
 import Nav from "../../home/header";
 const AddBody = ({ subData }) => {
+
   const [activeTab, setActiveTab] = useState(1);
   const [effectValue, setEffectValue] = useState("");
   const handleTabClick = (tabNumber, effect) => {
     setActiveTab(tabNumber);
   };
   const location = useLocation();
+  const ExamID = location.pathname.split('/')[2]
   // console.log(location.state?.data, "body");
 
   const SubData = location.state?.data;
@@ -52,6 +55,9 @@ const AddBody = ({ subData }) => {
         </div> */}
         <div id='exam'>
           {activeTab === 4 && <Exam />}
+          {location.pathname === `exam-page/${ExamID}` && (
+            <ExamPage />
+          )}
         </div>
       </div>
     </div>
