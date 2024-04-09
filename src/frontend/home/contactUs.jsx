@@ -82,7 +82,8 @@ export default function Contact() {
                                     <FontAwesomeIcon icon={faPhone} size='lg' className='text-[#000] ' />
                                     <div className='flex flex-col gap-2'>
                                         <span className='text-[#0B2743] text-[16px] font-semibold uppercase font-[Montserrat-Bold]'>Phone</span>
-                                        <span className='text-[16px] font-medium text-[#BC1F40] w-[150px] '>+959 422 557 884</span>
+                                        <span className='text-[16px] font-medium text-[#BC1F40] w-[150px] '>09422557884</span>
+                                        <span className='text-[16px] font-medium text-[#BC1F40] w-[150px] '>09781447554 </span>
                                     </div>
 
                                 </div>

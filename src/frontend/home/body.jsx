@@ -3,6 +3,7 @@ import { Image, Button, Card, Link } from "@nextui-org/react";
 // import { Link } from "react-router-dom";
 import MSINav from "./msinav";
 import { Testimonials } from "./home_components/Testimonials";
+import { format } from 'date-fns';
 import Welcome from "../../assets/img/welcomeTeam.jpg";
 import Thingyan from "../../assets/img/thing.jpg";
 import MSIHead from "../../assets/img/msinewimg.png";
@@ -36,6 +37,10 @@ const Body = () => {
   const [eventList, setEventList] = useState([
 
   ]);
+
+  const time = (val) => {
+    format(new Date(val), 'dd MMM yyyy')
+  }
   const control = useAnimation();
   const [ref, inView] = useInView();
   const boxVariant = {
@@ -90,12 +95,12 @@ const Body = () => {
       {/* Banner */}
 
       <div style={{
-        backgroundImage: `url(${CVBanner})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover',
-      }} className='h-[50vh] sm:h-[100vh]' >
+        backgroundImage: `url(${CVBanner})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'
+      }} className='h-[50vh] sm:h-[100vh] container' >
 
         <div style={{
           background: "linear-gradient(0deg, rgba(0, 0, 0, 0.47) 0%, rgba(0, 0, 0, 0.47) 100%)"
-        }} className='flex flex-col gap-1 justify-center items-center absolute w-full h-[50vh] sm:h-[100vh]'>
+        }} className='flex  container flex-col gap-1 justify-center items-center absolute w-full h-[50vh] sm:h-[100vh]'>
           <span className=' text-[22px] sm:text-[48px] font-medium text-[#FFF]'>"Explore Limitless Opportunities:</span>
           <span className='text-[16px] sm:text-[48px] font-medium text-[#FFF]'>Your Gateway to Overseas MSI Education"</span>
         </div >
@@ -103,25 +108,24 @@ const Body = () => {
       </div >
       {/* Header */}
 
-      < div className='flex justify-around pl-[26px]  sm:pl-[57px] pr-[26px] sm:pr-[57px] pt-[20px] sm:pt-[100px] relative' >
+      < div className='flex justify-around pl-[26px]  sm:pl-[57px] pr-[26px] sm:pr-[57px] pt-[20px] sm:pt-[100px] relative container overflow-hidden' >
 
-        <img
-          src={EHome}
-          className="absolute sm:top-16 -rotate-17 -left-36 w-[200px] h-[100px]  sm:w-[250px] sm:h-[150px]"
-          alt=""
-        />
+        <div
+          className="absolute bg-[#0B2743] top-0 sm:top-2 -left-[130px] sm:-left-48 w-[150px] h-[150px] rounded-full sm:w-[300px] sm:h-[300px]"
+
+        ></div>
         <div className='w-[654px] flex flex-col gap-10  mt-10'>
           <ScrollAnimation animateIn='wobble'
           >
             <h1
-              className='text-[30px] sm:text-[48px] 2xl:text-[50px] text-secondary font-semibold w-[300px] sm:w-[562px] font-Poppins '
+              className='text-[30px] md:text-[48px] lg:text-[50px]  text-secondary font-semibold w-[300px] sm:w-[562px] font-Poppins '
               style={{ color: "#1F4164", fontWeight: "900" }}
             >
 
               Join MSI Academy for your brighter future
             </h1>
           </ScrollAnimation>
-          <p className=' font-normal text-[16px] sm:text-[18px]  2xl:text-[25px] w-[330px] sm:w-full leading-[20px] sm:leading-[34px]'>
+          <p className=' font-normal text-[16px] md:text-[18px]  lg:text-[20px] w-[330px] sm:w-full leading-[20px] sm:leading-[34px]'>
             MSI Academy, Myanmar Scholastic Innovation Academy, is fulfilling
             the educational and language requirements for Myanmar young leaners'
             dreams of international education in U.S.A,UK,Europe and Asia
@@ -133,24 +137,24 @@ const Body = () => {
             <div className='w-[230px] 2xl:w-[400px] flex gap-2'>
 
               <FontAwesomeIcon icon={faCheck} size='md' className='text-[#2563EB] border-1 border-sky-500 rounded-[100%] p-2' />
-              <span className='text-[18px] leading-[24px] 2xl:text-[25px] font-medium w-[206px] 2xl:w-[260px]'>Get unlimited design inspirations. Level up your design.</span>
+              <span className='text-[16px] md:text-[18px] lg:text-[20px] leading-[24px] font-medium w-[206px] 2xl:w-[260px]'>Get unlimited design inspirations. Level up your design.</span>
             </div>
             <div className='w-[230px] flex gap-2 2xl:w-[400px]'>
               <FontAwesomeIcon icon={faCheck} size='md' className='text-[#2563EB] border-1 border-sky-500 rounded-[100%] p-2' />
-              <span className='text-[18px] leading-[24px] font-medium w-[206px] 2xl:text-[25px] 2xl:w-[260px]'>
+              <span className='text-[16px] md:text-[18px] lg:text-[20px] leading-[24px] font-medium w-[206px]  2xl:w-[260px]'>
                 14+ Premium tailwind UI kits. Start with unlimited product downloads.
               </span>
             </div>
           </div>
 
         </div>
-        <div className=''>
-          <Image src={MSIHead} className='sm:w-[464px] sm:h-[454px]' />
+        <div className='hidden sm:flex overflow-hidden'>
+          <Image src={MSIHead} className='sm:w-[464px] sm:h-[454px] ' />
         </div>
 
         <img
           src={EHalf}
-          className="absolute bottom-0 right-0 z-10 w-[100px]  top-[450px]"
+          className="absolute  right-0 w-[100px]  top-[550px]"
           alt=""
         />
 
@@ -161,7 +165,7 @@ const Body = () => {
       <ScrollAnimation animateIn='fadeIn'
         animateOut='fadeOut'
         scrollableParentSelector='#cou'>
-        < div className='flex flex-col p-5 md:p-5  relative' id='cou' >
+        < div className='flex flex-col p-5 md:p-5  relative container' id='cou' >
 
           <h1
             className=' p-10 md:p-20  flex justify-center text-[25px] sm:text-[40px] font-[semibold] py-5'
@@ -170,22 +174,25 @@ const Body = () => {
             Courses We Offer
           </h1>
 
-          <div className='grid grid-cols-1 sm:grid-cols-4 gap-44 2xl:gap-0 sm:gap-0 items-center justify-between md:flex-row sm:py-10 2xl:py-0'>
+          <div className='grid grid-cols-1 sm:grid-cols-4 gap-2 md:gap-5 lg:gap-10 sm:gap-0 items-center justify-between md:flex-row sm:py-10 2xl:py-0'>
             {courseList.slice(0, 4).map((e) => (
               <div
                 onClick={() => handleRoute(e)}
 
-                className='w-[300px]  md:w-[350px] h-[300px] md:h-[500px]'
+                className='w-full'
               >
                 <div>
                   <Image
                     // style={{ width: "500px", height: "280px" }}
                     alt={e.image?.originalname}
                     src={getFile({ payload: e.image })}
-                    className='w-full h-full sm:w-[350px] sm:h-[240px] sm:hover:-translate-y-2 sm:hover:scale-105 duration-500'
+                    className='w-full h-full md:w-[300px] md:h-[200px] lg:w-[350px] lg:h-[250px] sm:hover:-translate-y-2 sm:hover:scale-105 duration-500'
                   />
                   <div className='flex p-5 flex-col justify-start flex-grow '>
-                    <span className='w-[332px] text-[14px] font-semibold text-[#B72041]'>MSI Academy</span>
+                    <span className='w-[332px] text-[14px] font-semibold text-[#B72041] flex'>MSI Academy &nbsp;<li>
+                      {e?.fromDate?.split('T')[0]}
+
+                    </li></span>
                     <span
                       style={{
                         fontFamily: "Inter",
@@ -193,7 +200,7 @@ const Body = () => {
                         fontSize: "24px",
                         letterSpacing: "-0.96px",
                       }}
-                      className='w-[340px]'
+                      className='w-full'
                     >
                       {e.title}
                     </span>
@@ -204,7 +211,7 @@ const Body = () => {
                         // width: "400px",
                         // height: "auto",
                       }}
-                      className='w-full md:w-[340px] md:h-[auto]'
+                      className='w-full'
                     >
                       {e?.description.substring(0, 50)}...
                     </div>
@@ -229,7 +236,7 @@ const Body = () => {
             ))}
           </div>
 
-          <Link to='/home-course' className='flex justify-center py-5 pt-32 sm:pt-0 '>
+          <Link href='/home-course' className='flex justify-center py-5 pt-20 md:pt-24 lg:pt-36 sm:pt-0 '>
             <span className=' text-[18px] sm:text-[20px] py-2 text-secondary hover:text-danger font-semibold text-center cursor-pointer border-1 border-secondary-300 w-[130px] rounded-lg hover:border-danger-400'>
               See All
             </span>
@@ -238,7 +245,7 @@ const Body = () => {
       </ScrollAnimation>
       {/* Event */}
 
-      < div style={{ background: "var(--blue-pale, #F4FAFF)", height: '120vh' }} className='flex flex-col gap-10 sm:gap-24 relative' >
+      < div style={{ background: "var(--blue-pale, #F4FAFF)", height: '1020px' }} className='flex flex-col gap-10 sm:gap-24 relative container' >
         {/* <img
           src={EBlue}
           className="absolute bottom-0 left-0 z-0 w-[150px] md:w-[150px]"
@@ -263,7 +270,7 @@ const Body = () => {
                 // height={354}
                 />
                 <div
-                  className='h-[200px] flex flex-col items-center justify-center absolute bottom-0 w-[284px] p-2 z-50 rounded-[20px]'
+                  className='h-[200px] flex flex-col items-center justify-center absolute bottom-0 w-full p-2 z-50 rounded-[20px]'
                   style={{
                     background:
                       "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 125.65%)",
@@ -324,9 +331,9 @@ const Body = () => {
         </div>
 
       </div >
-      <div className='pt-0 sm:pt-[150px] 2xl:pt-[100px] mx-2'>
-        <Testimonials />
-      </div>
+
+      <Testimonials />
+
       <div className='mt-4 mx-2'>
         <Footer />
       </div>

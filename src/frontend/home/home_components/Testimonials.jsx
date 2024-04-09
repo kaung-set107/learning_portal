@@ -75,7 +75,7 @@ export const Testimonials = () => {
     },
   };
   return (
-    <div className='md:text-[#26496a] text-white md:bg-[#0B2743] p-0 lg:p-10  bg-[#26496a]'>
+    <div className='md:text-[#26496a] text-white md:bg-[#0B2743] p-0 lg:p-10  bg-[#26496a] container'>
       <h2
         className='flex text-[48px] font-semibold py-5 justify-center text-[#fff]'
 
@@ -109,7 +109,7 @@ export const Testimonials = () => {
         slidesToSlide={1}
         swipeable
         responsive={responsive}
-        className='p-2 '
+        className='p-1 '
       >
 
         {testimonialList.map((st, index) => (

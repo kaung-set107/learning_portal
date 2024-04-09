@@ -1,7 +1,8 @@
-import { ReactElement, useState, useEffect } from "react";
+import { ReactElement, useState, useEffect, useMemo } from "react";
 import { Image, Button, Card, Input, } from "@nextui-org/react";
 import { Select, SelectItem } from '@nextui-org/select'
-import 'react-phone-number-input/style.css'
+import countryList from 'react-select-country-list'
+
 import PhoneInputWithCountry from "react-phone-number-input/react-hook-form"
 import MSINav from "./msinav";
 // import DateTimePicker from 'react-datetime-picker';
@@ -22,6 +23,8 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 // import Footer from '../../frontend/home/footer';
 const About = () => {
+    const [valueCountry, setValueCountry] = useState('')
+    const options = useMemo(() => countryList().getData(), [])
     const [value, setValue] = useState(dayjs(''));
     console.log(value, 'va')
     console.log(value.$d, 'd   ')
@@ -53,6 +56,10 @@ const About = () => {
     const [counselorName, setCounselorName] = useState('')
     const [courseList, setCourseList] = useState([])
     // const [value, onChange] = useState(new Date());
+
+    const changeHandler = value => {
+        setValueCountry(valueCountry)
+    }
     const createForm = (event) => {
 
         // Do something with the name and value, e.g., send it to a server
@@ -116,7 +123,9 @@ const About = () => {
                 <div className='flex flex-col sm:flex-row sm:flex gap-10 text-[14px] font-normal'>
                     <div className='w-full flex flex-col gap-2 '>
                         <label>Study Destination</label>
-                        <Input type='text' size='lg' variant={variant} className='' name='name' placeholder="Enter name" onChange={(e) => setStudyDesti(e.target.value)} />
+                        <Select options={options} value={value} onChange={changeHandler} />
+
+                        {/* <Input type='text' size='lg' variant={variant} className='' name='name' placeholder="Enter name" onChange={(e) => setStudyDesti(e.target.value)} /> */}
                     </div>
                     <div className='w-full flex flex-col gap-2'>
                         <label>Desired Course</label>
@@ -157,7 +166,7 @@ const About = () => {
                             <DemoContainer components={['DateTimePicker', 'MobileDateTimePicker',]} className='p-1'>
 
                                 <DemoItem >
-                                    <MobileDateTimePicker label="Date & Time" defaultValue={dayjs(value)} value={value}
+                                    <MobileDateTimePicker label="Appointment Date & Time" defaultValue={dayjs(value)} value={value}
                                         onChange={(newValue) => setValue(newValue)} />
                                 </DemoItem>
                                 {/* <DateTimePicker

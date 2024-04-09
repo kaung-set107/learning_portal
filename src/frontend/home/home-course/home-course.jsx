@@ -87,7 +87,10 @@ const Body = () => {
                     className='w-full h-full sm:w-[350px] sm:h-[240px] hover:-translate-y-2 hover:scale-105 duration-500'
                   />
                   <div className='flex p-5 flex-col justify-start flex-grow '>
-                    <span className='w-[332px] text-[14px] font-semibold text-[#B72041]'>MSI Academy</span>
+                    <span className='w-[332px] text-[14px] font-semibold text-[#B72041] flex'>MSI Academy &nbsp;<li>
+                      {e?.fromDate?.split('T')[0]}
+
+                    </li></span>
                     <span
                       style={{
                         fontFamily: "Inter",
