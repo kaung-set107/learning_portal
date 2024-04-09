@@ -17,6 +17,10 @@ import SubjectSectionUpdateModal from "../../subject-sections/components/Subject
 import { subjectSectionsApi } from "../../subject-sections/api";
 import { showError, showSuccess } from "../../../../util/noti";
 import { dateForDisplay } from "../../../../util/Util";
+import EntranceTestCreateForm from "../../entrance-tests/components/EntranceTestCreateForm";
+import EntranceTestUpdateForm from "../../entrance-tests/components/EntranceTestUpdateForm";
+import QuizCreateForm from "../../quizzes/components/QuizCreateForm";
+import QuizUpdateForm from "../../quizzes/components/QuizUpdateForm";
 // import ExamCreateModal from "../../exams/component/ExamCreateModal";
 
 const SubjectBrief = () => {
@@ -29,6 +33,7 @@ const SubjectBrief = () => {
   const TabOptions = [
     { key: "assignment", title: "Assignment" },
     { key: "subject-sections", title: "Subject Sections" },
+    { key: "entrance-test", title: "Entrance test" },
     // { key: "exam", title: "Exam" },
   ];
 
@@ -51,7 +56,9 @@ const SubjectBrief = () => {
   };
 
   const goToLearningMaterials = (data) => {
-    navigate(`/by-instructor/subjects/${id}/subject-sections/${data.subjectSection._id}/learning-materials`);
+    navigate(
+      `/by-instructor/subjects/${id}/subject-sections/${data.subjectSection._id}/learning-materials`
+    );
   };
 
   const handleAssignmentDelete = async (id) => {
@@ -236,6 +243,65 @@ const SubjectBrief = () => {
                       );
                     })}
                   </div>
+                </div>
+              </Tab>
+              <Tab key={TabOptions[2].key} title={TabOptions[2].title}>
+                <div>
+                  <div className="flex items-center justify-between pb-3">
+                    <SubHeading title="Entrance Tests" className="mb-3" />
+                  </div>
+                  {subject.data?.entranceTests.length <= 0 && (
+                    <EntranceTestCreateForm successCallback={getSubject} />
+                  )}
+                  {subject.data.entranceTests &&
+                    subject.data.entranceTests[0] && (
+                      <>
+                        <Tabs aria-label="Options">
+                          <Tab key={"detail"} title="Detail">
+                            <EntranceTestUpdateForm
+                              entranceTestData={subject.data.entranceTests[0]}
+                              successCallback={getSubject}
+                            />
+                          </Tab>
+                          <Tab key={"quiz"} title="Quiz">
+                            {/* <QuizCreateForm
+                              type="entranceTest"
+                              entranceTest={subject.data.entranceTest}
+                              successCallback={getSubject}
+                            /> */}
+                            {!subject.data.entranceTests[0].quiz ? (
+                              <QuizCreateForm
+                                type="entranceTest"
+                                entranceTest={subject.data.entranceTests[0]}
+                                successCallback={getSubject}
+                              />
+                            ) : (
+                              <QuizUpdateForm
+                                quizData={subject.data.entranceTests[0].quiz}
+                                type="entranceTest"
+                                entranceTest={subject.data.entranceTests[0]}
+                                successCallback={getSubject}
+                              />
+                            )}
+                          </Tab>
+                        </Tabs>
+                      </>
+                    )}
+                  {/* <div>
+                    {subject.data.exams.map((section) => {
+                      return (
+                        <div
+                          key={section._id}
+                          className="p-3 border rounded-xl mb-3 relative"
+                        >
+                          <div className="flex gap-3 absolute right-2 top-2">
+                          </div>
+                          <CardTitle title={section.title} />
+                          <p>{section.description}</p>
+                        </div>
+                      );
+                    })}
+                  </div> */}
                 </div>
               </Tab>
               {/* <Tab key={TabOptions[2].key} title={TabOptions[2].title}>
