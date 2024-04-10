@@ -48,8 +48,9 @@ export default function Login() {
 
   const handleCourse = (id) => {
     setCourse(id)
-    setBatch(batchList.filter(el => el.course._id === id).filter(cl => cl.active === true)[0]._id)
-    setBatchName(batchList.filter(el => el.course._id === id).filter(cl => cl.active === true)[0].name)
+    // console.log(courseList.filter(el => el._id === id)[0], 'c')
+    setBatch(courseList.filter(el => el._id === id)[0].batch?._id)
+    setBatchName(courseList.filter(el => el._id === id)[0].batch?.name)
     // console.log(batchList.filter(el => el.course._id === id).filter(cl => cl.active === true)[0]._id, 'ress')
   }
 
