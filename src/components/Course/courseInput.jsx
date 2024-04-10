@@ -24,8 +24,8 @@ export default function DepartmentInputForm() {
   const [price, setPrice] = useState('')
   const [videoLinks, setVideoLinks] = useState("");
   const [newVideoLink, setNewVideoLink] = useState([]);
-  const [fromDate, setFromDate] = useState("");
-  const [toDate, setToDate] = useState("");
+  // const [fromDate, setFromDate] = useState("");
+  // const [toDate, setToDate] = useState("");
   const {
     register,
     handleSubmit,
@@ -67,8 +67,6 @@ export default function DepartmentInputForm() {
     formData.append("installmentTime", inTime);
     formData.append("topic", topic);
     formData.append("installmentPercent", installmentPercent);
-    formData.append("fromDate", fromDate);
-    formData.append("toDate", toDate);
 
 
     apiInstance
@@ -276,25 +274,7 @@ export default function DepartmentInputForm() {
 
 
         </div>
-        <div className='grid grid-cols-2 w-full mb-6 md:mb-0 gap-4'>
-          <Input
-            type='date'
-            label='Start Date'
-            placeholder='Date'
-            variant={variant}
-            labelPlacement='outside'
-            onChange={(e) => setFromDate(e.target.value)}
-          />
-          <Input
-            type='date'
-            label='End Date'
-            placeholder='Date'
-            variant={variant}
-            onChange={(e) => setToDate(e.target.value)}
-            labelPlacement='outside'
-          />
-          <div></div>
-        </div>
+
         <div className='grid grid-cols-2 w-full mb-6 md:mb-0 gap-4'>
           <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
             <label className='text-sm font-semibold'>Video Links</label>

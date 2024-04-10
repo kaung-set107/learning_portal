@@ -6,10 +6,10 @@ export const getFile = ({ resource, fileType, payload }) => {
     payload.filename
   );
 
-//   return (
-//     `http://localhost:3600/${prefix}/` +
-//     payload.filename
-//   )
+  // return (
+  //   `http://localhost:3600/${prefix}/` +
+  //   payload.filename
+  // )
 };
 
 export const download = (data) => {
