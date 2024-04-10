@@ -68,9 +68,7 @@ const SubjectBrief = () => {
       await getSubject();
       showSuccess({ text: res.message, type: "noti-box" });
       setIsSubmitting(false);
-      console.log(res);
     } catch (error) {
-      console.log(error);
       showError({ axiosResponse: error });
     } finally {
       setIsSubmitting(false);
@@ -83,10 +81,9 @@ const SubjectBrief = () => {
       let res = await subjectSectionsApi.remove({ _id: id });
       await getSubject();
       setIsSubmitting(false);
-      console.log(res);
-      alert("subject section is deleted!");
+      showSuccess({ text: res.message, type: "noti-box" });
     } catch (error) {
-      console.log(error);
+      showError({ axiosResponse: error });
     } finally {
       setIsSubmitting(false);
     }

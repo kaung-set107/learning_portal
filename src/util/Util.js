@@ -54,7 +54,7 @@ export const dateForInput = function (date) {
 };
 
 export const dateForDisplay = function (date) {
-  return moment.utc(date).tz(config.timeZone).format("D-M-Y");
+  return moment.utc(date).tz(config.timeZone).format("D-M-Y hh:mm");
 };
 
 export const getCurrentUser = () => {
