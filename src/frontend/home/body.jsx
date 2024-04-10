@@ -96,11 +96,11 @@ const Body = () => {
 
       <div style={{
         backgroundImage: `url(${CVBanner})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'
-      }} className='h-[50vh] sm:h-[100vh] container' >
+      }} className='h-[50vh] sm:h-[70vh]  container' >
 
         <div style={{
           background: "linear-gradient(0deg, rgba(0, 0, 0, 0.47) 0%, rgba(0, 0, 0, 0.47) 100%)"
-        }} className='flex  container flex-col gap-1 justify-center items-center absolute w-full h-[50vh] sm:h-[100vh]'>
+        }} className='flex  container flex-col gap-1 justify-center items-center absolute w-full h-[50vh] sm:h-[70vh]'>
           <span className=' text-[22px] sm:text-[48px] font-medium text-[#FFF]'>"Explore Limitless Opportunities:</span>
           <span className='text-[16px] sm:text-[48px] font-medium text-[#FFF]'>Your Gateway to Overseas MSI Education"</span>
         </div >
@@ -179,31 +179,21 @@ const Body = () => {
               <div
                 onClick={() => handleRoute(e)}
 
-                className='w-full'
+                className='w-full h-[420px]'
               >
                 <div>
                   <Image
                     // style={{ width: "500px", height: "280px" }}
                     alt={e.image?.originalname}
                     src={getFile({ payload: e.image })}
-                    className='w-full h-full md:w-[300px] md:h-[200px] lg:w-[350px] lg:h-[250px] sm:hover:-translate-y-2 sm:hover:scale-105 duration-500'
+                    className='w-full h-full md:w-[300px] md:h-[200px] lg:w-[3320px] lg:h-[250px] sm:hover:-translate-y-2 sm:hover:scale-105 duration-500'
                   />
                   <div className='flex p-5 flex-col justify-start flex-grow '>
                     <span className='w-[332px] text-[14px] font-semibold text-[#B72041] flex'>MSI Academy &nbsp;<li>
                       {e?.fromDate?.split('T')[0]}
 
                     </li></span>
-                    <span
-                      style={{
-                        fontFamily: "Inter",
-                        fontWeight: "600px",
-                        fontSize: "24px",
-                        letterSpacing: "-0.96px",
-                      }}
-                      className='w-full'
-                    >
-                      {e.title}
-                    </span>
+
                     <div
                       style={{
                         fontSize: "16px",
@@ -217,18 +207,18 @@ const Body = () => {
                     </div>
                     {/* card footer */}
                     <div
-                      className='py-10'
-                      style={{
-                        width: "300px",
-                        height: "19px",
-                        fontSize: "14px",
-                        fontWeight: "400px",
-                      }}
+                      className='py-5 flex gap-2 w-[332px]'
+
                     >
-                      Duration -{" "}
-                      <span style={{ color: "#262FD9" }}>{e.durationValue ? e.durationValue : 0} {e.durationType ? e.durationType : 'months'}</span>
-                      <br></br>
-                      Price - <span style={{ color: "#262FD9" }}>{e.fee ? e.fee : 0} MMK</span>
+                      <div className='h-[24px] w-[150px]  text-center bg-[#ECEFFF] rounded-2xl text-[14px] font-medium'>
+                        <span>Duration -</span>
+                        <span style={{ color: "#262FD9" }}>{e.durationValue ? e.durationValue : 0} {e.durationType ? e.durationType : 'months'}</span>
+                      </div>
+
+                      <div className='h-[24px] w-[134px]  text-center bg-[#FFF3F6] rounded-2xl text-[14px] font-medium'>
+                        Price - <span style={{ color: "#262FD9" }}>{e.fee ? e.fee : 0} MMK</span>
+                      </div>
+
                     </div>
                   </div>
                 </div>

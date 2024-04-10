@@ -4,7 +4,9 @@ import {
   faPhone,
   faLocationDot,
   faEnvelope,
+
 } from "@fortawesome/free-solid-svg-icons";
+import { SocialIcon } from 'react-social-icons';
 const Footer = () => {
   return (
     <div className='text-white container' style={{ background: "#BC1F40" }}>
@@ -39,7 +41,7 @@ const Footer = () => {
                         <p className='font-[light]'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesqe sit amet sapien.</p> */}
             {/* <img src="/assets/images/logo.jpeg" onClick={()=>router.push("/")} className='cursor-pointer w-[300px] p-5' alt="" /> */}
           </div>
-          <div>
+          <div className='flex flex-col gap-4'>
             <ul className='flex sm:text-[16px] text-[12px] list-none items-center justify-evenly py-5 font-semibold '>
               <Link href='/'>
                 <li className='mr-5 text-white font-regular cursor-pointer'>
@@ -67,6 +69,14 @@ const Footer = () => {
                 </li>
               </Link>
             </ul>
+            <div className='flex gap-4 justify-center' >
+              <SocialIcon url="https://t.me/msiacademy2018" fgColor='white' bgColor="#15B2DC" style={{ width: '30px', height: '30px' }} className='hover:translate-y-1 hover:scale-110 duration-500' />
+              <SocialIcon url="https://www.tiktok.com/@msiacademyeducation" fgColor='white' style={{ width: '30px', height: '30px' }} className='hover:translate-y-1 hover:scale-110 duration-500' />
+              <SocialIcon url="https://www.youtube.com/channel/UCQDYdlszCZ81DkiVGVSjXNg" fgColor='white' style={{ width: '30px', height: '30px' }} className='hover:translate-y-1 hover:scale-110 duration-500' />
+              <SocialIcon url="https://www.instagram.com/msiacademy.elc?igsh=dHlkc21xZnZwZ21v" fgColor='white' style={{ width: '30px', height: '30px' }} className='hover:translate-y-1 hover:scale-110 duration-500' />
+              <SocialIcon url="https://www.facebook.com/MSIAcademyEducationCentre" fgColor='white' style={{ width: '30px', height: '30px' }} className='hover:translate-y-1 hover:scale-110 duration-500' />
+
+            </div>
           </div>
         </div>
         <div className='text-md flex items-center flex-wrap justify-between p-5 border-t-[0.5px] border-white'>

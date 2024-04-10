@@ -71,13 +71,13 @@ const Body = () => {
             <Image src={Loading} className='transform-x-[-1] w-[350px] h-[250px]' />
 
           </div>) : (
-          <div className='grid grid-cols-4 gap-0 items-center justify-between md:flex-row flex-wrap py-10'>
+          <div className='grid grid-cols-1 sm:grid-cols-4 gap-0 items-center justify-between md:flex-row flex-wrap py-10'>
 
             {courseList.map((e) => (
               <div
                 onClick={() => handleRoute(e)}
 
-                className='w-[300px]  md:w-[350px] h-full md:h-[610px]'
+                className='w-[300px]  md:w-[350px] h-full md:h-[610px] '
               >
                 <div>
                   <Image
@@ -115,18 +115,18 @@ const Body = () => {
                     </div>
                     {/* card footer */}
                     <div
-                      className='py-10'
-                      style={{
-                        width: "300px",
-                        height: "19px",
-                        fontSize: "14px",
-                        fontWeight: "400px",
-                      }}
+                      className='py-5 flex sm:flex-row flex-col gap-2 w-[332px]'
+
                     >
-                      Duration -{" "}
-                      <span style={{ color: "#262FD9" }}>{e.durationValue ? e.durationValue : 0} {e.durationType ? e.durationType : 'months'}</span>
-                      <br></br>
-                      Price - <span style={{ color: "#262FD9" }}>{e.fee ? e.fee : 0} MMK</span>
+                      <div className='h-[24px] w-full sm:w-[150px]  text-center bg-[#ECEFFF] rounded-2xl text-[14px] font-medium'>
+                        <span>Duration -</span>
+                        <span style={{ color: "#262FD9" }}>{e.durationValue ? e.durationValue : 0} {e.durationType ? e.durationType : 'months'}</span>
+                      </div>
+
+                      <div className='h-[24px] w-full sm:w-[134px]  text-center bg-[#FFF3F6] rounded-2xl text-[14px] font-medium'>
+                        Price - <span style={{ color: "#262FD9" }}>{e.fee ? e.fee : 0} MMK</span>
+                      </div>
+
                     </div>
                   </div>
                 </div>

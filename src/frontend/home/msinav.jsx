@@ -96,22 +96,22 @@ export default function App() {
             />
           </div>
           <div
-            className='hidden md:flex justify-evenly 2xl:justify-end gap-10 w-full '
+            className='hidden md:flex justify-end 2xl:justify-end gap-10 w-full '
             style={{
               borderRadius: "200px",
 
               padding: "12px",
-              fontSize: "18px",
+
               color: "#224362",
             }}
           >
-            <span className='hover:-translate-y-1 hover:scale-110 duration-500'>
+            <span className='hover:-translate-y-1 hover:scale-125 duration-500'>
               <Link
                 to='/'
                 className={
                   location.pathname === "/"
                     ? "font-semibold text-[18px] xl:text-[16px] 2xl:text-[20px]"
-                    : "text-[18px] xl:text-[16px] 2xl:text-[20px]"
+                    : "text-[16px] md:text-[18px] lg:text-[22px]"
                 }
               >
                 Home
