@@ -157,7 +157,7 @@ const About = () => {
                             <DemoContainer components={['DateTimePicker', 'MobileDateTimePicker',]} className='p-1'>
 
                                 <DemoItem >
-                                    <MobileDateTimePicker label="Date & Time" defaultValue={dayjs(value)} value={value}
+                                    <MobileDateTimePicker label="Appointment Date & Time" defaultValue={dayjs(value)} value={value}
                                         onChange={(newValue) => setValue(newValue)} />
                                 </DemoItem>
                                 {/* <DateTimePicker

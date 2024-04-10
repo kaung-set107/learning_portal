@@ -49,6 +49,7 @@ import Assignment from "./frontend/components/Assignment/AssignInput";
 //Exam
 import Exam from "./frontend/components/Exam/ExamInput";
 import ExamResult from './frontend/components/MyCourse/examResultPage.jsx'
+import ExamPage from './frontend/components/MyCourse/examPage.jsx'
 
 import Subject from "./pages/Subject/subject";
 import SubjectAdd from "./pages/Subject/subjectAdd";
@@ -229,6 +230,7 @@ export default function RouteFile() {
               </Route>
 
               <Route path="quizzes">
+
                 <Route path="create" element={<InstructorQuizCreate />}/>
                 <Route path=":id/quiz-results" element={<QuizResults />} />
                 <Route path=":id/quiz-results/:resultId" element={<InstructorQuizResult />} />
@@ -284,6 +286,8 @@ export default function RouteFile() {
             <Route path="/quiz-page/:id" element={<QuizPage />}></Route>
             <Route path="/quiz-result" element={<QuizResult />}></Route>
 
+
+
             {/* Placement Test */}
             <Route path='/entranceTest-page' element={<EntranceTestPage />}></Route>
           </Route>
@@ -291,6 +295,7 @@ export default function RouteFile() {
           {/* Exam */}
           <Route path="/exam" element={<Exam />}></Route>
           <Route path="/exam-result" element={<ExamResult />}></Route>
+          <Route path="/exam-page/:id" element={<ExamPage />}></Route>
           <Route path="/exam-update/:id" element={<ExamUpdate />}></Route>
           {/* <AuthContainer component={<Dashboard />} path='/home'></AuthContainer> */}
           <Route path="/chart" element={<Chart />}></Route>

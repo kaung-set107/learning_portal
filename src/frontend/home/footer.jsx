@@ -7,7 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 const Footer = () => {
   return (
-    <div className='text-white' style={{ background: "#BC1F40" }}>
+    <div className='text-white container' style={{ background: "#BC1F40" }}>
       <div className='w-full md:w-[90%] mx-auto py-5 sm:py-10'>
         <div className='flex flex-wrap items-center justify-between p-5'>
           <div className='w-[300px]'>
@@ -26,7 +26,7 @@ const Footer = () => {
             </div>
             <div className='pb-3 flex gap-3'>
               <FontAwesomeIcon icon={faPhone} size='lg' />{" "}
-              <p>+959 422 557 884</p>
+              <p>09422557884 ,  09781447554 </p>
             </div>
             <div className='pb-3 flex gap-4'>
               <FontAwesomeIcon icon={faEnvelope} size='lg' />

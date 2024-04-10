@@ -23,7 +23,7 @@ export default function Attendance() {
           <Card className='rounded-sm shadow-md py-3 min-h-[890px]'>
             <div className='flex justify-between'>
               <div className='font-semibold font-nunito text-2xl mt-10 px-2'>
-                Course Create
+                Course Update
               </div>
               <div>
                 <Nav />
