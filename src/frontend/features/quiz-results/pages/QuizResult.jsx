@@ -34,7 +34,7 @@ const QuizResult = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
-  const { id, quizId, subjectSectionId, learningMaterialId } = useParams();
+  const { id } = useParams();
 
   const getTotalMark = () => {
     return quizResult.updatedQuestions.reduce(
@@ -69,7 +69,7 @@ const QuizResult = () => {
   };
 
   const goToQuizResults = () => {
-    navigate(`/by-instructor/subjects/${id}/subject-sections/${subjectSectionId}/learning-materials/${learningMaterialId}/quizzes/${quizId}/quiz-results`)
+    navigate(`/by-instructor/quizzes/${id}/quiz-results`)
   }
 
   useEffect(() => {

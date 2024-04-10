@@ -10,7 +10,6 @@ import CustomButton from "../../../components/general/CustomButton";
 import { quizzesApi } from "../../quizzes/api";
 import { showError } from "../../../../util/noti";
 import BatchesDropdown from "../../batches/components/BatchesDropdown";
-import { batchesApi } from "../../batches/api";
 
 const QuizResults = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -18,13 +17,12 @@ const QuizResults = () => {
   const [quizResults, setQuizResults] = useState([]);
   const [quiz, setQuiz] = useState({});
   // eslint-disable-next-line no-unused-vars
-  const [currentBatch, setCurrentBatch] = useState();
   const [filters, setFilters] = useState({
     batch: "",
   });
 
   const navigate = useNavigate();
-  const { id, quizId, subjectSectionId, learningMaterialId } = useParams();
+  const { id } = useParams();
 
   const getQuizResults = async () => {
     setIsFetching(true);
@@ -45,7 +43,7 @@ const QuizResults = () => {
 
   const getQuiz = async () => {
     try {
-      let res = await quizzesApi.get({ _id: quizId });
+      let res = await quizzesApi.get({ _id: id });
       console.log(res);
       setQuiz(res.data);
     } catch (error) {
@@ -54,16 +52,16 @@ const QuizResults = () => {
     }
   };
 
-  const getCurrentBatch = async () => {
-    try {
-      let res = await batchesApi.getCurrentBatchBySubject({ subject: id });
-      setCurrentBatch(res.data);
-      setFilters((prev) => ({ ...prev, batch: res.data }));
-    } catch (error) {
-      console.log(error);
-      showError({ axiosResponse: error });
-    }
-  };
+  // const getCurrentBatch = async () => {
+  //   try {
+  //     let res = await batchesApi.getCurrentBatchBySubject({ subject: id });
+  //     setCurrentBatch(res.data);
+  //     setFilters((prev) => ({ ...prev, batch: res.data }));
+  //   } catch (error) {
+  //     console.log(error);
+  //     showError({ axiosResponse: error });
+  //   }
+  // };
 
   const fetchData = () => {
     getQuizResults();
@@ -88,9 +86,7 @@ const QuizResults = () => {
       <CustomButton
         title="View"
         onClick={() =>
-          navigate(
-            `/by-instructor/subjects/${id}/subject-sections/${subjectSectionId}/learning-materials/${learningMaterialId}/quizzes/${quizId}/quiz-results/${resultId}`
-          )
+          navigate(`/by-instructor/quizzes/${id}/quiz-results/${resultId}`)
         }
       />
     );
@@ -112,12 +108,12 @@ const QuizResults = () => {
 
   useEffect(() => {
     getQuiz();
-    getCurrentBatch();
+    // getCurrentBatch();
   }, []);
 
   useEffect(() => {
     console.log(quiz);
-    if (quiz._id && filters.batch) getQuizResults();
+    if (quiz._id) getQuizResults();
   }, [filters, quiz]);
 
   let content;
@@ -139,7 +135,7 @@ const QuizResults = () => {
           </div>
         )}
         <div className="flex items-center justify-between mb-12">
-          <CustomButton type="back" title={`Back to Learning Material`} />
+          <CustomButton type="back" title={`Back`} />
         </div>
         <div className="flex items-center justify-between mb-12">
           <TableHeading title={`${quiz.title}'s Quiz Results`} />

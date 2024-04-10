@@ -45,6 +45,10 @@ export function getDatesByMonth(month) {
   return { $gte: startDate.toISOString(), $lte: endDate.toISOString() };
 }
 
+export const dateForPayload = function (date) {
+  return moment.utc(date);
+};
+
 export const dateForInput = function (date) {
   return moment.utc(date).tz(config.timeZone).format("YYYY-MM-DD");
 };
@@ -56,6 +60,8 @@ export const dateForDisplay = function (date) {
 export const getCurrentUser = () => {
   return JSON.parse(localStorage.getItem("user"));
 };
+
+
 
 export const getCurrentUserId = () => {
   let currentUser = JSON.parse(localStorage.getItem("user"));
