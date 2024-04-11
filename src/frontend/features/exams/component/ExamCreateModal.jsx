@@ -13,19 +13,8 @@ import {
   useDisclosure,
   Checkbox,
 } from "@nextui-org/react";
-import { Select, SelectItem } from "@nextui-org/select";
 import CustomFileDrag from "../../../components/general/CustomFileDrag";
-
-const terms = [
-  {
-    key: "final",
-    label: "final",
-  },
-  {
-    key: "mid",
-    label: "mid",
-  },
-];
+import { showError, showSuccess } from "../../../../util/noti";
 
 export default function ExamCreateModal(props) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -41,7 +30,7 @@ export default function ExamCreateModal(props) {
     title: "",
     description: "",
     subject: subjectId,
-    term: "mid",
+    examDate: "",
   });
 
   const handleAssetChange = (value) => {
@@ -52,14 +41,16 @@ export default function ExamCreateModal(props) {
   const handleSubmit = async (onClose) => {
     try {
       setIsSubmitting(true);
-      let payload = { ...formData, showToStudent };
+      let payload = { ...formData, showToStudent, links: JSON.stringify(links) };
 
       console.log(payload);
-      await examsApi.create(payload);
+      const res = await examsApi.create(payload);
       successCallback();
       onClose();
+      showSuccess({text: res.message, type: 'noti-box'})
     } catch (error) {
       console.log(error);
+      showError({axiosResponse: error})
     } finally {
       setIsSubmitting(false);
     }
@@ -200,23 +191,6 @@ export default function ExamCreateModal(props) {
                         </div>
                       );
                     })}
-                  </div>
-
-                  <div className="flex flex-col w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 mt-3">
-                    <label htmlFor="term" className="pb-2 inline-block">
-                      Term
-                    </label>
-                    <Select
-                      selectedKeys={[formData.term]}
-                      label="Select term"
-                      className="max-w-xs"
-                    >
-                      {terms.map((animal) => (
-                        <SelectItem key={animal.key} value={animal.key}>
-                          {animal.label}
-                        </SelectItem>
-                      ))}
-                    </Select>
                   </div>
 
                   <Checkbox

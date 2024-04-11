@@ -11,6 +11,7 @@ const InstructorLayout = () => {
     if (isLoading) {
         content = (<Loading />)
     }
+    
 
     if (!isLoading) {
         content = (

@@ -1,4 +1,4 @@
-import { convertAndDisplayTZ } from "../../../util/Util";
+import { dateForDisplay } from "../../../util/Util";
 import FileLoader from "../../components/general/FileLoader";
 
 export const getTableData = ({ getCheckButton }) => {
@@ -16,7 +16,7 @@ export const getTableData = ({ getCheckButton }) => {
                 getComponent: (data) => {
                     return (
                         <>
-                            <p>{data.submissionDate ? convertAndDisplayTZ(data.submissionDate) : 'Not Set'}</p>
+                            <p>{data.submissionDate ? dateForDisplay(data.submissionDate) : 'Not Set'}</p>
                         </>
                     )
                 }

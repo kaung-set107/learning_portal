@@ -21,7 +21,9 @@ import EntranceTestCreateForm from "../../entrance-tests/components/EntranceTest
 import EntranceTestUpdateForm from "../../entrance-tests/components/EntranceTestUpdateForm";
 import QuizCreateForm from "../../quizzes/components/QuizCreateForm";
 import QuizUpdateForm from "../../quizzes/components/QuizUpdateForm";
-// import ExamCreateModal from "../../exams/component/ExamCreateModal";
+import ExamCreateModal from "../../exams/component/ExamCreateModal";
+import { examsApi } from "../../exams/api";
+import ExamCard from "../../exams/component/ExamCard";
 
 const SubjectBrief = () => {
   const navigate = useNavigate();
@@ -34,7 +36,7 @@ const SubjectBrief = () => {
     { key: "assignment", title: "Assignment" },
     { key: "subject-sections", title: "Subject Sections" },
     { key: "entrance-test", title: "Entrance test" },
-    // { key: "exam", title: "Exam" },
+    { key: "exam", title: "Exam" },
   ];
 
   const getSubject = async () => {
@@ -68,9 +70,7 @@ const SubjectBrief = () => {
       await getSubject();
       showSuccess({ text: res.message, type: "noti-box" });
       setIsSubmitting(false);
-      console.log(res);
     } catch (error) {
-      console.log(error);
       showError({ axiosResponse: error });
     } finally {
       setIsSubmitting(false);
@@ -83,10 +83,23 @@ const SubjectBrief = () => {
       let res = await subjectSectionsApi.remove({ _id: id });
       await getSubject();
       setIsSubmitting(false);
-      console.log(res);
-      alert("subject section is deleted!");
+      showSuccess({ text: res.message, type: "noti-box" });
     } catch (error) {
-      console.log(error);
+      showError({ axiosResponse: error });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleExamDelete = async (id) => {
+    try {
+      setIsSubmitting(true);
+      let res = await examsApi.remove({ _id: id });
+      await getSubject();
+      showSuccess({ text: res.message, type: "noti-box" });
+      setIsSubmitting(false);
+    } catch (error) {
+      showError({ axiosResponse: error });
     } finally {
       setIsSubmitting(false);
     }
@@ -304,7 +317,7 @@ const SubjectBrief = () => {
                   </div> */}
                 </div>
               </Tab>
-              {/* <Tab key={TabOptions[2].key} title={TabOptions[2].title}>
+              <Tab key={TabOptions[3].key} title={TabOptions[3].title}>
                 <div>
                   <div className="flex items-center justify-between pb-3">
                     <SubHeading title="Exams" className="mb-3" />
@@ -314,22 +327,22 @@ const SubjectBrief = () => {
                     />
                   </div>
                   <div>
-                    {subject.data.exams.map((section) => {
+                    {subject.data.exams.map((exam) => {
                       return (
-                        <div
-                          key={section._id}
-                          className="p-3 border rounded-xl mb-3 relative"
-                        >
-                          <div className="flex gap-3 absolute right-2 top-2">
-                          </div>
-                          <CardTitle title={section.title} />
-                          <p>{section.description}</p>
+                        <div key={exam._id}>
+                          <ExamCard
+                            examData={exam}
+                            successCallback={getSubject}
+                            subjectId={subject._id}
+                            handleExamDelete={handleExamDelete}
+                            isSubmitting={isSubmitting}
+                          />
                         </div>
                       );
                     })}
                   </div>
                 </div>
-              </Tab> */}
+              </Tab>
             </Tabs>
           </div>
         </div>
