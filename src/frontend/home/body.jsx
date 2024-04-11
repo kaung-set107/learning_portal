@@ -297,15 +297,15 @@ const Body = () => {
                     </div>
                     {/* card footer */}
                     <div
-                      className='py-5 flex gap-2 w-[332px]'
+                      className='py-5 flex justify-center gap-2 w-[332px]'
 
                     >
-                      <div className='h-[24px] w-[150px]  text-center bg-[#ECEFFF] rounded-2xl text-[14px] font-medium'>
+                      <div className='h-[24px] w-full  text-start bg-[#ECEFFF] rounded-2xl text-[14px] font-medium'>
                         <span>Duration -</span>
                         <span style={{ color: "#262FD9" }}>{e.durationValue ? e.durationValue : 0} {e.durationType ? e.durationType : 'months'}</span>
                       </div>
 
-                      <div className='h-[24px] w-[134px]  text-center bg-[#FFF3F6] rounded-2xl text-[14px] font-medium'>
+                      <div className='h-[24px] w-full  text-start bg-[#FFF3F6] rounded-2xl text-[14px] font-medium'>
                         Price - <span style={{ color: "#262FD9" }}>{e.fee ? e.fee : 0} MMK</span>
                       </div>
 
