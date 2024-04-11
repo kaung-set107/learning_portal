@@ -235,6 +235,7 @@ export default function AttendanceTable() {
                     src: item.image ? getFile({ payload: item.image }) : "",
                   }}
                 />
+                {/* {console.log(item.image ? getFile({ payload: item.image }) : "", 'cou img')} */}
               </TableCell>
               <TableCell>
                 {item?.description?.split(" ").slice(0, 10).join(" ")} ....

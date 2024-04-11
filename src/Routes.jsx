@@ -73,6 +73,11 @@ import Testimonial from './pages/Testimonial/testimonialList.jsx'
 import TestimonialCreate from './pages/Testimonial/testimonialInput.jsx'
 import TestimonialUpdate from './pages/Testimonial/testimonialUpdate.jsx'
 
+//Banner
+import BannerList from './pages/Banner/bannerList.jsx'
+import BannerCreate from './pages/Banner/bannerInput.jsx'
+
+
 //assign update
 import AssignmentUpdate from "./frontend/pages/Assignment/AssignmentUpdate";
 import LMUpdate from "./frontend/components/LearningMaterial/LMUpdateInput";
@@ -176,6 +181,9 @@ export default function RouteFile() {
             {/* Category */}
             <Route path="/category" element={<CategoryList />}></Route>
             <Route path="/category-input" element={<CategoryInput />}></Route>
+            {/* Banner */}
+            <Route path="/banner-list" element={<BannerList />}></Route>
+            <Route path="/banner-create" element={<BannerCreate />}></Route>
             {/* Course*/}
             <Route path="/course" element={<Course />}></Route>
             <Route path="/course-add" element={<CourseAdd />}></Route>
@@ -231,7 +239,7 @@ export default function RouteFile() {
 
               <Route path="quizzes">
 
-                <Route path="create" element={<InstructorQuizCreate />}/>
+                <Route path="create" element={<InstructorQuizCreate />} />
                 <Route path=":id/quiz-results" element={<QuizResults />} />
                 <Route path=":id/quiz-results/:resultId" element={<InstructorQuizResult />} />
 

@@ -102,7 +102,7 @@ export default function Contact() {
 
                         </div>
                     </div>
-                    <div className=' h-[700px] w-[545px]  top-[200px] absolute right-[350px] ' >
+                    <div className=' h-[700px] w-[545px]  top-[200px] absolute right-[350px]' >
                         <GoogleMapReact
                             bootstrapURLKeys={{ key: "" }}
                             defaultCenter={defaultProps.center}

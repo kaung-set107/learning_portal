@@ -1,10 +1,20 @@
 import React, { ReactElement, useState, Component, useEffect } from "react";
 import { Image, Button, Card, Link } from "@nextui-org/react";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from 'react-responsive-carousel';
 // import { Link } from "react-router-dom";
+// import Carousel from "react-multi-carousel";
+// import "react-multi-carousel/lib/styles.css";
 import MSINav from "./msinav";
 import { Testimonials } from "./home_components/Testimonials";
 import { format } from 'date-fns';
 import Welcome from "../../assets/img/welcomeTeam.jpg";
+import Sli1 from '../../assets/Slider/Sli1.jpg'
+import Sli2 from '../../assets/Slider/Sli2.jpg'
+import Sli3 from '../../assets/Slider/Sli3.jpg'
+import Sli4 from '../../assets/Slider/Sli4.jpg'
+import Sli5 from '../../assets/Slider/Sli5.jpg'
+import Sli6 from '../../assets/Slider/Sli6.jpg'
 import Thingyan from "../../assets/img/thing.jpg";
 import MSIHead from "../../assets/img/msinewimg.png";
 import CVBanner from "../../assets/img/cvbanner.png";
@@ -20,7 +30,7 @@ import { useNavigate } from "react-router";
 // import Footer from '../../frontend/home/footer';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCheck, faArrowUpRightFromSquare
+  faCheck, faArrowUpRightFromSquare, faCircleArrowLeft, faCircleArrowRight, faChevronLeft, faChevronRight
 } from "@fortawesome/free-solid-svg-icons";
 import ScrollAnimation from 'react-animate-on-scroll';
 import "animate.css/animate.min.css";
@@ -37,7 +47,26 @@ const Body = () => {
   const [eventList, setEventList] = useState([
 
   ]);
-
+  const responsive = {
+    superLargeDesktop: {
+      // the naming can be any, depends on you.
+      breakpoint: { max: 4000, min: 3000 },
+      items: 1
+    },
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 1
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 1
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1
+    }
+  };
+  const [bannerList, setBannerList] = useState([])
   const time = (val) => {
     format(new Date(val), 'dd MMM yyyy')
   }
@@ -48,7 +77,6 @@ const Body = () => {
     hidden: { opacity: 0, scale: 0 }
   };
   useEffect(() => {
-
     const getAssign = async () => {
       await apiInstance.get(`courses`).then((res) => {
         console.log(res.data.data, "course res");
@@ -75,7 +103,16 @@ const Body = () => {
         // console.log(count, "count");
       });
     };
+    const getBanner = async () => {
+      await apiInstance.get(`banners`).then((res) => {
+        console.log(res.data.data, "ev res");
+        setBannerList(res.data.data);
+        // const count = res.data.data.filter((el) => el.subjects.length);
+        // console.log(count, "count");
+      });
+    };
 
+    getBanner();
     getEvent();
     getCat();
 
@@ -93,8 +130,61 @@ const Body = () => {
       <MSINav />
 
       {/* Banner */}
+      <div className='h-[60vh] mb-[100px]'>
 
-      <div style={{
+        <Carousel
+
+          showDots={true}
+          autoPlay={true}
+          autoPlaySpeed={3000}
+          infiniteLoop={true}
+          showStatus={false}
+          showThumbs={false}
+          // centerMode={true}
+          stopOnHover={true}
+          centerSlidePercentage='90'
+          // customLeftArrow={<FontAwesomeIcon
+          //   icon={faChevronLeft}
+
+          //   size="2xl"
+          //   className="absolute top-1/2 text-[#000] hover:text-[#fff] hover:scale-110 duration-700 left-10 max-w-4 cursor-pointer hover:bg-slate-800 p-3 rounded-[100%] w-[30px] h-[30px] "
+          // />}
+          // customRightArrow={
+          //   <FontAwesomeIcon
+          //     icon={faChevronRight}
+
+          //     size="2xl"
+          //     className="absolute top-1/2 text-[#000] hover:text-[#fff] hover:scale-110 duration-700 right-10 max-w-4 cursor-pointer hover:bg-slate-800 p-3 rounded-[100%] w-[30px] h-[30px] "
+          //   />}
+          // customTransition="all .5"
+          responsive={responsive}
+          className='p-0 container bg-transparent'
+        >
+
+          <img src={Sli1} className='h-[70vh] w-[160vh] container' />
+
+
+          {/* <div style={{
+            backgroundImage: `url(${Sli2})`, backgroundRepeat: 'no-repeat', backgroundSize: 'contain'
+          }} className='h-[50vh] sm:h-[70vh]  container' ></div> */}
+
+          <img src={Sli2} className='h-[70vh] w-[160vh] container ' />
+
+
+          <img src={Sli3} className='h-[70vh] w-[160vh] container' />
+          <img src={Sli4} className='h-[70vh] w-[160vh] container' />
+          <img src={Sli5} className='h-[70vh] w-[160vh] container' />
+          <img src={Sli6} className='h-[70vh] w-[160vh] container' />
+
+
+
+        </Carousel>
+      </div>
+      {/* <div>
+          {console.log(bannerList[bannerList?.length - 1], 'list')}
+
+        </div> */}
+      {/* <div style={{
         backgroundImage: `url(${CVBanner})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'
       }} className='h-[50vh] sm:h-[70vh]  container' >
 
@@ -105,7 +195,7 @@ const Body = () => {
           <span className='text-[16px] sm:text-[48px] font-medium text-[#FFF]'>Your Gateway to Overseas MSI Education"</span>
         </div >
 
-      </div >
+      </div > */}
       {/* Header */}
 
       < div className='flex justify-around pl-[26px]  sm:pl-[57px] pr-[26px] sm:pr-[57px] pt-[20px] sm:pt-[100px] relative container overflow-hidden' >

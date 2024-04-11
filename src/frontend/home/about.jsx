@@ -58,9 +58,10 @@ const About = () => {
           </p>
         </div>
         <div className='my-10 relative'>
+
           <iframe
             className='w-[350px] h-[200px] md:w-[500px] md:h-[300px] lg:w-[600px] lg:h-[400px]'
-            src='https://www.youtube.com/embed/zWgxKwi1F1w'
+            src='https://www.youtube.com/embed/Z8fIWXY4Q9g'
             title='YouTube video player'
             frameBorder='0'
             allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'

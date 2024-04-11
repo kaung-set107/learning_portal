@@ -347,8 +347,8 @@ export default function Login() {
                   <div className='mt-3 flex justify-start text-[blue]' onClick={handleForgot}>
                     Forgot Password ?
                   </div>
-                  <div className='mt-1'>
-                    <FormAction handleSubmit={() => handleSubmit()} text='Login' />
+                  <div className='mt-1 '>
+                    <FormAction handleSubmit={() => handleSubmit()} className='' text='Login' />
                   </div>
                   <div className='mt-3 flex justify-center '>
                     <span className='font-medium text-[#5A5A5D] text-[16px]'>

@@ -18,7 +18,85 @@ import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-
+const countryList = [
+    {
+        id: 1,
+        name: 'Thailand'
+    },
+    {
+        id: 2,
+        name: 'Singapore'
+    },
+    {
+        id: 3,
+        name: 'Malaysia'
+    }
+    ,
+    {
+        id: 4,
+        name: 'Vietnam'
+    }
+    ,
+    {
+        id: 5,
+        name: 'Japan'
+    }
+    ,
+    {
+        id: 6,
+        name: 'Taiwan'
+    }
+    ,
+    {
+        id: 7,
+        name: 'China'
+    }
+    ,
+    {
+        id: 8,
+        name: 'Korea'
+    }
+    ,
+    {
+        id: 9,
+        name: 'USA'
+    }
+    ,
+    {
+        id: 10,
+        name: 'UK'
+    }
+    ,
+    {
+        id: 11,
+        name: 'Australia'
+    }
+    ,
+    {
+        id: 12,
+        name: 'Canada'
+    },
+    {
+        id: 13,
+        name: 'Switzerland'
+    },
+    {
+        id: 14,
+        name: 'Natherland'
+    },
+    {
+        id: 15,
+        name: 'Poland'
+    },
+    {
+        id: 16,
+        name: 'Spain'
+    },
+    {
+        id: 17,
+        name: 'Germany'
+    }
+]
 
 // import Footer from '../../frontend/home/footer';
 const About = () => {
@@ -116,7 +194,19 @@ const About = () => {
                 <div className='flex flex-col sm:flex-row sm:flex gap-10 text-[14px] font-normal'>
                     <div className='w-full flex flex-col gap-2 '>
                         <label>Study Destination</label>
-                        <Input type='text' size='lg' variant={variant} className='' name='name' placeholder="Enter name" onChange={(e) => setStudyDesti(e.target.value)} />
+                        <Select
+                            size={studyDesti ? "lg" : "sm"}
+                            label={studyDesti ? '' : "Select an country"}
+                            className=''
+                            onChange={(e) => setStudyDesti(e.target.value)}
+                        >
+                            {countryList.map((animal) => (
+                                <SelectItem key={animal.id} value={animal.name}>
+                                    {animal.name}
+                                </SelectItem>
+                            ))}
+                        </Select>
+
                     </div>
                     <div className='w-full flex flex-col gap-2'>
                         <label>Desired Course</label>
@@ -143,11 +233,11 @@ const About = () => {
                             className=''
                             onChange={(e) => setCounselorName(e.target.value)}
                         >
-                            {courseList.map((animal) => (
-                                <SelectItem key={animal._id} value={animal._id}>
-                                    {animal.title}
-                                </SelectItem>
-                            ))}
+                            {/* {courseList.map((animal) => ( */}
+                            <SelectItem value=''>
+                                Example Name
+                            </SelectItem>
+                            {/* ))} */}
                         </Select>
                     </div>
                     <div className='w-full flex flex-col gap-2 mt-3 '>
@@ -171,7 +261,7 @@ const About = () => {
                     </div>
                 </div>
                 <div className='flex justify-center '>
-                    <Button type="submit" className='w-[220px]' color='primary' >Submit</Button>
+                    <Button type="submit" className='w-[220px] bg-[#0B2743] text-[#fff]'  >Submit</Button>
                 </div>
 
             </form>
