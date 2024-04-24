@@ -238,11 +238,9 @@ export default function RouteFile() {
               </Route>
 
               <Route path="quizzes">
-
                 <Route path="create" element={<InstructorQuizCreate />} />
                 <Route path=":id/quiz-results" element={<QuizResults />} />
                 <Route path=":id/quiz-results/:resultId" element={<InstructorQuizResult />} />
-
               </Route>
               {/* <Route path='/instructor' element={<InstructorHome />}></Route> */}
               {/* <Route path='/assign' element={<Assignment />}></Route> */}

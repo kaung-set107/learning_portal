@@ -12,6 +12,7 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@nextui-org/react";
+import { Select, SelectItem } from "@nextui-org/select";
 import { v4 as uuidv4 } from "uuid";
 import Loading from "../../../components/general/Loading";
 import { dateForInput } from "../../../../util/Util";
@@ -24,6 +25,17 @@ export default function ExamUpdateModal(props) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   let { subjectId, examData, examId, successCallback } = props;
+
+  const examTypes = [
+    {
+      value: "inapp",
+      label: "In App",
+    },
+    {
+      value: "outside",
+      label: "Outside",
+    },
+  ];
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [link, setLink] = useState("");
@@ -39,6 +51,12 @@ export default function ExamUpdateModal(props) {
     description: "",
     subject: subjectId,
     examDate: "",
+    startTime: "",
+    endTime: "",
+    duration: "",
+    examType: [],
+    creditMark: "",
+    passMark: "",
   });
 
   const handleSubmit = async (onClose) => {
@@ -49,6 +67,10 @@ export default function ExamUpdateModal(props) {
         _id: exam.data._id,
         links: JSON.stringify(links),
         showToStudent,
+        duration: +formData.duration,
+        creditMark: +formData.creditMark,
+        passMark: +formData.passMark,
+        examType: formData.examType.currentKey,
       };
       if (formData.newQuestion) {
         payload.question = formData.newQuestion;
@@ -79,6 +101,12 @@ export default function ExamUpdateModal(props) {
       question: exam.data?.question ?? "",
       // links: '[{"links":"www.google.com"},{"links":"www.msi.com"},{"links":"www.msiedu.com"}]',
       examDate: exam.data.examDate,
+      startTime: exam.data.startTime ?? "",
+      endTime: exam.data.endTime ?? "",
+      duration: exam.data.duration ?? "",
+      examType: exam.data.examType ? [exam.data.examType] : [],
+      creditMark: exam.data.creditMark ?? "",
+      passMark: exam.data.passMark ?? "",
     });
 
     setLinks(JSON.parse(exam.data.links));
@@ -175,10 +203,21 @@ export default function ExamUpdateModal(props) {
                       />
                     </div>
                     <div className="mb-3">
-                      <h3 className="mb-3">Previous Assets</h3>
-                      <div className="bg-gray-100 p-3 rounded-xl border">
-                        {formData.assets && (
-                          <FileLoader file={formData.assets} />
+                      <h3 className="text-lg font-semibold mb-3">Assets</h3>
+                      <div className="bg-gray-100 flex flex-wrap gap-3 p-3 rounded-xl border">
+                        {exam.data.assets ? (
+                          exam.data.assets.map((asset) => {
+                            return (
+                              <div
+                                key={uuidv4()}
+                                className="inline-block bg-white p-3 rounded-xl border"
+                              >
+                                <FileLoader file={asset} />
+                              </div>
+                            );
+                          })
+                        ) : (
+                          <span>No File!</span>
                         )}
                       </div>
                     </div>
@@ -208,6 +247,118 @@ export default function ExamUpdateModal(props) {
                         labelPlacement="outside"
                         variant={variant}
                       />
+                    </div>
+
+                    <div className="mb-3">
+                      <label htmlFor="startTime" className="pb-1 inline-block">
+                        Start Time
+                      </label>
+                      <Input
+                        id="startTime"
+                        type="time"
+                        value={formData.startTime}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            startTime: e.target.value,
+                          }))
+                        }
+                        labelPlacement="outside"
+                        variant={variant}
+                      />
+                    </div>
+
+                    <div className="mb-3">
+                      <label htmlFor="endTime" className="pb-1 inline-block">
+                        End Time
+                      </label>
+                      <Input
+                        id="endTime"
+                        type="time"
+                        value={formData.endTime}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            endTime: e.target.value,
+                          }))
+                        }
+                        labelPlacement="outside"
+                        variant={variant}
+                      />
+                    </div>
+
+                    <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
+                      <Input
+                        type="number"
+                        label="Duration"
+                        placeholder="duration"
+                        variant={variant}
+                        value={formData.duration}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            duration: e.target.value,
+                          }))
+                        }
+                        labelPlacement="outside"
+                      />
+                    </div>
+
+                    <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
+                      <Input
+                        type="number"
+                        label="Credit Mark"
+                        placeholder="credit Mark"
+                        variant={variant}
+                        value={formData.creditMark}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            creditMark: e.target.value,
+                          }))
+                        }
+                        labelPlacement="outside"
+                      />
+                    </div>
+
+                    <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
+                      <Input
+                        type="number"
+                        label="Pass Mark"
+                        placeholder="Pass Mark"
+                        variant={variant}
+                        value={formData.passMark}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            passMark: e.target.value,
+                          }))
+                        }
+                        labelPlacement="outside"
+                      />
+                    </div>
+
+                    <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
+                      <Select
+                        label="Exam Type"
+                        variant="bordered"
+                        placeholder="Select exam type"
+                        selectedKeys={formData.examType}
+                        className="max-w-xs"
+                        labelPlacement="outside"
+                        onSelectionChange={(keys) =>
+                          setFormData((prev) => ({ ...prev, examType: keys }))
+                        }
+                      >
+                        {examTypes.map((examType) => (
+                          <SelectItem
+                            key={examType.value}
+                            value={examType.value}
+                          >
+                            {examType.label}
+                          </SelectItem>
+                        ))}
+                      </Select>
                     </div>
 
                     <div className="flex w-full items-end flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">

@@ -16,7 +16,7 @@ const QuizCreateForm = (props) => {
   const [questions, setQuestions] = useState([]);
 
   const variant = "bordered";
-
+  
   const status = [
     {
       value: "expired",
@@ -73,7 +73,7 @@ const QuizCreateForm = (props) => {
     try {
       setIsSubmitting(true);
       let res = await quizzesApi.create(payload);
-      await successCallback();
+      if(successCallback) await successCallback();
       showSuccess({ text: res.message, type: "noti-box" });
     } catch (error) {
       console.log(error);

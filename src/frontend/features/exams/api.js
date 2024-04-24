@@ -30,7 +30,10 @@ const create = async (payload) => {
 };
 
 const update = async (payload) => {
-  const res = await apiInstance.put(baseUrl + `/${payload._id}`, payload);
+  const res = await apiInstance.put(
+    baseUrl + `/${payload._id}`,
+    getFormData(payload)
+  );
   console.log(baseName, res);
   return res.data;
 };
