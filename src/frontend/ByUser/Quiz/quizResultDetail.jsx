@@ -334,7 +334,7 @@ const Result = ({ data }) => {
                                                 {i.question}
                                             </div>
                                             <div>
-                                                <img src={i.questionPic} />
+                                                {i?.images ? (<img src={getFile({ payload: i?.images[0] })} className='w-[650px] h-[450px]' />) : ('')}
                                             </div>
                                             <div className='mt-5'>
                                                 {i.options.map((e, index) => (
@@ -396,7 +396,8 @@ const Result = ({ data }) => {
                                                 {i.question}
                                             </div>
                                             <div>
-                                                <img src={i.questionPic} />
+                                                {i?.images ? (<img src={getFile({ payload: i?.images[0] })} className='w-[650px] h-[450px]' />) : ('')}
+
                                             </div>
                                             <div className='mt-5'>
                                                 {i.options.map((e, index) => (

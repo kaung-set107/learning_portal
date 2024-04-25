@@ -3,29 +3,47 @@ import apiInstance from "../../util/api";
 import { Card, Input, Button, Textarea, Checkbox } from "@nextui-org/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleChevronLeft } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FileUploader } from 'react-drag-drop-files'
 import Swal from "sweetalert2";
 import { Select, SelectItem } from '@nextui-org/select'
 import FileBase64 from 'react-file-base64';
+import { getFile } from "../../util";
 const fileTypes = ['JPG', 'PNG', 'GIF']
 export default function Banner() {
+    const location = useLocation()
+    const ID = location.pathname.split('/')[2]
     const variant = 'bordered';
     const [title, setTitle] = useState("");
     const [imageList, setImageList] = useState([])
-    const Last = imageList.map((i) => {
-        return {
-            lastModified: i.lastModified,
-            lastModifiedDate: i.lastModifiedDate,
-            name: i.name,
-            size: i.size,
-            type: i.type,
-            webkitRelativePath: i.webkitRelativePath
-        }
-    })
-    console.log(Last, 'iii')
+    const [bannerList, setBannerList] = useState([])
+    // const Last = imageList.map((i) => {
+    //     return {
+    //         lastModified: i.lastModified,
+    //         lastModifiedDate: i.lastModifiedDate,
+    //         name: i.name,
+    //         size: i.size,
+    //         type: i.type,
+    //         webkitRelativePath: i.webkitRelativePath
+    //     }
+    // })
+    // console.log(Last, 'iii')
+
     const [view, setView] = useState('')
     const [description, setDescription] = useState('')
+    useEffect(() => {
+        const getBanner = async () => {
+            await apiInstance.get(`banners/${ID}`).then((res) => {
+                console.log(res.data.data.images, "ev res");
+                setBannerList(res.data.data.images);
+                setTitle(res.data.data.section)
+                setDescription(res.data.data.description)
+                setView(res.data.data.view)
+            });
+        };
+
+        getBanner();
+    }, [])
     const bSize = { "width": "full", "height": "full" }
     // console.log(
     //     listData.selectedFile?.split('base64,')[1]
@@ -83,7 +101,8 @@ export default function Banner() {
                     <Input
                         type='date'
                         variant='bordered'
-                        placeholder='Enter name ...'
+                        // value={title}
+                        placeholder='Enter date ...'
                         onChange={(e) => setTitle(e.target.value)}
                     />
                 </div>
@@ -93,6 +112,7 @@ export default function Banner() {
                         type='text'
                         variant='bordered'
                         placeholder='eg: home '
+                        value={view}
                         onChange={(e) => setView(e.target.value)}
                     />
                 </div>
@@ -125,6 +145,14 @@ export default function Banner() {
                     className='w-full'
                 />
 
+                <div className='flex flex-row gap-2'>
+                    {bannerList.map((i) => (
+                        <div className='flex flex-col gap-2'>
+                            <img src={getFile({ payload: i })} className='w-[90px] h-[90px] rounded-md' />
+                            <span className='text-[49px] font-extrabold text-[red] items-center justify-center'>-</span>
+                        </div>
+                    ))}
+                </div>
             </div>
 
             <div className='flex justify-center gap-10 py-4'>
@@ -132,7 +160,7 @@ export default function Banner() {
                     <Link to='/category'>Cancel</Link>
                 </Button>
                 <Button color='primary' onClick={create}>
-                    Create
+                    Update
                 </Button>
             </div>
         </div>

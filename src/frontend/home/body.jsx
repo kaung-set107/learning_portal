@@ -105,8 +105,8 @@ const Body = () => {
     };
     const getBanner = async () => {
       await apiInstance.get(`banners`).then((res) => {
-        console.log(res.data.data, "ev res");
-        setBannerList(res.data.data);
+        console.log(res.data.data[0].images, "ev res");
+        setBannerList(res.data.data[0].images);
         // const count = res.data.data.filter((el) => el.subjects.length);
         // console.log(count, "count");
       });
@@ -160,21 +160,25 @@ const Body = () => {
           responsive={responsive}
           className='p-0 container bg-transparent'
         >
+          {bannerList.map((i) => (
+            <>
+              <img src={getFile({ payload: i })} className='h-[70vh] w-[160vh] container' />
+            </>
+          ))}
 
-          <img src={Sli1} className='h-[70vh] w-[160vh] container' />
 
 
           {/* <div style={{
             backgroundImage: `url(${Sli2})`, backgroundRepeat: 'no-repeat', backgroundSize: 'contain'
           }} className='h-[50vh] sm:h-[70vh]  container' ></div> */}
-
+          {/* 
           <img src={Sli2} className='h-[70vh] w-[160vh] container ' />
 
 
           <img src={Sli3} className='h-[70vh] w-[160vh] container' />
           <img src={Sli4} className='h-[70vh] w-[160vh] container' />
           <img src={Sli5} className='h-[70vh] w-[160vh] container' />
-          <img src={Sli6} className='h-[70vh] w-[160vh] container' />
+          <img src={Sli6} className='h-[70vh] w-[160vh] container' /> */}
 
 
 

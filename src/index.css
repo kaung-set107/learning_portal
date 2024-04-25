@@ -46,3 +46,9 @@ body{
 .contact{
 background-color: #BC1F40;
 }
+
+.flip{
+   -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+
+}
