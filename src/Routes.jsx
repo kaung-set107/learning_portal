@@ -1,16 +1,16 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Login from "./pages/Login/login";
 // Home Web Page
-import Contact from './frontend/home/contactUs.jsx'
-import EventPage from './frontend/home/eventPage.jsx'
-import EventDetailPage from './frontend/home/eventDetail.jsx'
+import Contact from "./frontend/home/contactUs.jsx";
+import EventPage from "./frontend/home/eventPage.jsx";
+import EventDetailPage from "./frontend/home/eventDetail.jsx";
 import FHome from "./frontend/home/body";
 import About from "./frontend/home/about.jsx";
 import Booking from "./frontend/home/booking.jsx";
 import HomeCourse from "./frontend/home/home-course/home-course.jsx";
 import HomeCourseDetail from "./frontend/home/home-course/course-detail.jsx";
 import HomeSubjectDetail from "./frontend/home/home-course/home_subject_detail.jsx";
-import Test from './frontend/home/test.jsx'
+import Test from "./frontend/home/test.jsx";
 import Dashboard from "./pages/Dashboard/index.jsx";
 import Instructor from "./pages/Instructor/InstructorList";
 import InstructorAdd from "./pages/Instructor/InstructorAdd";
@@ -40,7 +40,7 @@ import MyCourseSubDetail from "./frontend/components/MyCourse/index.jsx";
 import MyCourseSubDetailID from "./frontend/components/MyCourse/index.jsx";
 
 // EntranceTestPage
-import EntranceTestPage from './frontend/ByUser/Quiz/entranceTest.jsx'
+import EntranceTestPage from "./frontend/ByUser/Quiz/entranceTest.jsx";
 
 import InstructorHome from "./frontend/ByInstructor/home";
 import LearningMaterial from "./frontend/pages/LearningMaterial/LMAdd";
@@ -48,8 +48,8 @@ import Assignment from "./frontend/components/Assignment/AssignInput";
 
 //Exam
 import Exam from "./frontend/components/Exam/ExamInput";
-import ExamResult from './frontend/components/MyCourse/examResultPage.jsx'
-import ExamPage from './frontend/components/MyCourse/examPage.jsx'
+import ExamResult from "./frontend/components/MyCourse/examResultPage.jsx";
+import ExamPage from "./frontend/components/MyCourse/examPage.jsx";
 
 import Subject from "./pages/Subject/subject";
 import SubjectAdd from "./pages/Subject/subjectAdd";
@@ -64,19 +64,18 @@ import BatchCreate from "./pages/Batch/batchInput.jsx";
 import BatchUpdate from "./pages/Batch/batchUpdate.jsx";
 
 //Event
-import Event from './pages/Events/eventList.jsx'
-import EventCreate from './pages/Events/eventInput.jsx'
-import EventUpdate from './pages/Events/eventUpdate.jsx'
+import Event from "./pages/Events/eventList.jsx";
+import EventCreate from "./pages/Events/eventInput.jsx";
+import EventUpdate from "./pages/Events/eventUpdate.jsx";
 
 //Testimonial
-import Testimonial from './pages/Testimonial/testimonialList.jsx'
-import TestimonialCreate from './pages/Testimonial/testimonialInput.jsx'
-import TestimonialUpdate from './pages/Testimonial/testimonialUpdate.jsx'
+import Testimonial from "./pages/Testimonial/testimonialList.jsx";
+import TestimonialCreate from "./pages/Testimonial/testimonialInput.jsx";
+import TestimonialUpdate from "./pages/Testimonial/testimonialUpdate.jsx";
 
 //Banner
-import BannerList from './pages/Banner/bannerList.jsx'
-import BannerCreate from './pages/Banner/bannerInput.jsx'
-
+import BannerList from "./pages/Banner/bannerList.jsx";
+import BannerCreate from "./pages/Banner/bannerInput.jsx";
 
 //assign update
 import AssignmentUpdate from "./frontend/pages/Assignment/AssignmentUpdate";
@@ -107,6 +106,7 @@ import InstructorQuizCreate from "./frontend/features/quizzes/pages/QuizCreate.j
 import SurveyResult from "./frontend/features/survey-results/pages/SurveyResult.jsx";
 import QuizResults from "./frontend/features/quiz-results/pages/QuizResults.jsx";
 import InstructorQuizResult from "./frontend/features/quiz-results/pages/QuizResult.jsx";
+import QuizUpdate from "./frontend/features/quizzes/pages/QuizUpdate.jsx";
 export default function RouteFile() {
   console.log(localStorage.getItem("user"), "local use");
   return (
@@ -121,10 +121,9 @@ export default function RouteFile() {
           </ul>
         </div> */}
         <Routes>
-
-          <Route path='/login' element={<Login />}></Route>
-          <Route path='/' element={<FHome />}></Route>
-          <Route path='/test' element={<Test />}></Route>
+          <Route path="/login" element={<Login />}></Route>
+          <Route path="/" element={<FHome />}></Route>
+          <Route path="/test" element={<Test />}></Route>
 
           <Route path="/about" element={<About />}></Route>
           <Route path="/contact" element={<Contact />}></Route>
@@ -218,10 +217,22 @@ export default function RouteFile() {
               <Route path="subjects">
                 <Route index element={<Subjects />} />
                 <Route path=":id/brief" element={<SubjectBrief />} />
-                <Route path=":id/subject-sections/:subjectSectionId/learning-materials" element={<LearningMaterials />} />
-                <Route path=":id/subject-sections/:subjectSectionId/learning-materials/:learningMaterialId/brief" element={<LearningMaterialBrief />} />
-                <Route path=":id/subject-sections/:subjectSectionId/learning-materials/:learningMaterialId/survey-results" element={<SurveyResults />} />
-                <Route path=":id/subject-sections/:subjectSectionId/learning-materials/:learningMaterialId/survey-results/:resultId" element={<SurveyResult />} />
+                <Route
+                  path=":id/subject-sections/:subjectSectionId/learning-materials"
+                  element={<LearningMaterials />}
+                />
+                <Route
+                  path=":id/subject-sections/:subjectSectionId/learning-materials/:learningMaterialId/brief"
+                  element={<LearningMaterialBrief />}
+                />
+                <Route
+                  path=":id/subject-sections/:subjectSectionId/learning-materials/:learningMaterialId/survey-results"
+                  element={<SurveyResults />}
+                />
+                <Route
+                  path=":id/subject-sections/:subjectSectionId/learning-materials/:learningMaterialId/survey-results/:resultId"
+                  element={<SurveyResult />}
+                />
                 {/* <Route path=":id/subject-sections/:subjectSectionId/learning-materials/:learningMaterialId/quizzes/:quizId/quiz-results" element={<QuizResults />} /> */}
                 {/* <Route path=":id/subject-sections/:subjectSectionId/learning-materials/:learningMaterialId/quizzes/:quizId/quiz-results/:resultId" element={<InstructorQuizResult />} /> */}
               </Route>
@@ -239,8 +250,12 @@ export default function RouteFile() {
 
               <Route path="quizzes">
                 <Route path="create" element={<InstructorQuizCreate />} />
+                <Route path=":id/edit" element={<QuizUpdate />} />
                 <Route path=":id/quiz-results" element={<QuizResults />} />
-                <Route path=":id/quiz-results/:resultId" element={<InstructorQuizResult />} />
+                <Route
+                  path=":id/quiz-results/:resultId"
+                  element={<InstructorQuizResult />}
+                />
               </Route>
               {/* <Route path='/instructor' element={<InstructorHome />}></Route> */}
               {/* <Route path='/assign' element={<Assignment />}></Route> */}
@@ -258,14 +273,17 @@ export default function RouteFile() {
             <Route path="/instru-update/:id" element={<InstructorUpdate />} />
 
             {/* Event */}
-            <Route path='/event' element={<Event />} />
-            <Route path='/event-create' element={<EventCreate />} />
-            <Route path='/event-update/:id' element={<EventUpdate />} />
+            <Route path="/event" element={<Event />} />
+            <Route path="/event-create" element={<EventCreate />} />
+            <Route path="/event-update/:id" element={<EventUpdate />} />
 
             {/* Testimonial */}
-            <Route path='/testimonial' element={<Testimonial />} />
-            <Route path='/testimonial-create' element={<TestimonialCreate />} />
-            <Route path='/testimonial-update/:id' element={<TestimonialUpdate />} />
+            <Route path="/testimonial" element={<Testimonial />} />
+            <Route path="/testimonial-create" element={<TestimonialCreate />} />
+            <Route
+              path="/testimonial-update/:id"
+              element={<TestimonialUpdate />}
+            />
 
             {/* Student */}
             <Route path="/student" element={<Student />} />
@@ -292,10 +310,11 @@ export default function RouteFile() {
             <Route path="/quiz-page/:id" element={<QuizPage />}></Route>
             <Route path="/quiz-result" element={<QuizResult />}></Route>
 
-
-
             {/* Placement Test */}
-            <Route path='/entranceTest-page' element={<EntranceTestPage />}></Route>
+            <Route
+              path="/entranceTest-page"
+              element={<EntranceTestPage />}
+            ></Route>
           </Route>
 
           {/* Exam */}

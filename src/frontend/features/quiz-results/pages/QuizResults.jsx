@@ -140,6 +140,9 @@ const QuizResults = () => {
         <div className="flex items-center justify-between mb-12">
           <TableHeading title={`${quiz.title}'s Quiz Results`} />
         </div>
+        <div className="flex items-center justify-between mb-12">
+          <h3 className="text-xl font-bold"><span className="uppercase">{quiz.type}</span>: {quiz[quiz.type].title}</h3>
+        </div>
         <div className="flex justify-between items-center mb-3">
           <div>
             <BatchesDropdown

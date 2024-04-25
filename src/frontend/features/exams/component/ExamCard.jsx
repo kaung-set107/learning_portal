@@ -27,6 +27,12 @@ const ExamCard = (props) => {
     });
   };
 
+  const quizUpdate = (data) => {
+    navigate(`/by-instructor/quizzes/${data.quiz._id}/edit`, {
+      state: { type: "exam", exam: data, quizData: data.quiz },
+    });
+  };
+
   return (
     <div className="p-3 border rounded-xl mb-3 relative">
       <div className="flex gap-3 absolute right-2 top-2">
@@ -35,11 +41,20 @@ const ExamCard = (props) => {
           onClick={() => goToResult(exam)}
           title="Results"
         /> */}
-        <CustomButton
-          size="sm"
-          onClick={() => quizCreate(examData)}
-          title="Quiz Create"
-        />
+        {!examData.quiz && (
+          <CustomButton
+            size="sm"
+            onClick={() => quizCreate(examData)}
+            title="Quiz Create"
+          />
+        )}
+        {examData.quiz && (
+          <CustomButton
+            size="sm"
+            onClick={() => quizUpdate(examData)}
+            title="Quiz Update"
+          />
+        )}
         <ExamUpdateModal
           subjectId={subjectId}
           examData={examData}
