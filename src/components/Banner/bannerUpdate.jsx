@@ -30,8 +30,26 @@ export default function Banner() {
             webkitRelativePath: i.webkitRelativePath
         }
     })]
-
-    console.log(totalImg, 'tot')
+    const final = totalImg.map((i) => {
+        return {
+            lastModified: i.lastModified,
+            lastModifiedDate: i.lastModifiedDate,
+            name: i.name,
+            size: i.size,
+            type: i.type,
+            webkitRelativePath: i.webkitRelativePath
+        }
+    })
+    console.log(totalImg.map((i) => {
+        return {
+            lastModified: i.lastModified,
+            lastModifiedDate: i.lastModifiedDate,
+            name: i.name,
+            size: i.size,
+            type: i.type,
+            webkitRelativePath: i.webkitRelativePath
+        }
+    }), 'tot')
     console.log([...bannerList, ...oriImgList.map((i) => {
         return {
             lastModified: i.lastModified,
@@ -53,9 +71,12 @@ export default function Banner() {
     }
 
     const handleDeleteNew = (index) => {
-
-        const filter = imageList.filter((el, ind) => ind !== index)
-        setImageList(filter)
+        // console.log(index)
+        // console.log(oriImgList.map((el, ind) => ind + 1), 'ori')
+        const filter = oriImgList.filter((el, ind) => ind !== index)
+        const sec = imageList.filter((el, ind) => ind !== index)
+        setImageList(sec)
+        setOriImgList(filter)
         console.log(filter, 'img')
     }
     useEffect(() => {
@@ -138,45 +159,7 @@ export default function Banner() {
                 </Link>
             </div>
 
-            <div className='flex flex-col mx-8 w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
-                <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-                    <label className='text-sm font-semibold'>Uploaded Date</label>
-                    <Input
-                        type='date'
-                        variant='bordered'
-                        // value={title}
-                        placeholder='Enter date ...'
-                        onChange={(e) => setTitle(e.target.value)}
-                    />
-                </div>
-                {/* <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-                    <label className='text-sm font-semibold'>View</label>
-                    <Input
-                        type='text'
-                        variant='bordered'
-                        placeholder='eg: home '
-                        value={view}
-                        onChange={(e) => setView(e.target.value)}
-                    />
-                </div> */}
 
-
-
-            </div>
-
-            {/* <div className='mx-8 flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
-                <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 '>
-                    <Textarea
-                        className='text-sm font-semibold'
-                        variant='bordered'
-                        type='text'
-                        label='Description'
-                        placeholder='description'
-                        onChange={(e) => setDescription(e.target.value)}
-                        labelPlacement='outside'
-                    />
-                </div>
-            </div> */}
             <div className='flex flex-col w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-5 mx-8 mt-5'>
                 <label className='text-sm font-semibold'>Photo</label>
 
@@ -189,19 +172,14 @@ export default function Banner() {
                 />
 
                 <div className='grid grid-cols-6 gap-10 justify-center'>
-                    {bannerList.map((i, ind) => (
+                    {!imageList[0] ? bannerList.map((i, ind) => (
                         <div className='flex flex-col gap-0'>
                             <img src={getFile({ payload: i })} className='w-[150px] h-[150px] rounded-md' />
                             <div className='flex justify-center overflow-hidden'>
-                                <span className='text-[29px] font-extrabold text-[red] items-center justify-center w-[30px] cursor-pointer' onClick={() => handleDelete(ind)}><FontAwesomeIcon icon={faCircleXmark} /></span>
+                                {/* <span className='text-[29px] font-extrabold text-[red] items-center justify-center w-[30px] cursor-pointer' onClick={() => handleDelete(ind)}><FontAwesomeIcon icon={faCircleXmark} /></span> */}
                             </div>
-
-
-
                         </div>
-                    ))}
-
-                    {imageList.map((i, ind) => (
+                    )) : imageList.map((i, ind) => (
                         <div className='flex flex-col gap-0'>
                             <img src={i} className='w-[150px] h-[150px] rounded-md' />
                             <div className='flex justify-center'>

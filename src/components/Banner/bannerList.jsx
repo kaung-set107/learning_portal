@@ -83,31 +83,33 @@ const BannerList = () => {
                 <div className='flex gap-4 mb-3 flex-row'>
 
                 </div>
-                <div className='flex gap-2 mb-3 flex-row'>
+                {/* <div className='flex gap-2 mb-3 flex-row'>
                     <Link to='/banner-create'>
                         <Button endContent={<PlusIcon />} color='primary'>
                             Add
                         </Button>
                     </Link>
-                </div>
+                </div> */}
             </div>
-            <div className='grid grid-cols-5 gap-10'>
+            <div className=''>
                 {bannerList.map((i) => (
-                    <>
-                        {i.images.map((e) => (
-                            <div className='flex flex-col gap-2'>
-                                <img src={getFile({ payload: e })} className='w-[190px] h-[190px] rounded-md' />
-                                {/* <span className='text-[49px] font-extrabold text-[red] items-center justify-center'>-</span> */}
-                            </div>
-                        ))}
+                    <div className='flex flex-col gap-20'>
+
+                        <div className='grid grid-cols-5 gap-10'>
+                            {i.images.map((e) => (
+                                <img src={getFile({ payload: e })} className='w-[290px] h-[290px] rounded-md' />
+
+                            ))}
+                        </div>
+
 
                         <div className='flex justify-center items-center'>
 
-                            <Link to={`/banner-update/${i._id}`}>
-                                <Button color='warning'>Update</Button>
+                            <Link to={`/banner-update/${i._id}`} className='border-1 border-slate-500 rounded-lg'>
+                                <Button className='gradient text-[25px] font-bold'>Update Your Banner</Button>
                             </Link>
                         </div>
-                    </>
+                    </div>
 
                 ))}
 

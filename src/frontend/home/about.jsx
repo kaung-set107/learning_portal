@@ -9,6 +9,12 @@ import Team2 from "../../assets/img/team2.png";
 import Team3 from "../../assets/img/team3.png";
 import Rec1 from "../../assets/img/rec1.png";
 import Wave from '../../assets/img/wave.svg'
+import Sli1 from '../../assets/Slider/Sli1.jpg'
+import Sli2 from '../../assets/Slider/Sli2.jpg'
+import Sli3 from '../../assets/Slider/Sli3.jpg'
+import Sli4 from '../../assets/Slider/Sli4.jpg'
+import Sli5 from '../../assets/Slider/Sli5.jpg'
+import Sli6 from '../../assets/Slider/Sli6.jpg'
 import Footer from "./footer";
 import apiInstance from "../../util/api";
 import { getFile } from "../../util";
@@ -38,13 +44,92 @@ const About = () => {
     <div className=''>
       <MSINav />
       {/* Intro MSI */}
-      <div className='flex items-center justify-center gap-48 flex-wrap md:my-[100px] container'>
-        <div>
-          <img
-            src={Rec1}
-            className=''
-            alt=''
-          />
+      <div className='flex items-center justify-around gap-48 flex-wrap md:my-[100px] h-[435px] container'>
+        <div className='flex'>
+          {/* First */}
+          <div className='flex flex-col h-[456px]'>
+            <div className='flex justify-start'>
+              <img
+                src={Sli1}
+                className='w-[174px] h-[173px]'
+                alt=''
+                style={{ borderRadius: '79.509px 0px 0px 0px' }}
+              />
+            </div>
+
+            <div className='flex justify-end pt-[45px]'>
+              <img
+                src={Sli2}
+                className='w-[90px] h-[90px]'
+                alt=''
+                style={{ borderRadius: '0px 0px 0px 39.755px' }}
+              />
+            </div>
+            <div className='flex justify-start pt-[45px]'>
+              <img
+                src={Sli3}
+                className='w-[112px] h-[112px]'
+                alt=''
+                style={{ borderRadius: '0px 0px 0px 71.559px' }}
+              />
+            </div>
+
+          </div>
+          {/* Second */}
+          <div className='flex flex-col h-[456px] pl-[27px]'>
+            <div className='flex justify-start pt-[35px]'>
+              <img
+                src={Sli3}
+                className='w-[60px] h-[60px] '
+                alt=''
+                style={{ borderRadius: '19px' }}
+              />
+
+            </div>
+
+            <div className='flex justify-end pt-[45px]'>
+              <img
+                src={Sli4}
+                className='w-[144px] h-[143px]'
+                alt=''
+                style={{ borderRadius: '0px 79.509px 0px 0px' }}
+              />
+            </div>
+            <div className='flex justify-start pt-[45px]'>
+              <img
+                src={Sli5}
+                className='w-[103px] h-[102px]'
+                alt=''
+                style={{ borderRadius: ' 0px 0px 47.706px 0px' }}
+              />
+            </div>
+
+          </div>
+          {/* Third */}
+          <div className='flex flex-col h-[456px] pl-[27px]'>
+            <div className='flex justify-start pt-[35px] overflow-hidden'>
+              <img
+                src={Sli5}
+                className='w-[84px] h-[83px] absolute left-[430px]'
+                alt=''
+                style={{ borderRadius: ' 0px 39.755px 0px 0px' }}
+              />
+
+            </div>
+
+            <div className='flex justify-end pt-[45px]'>
+
+            </div>
+            <div className='flex justify-end pt-[45px] overflow-hidden'>
+              <img
+                src={Sli1}
+                className='w-[131px] h-[131px] absolute top-[480px] left-[490px]'
+                alt=''
+                style={{ borderRadius: ' 0px 0px 71.559px 0px' }}
+              />
+            </div>
+
+          </div>
         </div>
         <div className='w-[639px]'>
           <h1 className='text-[60px] md:text-[70px] leading-[60px] font-semibold'>
@@ -92,7 +177,7 @@ const About = () => {
         </div> */}
       </div>
       {/* About MSI */}
-      <div className=' absolute pl-[150px] pr-[150px] top-[410px] mt-20'>
+      <div className=' absolute pl-[150px] pr-[150px] top-[520px] mt-20'>
         <div className='flex items-center justify-center gap-10 flex-wrap md:my-[100px] pl-[78px] pr-[75px] bg-white h-[556px]'>
           <div className='w-[639px]'>
             <h1 className='text-[60px] md:text-[70px] leading-[60px] font-semibold flex flex-col gap-0'>
@@ -135,7 +220,7 @@ const About = () => {
         </div>
       </div>
       {/* Background Color */}
-      <div className='overflow-hidden pt-[50px]'>
+      <div className='overflow-hidden pt-[90px]'>
 
         <div className='w-full md:w-[1980px] h-[527px] bg-[#0B2743] overflow-hidden'>
 
