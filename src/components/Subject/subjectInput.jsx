@@ -103,14 +103,17 @@ export default function PositionInputForm() {
     <div className='gap-4'>
       <form onSubmit={handleSubmit(create)}>
         <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
-          <Input
-            type='text'
-            label='Title'
-            placeholder='Title'
-            variant={variant}
-            onChange={(e) => setTitle(e.target.value)}
-            labelPlacement='outside'
-          />
+          <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-2'>
+            <label className='text-sm font-semibold'>Subject Name</label>
+            <Input
+              type='text'
+
+              placeholder='Title'
+              variant={variant}
+              onChange={(e) => setTitle(e.target.value)}
+              labelPlacement='outside'
+            />
+          </div>
           <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-2'>
             <label
               className={`text-sm font-semibold ${errors.description && errors.description.type === "required"
@@ -118,11 +121,11 @@ export default function PositionInputForm() {
                 : ""
                 }`}
             >
-              Description
+              About Subject
             </label>
             <Input
               type='text'
-              placeholder='Description'
+              placeholder='About this subject'
               variant={variant}
               {...register("description", {
                 required: true,
@@ -312,16 +315,20 @@ export default function PositionInputForm() {
           />
         </div> */}
         <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
-          <Input
-            type='file'
-            label='Photo'
-            placeholder='$..'
-            variant={variant}
-            labelPlacement='outside'
-            onChange={handleImage}
-          />
           <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-            <label className='text-sm font-semibold'>Video Links</label>
+            <label className='text-sm font-semibold'>Subject Photo</label>
+            <Input
+              type='file'
+
+              placeholder='$..'
+              variant={variant}
+              labelPlacement='outside'
+              onChange={handleImage}
+            />
+          </div>
+
+          <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+            <label className='text-sm font-semibold'>Preview Video Links</label>
             <Input
               type='text'
               variant={variant}

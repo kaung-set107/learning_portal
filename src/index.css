@@ -52,3 +52,12 @@ background-color: #BC1F40;
   transform: scaleX(-1);
 
 }
+
+.gradient{
+
+background: linear-gradient(93deg, #BC1F40 0.86%, #1F4260 55%);
+background-clip: text;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+/* font-family:'Poppins'; */
+}

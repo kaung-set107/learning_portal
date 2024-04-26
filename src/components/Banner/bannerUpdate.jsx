@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import apiInstance from "../../util/api";
 import { Card, Input, Button, Textarea, Checkbox } from "@nextui-org/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { faCircleChevronLeft, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation } from "react-router-dom";
 import { FileUploader } from 'react-drag-drop-files'
 import Swal from "sweetalert2";
@@ -17,20 +17,47 @@ export default function Banner() {
     const [title, setTitle] = useState("");
     const [imageList, setImageList] = useState([])
     const [bannerList, setBannerList] = useState([])
-    // const Last = imageList.map((i) => {
-    //     return {
-    //         lastModified: i.lastModified,
-    //         lastModifiedDate: i.lastModifiedDate,
-    //         name: i.name,
-    //         size: i.size,
-    //         type: i.type,
-    //         webkitRelativePath: i.webkitRelativePath
-    //     }
-    // })
-    // console.log(Last, 'iii')
+    const [oriImgList, setOriImgList] = useState([])
+    const [totalImgList, setTotalImgList] = useState([])
+
+    const totalImg = [...bannerList, ...oriImgList.map((i) => {
+        return {
+            lastModified: i.lastModified,
+            lastModifiedDate: i.lastModifiedDate,
+            name: i.name,
+            size: i.size,
+            type: i.type,
+            webkitRelativePath: i.webkitRelativePath
+        }
+    })]
+
+    console.log(totalImg, 'tot')
+    console.log([...bannerList, ...oriImgList.map((i) => {
+        return {
+            lastModified: i.lastModified,
+            lastModifiedDate: i.lastModifiedDate,
+            name: i.name,
+            size: i.size,
+            type: i.type,
+            webkitRelativePath: i.webkitRelativePath
+        }
+    })], 'when image new')
 
     const [view, setView] = useState('')
     const [description, setDescription] = useState('')
+    const handleDelete = (index) => {
+
+        const filter = bannerList.filter((el, ind) => ind !== index)
+        setBannerList(filter)
+        console.log(filter, 'filter')
+    }
+
+    const handleDeleteNew = (index) => {
+
+        const filter = imageList.filter((el, ind) => ind !== index)
+        setImageList(filter)
+        console.log(filter, 'img')
+    }
     useEffect(() => {
         const getBanner = async () => {
             await apiInstance.get(`banners/${ID}`).then((res) => {
@@ -48,17 +75,33 @@ export default function Banner() {
     // console.log(
     //     listData.selectedFile?.split('base64,')[1]
     // )
-    const handleChange = e => {
+    const handleChange = event => {
+        console.log(event, 'file')
         let array = []
-        for (const item of e) {
+        for (const item of event) {
             array.push(item)
         }
-        setImageList(array)
+        setOriImgList(array)
+
+        if (event && event.length > 0) {
+            const urls = [];
+            for (let i = 0; i < event.length; i++) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    urls.push(e.target.result);
+                    if (urls.length === event.length) {
+                        setImageList((prevUrls) => [...prevUrls, ...urls]);
+                    }
+                };
+                reader.readAsDataURL(event[i]);
+            }
+        }
     }
     const create = () => {
+
         const formData = new FormData();
         // formData.append("bannerSize", bSize);
-        imageList.forEach(item => {
+        oriImgList.forEach(item => {
             formData.append('images', item) // Assuming 'item' is a File object
         })
 
@@ -66,7 +109,7 @@ export default function Banner() {
         formData.append("section", 'hello');
 
         apiInstance
-            .post("banners", formData, {
+            .put(`banners/${ID}`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
@@ -90,7 +133,7 @@ export default function Banner() {
     return (
         <div className='gap-3 '>
             <div className='rounded-none py-3 text-left'>
-                <Link to='/testimonial' className=''>
+                <Link to='/banner-list' className=''>
                     <FontAwesomeIcon icon={faCircleChevronLeft} size='2xl' />
                 </Link>
             </div>
@@ -106,7 +149,7 @@ export default function Banner() {
                         onChange={(e) => setTitle(e.target.value)}
                     />
                 </div>
-                <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+                {/* <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
                     <label className='text-sm font-semibold'>View</label>
                     <Input
                         type='text'
@@ -115,13 +158,13 @@ export default function Banner() {
                         value={view}
                         onChange={(e) => setView(e.target.value)}
                     />
-                </div>
+                </div> */}
 
 
 
             </div>
 
-            <div className='mx-8 flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
+            {/* <div className='mx-8 flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
                 <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 '>
                     <Textarea
                         className='text-sm font-semibold'
@@ -133,8 +176,8 @@ export default function Banner() {
                         labelPlacement='outside'
                     />
                 </div>
-            </div>
-            <div className='flex flex-col w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-2 mx-8 mt-5'>
+            </div> */}
+            <div className='flex flex-col w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-5 mx-8 mt-5'>
                 <label className='text-sm font-semibold'>Photo</label>
 
                 <FileUploader
@@ -145,17 +188,34 @@ export default function Banner() {
                     className='w-full'
                 />
 
-                <div className='flex flex-row gap-2'>
-                    {bannerList.map((i) => (
-                        <div className='flex flex-col gap-2'>
-                            <img src={getFile({ payload: i })} className='w-[90px] h-[90px] rounded-md' />
-                            <span className='text-[49px] font-extrabold text-[red] items-center justify-center'>-</span>
+                <div className='grid grid-cols-6 gap-10 justify-center'>
+                    {bannerList.map((i, ind) => (
+                        <div className='flex flex-col gap-0'>
+                            <img src={getFile({ payload: i })} className='w-[150px] h-[150px] rounded-md' />
+                            <div className='flex justify-center overflow-hidden'>
+                                <span className='text-[29px] font-extrabold text-[red] items-center justify-center w-[30px] cursor-pointer' onClick={() => handleDelete(ind)}><FontAwesomeIcon icon={faCircleXmark} /></span>
+                            </div>
+
+
+
                         </div>
                     ))}
+
+                    {imageList.map((i, ind) => (
+                        <div className='flex flex-col gap-0'>
+                            <img src={i} className='w-[150px] h-[150px] rounded-md' />
+                            <div className='flex justify-center'>
+                                <span className='text-[29px] font-extrabold text-[red] items-center justify-center w-[30px] cursor-pointer' onClick={() => handleDeleteNew(ind)}><FontAwesomeIcon icon={faCircleXmark} /></span>
+
+                            </div>
+
+                        </div>
+                    ))}
+
                 </div>
             </div>
 
-            <div className='flex justify-center gap-10 py-4'>
+            <div className='flex justify-center gap-10 py-10 pt-20'>
                 <Button color='danger'>
                     <Link to='/category'>Cancel</Link>
                 </Button>

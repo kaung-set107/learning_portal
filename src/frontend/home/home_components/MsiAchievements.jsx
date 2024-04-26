@@ -4,6 +4,7 @@ import ms2 from "../../../assets/img/msic2.png";
 import ms3 from "../../../assets/img/msic3.png";
 import ms4 from "../../../assets/img/msic4.png";
 import ms5 from "../../../assets/img/msic5.png";
+import Wave from "../../../assets/img/wave.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShieldHalved, faTrophy } from "@fortawesome/free-solid-svg-icons";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -93,41 +94,78 @@ export const MsiAchievements = () => {
   ];
 
   return (
-    <div className="relative overflow-hidden pb-10 lg:pb-36 before:w-[15%] before:aspect-square before:rounded-full before:bg-[#26496a] before:content-[''] before:absolute before:top-0 before:left-0 before:-translate-x-2/4 before:-translate-y-2/4 ">
-      <h2 className='text-end text-[#BC1F40] font-semibold text-4xl mr-9 mb-9 mt-12'>
+    <div className=" pb-10 lg:pb-36 before:w-[15%] before:aspect-square before:rounded-full before:content-[''] before:absolute before:top-0 before:left-0 before:-translate-x-2/4 before:-translate-y-2/4 " >
+      <h2 className='text-center text-[#0B2743] font-semibold text-[40px] font-[Poppins] mr-9 mb-9 mt-12'>
         Our Achievements
       </h2>
-      <VerticalTimeline>
-        {images.map((ac, index) => (
-          <>
-            <VerticalTimelineElement
-              key={index}
-              className='vertical-timeline-element--work'
-              contentStyle={{ background: "#224362", color: "#fff" }}
-              contentArrowStyle={{ borderRight: "7px solid  #224362" }}
-              date='2011 - present'
-              iconStyle={{ background: "#224362", color: "#fff" }}
-              icon={<FontAwesomeIcon icon={faTrophy} />}
-            >
-              <div className='flex flex-col lg:flex-row items-center justify-around px-2'>
-                <Image
-                  src={ac.img}
-                  alt='awards'
-                  style={{ width: "100px", height: "80px" }}
-                />
-                <div className='flex justify-end w-3/4 lg:w-1/3 flex-col'>
-                  <span className='font-[semibold] pt-10'>
-                    <p className='text-xl text-left'>{ac.ac1.title}</p>
-                    <p className='text-lg text-[#ffffff]  text-left'>
-                      {ac.ac1.desc}
-                    </p>
-                  </span>
-                </div>
-              </div>
-            </VerticalTimelineElement>
-          </>
-        ))}
-      </VerticalTimeline>
+      <Carousel
+        interval={3000}
+        showIndicators={false}
+        autoPlay={true}
+        infiniteLoop={true}
+        transitionTime={1000}
+        showStatus={false}
+        showThumbs={false}
+      >
+
+        <div
+          className=' grid grid-cols-4 md:py-10 px-5'
+        >
+          <div className='p-5'>
+            <Image
+              src={ms1}
+              style={{ width: "370px", height: "300px" }}
+              className='object-cover rounded-xl'
+              alt='testimonal participant'
+            />
+          </div>
+          <div className='p-5'>
+            <Image
+              src={ms2}
+              style={{ width: "370px", height: "300px" }}
+              className='object-cover rounded-xl'
+              alt='testimonal participant'
+            />
+          </div>
+
+          <div className='p-5'>
+            <Image
+              src={ms3}
+              style={{ width: "370px", height: "300px" }}
+              className='object-cover rounded-xl'
+              alt='testimonal participant'
+            />
+          </div>
+          <div className='p-5'>
+            <Image
+              src={ms4}
+              style={{ width: "370px", height: "300px" }}
+              className='object-cover rounded-xl'
+              alt='testimonal participant'
+            />
+          </div>
+
+          {/* <div className='p-5 hidden md:block'>
+              <Image
+                src={st.img2}
+                style={{ width: "370px", height: "300px" }}
+                className='object-cover rounded-xl'
+                alt='testimonal participant'
+              />
+            </div> */}
+        </div>
+        <div className=' grid grid-cols-4 md:py-10 px-5'>
+          <div className='p-5'>
+            <Image
+              src={ms5}
+              style={{ width: "370px", height: "300px" }}
+              className='object-cover rounded-xl'
+              alt='testimonal participant'
+            />
+          </div>
+        </div>
+
+      </Carousel>
     </div>
   );
 };
