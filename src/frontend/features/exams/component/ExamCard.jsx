@@ -41,19 +41,23 @@ const ExamCard = (props) => {
           onClick={() => goToResult(exam)}
           title="Results"
         /> */}
-        {!examData.quiz && (
-          <CustomButton
-            size="sm"
-            onClick={() => quizCreate(examData)}
-            title="Quiz Create"
-          />
-        )}
-        {examData.quiz && (
-          <CustomButton
-            size="sm"
-            onClick={() => quizUpdate(examData)}
-            title="Quiz Update"
-          />
+        {examData.examType === "inapp" && (
+          <>
+            {!examData.quiz && (
+              <CustomButton
+                size="sm"
+                onClick={() => quizCreate(examData)}
+                title="Quiz Create"
+              />
+            )}
+            {examData.quiz && (
+              <CustomButton
+                size="sm"
+                onClick={() => quizUpdate(examData)}
+                title="Quiz Update"
+              />
+            )}
+          </>
         )}
         <ExamUpdateModal
           subjectId={subjectId}

@@ -1,3 +1,5 @@
+import Swal from "sweetalert2";
+
 // eslint-disable-next-line no-unused-vars
 export const getFile = ({ resource, fileType, payload }) => {
   let prefix = payload.destination.replace("public/assets/", "");
@@ -66,3 +68,17 @@ export const getFormData = (src) => {
 
   return formData
 };
+
+export const showConfirmWithInput = async (payload) => {
+	return Swal.fire({
+    title: payload.title ?? "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!"
+  }).then((result) => {
+    return result.isConfirmed
+  });
+}

@@ -20,7 +20,7 @@ const EntranceTestUpdateForm = (props) => {
   const [formData, setFormData] = useState({
     subject: id,
     _id: entranceTestData._id,
-    title: "testing",
+    title: "",
     description: "",
     entranceTestDate: "",
   });
@@ -43,7 +43,7 @@ const EntranceTestUpdateForm = (props) => {
     // return;
     try {
       setIsSubmitting(true);
-      let res = await entranceTestsApi.create(payload);
+      let res = await entranceTestsApi.update(payload);
       await successCallback();
       showSuccess({ text: res.message, type: "noti-box" });
     } catch (error) {

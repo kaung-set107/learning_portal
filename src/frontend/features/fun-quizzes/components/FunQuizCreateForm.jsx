@@ -3,12 +3,11 @@ import { Input, Card, CardBody } from "@nextui-org/react";
 import { useState } from "react";
 import CustomButton from "../../../components/general/CustomButton";
 import SubHeading from "../../../components/general/typography/SubHeading";
-import { entranceTestsApi } from "../api";
+import { funQuizzesApi } from "../api";
 import { showError, showSuccess } from "../../../../util/noti";
-import { dateForInput } from "../../../../util/Util";
 import { useParams } from "react-router";
 
-const EntranceTestCreateForm = (props) => {
+const FunQuizCreateForm = (props) => {
   const { successCallback } = props;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -19,17 +18,13 @@ const EntranceTestCreateForm = (props) => {
 
   const [formData, setFormData] = useState({
     subject: id,
-    title: "",
+    title: "testing",
     description: "",
-    entranceTestDate: "",
   });
 
   const preparePayload = () => {
     let payload = {
-      ...formData,
-      entranceTestDate: formData.entranceTestDate
-        ? dateForInput(formData.entranceTestDate)
-        : undefined,
+      ...formData
     };
 
     return payload;
@@ -42,7 +37,7 @@ const EntranceTestCreateForm = (props) => {
     // return;
     try {
       setIsSubmitting(true);
-      let res = await entranceTestsApi.create(payload);
+      let res = await funQuizzesApi.create(payload);
       await successCallback();
       showSuccess({ text: res.message, type: "noti-box" });
     } catch (error) {
@@ -57,7 +52,7 @@ const EntranceTestCreateForm = (props) => {
     <div>
       <Card>
         <CardBody>
-          <SubHeading title="Entrance Test Create Form" />
+          <SubHeading title="Fun Quiz Create Form" />
           <form>
             <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
               <Input
@@ -89,23 +84,6 @@ const EntranceTestCreateForm = (props) => {
               />
             </div>
 
-            <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
-              <Input
-                type="date"
-                label="EntranceTestDate"
-                placeholder="entranceTestDate"
-                variant={variant}
-                value={formData.entranceTestDate}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    entranceTestDate: e.target.value,
-                  }))
-                }
-                labelPlacement="outside"
-              />
-            </div>
-
             <div className="flex justify-center gap-5 mt-8">
               <CustomButton
                 color="primary"
@@ -121,4 +99,4 @@ const EntranceTestCreateForm = (props) => {
   );
 };
 
-export default EntranceTestCreateForm;
+export default FunQuizCreateForm;

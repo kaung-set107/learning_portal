@@ -172,6 +172,7 @@ export default function ExamCreateModal(props) {
                       <Input
                         id="startTime"
                         type="time"
+                        value={formData.startTime}
                         onChange={(e) =>
                           setFormData((prev) => ({
                             ...prev,
@@ -190,6 +191,7 @@ export default function ExamCreateModal(props) {
                       <Input
                         id="endTime"
                         type="time"
+                        value={formData.endTime}
                         onChange={(e) =>
                           setFormData((prev) => ({
                             ...prev,

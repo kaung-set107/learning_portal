@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { IoChevronBack } from "react-icons/io5";
 import Loading from "./Loading";
+import { showConfirmWithInput } from "../../../util";
 
 /* eslint-disable react/prop-types */
 const CustomButton = (props) => {
@@ -55,7 +56,13 @@ const CustomButton = (props) => {
         return title
     }
 
-    const handleOnClick = () => {
+    const handleOnClick = async () => {
+        if(type === 'delete') {
+            const res = await showConfirmWithInput({title: 'Are you sure to delete?'})
+            console.log(res)
+            if(!res) return
+        }
+
         if(onClick) {
             onClick()
         } else if(type === 'back') {

@@ -29,7 +29,7 @@ const QuizCreateForm = (props) => {
   ];
 
   const [formData, setFormData] = useState({
-    title: "testing",
+    title: "",
     description: "",
     questions: [],
     numOfQuestions: 0,

@@ -70,7 +70,7 @@ export default function ExamUpdateModal(props) {
         duration: +formData.duration,
         creditMark: +formData.creditMark,
         passMark: +formData.passMark,
-        examType: formData.examType.currentKey,
+        examType: formData.examType.currentKey ?? formData.examType[0],
       };
       if (formData.newQuestion) {
         payload.question = formData.newQuestion;
