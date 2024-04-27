@@ -111,7 +111,7 @@ export default function App() {
                 className={
                   location.pathname === "/"
                     ? "font-semibold text-[18px] xl:text-[16px] 2xl:text-[20px]"
-                    : "text-[16px] md:text-[18px] lg:text-[22px]"
+                    : "text-[18px] xl:text-[16px] 2xl:text-[20px]"
                 }
               >
                 Home

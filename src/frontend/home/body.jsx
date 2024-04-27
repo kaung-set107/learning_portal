@@ -130,7 +130,7 @@ const Body = () => {
       <MSINav />
 
       {/* Banner */}
-      <div className='h-[60vh] mb-[100px]'>
+      <div className='h-[60vh] mb-[100px] container'>
 
         <Carousel
 
@@ -331,7 +331,7 @@ const Body = () => {
           </div>
 
           <Link href='/home-course' className='flex justify-center py-5 pt-20 md:pt-24 lg:pt-36 sm:pt-0 '>
-            <span className=' text-[18px] sm:text-[20px] py-2 text-secondary hover:text-danger font-semibold text-center cursor-pointer border-1 border-secondary-300 w-[130px] rounded-lg hover:border-danger-400'>
+            <span className=' text-[18px] sm:text-[20px] py-2 text-[#1F4164] hover:text-danger font-semibold text-center cursor-pointer border-1 border-[#1F4164] w-[130px] rounded-lg hover:border-danger-400'>
               See All
             </span>
           </Link>

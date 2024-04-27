@@ -23,7 +23,7 @@ const Footer = () => {
               <FontAwesomeIcon icon={faLocationDot} size='lg' />{" "}
               <p>
                 Room 303,Third Floor, Khattar Street, Grand Khattar Residence,
-                Sanchaung Township, Yanogn, Myanmar.
+                Sanchaung Township, Yangon, Myanmar.
               </p>
             </div>
             <div className='pb-3 flex gap-3'>
