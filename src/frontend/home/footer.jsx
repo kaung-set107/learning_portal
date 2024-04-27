@@ -79,10 +79,10 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div className='text-md flex items-center flex-wrap justify-between p-5 border-t-[0.5px] border-white'>
-          <h1>Powered by NEOMOCA.</h1>
+        <div className='text-md flex items-end flex-wrap justify-end p-5 border-t-[0.5px] border-white'>
+          {/* <h1>Powered by NEOMOCA.</h1> */}
           <h1 className='my-5'>
-            © 2022 MSI Academy Education Centre. All right reserved.
+            © 2020 MSI Academy Education Centre. All rights reserved.
           </h1>
         </div>
       </div>

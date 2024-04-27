@@ -40,7 +40,10 @@ export default function Banner() {
     const create = () => {
         const formData = new FormData();
         // formData.append("bannerSize", bSize);
-        formData.append("images", Last);
+        imageList.forEach(item => {
+            formData.append('images', item) // Assuming 'item' is a File object
+        })
+
         formData.append("view", view);
         formData.append("section", 'hello');
 

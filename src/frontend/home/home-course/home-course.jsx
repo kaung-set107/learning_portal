@@ -23,6 +23,7 @@ const Body = () => {
   };
   const [courseList, setCourseList] = useState([]);
   const [catList, setCatList] = useState([]);
+
   const [events, setEvents] = useState([
     {
       _id: "1",

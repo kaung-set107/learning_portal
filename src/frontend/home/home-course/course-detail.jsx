@@ -17,16 +17,19 @@ import TV from "../../../assets/img/tv.svg";
 import Certi from "../../../assets/img/certi.svg";
 import Earth from "../../../assets/img/earth.svg";
 import apiInstance from "../../../util/api";
+import Loading from '../../../assets/img/finalloading.gif'
 import { useNavigate, useLocation } from "react-router-dom";
 // import SubDetail from "./SubjectDetail/subjectDetail";
 import MSINav from "../msinav";
 // import Head from "../head";
 export default function CourseDetail(props) {
+  const variant = 'bordered'
   const navigate = useNavigate();
   const location = useLocation();
   const courseData = location.state.data;
   const [course, setCourse] = useState([]);
   const [value, setValue] = useState("");
+  const [showVideoList, setShowVideoList] = useState([])
   const handleSubjectDetail = (data, value) => {
     setValue(value);
     navigate("/home-sub-detail", {
@@ -42,6 +45,7 @@ export default function CourseDetail(props) {
         // console.log(res.data.data.subjects, "c detail");
         setCourse(res.data.data);
         setSubjectList(res.data.data.subjects);
+        setShowVideoList(res.data.data.previewVideo ? JSON.parse(res.data.data.previewVideo) : '');
       });
     };
     const getSubjects = async () => {
@@ -68,13 +72,42 @@ export default function CourseDetail(props) {
           <div className='flex flex-col gap-5 sm:gap-10 md:gap-20 duration-100'>
             {/* Video Section */}
             <div className='flex flex-col gap-10 md:gap-56 pt-5 md:pt-20 md:flex-row'>
-              <div className='flex w-full gap-2 md:w-[900px] '>
-                <iframe
-                  src='https://www.youtube.com/embed/AJhplp3dct8'
-                  allowfullscreen=''
-                  className='border w-[375px] h-[136px] md:w-[911px] md:h-[306px]'
-                ></iframe>
-              </div>
+              {!showVideoList[0] ? (
+                <div className='flex justify-center pt-[40px] w-full gap-2 md:w-[900px]'>
+                  <Image src={Loading} className='transform-x-[-1] w-[350px] h-[250px]' />
+
+                </div>
+              ) : (
+
+                showVideoList ?
+                  (showVideoList.map((video) => (
+                    <div className='flex w-full gap-2 md:w-[900px] ' key={video}>
+                      <iframe
+                        src={
+                          "https://www.youtube.com/embed/" +
+                          video.links?.split("/")[3]
+                        }
+                        //   title={assignList.name}
+                        allowFullScreen
+                        className='border w-[375px] h-[136px] md:w-[911px] md:h-[306px]'
+                        allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                      // style={{ width:'1400px',height:'500px' }}
+                      ></iframe>
+                    </div>
+                  ))) : (
+                    <div className='flex w-full gap-2 md:w-[900px] ' >
+                      <iframe
+                        src='https://www.youtube.com/embed/AJhplp3dct8'
+                        //   title={assignList.name}
+                        allowFullScreen
+                        className='border w-[375px] h-[136px] md:w-[911px] md:h-[306px]'
+                        allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                      // style={{ width:'1400px',height:'500px' }}
+                      ></iframe>
+                    </div>
+                  ))}
+
+
               <div className=''>
                 <div
                   style={{
@@ -188,7 +221,7 @@ export default function CourseDetail(props) {
                           height: "463px",
                           padding: "14px 13px",
                         }}
-                        className='w-full sm:min-w:[490px]  flex flex-col gap-3 sm:hover:-translate-y-2 sm:hover:rotate-1 sm:hover:scale-110 hover:bg-indigo-500 duration-500'
+                        className='w-full sm:min-w:[490px]  flex flex-col gap-3 sm:hover:-translate-y-2  sm:hover:scale-110 hover:bg-indigo-500 duration-500'
                       >
                         <Image
                           radius='sm'
@@ -216,9 +249,9 @@ export default function CourseDetail(props) {
                             fontWeight: "400",
                             color: "#FFF",
                           }}
-                          className='min-w:[464px] min-h:[auto]'
+                          className='min-w:[464px] h-[100px]'
                         >
-                          {e.description}
+                          {e.description.substring(0, 80)}
                         </p>
                         <div
                           // style={{ padding: "70px 28px 0px 120px" }}
@@ -226,7 +259,7 @@ export default function CourseDetail(props) {
                         >
                           <Button
                             className='bg-red-500 hover:bg-red-700 text-[#fff] text-[12px] sm:text-[16px] font-normal sm:font-medium rounded-[6px] sm:rounded-[12px] w-[167px] h-[36px] sm:w-[227px] sm:h-[48px]'
-                            onClick={() => handleSubjectDetail(e, "sub-detail")}
+                            onClick={() => { handleSubjectDetail(e, "sub-detail"), window.scroll(0, 0) }}
                           >
                             See More
                           </Button>
@@ -266,7 +299,7 @@ export default function CourseDetail(props) {
               {/* Subject Section End */}
 
               {/* Teacher Section End */}
-              <div className='mt-20'>
+              {/* <div className='mt-20'>
                 <span style={{ fontSize: "40px", fontWeight: "600" }}>
                   Teachers
                 </span>
@@ -278,8 +311,7 @@ export default function CourseDetail(props) {
                           border: "2px solid red",
                           borderRadius: "14px",
                           boxShadow: "0px 4px 25px 0px rgba(0, 0, 0, 0.10)",
-                          // width: "490px",
-                          // height: "463px",
+                     
                           padding: "14px 13px",
                           backgroundColor: "white",
                         }}
@@ -320,8 +352,7 @@ export default function CourseDetail(props) {
                             fontSize: "18px",
                             fontWeight: "400",
                             color: "#ACACAC",
-                            // width: "464px",
-                            // height: "auto",
+                      
                           }}
                           className='min-w:[464px] min-h:[auto]'
                         >
@@ -342,35 +373,9 @@ export default function CourseDetail(props) {
                       </div>
                     </>
                   ))}
-                  {/* {subjectList?.length > 3 && (
-            <div className='py-10'>
-              <button
-                style={{
-                  padding: "16px",
-                  width: "150px",
-                  height: "43px",
-                  alignItems: "center",
-                  border: "1px solid #053CFF",
-                  borderRadius: "8px",
-                }}
-                className='flex justify-start'
-              >
-                <span
-                  style={{
-                    color: "#053CFF",
-                    fontFamily: "Inter",
-                    fontSize: "16px",
-                    fontWeight: "500px",
-                  }}
-                >
-                  {console.log(subjectList?.length - 3, "sub")}
-                  Show {subjectList?.length - 3} More
-                </span>
-              </button>
-            </div>
-          )} */}
+ 
                 </div>
-              </div>
+              </div> */}
               {/* Teacher Section End */}
             </div>
 
@@ -610,7 +615,7 @@ export default function CourseDetail(props) {
             {/* Certificate Section Start */}
             <div
 
-              className='flex justify-center mt-20 bg-[#215887] h-[629px] p-[32px 0px] mx-2'
+              className='flex justify-center mt-20 bg-[#215887] h-[429px] p-[32px 0px] mx-2'
             >
               {/* Web View */}
               <div
@@ -720,7 +725,7 @@ export default function CourseDetail(props) {
             <div
               style={{
                 width: "455px",
-                height: "327px",
+                height: "325px",
                 backgroundColor: "#215887",
                 padding: "64px 0px 89px 40px",
                 position: "absolute",
@@ -760,12 +765,12 @@ export default function CourseDetail(props) {
             </div>
             <div
               style={{
-                width: "382px",
-                height: "152px",
+                width: "390px",
+                height: "168px",
                 backgroundColor: "#FFF",
 
                 position: "absolute",
-                left: "293px",
+                left: "299px",
                 marginTop: "8rem",
               }}
               className='-rotate-17'
@@ -779,12 +784,12 @@ export default function CourseDetail(props) {
               className='flex flex-col gap-10'
             >
               <div className='flex gap-2'>
-                <Input type='text' placeholder='First Name' />
-                <Input type='text' placeholder='Last Name' />
+                <Input type='text' variant={variant} placeholder='First Name' />
+                <Input type='text' variant={variant} placeholder='Last Name' />
               </div>
               <div className='flex gap-2'>
                 {" "}
-                <Input type='phone' placeholder='Phone Number' />
+                <Input type='phone' variant={variant} placeholder='Phone Number' />
               </div>
               <div>
                 <Button
@@ -882,7 +887,7 @@ export default function CourseDetail(props) {
 
       </div >
 
-      <div className='pt-[100px] mx-2'>
+      <div className='pt-[10px] mx-2'>
         <Footer />
       </div>
     </>

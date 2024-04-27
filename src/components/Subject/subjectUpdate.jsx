@@ -161,8 +161,8 @@ export default function SubjectInputForm() {
           <div className="block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
             <Input
               type="text"
-              label="Description"
-              placeholder="description"
+              label="About Subject"
+              placeholder="About this subject"
               variant={variant}
               value={desc}
               onChange={(e) => setDesc(e.target.value)}

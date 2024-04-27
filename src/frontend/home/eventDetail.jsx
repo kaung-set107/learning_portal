@@ -95,9 +95,9 @@ export default function EventDetail() {
                             </div>
                         </div>
 
-                        <div className='bg-[#fff] w-[470px] h-[450px]  rounded-[100%] -right-[140px]  -top-[40px] absolute '>
+                        <div className=' w-[440px] h-[440px] absolute -right-[10px] top-0' style={{ borderRadius: '157.68px 0px', backgroundColor: 'white' }}>
 
-                            <Image src={`data:image/jpeg;base64,${eventList?.image}`} className='rounded-[100%] w-[416px] h-[416px] top-[14px] bottom-[10px] -right-[30px]' />
+                            <Image src={`data:image/jpeg;base64,${eventList?.image}`} className=' w-[416px] h-[416px] left-[13px] top-[10px] bottom-[10px]' style={{ borderRadius: '157.68px 0px' }} />
 
 
                         </div>

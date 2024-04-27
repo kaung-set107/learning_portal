@@ -146,16 +146,17 @@ export default function App() {
             </span>
             <span className='hover:-translate-y-1 hover:scale-110 duration-500'>
               <Link
-                to='/about'
+                to='/testimonial-page'
                 className={
-                  location.pathname === "/about"
+                  location.pathname === '/testimonial-page' || location.pathname === `/testimonial-page/${ID}`
                     ? "font-semibold text-[18px] xl:text-[16px] 2xl:text-[20px]"
-                    : "text-[18px] xl:text-[16px] 2xl:text-[20px]"
+                    : "text-[18px] xl:text-[16px] 2xl:text-[20px] "
                 }
               >
-                About
+                Testimonial
               </Link>
             </span>
+
             <span className='hover:-translate-y-1 hover:scale-110 duration-500'>
               <Link
                 to='/booking'
@@ -166,6 +167,18 @@ export default function App() {
                 }
               >
                 Booking
+              </Link>
+            </span>
+            <span className='hover:-translate-y-1 hover:scale-110 duration-500'>
+              <Link
+                to='/about'
+                className={
+                  location.pathname === "/about"
+                    ? "font-semibold text-[18px] xl:text-[16px] 2xl:text-[20px]"
+                    : "text-[18px] xl:text-[16px] 2xl:text-[20px]"
+                }
+              >
+                About Us
               </Link>
             </span>
             <span

@@ -13,6 +13,7 @@ import ResultPage from './quizResultDetail'
 // import Swal from 'sweetalert2';
 import ResultUFO from '../../../assets/img/ufo.gif'
 import Loading from '../../../assets/img/finalloading.gif'
+import { getFile } from "../../../util";
 // import Result from './result'
 const QuizPage = ({ QuizID, enrollID, batchID }) => {
   const a = ['a', 'b']
@@ -86,7 +87,7 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
 
     const getQuiz = async () => {
       await apiInstance.get("quizzes/" + QuizID).then((res) => {
-        // console.log(res.data.data, 'quizList')
+        console.log(res.data.data, 'quizList')
         if (
           res.data.data !==
           undefined
@@ -234,7 +235,7 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
           question: i.question,
           type: i.type,
           mark: i.mark,
-
+          images: i.images,
           options: i.options,
           answerType: i.answerType,
           correctAnswer: i.correctAnswer,
@@ -548,7 +549,9 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
                         <span className='underline'>(Choose <b className='text-[green]'>{quizList.questions[counter].correctAnswer.length}</b> answer!)</span>
                       </div>
                       <div>
-                        <img src={quizList.questions[counter].questionPic} />
+                        {/* {console.log(quizList.questions[counter]?.images[0], 'ima')} */}
+                        {quizList.questions[counter]?.images ? (<img src={getFile({ payload: quizList.questions[counter]?.images[0] })} className='w-[850px] h-[650px]' />) : ('')}
+
                       </div>
                       <div className='mt-5'>
 

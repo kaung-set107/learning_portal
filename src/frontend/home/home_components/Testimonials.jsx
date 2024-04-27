@@ -4,8 +4,11 @@ import "react-multi-carousel/lib/styles.css";
 import st1 from "../../../assets/img/st1.jpeg";
 import st2 from "../../../assets/img/st2.jpeg";
 import st3 from "../../../assets/img/st3.jpg";
-import { Image } from "@nextui-org/react";
-
+import { Image, Link } from "@nextui-org/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCheck, faArrowUpRightFromSquare, faCircleArrowLeft, faCircleArrowRight, faChevronLeft, faChevronRight
+} from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect, useState } from 'react'
 import Swiper from "react-id-swiper";
 import apiInstance from "../../../util/api";
@@ -140,6 +143,13 @@ export const Testimonials = () => {
 
 
       </Carousel>
+      <div className='flex justify-center mt-20 '>
+        <Link href='/testimonial-page'>
+          <button className='text-[#fefeff] text-[16px] hover:text-primary font-semibold border-1 border-white-700 p-2 rounded-lg sm:hover:-translate-y-1 sm:hover:scale:110 duration-500'>
+            See All Testimonials &nbsp; <FontAwesomeIcon icon={faArrowUpRightFromSquare} className='text-[blue]' />
+          </button>
+        </Link>
+      </div>
     </div>
   );
 };

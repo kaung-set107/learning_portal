@@ -10,7 +10,7 @@ import WebFont from "webfontloader";
 
 WebFont.load({
   google: {
-    families: ["Roboto Mono", "Nunito Sans"],
+    families: ["Roboto Mono", "Nunito Sans", 'Poppins'],
   },
 });
 

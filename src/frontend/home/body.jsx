@@ -105,8 +105,8 @@ const Body = () => {
     };
     const getBanner = async () => {
       await apiInstance.get(`banners`).then((res) => {
-        console.log(res.data.data, "ev res");
-        setBannerList(res.data.data);
+        console.log(res.data.data[0].images, "ev res");
+        setBannerList(res.data.data[0].images);
         // const count = res.data.data.filter((el) => el.subjects.length);
         // console.log(count, "count");
       });
@@ -160,21 +160,25 @@ const Body = () => {
           responsive={responsive}
           className='p-0 container bg-transparent'
         >
+          {bannerList.map((i) => (
+            <>
+              <img src={getFile({ payload: i })} className='h-[70vh] w-[160vh] container' />
+            </>
+          ))}
 
-          <img src={Sli1} className='h-[70vh] w-[160vh] container' />
 
 
           {/* <div style={{
             backgroundImage: `url(${Sli2})`, backgroundRepeat: 'no-repeat', backgroundSize: 'contain'
           }} className='h-[50vh] sm:h-[70vh]  container' ></div> */}
-
+          {/* 
           <img src={Sli2} className='h-[70vh] w-[160vh] container ' />
 
 
           <img src={Sli3} className='h-[70vh] w-[160vh] container' />
           <img src={Sli4} className='h-[70vh] w-[160vh] container' />
           <img src={Sli5} className='h-[70vh] w-[160vh] container' />
-          <img src={Sli6} className='h-[70vh] w-[160vh] container' />
+          <img src={Sli6} className='h-[70vh] w-[160vh] container' /> */}
 
 
 
@@ -267,7 +271,7 @@ const Body = () => {
           <div className='grid grid-cols-1 sm:grid-cols-4 gap-2 md:gap-5 lg:gap-10 sm:gap-0 items-center justify-between md:flex-row sm:py-10 2xl:py-0'>
             {courseList.slice(0, 4).map((e) => (
               <div
-                onClick={() => handleRoute(e)}
+                onClick={() => { handleRoute(e), window.scroll(0, 0) }}
 
                 className='w-full h-[420px]'
               >
@@ -297,15 +301,15 @@ const Body = () => {
                     </div>
                     {/* card footer */}
                     <div
-                      className='py-5 flex gap-2 w-[332px]'
+                      className='py-5 flex justify-center gap-2 w-[332px]'
 
                     >
-                      <div className='h-[24px] w-[150px]  text-center bg-[#ECEFFF] rounded-2xl text-[14px] font-medium'>
+                      <div className='h-[24px] w-full  text-start bg-[#ECEFFF] rounded-2xl text-[14px] font-medium'>
                         <span>Duration -</span>
                         <span style={{ color: "#262FD9" }}>{e.durationValue ? e.durationValue : 0} {e.durationType ? e.durationType : 'months'}</span>
                       </div>
 
-                      <div className='h-[24px] w-[134px]  text-center bg-[#FFF3F6] rounded-2xl text-[14px] font-medium'>
+                      <div className='h-[24px] w-full  text-start bg-[#FFF3F6] rounded-2xl text-[14px] font-medium'>
                         Price - <span style={{ color: "#262FD9" }}>{e.fee ? e.fee : 0} MMK</span>
                       </div>
 
@@ -322,7 +326,7 @@ const Body = () => {
             </span>
           </Link>
         </div >
-      </ScrollAnimation>
+      </ScrollAnimation >
       {/* Event */}
 
       < div style={{ background: "var(--blue-pale, #F4FAFF)", height: '1020px' }} className='flex flex-col gap-10 sm:gap-24 relative container' >
@@ -331,15 +335,15 @@ const Body = () => {
           className="absolute bottom-0 left-0 z-0 w-[150px] md:w-[150px]"
           alt=""
         /> */}
-        <div className='flex flex-col justify-center items-center gap-4 pt-[44px]'>
+        < div className='flex flex-col justify-center items-center gap-4 pt-[44px]' >
           <span className='text-[#1F4164] text-[30px] sm:text-[48px] font-semibold w-full  sm:w-[679px] h-[55px] text-center'>Our Events</span>
           <p className='text-[#1F4164] text-[16px] sm:text-[18px] font-normal w-full  sm:w-[639px] h-[54px] text-center'>
             Clarity gives you the blocks & components you need to create a truly professional website, landing page or admin panel for your SaaS.
           </p>
-        </div>
+        </div >
 
         {/* Web */}
-        <div className='hidden sm:grid grid-cols-4 items-center justify-around flex-wrap pl-[130px] pr-[33px]'>
+        < div className='hidden sm:grid grid-cols-4 items-center justify-around flex-wrap pl-[130px] pr-[33px]' >
           {eventList?.map((b, index) => (
             <Link href={`/events/${b._id}`} key={index}>
               <div className='relative cursor-pointer hover:translate-y-1 hover:scale-105 duration-500'>
@@ -370,38 +374,40 @@ const Body = () => {
 
 
           )}
-        </div>
+        </div >
         {/* Mobile */}
-        <div className='grid sm:hidden grid-cols-1 items-center justify-around flex-wrap pl-[40px] pr-[33px]'>
-          {eventList?.slice(0, 1).map((b, index) => (
-            <Link href={`/events/${b._id}`} key={index}>
-              <div className='relative cursor-pointer'>
-                <Image
-                  src={`data:image/jpeg;base64,${b?.image}`}
-                  className=' w-[300px] h-[411px]  rounded-[24px]'
-                // width={620}
-                // height={354}
-                />
-                <div
-                  className='h-[200px] flex flex-col items-center justify-center absolute bottom-0 w-[300px] p-2 z-50 rounded-[20px]'
-                  style={{
-                    background:
-                      "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 125.65%)",
-                  }}
-                >
-                  <h3 className=' text-[20px]  text-white font-semibold '>
-                    {b.title}
-                  </h3>
-                  <p className='font-[light] text-[15px] text-white'>
-                    {b.startDate?.split('T')[0]}
-                  </p>
+        < div className='grid sm:hidden grid-cols-1 items-center justify-around flex-wrap pl-[40px] pr-[33px]' >
+          {
+            eventList?.slice(0, 1).map((b, index) => (
+              <Link href={`/events/${b._id}`} key={index}>
+                <div className='relative cursor-pointer'>
+                  <Image
+                    src={`data:image/jpeg;base64,${b?.image}`}
+                    className=' w-[300px] h-[411px]  rounded-[24px]'
+                  // width={620}
+                  // height={354}
+                  />
+                  <div
+                    className='h-[200px] flex flex-col items-center justify-center absolute bottom-0 w-[300px] p-2 z-50 rounded-[20px]'
+                    style={{
+                      background:
+                        "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 125.65%)",
+                    }}
+                  >
+                    <h3 className=' text-[20px]  text-white font-semibold '>
+                      {b.title}
+                    </h3>
+                    <p className='font-[light] text-[15px] text-white'>
+                      {b.startDate?.split('T')[0]}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </Link>
-          )
+              </Link>
+            )
 
-          )}
-        </div>
+            )
+          }
+        </div >
         <div className='flex justify-center '>
           <Link href='/events'>
             <button className='text-[#18181B] text-[16px] hover:text-primary font-semibold border-1 border-blue-700 p-2 rounded-lg sm:hover:-translate-y-1 sm:hover:scale:110 duration-500'>
