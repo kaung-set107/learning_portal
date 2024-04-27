@@ -118,7 +118,7 @@ export const Testimonials = () => {
         {testimonialList.map((st, index) => (
           <div
             key={index}
-            className='flex gap-2 justify-center sm:p-0'
+            className='flex gap-2 justify-center sm:p-5'
           >
             <div className=' w-[300px] h-[600px] sm:h-[500px] md:w-[330px] md:h-[537px] p-10 rounded-md ' style={{ background: "rgba(255, 255, 255, 0.03)" }}>
               <div className='flex flex-col  justify-center items-center'>

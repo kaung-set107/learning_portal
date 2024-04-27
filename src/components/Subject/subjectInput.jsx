@@ -22,7 +22,7 @@ export default function PositionInputForm() {
   const [instructors, setInstructors] = useState('');
   // const [data, setData] = useState([]);
   // const dataArr = [...data, instructors?.split(',')]
-  console.log(JSON.stringify({ data: instructors?.split(',') }), 'inst')
+  // console.log(JSON.stringify({ data: instructors?.split(',') }), 'inst')
   const [videoLinks, setVideoLinks] = useState("");
   const [newVideoLink, setNewVideoLink] = useState([]);
 
@@ -75,12 +75,20 @@ export default function PositionInputForm() {
           icon: "success",
           title: "Created Successful",
           text: "Nice!",
-          confirmButtonText: "OK",
-          confirmButtonColor: "#3085d6",
+          showConfirmButton: false,
+          timer: 2000
+
         });
       })
       .catch((error) => {
-        alert(error);
+        Swal.fire({
+          icon: "error",
+          title: "Something Wrong",
+          text: "Please try again!!",
+          showConfirmButton: false,
+          timer: 2000
+
+        });
       });
   };
 
@@ -162,14 +170,14 @@ export default function PositionInputForm() {
             </select>
           </div>
           <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-2'>
-            {/* <label
+            <label
               className={`text-sm font-semibold ${errors.instructor && errors.instructor.type === "required"
                 ? "text-[#f31260]"
                 : ""
                 }`}
             >
               Instructor
-            </label> */}
+            </label>
             <Select
               label="Select Instructor"
               // placeholder="Select Instructor"

@@ -99,7 +99,7 @@ const Body = () => {
                         fontSize: "24px",
                         letterSpacing: "-0.96px",
                       }}
-                      className='w-[340px]'
+                      className='w-[340px] h-[65px]'
                     >
                       {e.title}
                     </span>
@@ -110,21 +110,21 @@ const Body = () => {
                         // width: "400px",
                         // height: "auto",
                       }}
-                      className='w-full md:w-[340px] md:h-[auto]'
+                      className='w-full md:w-[340px] md:h-[40px]'
                     >
                       {e?.description.substring(0, 50)}...
                     </div>
                     {/* card footer */}
                     <div
-                      className='py-5 flex sm:flex-row flex-col gap-2 w-[332px]'
+                      className='py-5 flex justify-center gap-2 w-[332px]'
 
                     >
-                      <div className='h-[24px] w-full sm:w-[150px]  text-center bg-[#ECEFFF] rounded-2xl text-[14px] font-medium'>
+                      <div className='h-[24px] w-full  text-start bg-[#ECEFFF] rounded-2xl text-[14px] font-medium'>
                         <span>Duration -</span>
                         <span style={{ color: "#262FD9" }}>{e.durationValue ? e.durationValue : 0} {e.durationType ? e.durationType : 'months'}</span>
                       </div>
 
-                      <div className='h-[24px] w-full sm:w-[134px]  text-center bg-[#FFF3F6] rounded-2xl text-[14px] font-medium'>
+                      <div className='h-[24px] w-full  text-start bg-[#FFF3F6] rounded-2xl text-[14px] font-medium'>
                         Price - <span style={{ color: "#262FD9" }}>{e.fee ? e.fee : 0} MMK</span>
                       </div>
 

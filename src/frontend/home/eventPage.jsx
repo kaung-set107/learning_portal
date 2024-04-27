@@ -48,7 +48,7 @@ export default function EventPage() {
                                         // height={354}
                                         />
                                         <div
-                                            className='h-[200px] flex flex-col items-center justify-center absolute bottom-0 w-[320px] p-2 z-50 rounded-[20px]'
+                                            className='h-[200px] flex flex-col items-center justify-start absolute bottom-0 w-[320px] p-2 z-50 rounded-[20px]'
                                             style={{
                                                 background:
                                                     "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 125.65%)",

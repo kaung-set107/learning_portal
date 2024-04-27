@@ -287,7 +287,17 @@ const Body = () => {
                       {e?.fromDate?.split('T')[0]}
 
                     </li></span>
-
+                    <span
+                      style={{
+                        fontFamily: "Inter",
+                        fontWeight: "600px",
+                        fontSize: "24px",
+                        letterSpacing: "-0.96px",
+                      }}
+                      className='w-[340px] h-[80px]'
+                    >
+                      {e.title}
+                    </span>
                     <div
                       style={{
                         fontSize: "16px",
@@ -295,7 +305,7 @@ const Body = () => {
                         // width: "400px",
                         // height: "auto",
                       }}
-                      className='w-full'
+                      className='w-full h-[40px]'
                     >
                       {e?.description.substring(0, 50)}...
                     </div>
@@ -354,7 +364,7 @@ const Body = () => {
                 // height={354}
                 />
                 <div
-                  className='h-[200px] flex flex-col items-center justify-center absolute bottom-0 w-full p-2 z-50 rounded-[20px]'
+                  className='h-[200px] flex flex-col pt-20  justify-start absolute bottom-0 w-full p-4 z-50 rounded-[20px]'
                   style={{
                     background:
                       "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 125.65%)",

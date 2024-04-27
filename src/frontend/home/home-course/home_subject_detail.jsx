@@ -73,7 +73,7 @@ const SubjectDetail = (props) => {
   }, []);
 
   const handleBack = () => {
-    navigate("/course-detail", { state: { data: courseData } });
+    navigate("/home-course-detail", { state: { data: courseData } });
   };
   return (
     <>
@@ -219,14 +219,14 @@ const SubjectDetail = (props) => {
                   style={{
                     // fontSize: "24px",
                     // fontWeight: "700",
-                    paddingLeft: "40px",
+                    // paddingLeft: "40px",
                     // width: "298px",
                     // height: "29px",
                   }}
-                  className='text-[14px] w-[200px]  h-[24px] md:text-[24px] font-medium md:w-[298px] md:h-[29px]'
+                  className='flex justify-center text-[14px] w-[200px]  h-[24px] md:text-[24px] font-medium md:w-[298px] md:h-[29px]'
                 >
-                  {teacherName?.duration ? parseInt((teacherName?.duration * 30) / 7) : 0} Weeks &{" "}
-                  {teacherName?.duration ? (teacherName?.duration * 30) % 7 : 0} Days
+                  {teacherName?.course?.durationType === 'month' ? `${parseInt((teacherName?.course?.durationValue))} Months` : teacherName?.course?.durationType === 'weeks' ? `${parseInt((teacherName?.course?.durationValue))} Weeks` : `${parseInt((teacherName?.course?.durationValue))} Days`}
+
                 </span>
               </div>
               <div
@@ -273,8 +273,8 @@ const SubjectDetail = (props) => {
                 <span className='text-[16px] md:text-[20px] font-medium'>
                   Batch 10
                 </span>
-                <span className='text-[16px] pl-8 md:pl-0 md:text-[24px] font-bold w-[158px] h-[29px]'>
-                  {teacherName?.noOfEnrolledStudent} Students
+                <span className='flex justify-center text-[16px] pl-8 md:pl-0 md:text-[24px] font-bold w-[158px] h-[29px]'>
+                  {teacherName?.course?.noOfEnrolledStudent ? teacherName?.course?.noOfEnrolledStudent : 0} Students
                 </span>
               </div>
               <div
