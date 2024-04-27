@@ -1,16 +1,16 @@
 /* eslint-disable react/prop-types */
 import { useLocation, useNavigate } from "react-router";
-import QuizCreateForm from "../components/QuizCreateForm";
+import QuizUpdateForm from "../components/QuizUpdateForm";
 import { useEffect } from "react";
 import CustomButton from "../../../components/general/CustomButton";
 
-const QuizCreate = () => {
+const QuizUpdate = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
     console.log(state);
-    if (!(state.type && state[state.type])) {
+    if (!(state.type && state[state.type] && state.quizData)) {
       navigate(-1);
     }
   }, []);
@@ -20,9 +20,9 @@ const QuizCreate = () => {
       <div className="flex items-center justify-between mb-12">
         <CustomButton type="back" title={`Back`} />
       </div>
-      <QuizCreateForm {...state} />
+      <QuizUpdateForm {...state} />
     </div>
   );
 };
 
-export default QuizCreate;
+export default QuizUpdate;

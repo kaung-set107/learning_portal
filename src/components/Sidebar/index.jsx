@@ -288,16 +288,22 @@ export default function Sidebar(props) {
                     <Divider></Divider>
                     <Link
                       to="/by-instructor/subjects"
-                      onClick={() => setCou(true)}
                     >
                       <div className="hover:bg-blue-100 px-4 py-3 m-auto text-sm">
                         &nbsp;
                         <span className="ml-4 font-medium ">Subjects</span>
                       </div>
                     </Link>
+                    {/* <Link
+                      to="/by-instructor/quizzes"
+                    >
+                      <div className="hover:bg-blue-100 px-4 py-3 m-auto text-sm">
+                        &nbsp;
+                        <span className="ml-4 font-medium ">Quizzes</span>
+                      </div>
+                    </Link> */}
                     <Link
                       to="/by-instructor/assignment-results"
-                      onClick={() => setCou(true)}
                     >
                       <div className="hover:bg-blue-100 px-4 py-3 m-auto text-sm">
                         &nbsp;

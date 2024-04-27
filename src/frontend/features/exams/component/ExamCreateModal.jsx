@@ -13,6 +13,7 @@ import {
   useDisclosure,
   Checkbox,
 } from "@nextui-org/react";
+import { Select, SelectItem } from "@nextui-org/select";
 import CustomFileDrag from "../../../components/general/CustomFileDrag";
 import { showError, showSuccess } from "../../../../util/noti";
 
@@ -26,11 +27,28 @@ export default function ExamCreateModal(props) {
   const [links, setLinks] = useState([]);
   const variant = "bordered";
 
+  const examTypes = [
+    {
+      value: "inapp",
+      label: "In App",
+    },
+    {
+      value: "outside",
+      label: "Outside",
+    },
+  ];
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     subject: subjectId,
     examDate: "",
+    startTime: "",
+    endTime: "",
+    duration: "",
+    examType: [],
+    creditMark: "",
+    passMark: "",
   });
 
   const handleAssetChange = (value) => {
@@ -41,16 +59,26 @@ export default function ExamCreateModal(props) {
   const handleSubmit = async (onClose) => {
     try {
       setIsSubmitting(true);
-      let payload = { ...formData, showToStudent, links: JSON.stringify(links) };
+      let payload = {
+        ...formData,
+        showToStudent,
+        links: JSON.stringify(links),
+        duration: +formData.duration,
+        creditMark: +formData.creditMark,
+        passMark: +formData.passMark,
+        examType: formData.examType.currentKey
+      };
 
       console.log(payload);
+
+      // return;
       const res = await examsApi.create(payload);
       successCallback();
       onClose();
-      showSuccess({text: res.message, type: 'noti-box'})
+      showSuccess({ text: res.message, type: "noti-box" });
     } catch (error) {
       console.log(error);
-      showError({axiosResponse: error})
+      showError({ axiosResponse: error });
     } finally {
       setIsSubmitting(false);
     }
@@ -125,6 +153,7 @@ export default function ExamCreateModal(props) {
                     <Input
                       id="examDate"
                       type="date"
+                      value={formData.examDate}
                       onChange={(e) =>
                         setFormData((prev) => ({
                           ...prev,
@@ -135,6 +164,115 @@ export default function ExamCreateModal(props) {
                       variant={variant}
                     />
                   </div>
+
+                    <div className="mb-3">
+                      <label htmlFor="startTime" className="pb-1 inline-block">
+                        Start Time
+                      </label>
+                      <Input
+                        id="startTime"
+                        type="time"
+                        value={formData.startTime}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            startTime: e.target.value,
+                          }))
+                        }
+                        labelPlacement="outside"
+                        variant={variant}
+                      />
+                    </div>
+
+                    <div className="mb-3">
+                      <label htmlFor="endTime" className="pb-1 inline-block">
+                        End Time
+                      </label>
+                      <Input
+                        id="endTime"
+                        type="time"
+                        value={formData.endTime}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            endTime: e.target.value,
+                          }))
+                        }
+                        labelPlacement="outside"
+                        variant={variant}
+                      />
+                    </div>
+
+                    <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
+                      <Input
+                        type="number"
+                        label="Duration"
+                        placeholder="duration"
+                        variant={variant}
+                        value={formData.duration}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            duration: e.target.value,
+                          }))
+                        }
+                        labelPlacement="outside"
+                      />
+                    </div>
+
+                    <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
+                      <Input
+                        type="number"
+                        label="Credit Mark"
+                        placeholder="credit Mark"
+                        variant={variant}
+                        value={formData.creditMark}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            creditMark: e.target.value,
+                          }))
+                        }
+                        labelPlacement="outside"
+                      />
+                    </div>
+
+                    <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
+                      <Input
+                        type="number"
+                        label="Pass Mark"
+                        placeholder="Pass Mark"
+                        variant={variant}
+                        value={formData.passMark}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            passMark: e.target.value,
+                          }))
+                        }
+                        labelPlacement="outside"
+                      />
+                    </div>
+
+                    <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
+                      <Select
+                        label="Exam Type"
+                        variant="bordered"
+                        placeholder="Select exam type"
+                        selectedKeys={formData.examType}
+                        className="max-w-xs"
+                        labelPlacement="outside"
+                        onSelectionChange={(keys) =>
+                          setFormData((prev) => ({ ...prev, examType: keys }))
+                        }
+                      >
+                        {examTypes.map((examType) => (
+                          <SelectItem key={examType.value} value={examType.value}>
+                            {examType.label}
+                          </SelectItem>
+                        ))}
+                      </Select>
+                    </div>
 
                   <div className="flex w-full items-end flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
                     <Input

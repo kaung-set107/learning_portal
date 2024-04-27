@@ -36,7 +36,7 @@ const QuizUpdateForm = (props) => {
   };
 
   const [formData, setFormData] = useState({
-    title: "testing",
+    title: "",
     description: "",
     questions: [],
     numOfQuestions: 0,
@@ -93,7 +93,7 @@ const QuizUpdateForm = (props) => {
     try {
       setIsSubmitting(true);
       let res = await quizzesApi.update(payload);
-      await successCallback();
+      if(successCallback) await successCallback();
       showSuccess({ text: res.message, type: "noti-box" });
     } catch (error) {
       console.log(error);

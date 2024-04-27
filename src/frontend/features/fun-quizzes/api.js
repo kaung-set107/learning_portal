@@ -1,19 +1,12 @@
-import { getFormData } from "../../../util";
 import apiInstance from "../../../util/api";
 
-const baseUrl = "/exams";
-const baseName = "exams";
+const baseUrl = "/fun-quizzes";
+const baseName = "fun-quizzes";
 
 const getAll = async (payload) => {
-  const res = await apiInstance.get(baseUrl, { params: payload });
+  console.log(payload)
+  const res = await apiInstance.get(baseUrl, {params: payload});
   console.log(baseName, res);
-
-  res.data.data = res.data.data.map((each, index) => {
-    let newObj = each;
-    newObj.index = index + 1;
-    return newObj;
-  });
-
   return res.data;
 };
 
@@ -24,16 +17,13 @@ const get = async (payload) => {
 };
 
 const create = async (payload) => {
-  const res = await apiInstance.post(baseUrl, getFormData(payload));
+  const res = await apiInstance.post(baseUrl, payload);
   console.log(baseName, res);
   return res.data;
 };
 
 const update = async (payload) => {
-  const res = await apiInstance.put(
-    baseUrl + `/${payload._id}`,
-    getFormData(payload)
-  );
+  const res = await apiInstance.put(baseUrl + `/${payload._id}`, payload);
   console.log(baseName, res);
   return res.data;
 };
@@ -44,7 +34,7 @@ const remove = async (payload) => {
   return res.data;
 };
 
-export const examsApi = {
+export const funQuizzesApi = {
   getAll,
   get,
   create,

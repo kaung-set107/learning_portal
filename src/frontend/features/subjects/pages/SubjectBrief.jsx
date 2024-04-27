@@ -24,6 +24,8 @@ import QuizUpdateForm from "../../quizzes/components/QuizUpdateForm";
 import ExamCreateModal from "../../exams/component/ExamCreateModal";
 import { examsApi } from "../../exams/api";
 import ExamCard from "../../exams/component/ExamCard";
+import FunQuizCreateForm from "../../fun-quizzes/components/FunQuizCreateForm";
+import FunQuizUpdateForm from "../../fun-quizzes/components/FunQuizUpdateForm";
 
 const SubjectBrief = () => {
   const navigate = useNavigate();
@@ -37,6 +39,7 @@ const SubjectBrief = () => {
     { key: "subject-sections", title: "Subject Sections" },
     { key: "entrance-test", title: "Entrance test" },
     { key: "exam", title: "Exam" },
+    { key: "fun-quiz", title: "Fun Quiz" },
   ];
 
   const getSubject = async () => {
@@ -242,6 +245,7 @@ const SubjectBrief = () => {
                               successCallback={getSubject}
                             />
                             <CustomButton
+                              type="delete"
                               onClick={() =>
                                 handleSubjectSectionDelete(section._id)
                               }
@@ -341,6 +345,50 @@ const SubjectBrief = () => {
                       );
                     })}
                   </div>
+                </div>
+              </Tab>
+              <Tab key={TabOptions[4].key} title={TabOptions[4].title}>
+                <div>
+                  <div className="flex items-center justify-between pb-3">
+                    <SubHeading title="Fun Quizzes" className="mb-3" />
+                  </div>
+                  {subject.data?.funQuizzes.length <= 0 && (
+                    <FunQuizCreateForm successCallback={getSubject} />
+                  )}
+                  {subject.data.funQuizzes &&
+                    subject.data.funQuizzes[0] && (
+                      <>
+                        <Tabs aria-label="Options">
+                          <Tab key={"detail"} title="Detail">
+                            <FunQuizUpdateForm
+                              funQuizData={subject.data.funQuizzes[0]}
+                              successCallback={getSubject}
+                            />
+                          </Tab>
+                          <Tab key={"quiz"} title="Quiz">
+                            {/* <QuizCreateForm
+                              type="entranceTest"
+                              entranceTest={subject.data.entranceTest}
+                              successCallback={getSubject}
+                            /> */}
+                            {!subject.data.funQuizzes[0].quiz ? (
+                              <QuizCreateForm
+                                type="funQuiz"
+                                funQuiz={subject.data.funQuizzes[0]}
+                                successCallback={getSubject}
+                              />
+                            ) : (
+                              <QuizUpdateForm
+                                quizData={subject.data.funQuizzes[0].quiz}
+                                type="funQuiz"
+                                funQuiz={subject.data.funQuizzes[0]}
+                                successCallback={getSubject}
+                              />
+                            )}
+                          </Tab>
+                        </Tabs>
+                      </>
+                    )}
                 </div>
               </Tab>
             </Tabs>
