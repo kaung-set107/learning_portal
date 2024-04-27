@@ -54,10 +54,14 @@ const SubjectBrief = () => {
     }
   };
 
-  const goToResult = (data) => {
+  const goToAssignmentResults = (data) => {
     navigate("/by-instructor/assignment-results", {
       state: { assignment: data, subject: subject.data },
     });
+  };
+
+  const goToExamResults = (examData) => {
+    navigate(`/by-instructor/exam-results` ,{state: { exam: examData, subject: subject.data }});
   };
 
   const goToLearningMaterials = (data) => {
@@ -108,6 +112,35 @@ const SubjectBrief = () => {
     }
   };
 
+  const generateHandleExamResultsGenerateBtn = (examId) => {
+    return (
+      <CustomButton
+        size="sm"
+        isLoading={isSubmitting}
+        onClick={() => handleExamResultsGenerate(examId)}
+        title="Generate Exam Results"
+      />
+    );
+  };
+
+  const handleExamResultsGenerate = async (id) => {
+    try {
+      setIsSubmitting(true);
+      let res = await examsApi.generateExamResults({
+        _id: id,
+        batch: subject.data.course.batch,
+      });
+      await getSubject();
+      showSuccess({ text: res.message, type: "noti-box" });
+      await getSubject();
+      setIsSubmitting(false);
+    } catch (error) {
+      showError({ axiosResponse: error });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   useEffect(() => {
     getSubject();
   }, []);
@@ -148,7 +181,7 @@ const SubjectBrief = () => {
                             <div className="flex gap-3 absolute right-2 top-2">
                               <CustomButton
                                 size="sm"
-                                onClick={() => goToResult(assignment)}
+                                onClick={() => goToAssignmentResults(assignment)}
                                 isLoading={isSubmitting}
                                 title="Results"
                               />
@@ -335,6 +368,10 @@ const SubjectBrief = () => {
                       return (
                         <div key={exam._id}>
                           <ExamCard
+                            generateHandleExamResultsGenerateBtn={
+                              generateHandleExamResultsGenerateBtn
+                            }
+                            goToExamResults={goToExamResults}
                             examData={exam}
                             successCallback={getSubject}
                             subjectId={subject._id}
@@ -355,40 +392,39 @@ const SubjectBrief = () => {
                   {subject.data?.funQuizzes.length <= 0 && (
                     <FunQuizCreateForm successCallback={getSubject} />
                   )}
-                  {subject.data.funQuizzes &&
-                    subject.data.funQuizzes[0] && (
-                      <>
-                        <Tabs aria-label="Options">
-                          <Tab key={"detail"} title="Detail">
-                            <FunQuizUpdateForm
-                              funQuizData={subject.data.funQuizzes[0]}
-                              successCallback={getSubject}
-                            />
-                          </Tab>
-                          <Tab key={"quiz"} title="Quiz">
-                            {/* <QuizCreateForm
+                  {subject.data.funQuizzes && subject.data.funQuizzes[0] && (
+                    <>
+                      <Tabs aria-label="Options">
+                        <Tab key={"detail"} title="Detail">
+                          <FunQuizUpdateForm
+                            funQuizData={subject.data.funQuizzes[0]}
+                            successCallback={getSubject}
+                          />
+                        </Tab>
+                        <Tab key={"quiz"} title="Quiz">
+                          {/* <QuizCreateForm
                               type="entranceTest"
                               entranceTest={subject.data.entranceTest}
                               successCallback={getSubject}
                             /> */}
-                            {!subject.data.funQuizzes[0].quiz ? (
-                              <QuizCreateForm
-                                type="funQuiz"
-                                funQuiz={subject.data.funQuizzes[0]}
-                                successCallback={getSubject}
-                              />
-                            ) : (
-                              <QuizUpdateForm
-                                quizData={subject.data.funQuizzes[0].quiz}
-                                type="funQuiz"
-                                funQuiz={subject.data.funQuizzes[0]}
-                                successCallback={getSubject}
-                              />
-                            )}
-                          </Tab>
-                        </Tabs>
-                      </>
-                    )}
+                          {!subject.data.funQuizzes[0].quiz ? (
+                            <QuizCreateForm
+                              type="funQuiz"
+                              funQuiz={subject.data.funQuizzes[0]}
+                              successCallback={getSubject}
+                            />
+                          ) : (
+                            <QuizUpdateForm
+                              quizData={subject.data.funQuizzes[0].quiz}
+                              type="funQuiz"
+                              funQuiz={subject.data.funQuizzes[0]}
+                              successCallback={getSubject}
+                            />
+                          )}
+                        </Tab>
+                      </Tabs>
+                    </>
+                  )}
                 </div>
               </Tab>
             </Tabs>

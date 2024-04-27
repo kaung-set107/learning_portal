@@ -4,15 +4,15 @@ import CustomTable from "../../../components/general/CustomTable";
 import TableHeading from "../../../components/general/typography/TableHeading";
 import { getTableData } from "../data";
 import Loading from "../../../components/general/Loading";
-import { assignmentResultsApi } from "../api";
-import AssignmentResultCheckModal from "../components/AssignmentResultCheckModal";
-import AssignmentsDropdown from "../../assignments/components/AssignmentsDropDown";
+import { examResultsApi } from "../api";
 import BatchesDropdown from "../../batches/components/BatchesDropdown";
 import { Chip } from "@nextui-org/react";
 import { Select, SelectItem } from "@nextui-org/select";
 import CustomButton from "../../../components/general/CustomButton";
 import { useLocation } from "react-router-dom";
 import SubjectsDropdown from "../../subjects/components/SubjectDropdown";
+import ExamsDropdown from "../../exams/component/ExamsDropdown";
+import ExamResultCheckModal from "../components/ExamResultCheckModal";
 
 const StatusDropdown = (props) => {
   const { setStatus, className } = props;
@@ -45,14 +45,14 @@ const StatusDropdown = (props) => {
   );
 };
 
-const AssignmentResults = () => {
+const ExamResults = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isFetching, setIsFetching] = useState(true);
-  const [assignmentResults, setAssignmentResults] = useState([]);
+  const [examResults, setExamResults] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [filters, setFilters] = useState({
     batch: {},
-    assignment: {},
+    exam: {},
     subject: {},
     status: "submitted",
   });
@@ -63,19 +63,19 @@ const AssignmentResults = () => {
 
   const getCheckButton = (id) => {
     return (
-      <AssignmentResultCheckModal
-        assignmentResultId={id}
-        successCallback={getAssignmentResults}
+      <ExamResultCheckModal
+        examResultId={id}
+        successCallback={getExamResults}
       />
     );
   };
 
-  const tableData = getTableData({ getCheckButton });
+  const tableData = getTableData({getCheckButton});
 
-  const getAssignmentResults = async (defaultPayload) => {
+  const getExamResults = async (defaultPayload) => {
     let payload = {
       ...{
-        assignment: filters.assignment?._id,
+        exam: filters.exam?._id,
         batch: filters.batch?._id,
         status: filters.status,
       },
@@ -83,9 +83,9 @@ const AssignmentResults = () => {
     };
     setIsFetching(true);
     try {
-      let res = await assignmentResultsApi.getAll(payload);
+      let res = await examResultsApi.getAll(payload);
       console.log(res);
-      setAssignmentResults(res);
+      setExamResults(res);
     } catch (error) {
       console.log(error);
     } finally {
@@ -94,35 +94,20 @@ const AssignmentResults = () => {
     }
   };
 
-  const handlePublishAll = async () => {
-    // if (!filters.batch._id) {
-    //   showMessage({ message: "Please Select a batch to publish !" })
-    // }
-    setIsSubmitting(true);
-    try {
-      await assignmentResultsApi.publishAll({ batch: filters.batch._id });
-      await getAssignmentResults();
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   const handleClearAllFilter = () => {
-    setFilters((prev) => ({ ...prev, assignment: {}, batch: {} }));
+    setFilters((prev) => ({ ...prev, exam: {}, batch: {} }));
   };
 
   const fetchData = () => {
-    getAssignmentResults();
+    getExamResults();
   };
 
   useEffect(() => {
     let data = {};
     let defaultPayload = {};
-    if (state && state.assignment) {
-      data.assignment = state.assignment;
-      defaultPayload.assignment = state.assignment._id;
+    if (state && state.exam) {
+      data.exam = state.exam;
+      defaultPayload.exam = state.exam._id;
     }
 
     if (state && state.batch) {
@@ -134,7 +119,7 @@ const AssignmentResults = () => {
 
     setFilters(newFilters);
 
-    getAssignmentResults({ ...filters, ...defaultPayload });
+    getExamResults({ ...filters, ...defaultPayload });
   }, []);
 
   let content;
@@ -156,13 +141,7 @@ const AssignmentResults = () => {
           </div>
         )}
         <div className="flex items-center justify-between mb-12">
-          <TableHeading title="Assignment Results" />
-          <CustomButton
-            isDisabled={!(filters.batch?._id && filters.assignment?._id)}
-            onClick={() => handlePublishAll()}
-            isLoading={isSubmitting}
-            title="Publish All"
-          />
+          <TableHeading title="Exam Results" />
         </div>
         <div className="my-3 flex items-center gap-3">
           <StatusDropdown
@@ -189,12 +168,12 @@ const AssignmentResults = () => {
             />
           )}
           {filters.subject && filters.subject?._id && (
-            <AssignmentsDropdown
+            <ExamsDropdown
               subject={filters.subject._id}
               className="shrink-0 w-[200px]"
               filters={filters}
-              setAssignment={(value) =>
-                setFilters((prev) => ({ ...prev, assignment: value }))
+              setExam={(value) =>
+                setFilters((prev) => ({ ...prev, exam: value }))
               }
             />
           )}
@@ -210,8 +189,8 @@ const AssignmentResults = () => {
           {<Chip>Status: {filters.status}</Chip>}
           {
             <>
-              {filters.assignment && Object.keys(filters.assignment).length > 0 && (
-                <Chip>Assignment: {filters.assignment.title}</Chip>
+              {filters.exam && Object.keys(filters.exam).length > 0 && (
+                <Chip>Exam: {filters.exam.title}</Chip>
               )}
               {filters.batch && Object.keys(filters.batch).length > 0 && (
                 <Chip>Batch: {filters.batch.name}</Chip>
@@ -232,7 +211,7 @@ const AssignmentResults = () => {
           <div>
             <CustomTable
               isLoading={isFetching}
-              src={assignmentResults}
+              src={examResults}
               tableData={tableData}
               isStriped
             />
@@ -245,4 +224,4 @@ const AssignmentResults = () => {
   return content;
 };
 
-export default AssignmentResults;
+export default ExamResults;

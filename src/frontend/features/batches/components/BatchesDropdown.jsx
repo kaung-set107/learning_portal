@@ -13,7 +13,7 @@ const BatchesDropdown = (props) => {
   const getBatches = async () => {
     setIsLoading(true);
     try {
-      let res = await batchesApi.getAll({ course: filters.subject?.course });
+      let res = await batchesApi.getAll({ course: filters.subject?.course?._id ?? filters.subject?.course });
       setBatches(res);
     } catch (error) {
       console.log(error);
@@ -32,7 +32,6 @@ const BatchesDropdown = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log('hers')
     getBatches();
   }, [filters.subject]);
 
