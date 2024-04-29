@@ -158,7 +158,7 @@ const Body = () => {
           //   />}
           // customTransition="all .5"
           responsive={responsive}
-          className='p-0 container bg-transparent'
+          className='p-0  bg-transparent'
         >
           {bannerList.map((i) => (
             <>
@@ -205,14 +205,14 @@ const Body = () => {
       < div className='flex justify-around pl-[26px]  sm:pl-[57px] pr-[26px] sm:pr-[57px] pt-[20px] sm:pt-[100px] relative container overflow-hidden' >
 
         <div
-          className="absolute bg-[#0B2743] top-0 sm:top-2 -left-[130px] sm:-left-48 w-[150px] h-[150px] rounded-full sm:w-[300px] sm:h-[300px]"
+          className="absolute bg-[#0B2743] top-0 sm:top-2 -left-[130px] sm:-left-48 lg:-left-[240px] w-[150px] h-[150px] rounded-full md:w-[300px] md:h-[300px] lg:w-[300px] lg:h-[200px]"
 
         ></div>
         <div className='w-[654px] flex flex-col gap-10  mt-10'>
           <ScrollAnimation animateIn='wobble'
           >
             <h1
-              className='text-[30px] md:text-[48px] lg:text-[50px]  text-secondary font-semibold w-[300px] sm:w-[562px] font-Poppins '
+              className='text-[20px] md:text-[28px] lg:text-[38px]  text-secondary font-semibold w-[300px] sm:w-[562px] font-Poppins '
               style={{ color: "#1F4164", fontWeight: "900" }}
             >
 
@@ -243,12 +243,12 @@ const Body = () => {
 
         </div>
         <div className='hidden sm:flex overflow-hidden'>
-          <Image src={MSIHead} className='sm:w-[464px] sm:h-[454px] ' />
+          <Image src={MSIHead} className='sm:w-[400px] sm:h-[350px] ' />
         </div>
 
         <img
           src={EHalf}
-          className="absolute  right-0 w-[100px]  top-[550px]"
+          className="absolute  right-0 w-[100px]  top-[520px]"
           alt=""
         />
 
@@ -256,6 +256,8 @@ const Body = () => {
 
 
       {/* Course Section */}
+
+      {/* Event */}
       <ScrollAnimation animateIn='fadeIn'
         animateOut='fadeOut'
         scrollableParentSelector='#cou'>
@@ -273,43 +275,53 @@ const Body = () => {
               <div
                 onClick={() => { handleRoute(e), window.scroll(0, 0) }}
 
-                className='w-full h-[420px]'
+                className='w-[300px] h-[420px]'
               >
                 <div>
                   <Image
                     // style={{ width: "500px", height: "280px" }}
                     alt={e.image?.originalname}
                     src={getFile({ payload: e.image })}
-                    className='w-full h-full md:w-[300px] md:h-[200px] lg:w-[3320px] lg:h-[250px] sm:hover:-translate-y-2 sm:hover:scale-105 duration-500'
+                    className='w-[200px] h-full md:w-[300px] md:h-[200px] lg:w-[320px] lg:h-[250px] sm:hover:-translate-y-2 sm:hover:scale-105 duration-500'
                   />
                   <div className='flex p-5 flex-col justify-start flex-grow '>
-                    <span className='w-[332px] text-[14px] font-semibold text-[#B72041] flex'>MSI Academy &nbsp;<li>
+                    <span className='w-[280px] text-[14px] font-semibold text-[#B72041] flex'>MSI Academy &nbsp;<li>
                       {e?.fromDate?.split('T')[0]}
 
                     </li></span>
-
+                    <span
+                      style={{
+                        fontFamily: "Inter",
+                        fontWeight: "600px",
+                        fontSize: "20px",
+                        letterSpacing: "-0.96px",
+                      }}
+                      className='w-[290px] h-[80px]'
+                    >
+                      {e.title}
+                    </span>
                     <div
                       style={{
-                        fontSize: "16px",
+                        fontSize: "15px",
                         fontWeight: "400px",
                         // width: "400px",
                         // height: "auto",
                       }}
-                      className='w-full'
+                      className='w-[280px] h-[40px]'
                     >
                       {e?.description.substring(0, 50)}...
                     </div>
                     {/* card footer */}
                     <div
-                      className='py-5 flex justify-center gap-2 w-[332px]'
+                      className='py-5 flex justify-center gap-2 w-[290px]'
 
                     >
-                      <div className='h-[24px] w-full  text-start bg-[#ECEFFF] rounded-2xl text-[14px] font-medium'>
+                      <div className='h-[24px] w-full  text-start bg-[#ECEFFF] rounded-2xl text-[13px] font-medium'>
                         <span>Duration -</span>
                         <span style={{ color: "#262FD9" }}>{e.durationValue ? e.durationValue : 0} {e.durationType ? e.durationType : 'months'}</span>
                       </div>
 
-                      <div className='h-[24px] w-full  text-start bg-[#FFF3F6] rounded-2xl text-[14px] font-medium'>
+                      <div className='h-[24px] w-full  text-start bg-[#FFF3F6] rounded-2xl text-[13px] font-medium'>
                         Price - <span style={{ color: "#262FD9" }}>{e.fee ? e.fee : 0} MMK</span>
                       </div>
 
@@ -321,14 +333,12 @@ const Body = () => {
           </div>
 
           <Link href='/home-course' className='flex justify-center py-5 pt-20 md:pt-24 lg:pt-36 sm:pt-0 '>
-            <span className=' text-[18px] sm:text-[20px] py-2 text-secondary hover:text-danger font-semibold text-center cursor-pointer border-1 border-secondary-300 w-[130px] rounded-lg hover:border-danger-400'>
+            <span className=' text-[18px] sm:text-[20px] py-2 text-[#1F4164] hover:text-danger font-semibold text-center cursor-pointer border-1 border-[#1F4164] w-[130px] rounded-lg hover:border-danger-400'>
               See All
             </span>
           </Link>
         </div >
       </ScrollAnimation >
-      {/* Event */}
-
       < div style={{ background: "var(--blue-pale, #F4FAFF)", height: '1020px' }} className='flex flex-col gap-10 sm:gap-24 relative container' >
         {/* <img
           src={EBlue}
@@ -343,18 +353,18 @@ const Body = () => {
         </div >
 
         {/* Web */}
-        < div className='hidden sm:grid grid-cols-4 items-center justify-around flex-wrap pl-[130px] pr-[33px]' >
-          {eventList?.map((b, index) => (
+        < div className='hidden sm:grid grid-cols-4 lg:gap-5 items-center justify-around flex-wrap pl-[130px] pr-[33px]' >
+          {eventList?.slice(0, 4)?.map((b, index) => (
             <Link href={`/events/${b._id}`} key={index}>
               <div className='relative cursor-pointer hover:translate-y-1 hover:scale-105 duration-500'>
                 <Image
                   src={`data:image/jpeg;base64,${b?.image}`}
-                  className=' w-[320px] h-[511px]  rounded-[24px]'
+                  className=' md:w-[320px] md:h-[511px] lg:w-[390px] lg:h-[450px]  rounded-[24px]'
                 // width={620}
                 // height={354}
                 />
                 <div
-                  className='h-[200px] flex flex-col items-center justify-center absolute bottom-0 w-full p-2 z-50 rounded-[20px]'
+                  className='h-[200px] flex flex-col pt-20  justify-start absolute bottom-0 w-full p-4 z-50 rounded-[20px]'
                   style={{
                     background:
                       "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 125.65%)",
@@ -388,13 +398,13 @@ const Body = () => {
                   // height={354}
                   />
                   <div
-                    className='h-[200px] flex flex-col items-center justify-center absolute bottom-0 w-[300px] p-2 z-50 rounded-[20px]'
+                    className='h-[200px] flex flex-col items-start justify-start sm:items-center sm:justify-center absolute bottom-0 w-[200px] sm:w-[300px] p-2 z-50 rounded-[20px]'
                     style={{
                       background:
                         "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 125.65%)",
                     }}
                   >
-                    <h3 className=' text-[20px]  text-white font-semibold '>
+                    <h3 className='text-[16px] w-[200px] sm:w-full sm:text-[20px]  text-white font-semibold '>
                       {b.title}
                     </h3>
                     <p className='font-[light] text-[15px] text-white'>

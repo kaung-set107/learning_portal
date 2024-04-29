@@ -15,6 +15,8 @@ const ExamCard = (props) => {
     examData,
     successCallback,
     subjectId,
+    generateHandleExamResultsGenerateBtn,
+    goToExamResults,
     // handleExamDelete,
     // isSubmitting,
   } = props;
@@ -59,6 +61,21 @@ const ExamCard = (props) => {
             )}
           </>
         )}
+
+        {examData.examType === "outside" &&
+          (
+            <>
+              {!examData.resultsGenerated && generateHandleExamResultsGenerateBtn &&
+                generateHandleExamResultsGenerateBtn(examData._id)}
+              {examData.resultsGenerated && (
+                <CustomButton
+                  size="sm"
+                  onClick={() => goToExamResults(examData)}
+                  title="Results"
+                />
+              )}
+            </>
+          )}
         <ExamUpdateModal
           subjectId={subjectId}
           examData={examData}

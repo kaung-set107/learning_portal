@@ -27,12 +27,9 @@ export default function Testimonial() {
     return (
         <div>
             <MSINav />
-            <div className='container '>
-                <div className='w-[252px] h-[60px] pl-[754px] pr-[754px] p-24'>
-
-                    <span className='text-[40px] font-bold text-[#0B2743] font-nunito'>Testimonials</span>
-
-
+            <div className='container'>
+                <div className='w-[152px] h-[60px] p-24'>
+                    <span className='text-[40px] font-bold text-[#0B2743] font-nunito pl-[450px]'>Testimonials</span>
                 </div >
                 {!testimonialList[0] ? (
                     <div className='flex justify-center pt-[40px]'>
@@ -62,12 +59,12 @@ export default function Testimonial() {
 
                                             <div className='w-[318px] h-[512px] '>
                                                 <div className='overflow-hidden'>
-                                                    <img src={`data:image/jpeg;base64,${item?.image}`} className='w-[318px] h-[500px] left-[999px] pt-[69px] absolute' />
+                                                    <img src={`data:image/jpeg;base64,${item?.image}`} className='w-[318px] h-[500px] md:left-[799px] pt-[69px] absolute' />
                                                 </div>
                                                 <div className='overflow-hidden'>
                                                     <div className='flex flex-col gap-1'>
-                                                        <span className='text-[28px] font-extrabold text-[#FAFAFA] w-[300px] pl-[52px] pt-[560px] absolute '>
-                                                            {item?.title.substring(0, 12)}...
+                                                        <span className='text-[20px] font-extrabold text-[#FAFAFA] w-[300px] pl-[52px] pt-[560px] absolute '>
+                                                            {item?.title}
                                                         </span>
                                                         <span className='text-[16px] font-normal text-[#FAFAFA] w-[291px] h-[22px] pl-[52px] pt-[599px] absolute '>
                                                             MSI Academy Student
@@ -89,8 +86,8 @@ export default function Testimonial() {
                                                 </div>
                                                 <div className='pl-[134px] pt-[360px] pr-[75px] pb-[99px] overflow-hidden  '>
                                                     <div className='flex flex-col gap-1'>
-                                                        <span className='text-[28px] font-extrabold text-[#FAFAFA] w-[200px] '>
-                                                            {item?.title.substring(0, 12)}...
+                                                        <span className='text-[20px] font-extrabold text-[#FAFAFA] w-[200px] '>
+                                                            {item?.title}
                                                         </span>
                                                         <span className='text-[16px] font-normal text-[#FAFAFA] w-[191px] h-[22px] '>
                                                             MSI Academy Student

@@ -88,8 +88,8 @@ export default function App() {
   return (
     <>
       <div className='sticky top-0 bg-white z-50  md:shadow-md lg:shadow-lg   w-full p-5 '>
-        <div className='flex sm:gap-10 container xl:gap-5 2xl:gap-96 justify-between sm:justify-around 2xl:justify-around items-center'>
-          <div className='align-left'>
+        <div className='flex sm:gap-10 gap-20  xl:gap-5 2xl:gap-96 justify-between sm:justify-between lg:justify-around '>
+          <div className=''>
             <Image
               src={MSI}
               className={isMenuOpen ? "hidden" : "w-[200px] sm:w-[300px] xl:w-[200px] 2xl:w-[250px]"}
@@ -111,7 +111,7 @@ export default function App() {
                 className={
                   location.pathname === "/"
                     ? "font-semibold text-[18px] xl:text-[16px] 2xl:text-[20px]"
-                    : "text-[16px] md:text-[18px] lg:text-[22px]"
+                    : "text-[18px] xl:text-[16px] 2xl:text-[20px]"
                 }
               >
                 Home
@@ -121,7 +121,7 @@ export default function App() {
               <Link
                 to='/home-course'
                 className={
-                  location.pathname === "/home-course" ||
+                  location.pathname === "/home-course" && window.scroll(0, 0) ||
                     location.pathname === "/home-course-detail" ||
                     location.pathname === "/home-sub-detail"
                     ? "font-semibold text-[18px] xl:text-[16px] 2xl:text-[20px]"
@@ -136,7 +136,7 @@ export default function App() {
               <Link
                 to='/events'
                 className={
-                  location.pathname === '/events' || location.pathname === `/events/${ID}`
+                  location.pathname === '/events' && window.scroll(0, 0) || location.pathname === `/events/${ID}`
                     ? "font-semibold text-[18px] xl:text-[16px] 2xl:text-[20px]"
                     : "text-[18px] xl:text-[16px] 2xl:text-[20px] "
                 }
@@ -148,7 +148,7 @@ export default function App() {
               <Link
                 to='/testimonial-page'
                 className={
-                  location.pathname === '/testimonial-page' || location.pathname === `/testimonial-page/${ID}`
+                  location.pathname === '/testimonial-page' && window.scroll(0, 0) || location.pathname === `/testimonial-page/${ID}`
                     ? "font-semibold text-[18px] xl:text-[16px] 2xl:text-[20px]"
                     : "text-[18px] xl:text-[16px] 2xl:text-[20px] "
                 }
@@ -161,7 +161,7 @@ export default function App() {
               <Link
                 to='/booking'
                 className={
-                  location.pathname === "/booking"
+                  location.pathname === "/booking" && window.scroll(0, 0)
                     ? "font-semibold text-[18px] xl:text-[16px] 2xl:text-[20px]"
                     : "text-[18px] xl:text-[16px] 2xl:text-[20px]"
                 }
@@ -173,7 +173,7 @@ export default function App() {
               <Link
                 to='/about'
                 className={
-                  location.pathname === "/about"
+                  location.pathname === "/about" && window.scroll(0, 0)
                     ? "font-semibold text-[18px] xl:text-[16px] 2xl:text-[20px]"
                     : "text-[18px] xl:text-[16px] 2xl:text-[20px]"
                 }
@@ -187,7 +187,7 @@ export default function App() {
               <Link
                 to='/contact'
                 className={
-                  location.pathname === "/contact"
+                  location.pathname === "/contact" && window.scroll(0, 0)
                     ? "font-semibold text-[18px] xl:text-[16px] 2xl:text-[20px]"
                     : "text-[18px] xl:text-[16px] 2xl:text-[20px]"
                 }
@@ -200,7 +200,7 @@ export default function App() {
               <Link to='/login'>Login</Link>
             </span>
           </div>
-          <div className='flex  lg:hidden gap-10 pr-5'>
+          <div className='flex justify-end  lg:hidden gap-10 pr-5'>
             <Navbar onMenuOpenChange={setIsMenuOpen}>
               <NavbarContent>
                 <NavbarMenuToggle

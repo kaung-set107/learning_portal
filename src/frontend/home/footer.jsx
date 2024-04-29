@@ -9,7 +9,7 @@ import {
 import { SocialIcon } from 'react-social-icons';
 const Footer = () => {
   return (
-    <div className='text-white container' style={{ background: "#BC1F40" }}>
+    <div className='text-white ' style={{ background: "#BC1F40" }}>
       <div className='w-full md:w-[90%] mx-auto py-5 sm:py-10'>
         <div className='flex flex-wrap items-center justify-between p-5'>
           <div className='w-[300px]'>
@@ -23,7 +23,7 @@ const Footer = () => {
               <FontAwesomeIcon icon={faLocationDot} size='lg' />{" "}
               <p>
                 Room 303,Third Floor, Khattar Street, Grand Khattar Residence,
-                Sanchaung Township, Yanogn, Myanmar.
+                Sanchaung Township, Yangon, Myanmar.
               </p>
             </div>
             <div className='pb-3 flex gap-3'>

@@ -115,12 +115,12 @@ export const Testimonials = () => {
         className='p-1 '
       >
 
-        {testimonialList.map((st, index) => (
+        {testimonialList.slice(0, 5).map((st, index) => (
           <div
             key={index}
-            className='flex gap-2 justify-center sm:p-0'
+            className='flex gap-2 justify-center sm:p-5'
           >
-            <div className=' w-[300px] h-[600px] sm:h-[500px] md:w-[330px] md:h-[537px] p-10 rounded-md ' style={{ background: "rgba(255, 255, 255, 0.03)" }}>
+            <div className=' w-[300px] h-[600px] sm:h-[500px] md:w-[330px] md:h-[537px] lg:w-[280px] p-10 rounded-md ' style={{ background: "rgba(255, 255, 255, 0.03)" }}>
               <div className='flex flex-col  justify-center items-center'>
                 <Image
                   src={`data:image/jpeg;base64,${st?.image}`}
@@ -128,10 +128,10 @@ export const Testimonials = () => {
                   className=' w-[177px] h-[177px] sm:w-[177px] sm:h-[177px] md:w-[177px] md:h-[177px] mb-10 sm:mb-0 sm:mt-2 rounded-[50%]'
                   alt='testimonal participant'
                 />
-                <span className='font-semibold text-[18px] sm:text-[18px] my-3 text-[#fff]'>{st?.title}</span>
+                <span className='flex justify-center font-semibold text-[18px] sm:text-[18px] my-3 text-[#fff] lg:w-[300px]'>{st?.title}</span>
               </div>
               <div className=' flex justify-center'>
-                <span className=' text-center font-normal text-[16px] sm:text-[16px]  w-[300px] h-[204px] text-[#fff]'>{st.description}</span>
+                <span className=' text-center font-normal text-[16px] sm:text-[16px] lg:text-[14px]  w-[300px] h-[204px] text-[#fff]'>{st.description.substring(0, 250)}...</span>
 
               </div>
             </div>
@@ -143,7 +143,7 @@ export const Testimonials = () => {
 
 
       </Carousel>
-      <div className='flex justify-center mt-20 '>
+      <div className='flex justify-center mt-20 py-3 sm:py-0 '>
         <Link href='/testimonial-page'>
           <button className='text-[#fefeff] text-[16px] hover:text-primary font-semibold border-1 border-white-700 p-2 rounded-lg sm:hover:-translate-y-1 sm:hover:scale:110 duration-500'>
             See All Testimonials &nbsp; <FontAwesomeIcon icon={faArrowUpRightFromSquare} className='text-[blue]' />

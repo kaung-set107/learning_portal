@@ -302,7 +302,7 @@ export default function Sidebar(props) {
                         <span className="ml-4 font-medium ">Quizzes</span>
                       </div>
                     </Link> */}
-                    <Link
+                    {/* <Link
                       to="/by-instructor/assignment-results"
                     >
                       <div className="hover:bg-blue-100 px-4 py-3 m-auto text-sm">
@@ -312,6 +312,16 @@ export default function Sidebar(props) {
                         </span>
                       </div>
                     </Link>
+                    <Link
+                      to="/by-instructor/exam-results"
+                    >
+                      <div className="hover:bg-blue-100 px-4 py-3 m-auto text-sm">
+                        &nbsp;
+                        <span className="ml-4 font-medium ">
+                          Exam Results
+                        </span>
+                      </div>
+                    </Link> */}
                     {/* <Link to='/by-instructor/learning-materials' onClick={() => setCou(true)}>
                     <div className='hover:bg-blue-100 px-4 py-3 m-auto text-sm'>
                       &nbsp;

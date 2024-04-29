@@ -1,10 +1,10 @@
-import {Input } from '@nextui-org/react'
+import { Input } from '@nextui-org/react'
 import {
 
   Button,
- Textarea
+  Textarea
 } from '@nextui-org/react'
-import { useState,useEffect} from 'react'
+import { useState, useEffect } from 'react'
 import apiInstance from '../../util/api.js'
 import Swal from 'sweetalert2'
 
@@ -57,11 +57,11 @@ export default function EmployeeInput() {
     formData.append('image', profile)
     formData.append('gender', gender)
     // formData.append('role',role)
-      formData.append('introduction',intro)
-        formData.append('qualification',quali)
-console.log(formData)
+    formData.append('introduction', intro)
+    formData.append('qualification', quali)
+    console.log(formData)
     apiInstance
-      .put('instructors/'+Id, formData, {
+      .put('instructors/' + Id, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -69,10 +69,10 @@ console.log(formData)
       .then(function () {
         Swal.fire({
           icon: 'success',
-          title: 'Login Successful',
-          text: 'Welcome back!',
-          confirmButtonText: 'OK',
-          confirmButtonColor: '#3085d6'
+          title: 'Updated Successful',
+          text: 'Nice!',
+          showConfirmButton: false,
+          timer: 2000
         })
       })
       .catch(error => {
@@ -80,10 +80,10 @@ console.log(formData)
       })
   }
 
-    useEffect(()=>{
-     const getInstructor = async () => {
+  useEffect(() => {
+    const getInstructor = async () => {
       await apiInstance.get(`instructors/${Id}`,).then((res) => {
-  
+
         setPhone(res.data.data.phone)
         setName(res.data.data.name)
         setNrc(res.data.data.nrc)
@@ -94,18 +94,18 @@ console.log(formData)
         // setRole(res.data.data.role)
         setAddress(res.data.data.address)
         setWorkExp(res.data.data.experience)
-    
-             setProfileAnchor(
-            res.data.data.image
-              ? getFile({payload: res.data.data.image})
-              : ''
-          )
-        
-        console.log(  res.data.data, "emp");
+
+        setProfileAnchor(
+          res.data.data.image
+            ? getFile({ payload: res.data.data.image })
+            : ''
+        )
+
+        console.log(res.data.data, "emp");
       });
     };
     getInstructor();
-  },[])
+  }, [])
   return (
     <div className='gap-6'>
       <form onSubmit={handleSubmit(create)}>
@@ -113,10 +113,10 @@ console.log(formData)
         <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
           <Input
             type='text'
-        
+
             label='Name'
             placeholder='Name'
-value={name}
+            value={name}
             variant={variant}
             labelPlacement='outside'
             {...register('name', { required: true, onChange: (e) => setName(e.target.value) })}
@@ -126,13 +126,13 @@ value={name}
             label='Phone No'
             placeholder='Phone Number'
             variant={variant}
-           value={phone}
+            value={phone}
             onChange={(e) => setPhone(e.target.value)}
             labelPlacement='outside'
           />
         </div>
         <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
-         <Input
+          <Input
             type='text'
             variant={variant}
             label='Qualification'
@@ -151,7 +151,7 @@ value={name}
             onChange={(e) => setNrc(e.target.value)}
           />
         </div>
-      
+
         <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
           <Input
             type='email'
@@ -167,7 +167,7 @@ value={name}
             value={email}
             {...register('email', { required: true, onChange: (e) => setEmail(e.target.value) })}
           />
-        <Input
+          <Input
             type='text'
             onChange={(e) => setWorkExp(e.target.value)}
             label='Work Experience'
@@ -190,35 +190,35 @@ value={name}
             />
           </div>
           <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-           <Input
-            type='file'
-            onChange={handleProfile}
-            label='Profile'
-            placeholder=' '
-            labelPlacement='outside'
-            variant={variant}
-            endContent={
-            profileAnchor ? (
-              <Link
-                isExternal
-                showAnchorIcon
-                href={profileAnchor}
-                anchorIcon={<AnchorIcon/>}
-              ></Link>
-            ) : (
-              ''
-            )
-          }
-          />
+            <Input
+              type='file'
+              onChange={handleProfile}
+              label='Profile'
+              placeholder=' '
+              labelPlacement='outside'
+              variant={variant}
+              endContent={
+                profileAnchor ? (
+                  <Link
+                    isExternal
+                    showAnchorIcon
+                    href={profileAnchor}
+                    anchorIcon={<AnchorIcon />}
+                  ></Link>
+                ) : (
+                  ''
+                )
+              }
+            />
           </div>
         </div>
-   
 
- 
-     
+
+
+
 
         <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
-  
+
           {/* <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
             <label
               className={`text-sm font-semibold ${errors.position && errors.position.type === 'required'
@@ -246,12 +246,12 @@ value={name}
         
             </select>
           </div> */}
-            <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+          <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
             <label
-              // className={`text-sm font-semibold ${errors.gender && errors.gender.type === 'required'
-              //   ? 'text-[#f31260]'
-              //   : ''
-              //   }`}
+            // className={`text-sm font-semibold ${errors.gender && errors.gender.type === 'required'
+            //   ? 'text-[#f31260]'
+            //   : ''
+            //   }`}
             >
               Gender
             </label>
@@ -268,45 +268,45 @@ value={name}
               <option value='female'>Female</option>
             </select>
           </div>
-             <Textarea
-      label="Introduction"
-      labelPlacement="outside"
-      placeholder="Enter your info"
-      value={intro}
-      onChange={e=>setIntro(e.target.value)}
-      
-    />
+          <Textarea
+            label="Introduction"
+            labelPlacement="outside"
+            placeholder="Enter your info"
+            value={intro}
+            onChange={e => setIntro(e.target.value)}
+
+          />
         </div>
 
 
 
-        
+
 
         <div className='block w-full flex-wrap md:flex-nowrap mb-4 md:mb-0 gap-4 mt-7'>
-         
-        
-        <div className='flex justify-center w-full flex-wrap md:flex-nowrap mb-4 md:mb-0 gap-4 mt-3'>
-          <Button
-            size='sm'
-            color='danger'
-            variant='shadow'
-            className='rounded-xl px-4 py-0 text-left'
-          >
-            <Link to='/emp'>Cancel</Link>
-          </Button>
-          <Button
-            size='sm'
-            color='primary'
-            variant='shadow'
-            className='rounded-xl px-4 py-0 text-left'
-            type='submit'
-          >
-            Update
-          </Button>
-        </div>
+
+
+          <div className='flex justify-center w-full flex-wrap md:flex-nowrap mb-4 md:mb-0 gap-4 mt-3'>
+            <Button
+              size='sm'
+              color='danger'
+              variant='shadow'
+              className='rounded-xl px-4 py-0 text-left'
+            >
+              <Link to='/emp'>Cancel</Link>
+            </Button>
+            <Button
+              size='sm'
+              color='primary'
+              variant='shadow'
+              className='rounded-xl px-4 py-0 text-left'
+              type='submit'
+            >
+              Update
+            </Button>
+          </div>
         </div>
       </form>
- 
+
     </div>
   )
 }
