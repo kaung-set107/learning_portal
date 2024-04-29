@@ -172,9 +172,9 @@ const About = () => {
         <div className=''>
             <MSINav />
             <form onSubmit={handleSubmit(createForm)} className='flex flex-col p-5 sm:pl-60 sm:pr-60 sm:pt-20 sm:pb-10  gap-10 w-full'>
-                <div className='flex flex-col gap-5 sm:gap-10 '>
-                    <span className='text-[20px] sm:text-[32px] font-medium sm:font-semibold text-[#000]'>Student Counseling Booking </span>
-                    <span className='text-[11px] sm:text-[20px] font-light sm:font-normal text-[#000]'>Complete the following form and our staff will contact you.</span>
+                <div className='flex flex-col gap-2 sm:gap-5 '>
+                    <span className='text-[20px] sm:text-[32px] font-medium sm:font-semibold text-[#0B2743]'>Student Counseling Booking </span>
+                    <span className='text-[11px] sm:text-[20px] font-light sm:font-normal text-[#0B2743]'>Complete the following form and our staff will contact you.</span>
                 </div>
                 <div className='flex flex-col sm:flex-row gap-10 text-[14px] font-normal'>
                     <div className='w-full flex flex-col gap-2 '>

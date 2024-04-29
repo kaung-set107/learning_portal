@@ -37,52 +37,19 @@ export default function EventPage() {
                     </div>) : (
                     <>
                         {/* Web */}
-                        <div className='hidden sm:grid grid-cols-4 items-center justify-around flex-wrap pl-[130px] pr-[33px]'>
-                            {eventList?.map((b, index) => (
+                        {/* Web */}
+                        < div className='hidden sm:grid grid-cols-4 lg:gap-5 items-center justify-around flex-wrap pl-[130px] pr-[33px]' >
+                            {eventList?.slice(0, 4)?.map((b, index) => (
                                 <Link href={`/events/${b._id}`} key={index}>
                                     <div className='relative cursor-pointer hover:translate-y-1 hover:scale-105 duration-500'>
                                         <Image
                                             src={`data:image/jpeg;base64,${b?.image}`}
-                                            className=' w-[320px] h-[511px]  rounded-[24px]'
+                                            className=' md:w-[320px] md:h-[511px] lg:w-[390px] lg:h-[450px]  rounded-[24px]'
                                         // width={620}
                                         // height={354}
                                         />
                                         <div
-                                            className='h-[200px] flex flex-col items-center justify-start absolute bottom-0 w-[320px] p-2 z-50 rounded-[20px]'
-                                            style={{
-                                                background:
-                                                    "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 125.65%)",
-                                            }}
-                                        >
-                                            <span className=' text-center text-[20px]  text-white font-semibold '>
-                                                {b.title}
-                                            </span>
-                                            <p className=' text-center font-[light] text-[15px] text-white'>
-                                                {moment(b?.startDate).locale("en").tz("Asia/Yangon").format("LLLL")}
-                                                {/* {b.startDate?.split('T')[0]} */}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </Link>
-                            )
-
-
-
-                            )}
-                        </div>
-                        {/* Mobile */}
-                        <div className='grid sm:hidden grid-cols-1 items-center justify-around flex-wrap pl-[40px] pr-[33px]'>
-                            {eventList?.slice(0, 1).map((b, index) => (
-                                <Link href={`/events/${b._id}`} key={index}>
-                                    <div className='relative cursor-pointer'>
-                                        <Image
-                                            src={`data:image/jpeg;base64,${b?.image}`}
-                                            className=' w-[300px] h-[411px]  rounded-[24px]'
-                                        // width={620}
-                                        // height={354}
-                                        />
-                                        <div
-                                            className='h-[200px] flex flex-col items-center justify-center absolute bottom-0 w-[300px] p-2 z-50 rounded-[20px]'
+                                            className='h-[200px] flex flex-col pt-20  justify-start absolute bottom-0 w-full p-4 z-50 rounded-[20px]'
                                             style={{
                                                 background:
                                                     "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 125.65%)",
@@ -99,14 +66,50 @@ export default function EventPage() {
                                 </Link>
                             )
 
+
+
                             )}
-                        </div>
+                        </div >
+                        {/* Mobile */}
+                        < div className='grid sm:hidden grid-cols-1 items-center justify-around flex-wrap pl-[40px] pr-[33px]' >
+                            {
+                                eventList?.slice(0, 1).map((b, index) => (
+                                    <Link href={`/events/${b._id}`} key={index}>
+                                        <div className='relative cursor-pointer'>
+                                            <Image
+                                                src={`data:image/jpeg;base64,${b?.image}`}
+                                                className=' w-[300px] h-[411px]  rounded-[24px]'
+                                            // width={620}
+                                            // height={354}
+                                            />
+                                            <div
+                                                className='h-[200px] flex flex-col items-start justify-start sm:items-center sm:justify-center absolute bottom-0 w-[200px] sm:w-[300px] p-2 z-50 rounded-[20px]'
+                                                style={{
+                                                    background:
+                                                        "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 125.65%)",
+                                                }}
+                                            >
+                                                <h3 className='text-[16px] w-[200px] sm:w-full sm:text-[20px]  text-white font-semibold '>
+                                                    {b.title}
+                                                </h3>
+                                                <p className='font-[light] text-[15px] text-white'>
+                                                    {b.startDate?.split('T')[0]}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                )
+
+                                )
+                            }
+                        </div >
                     </>
                 )}
 
 
 
             </div >
+            <div className='lg:pt-[100px]'></div>
             <Footer />
         </div>
     )

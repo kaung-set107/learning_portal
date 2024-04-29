@@ -196,7 +196,7 @@ export default function CourseDetail(props) {
                       questions related to your interests and goals, and we will
                       help set you on the right path on your learning journey.{" "}
                     </p>
-                    <Button className='text-[#fff] bg-[#053CFF] text-[12px] sm:text-[16px] rounded-[4px] sm:rounded-[8px] mt-5 sm:mt-10 sm:hover:-translate-x-1 sm:hover:scale-110 duration-700 w-[67px] h-[26px] sm:w-[227px] sm:h-[48px]'>
+                    <Button className='text-[#fff] bg-[#053CFF] text-[12px] sm:text-[16px] rounded-[4px] sm:rounded-[8px] mt-5 sm:mt-10 sm:hover:-translate-x-1 sm:hover:scale-110 duration-700 w-[67px] h-[26px] sm:w-[227px] sm:h-[48px] lg:w-[200px] lg:h-[40px]'>
                       <span className='p-2'>Take Quiz</span>
                     </Button>
                   </div>
@@ -255,10 +255,10 @@ export default function CourseDetail(props) {
                         </p>
                         <div
                           // style={{ padding: "70px 28px 0px 120px" }}
-                          className='pt-8  left-[98px] b-[-13px] pl-unit-20 sm:pt-unit-18 sm:pl-unit-28'
+                          className='pt-8   pl-unit-20 sm:pt-unit-18 sm:pl-unit-28 lg:pl-unit-20'
                         >
                           <Button
-                            className='bg-red-500 hover:bg-red-700 text-[#fff] text-[12px] sm:text-[16px] font-normal sm:font-medium rounded-[6px] sm:rounded-[12px] w-[167px] h-[36px] sm:w-[227px] sm:h-[48px]'
+                            className='bg-red-500 hover:bg-red-700 text-[#fff] text-[12px] sm:text-[16px] font-normal sm:font-medium rounded-[6px] sm:rounded-[12px] w-[167px] h-[36px] sm:w-[227px] sm:h-[48px] lg:w-[200px] lg:h-[40px]'
                             onClick={() => { handleSubjectDetail(e, "sub-detail"), window.scroll(0, 0) }}
                           >
                             See More
@@ -546,7 +546,7 @@ export default function CourseDetail(props) {
                   </p>
                 </div>
 
-                <div style={{ width: "565px", height: "565px" }} className='hidden sm:block'>
+                <div style={{ width: "465px", height: "565px" }} className='hidden sm:block'>
                   <div
                     style={{
                       padding: "50.35px 0px 107.35px 13.038px",
@@ -556,7 +556,7 @@ export default function CourseDetail(props) {
                     <Image
                       src={Certi}
                       style={{
-                        width: "416.905px",
+                        width: "380.905px",
                         height: "346.011px",
                       }}
                     />

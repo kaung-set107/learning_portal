@@ -54,7 +54,7 @@ export default function Contact() {
             <MSINav />
             <div className=''>
                 <div className='bg-[#fff] h-[900px] w-[1000px] overflow-visible'>
-                    <div className='w-[545px] h-[480px] p-24'>
+                    <div className='w-[545px] h-[480px] p-24 absolute left-[20px]'>
                         <div className='flex w-[356px] h-[68px] font-[Montserrat-Bold] gap-4'>
                             <span className='text-[50px] font-bold'>Get </span>
                             <span className='text-[50px] font-bold'>in</span>
@@ -102,7 +102,7 @@ export default function Contact() {
 
                         </div>
                     </div>
-                    <div className=' h-[700px] w-[545px]  top-[200px] absolute right-[350px]' >
+                    <div className=' h-[700px] w-[545px]  top-[200px] absolute right-[30px]' >
                         <GoogleMapReact
                             bootstrapURLKeys={{ key: "" }}
                             defaultCenter={defaultProps.center}

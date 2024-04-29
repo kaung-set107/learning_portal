@@ -28,7 +28,7 @@ export const StudentAchievements = () => {
       <h2 className='bg-[#BC1F40] text-[#fff] text-center font-semibold text-4xl p-16 mr-9 mb-9 mt-12 w-full overflow-hidden'>
         <img
           src={EHalf}
-          className="absolute  right-0 w-[120px]  top-[1799px]"
+          className="absolute  right-0 w-[120px]  top-[1940px]"
           alt=""
         />
         Students Achievements

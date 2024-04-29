@@ -81,7 +81,7 @@ const SubjectDetail = (props) => {
       <div className=' md:p-[24 20 100 40]'>
         <div className='flex flex-col gap-10 duration-100'>
           {/* Video Section */}
-          <div className='flex flex-col gap-10 md:gap-56 pt-5 md:pt-20 md:flex-row'>
+          <div className='flex flex-col gap-10 md:gap-32 pt-5 md:pt-20 md:flex-row'>
             <div className='flex w-full gap-2 md:w-[900px] '>
               <div className='hidden md:flex'>
                 <Button
@@ -116,7 +116,7 @@ const SubjectDetail = (props) => {
                           }
                           //   title={assignList.name}
                           allowFullScreen
-                          className='border w-[375px] h-[136px] md:w-[911px] md:h-[306px]'
+                          className='border w-[375px] h-[136px] md:w-[711px] md:h-[306px]'
                           allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
                         // style={{ width:'1400px',height:'500px' }}
                         ></iframe>
@@ -206,11 +206,11 @@ const SubjectDetail = (props) => {
                   backgroundColor: "#FFF",
                   boxShadow: "0px 2px 12px 0px rgba(0, 0, 0, 0.10)",
                 }}
-                className='flex flex-col w-[160px] h-[119px] md:w-[305px] md:h-[177px] md:p-[24px 120px 50px 120px]'
+                className='flex flex-col w-[160px] h-[119px] md:w-[205px] md:h-[177px] md:p-[24px 120px 50px 120px]'
               >
                 <Image
                   src={Time}
-                  className='w-[40px] h-[40px] md:w-[64px] md:h-[64px]'
+                  className='w-[30px] h-[30px] md:w-[40px] md:h-[40px]'
                 />
                 <span className='text-[16px] md:text-[20px] font-medium'>
                   Duration
@@ -223,7 +223,7 @@ const SubjectDetail = (props) => {
                     // width: "298px",
                     // height: "29px",
                   }}
-                  className='flex justify-center text-[14px] w-[200px]  h-[24px] md:text-[24px] font-medium md:w-[298px] md:h-[29px]'
+                  className='flex justify-center text-[14px] w-[200px]  h-[24px] md:text-[24px] font-medium md:w-[208px] md:h-[29px]'
                 >
                   {teacherName?.course?.durationType === 'month' ? `${parseInt((teacherName?.course?.durationValue))} Months` : teacherName?.course?.durationType === 'weeks' ? `${parseInt((teacherName?.course?.durationValue))} Weeks` : `${parseInt((teacherName?.course?.durationValue))} Days`}
 
@@ -243,7 +243,7 @@ const SubjectDetail = (props) => {
               >
                 <Image
                   src={Person}
-                  className='w-[40px] h-[40px] md:w-[64px] md:h-[64px]'
+                  className='w-[30px] h-[30px] md:w-[40px] md:h-[40px]'
                 />
                 <span className='text-[16px] md:text-[20px] font-medium'>
                   Instructor
@@ -268,7 +268,7 @@ const SubjectDetail = (props) => {
               >
                 <Image
                   src={Book}
-                  className='w-[40px] h-[40px] md:w-[64px] md:h-[64px]'
+                  className='w-[30px] h-[30px] md:w-[40px] md:h-[40px]'
                 />
                 <span className='text-[16px] md:text-[20px] font-medium'>
                   Batch 10
@@ -291,7 +291,7 @@ const SubjectDetail = (props) => {
               >
                 <Image
                   src={Date}
-                  className='w-[40px] h-[40px] md:w-[64px] md:h-[64px]'
+                  className='w-[30px] h-[30px] md:w-[40px] md:h-[40px]'
                 />
                 <span className='text-[16px] md:text-[20px] font-medium'>
                   Exam
@@ -328,7 +328,7 @@ const SubjectDetail = (props) => {
               >
                 Meet Your Teacher
               </span>
-              <div className='flex flex-col gap-0 md:gap-5 md:flex-row w-[345px] h-full md:w-[1360px] md:h-[565px]'>
+              <div className='flex flex-col gap-0 md:gap-5 md:flex-row w-[345px] h-full md:w-[420px] md:h-[565px]'>
                 {teacherName.instructors && teacherName.instructors.map((tlist) => (
                   <div className='flex flex-col gap-2 md:w-[500px]'>
 

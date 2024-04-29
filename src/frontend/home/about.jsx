@@ -51,7 +51,7 @@ const About = () => {
             <div className='flex justify-start'>
               <img
                 src={Sli1}
-                className='w-[174px] h-[173px]'
+                className='w-[164px] h-[163px]'
                 alt=''
                 style={{ borderRadius: '79.509px 0px 0px 0px' }}
               />
@@ -106,11 +106,11 @@ const About = () => {
 
           </div>
           {/* Third */}
-          <div className='flex flex-col h-[456px] pl-[27px]'>
+          <div className='flex flex-col h-[456px] lg:pl-[10px]'>
             <div className='flex justify-start pt-[35px] overflow-hidden'>
               <img
                 src={Sli5}
-                className='w-[84px] h-[83px] absolute left-[430px]'
+                className='w-[84px] h-[83px] absolute lg:left-[420px]'
                 alt=''
                 style={{ borderRadius: ' 0px 39.755px 0px 0px' }}
               />
@@ -123,7 +123,7 @@ const About = () => {
             <div className='flex justify-end pt-[45px] overflow-hidden'>
               <img
                 src={Sli1}
-                className='w-[131px] h-[131px] absolute top-[480px] left-[490px]'
+                className='w-[131px] h-[131px] absolute top-[480px] lg:left-[450px]'
                 alt=''
                 style={{ borderRadius: ' 0px 0px 71.559px 0px' }}
               />
@@ -177,9 +177,9 @@ const About = () => {
         </div> */}
       </div>
       {/* About MSI */}
-      <div className=' absolute pl-[150px] pr-[150px] top-[520px] mt-20'>
-        <div className='flex items-center justify-center gap-10 flex-wrap md:my-[100px] pl-[78px] pr-[75px] bg-white h-[556px]'>
-          <div className='w-[639px]'>
+      <div className=' absolute pl-[150px] lg:pl-[50px] pr-[50px] top-[520px] mt-32'>
+        <div className='flex  gap-10 lg:gap-24  md:my-[100px] pl-[78px] lg:pl-[40px] pr-[75px] bg-white lg:w-[1150px] h-[556px] lg:h-[480px]'>
+          <div className='w-[480px]'>
             <h1 className='text-[60px] md:text-[70px] leading-[60px] font-semibold flex flex-col gap-0'>
               {/* <small className='text-[#224362]'>About </small> <br />
             // <small className='text-[#BC1F40]'>MSI Academy</small> */}
@@ -204,7 +204,7 @@ const About = () => {
           <div className='my-10 relative'>
 
             <iframe
-              className='w-[350px] h-[200px] md:w-[400px] md:h-[300px] lg:w-[430px] lg:h-[328px]'
+              className='w-[350px] h-[200px] md:w-[400px] md:h-[300px] lg:w-[450px] lg:h-[300px]'
               src='https://www.youtube.com/embed/Z8fIWXY4Q9g'
               title='YouTube video player'
               frameBorder='0'
@@ -222,11 +222,11 @@ const About = () => {
       {/* Background Color */}
       <div className='overflow-hidden pt-[90px]'>
 
-        <div className='w-full md:w-[1980px] h-[527px] bg-[#0B2743] overflow-hidden'>
+        <div className='w-full md:w-[1980px] lg:w-[2000px] h-[527px] bg-[#0B2743] overflow-hidden'>
 
 
         </div>
-        <div className='w-[298px] h-[298px] bg-[#0B2743] rounded-[50%] -left-[150px] top-[1100px] absolute'></div>
+        <div className='w-[238px] h-[238px] bg-[#0B2743] rounded-[50%] -left-[150px] top-[1250px] absolute'></div>
       </div>
       {/* Founder */}
       <div className='w-[946px] h-[420px] flex flex-col gap-10 justify-center pt-[290px] container'>
