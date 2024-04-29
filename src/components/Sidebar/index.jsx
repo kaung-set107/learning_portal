@@ -277,7 +277,7 @@ export default function Sidebar(props) {
               <h3 className="my-3 text-xl font-bold">Instructor</h3>
 
               {/* instructor sidebar */}
-              {getCurrentUser().roles.includes("admin") && (
+              {getCurrentUser().roles.includes("admin") || getCurrentUser().roles.includes("instructor") && (
                 <Accordion>
                   <AccordionItem
                     key="by-instructor"
