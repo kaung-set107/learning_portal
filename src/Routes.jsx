@@ -108,6 +108,7 @@ import SurveyResult from "./frontend/features/survey-results/pages/SurveyResult.
 import QuizResults from "./frontend/features/quiz-results/pages/QuizResults.jsx";
 import InstructorQuizResult from "./frontend/features/quiz-results/pages/QuizResult.jsx";
 import QuizUpdate from "./frontend/features/quizzes/pages/QuizUpdate.jsx";
+import ExamResults from "./frontend/features/exam-results/pages/ExamResults.jsx";
 export default function RouteFile() {
   console.log(localStorage.getItem("user"), "local use");
   return (
@@ -244,6 +245,9 @@ export default function RouteFile() {
               </Route>
               <Route path="assignment-results">
                 <Route index element={<AssignmentResults />} />
+              </Route>
+              <Route path="exam-results">
+                <Route index element={<ExamResults />} />
               </Route>
               <Route path="surveys">
                 {/* <Route path=":id/survey-results" element={<SurveyResults />} /> */}
