@@ -274,27 +274,25 @@ export default function Sidebar(props) {
                 </>
               )}
 
-              <h3 className="my-3 text-xl font-bold">Instructor</h3>
-
               {/* instructor sidebar */}
-              {getCurrentUser().roles.includes("admin") || getCurrentUser().roles.includes("instructor") && (
-                <Accordion>
-                  <AccordionItem
-                    key="by-instructor"
-                    aria-label="by instructor"
-                    title="By Instructor"
-                    startContent={<FontAwesomeIcon icon={faGear} size="xl" />}
-                  >
-                    <Divider></Divider>
-                    <Link
-                      to="/by-instructor/subjects"
+              {getCurrentUser().roles.includes("instructor") && (
+                <>
+                  <h3 className="my-3 text-xl font-bold">Instructor</h3>
+                  <Accordion>
+                    <AccordionItem
+                      key="by-instructor"
+                      aria-label="by instructor"
+                      title="By Instructor"
+                      startContent={<FontAwesomeIcon icon={faGear} size="xl" />}
                     >
-                      <div className="hover:bg-blue-100 px-4 py-3 m-auto text-sm">
-                        &nbsp;
-                        <span className="ml-4 font-medium ">Subjects</span>
-                      </div>
-                    </Link>
-                    {/* <Link
+                      <Divider></Divider>
+                      <Link to="/by-instructor/subjects">
+                        <div className="hover:bg-blue-100 px-4 py-3 m-auto text-sm">
+                          &nbsp;
+                          <span className="ml-4 font-medium ">Subjects</span>
+                        </div>
+                      </Link>
+                      {/* <Link
                       to="/by-instructor/quizzes"
                     >
                       <div className="hover:bg-blue-100 px-4 py-3 m-auto text-sm">
@@ -302,7 +300,7 @@ export default function Sidebar(props) {
                         <span className="ml-4 font-medium ">Quizzes</span>
                       </div>
                     </Link> */}
-                    {/* <Link
+                      {/* <Link
                       to="/by-instructor/assignment-results"
                     >
                       <div className="hover:bg-blue-100 px-4 py-3 m-auto text-sm">
@@ -322,14 +320,15 @@ export default function Sidebar(props) {
                         </span>
                       </div>
                     </Link> */}
-                    {/* <Link to='/by-instructor/learning-materials' onClick={() => setCou(true)}>
+                      {/* <Link to='/by-instructor/learning-materials' onClick={() => setCou(true)}>
                     <div className='hover:bg-blue-100 px-4 py-3 m-auto text-sm'>
                       &nbsp;
                       <span className='ml-4 font-medium '>Learning Materials</span>
                     </div>
                   </Link> */}
-                  </AccordionItem>
-                </Accordion>
+                    </AccordionItem>
+                  </Accordion>
+                </>
               )}
 
               <Divider></Divider>

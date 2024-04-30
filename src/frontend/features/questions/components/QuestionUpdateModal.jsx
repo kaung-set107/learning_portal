@@ -78,6 +78,7 @@ export default function QuestionUpdateModal(props) {
       ...formData,
       options: modifiedOptions,
       correctAnswer: modifiedCorrectAnswers,
+      type: formData.type?.currentKey ?? formData.type[0],
     };
 
     delete payload.isLoading;
@@ -93,19 +94,19 @@ export default function QuestionUpdateModal(props) {
     if (e.currentKey == "trueFalse") {
       setFormData((prev) => ({
         ...prev,
-        type: e.currentKey,
+        type: [e.currentKey],
         answerType: "radio",
       }));
     } else if (e.currentKey == "multipleChoice") {
       setFormData((prev) => ({
         ...prev,
-        type: e.currentKey,
+        type: [e.currentKey],
         answerType: "checkbox",
       }));
     } else {
       setFormData((prev) => ({
         ...prev,
-        type: e.currentKey,
+        type: [e.currentKey],
         answerType: "text",
       }));
     }
@@ -130,6 +131,7 @@ export default function QuestionUpdateModal(props) {
         ...questionData,
         options: modifiedOptions,
         correctAnswer: modifiedCorrectAnswer,
+        type: questionData.type ? [questionData.type] : [],
         isLoading: false,
         isOpen: true,
       };
@@ -171,7 +173,7 @@ export default function QuestionUpdateModal(props) {
             {(onClose) => (
               <>
                 <ModalHeader className="flex flex-col gap-1">
-                  Quiz Question Create
+                  Quiz Question Update
                 </ModalHeader>
                 <ModalBody>
                   <form>
@@ -242,6 +244,7 @@ export default function QuestionUpdateModal(props) {
                         placeholder="Select an question type"
                         className="max-w-xs"
                         labelPlacement="outside"
+                        selectedKeys={formData.type ?? []}
                         onSelectionChange={(e) => onQuestionTypeChange(e)}
                       >
                         {(type) => (
