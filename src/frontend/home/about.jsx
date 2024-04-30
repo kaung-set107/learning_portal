@@ -234,24 +234,7 @@ const About = () => {
           Founders of MSI Academy
         </h1>
         <div className='flex gap-2'>
-          <div
-            className='rounded-[20px]  mt-10'
 
-          >
-            <Image
-              width={325}
-              className='w-[273px] h-[292px]'
-              style={{ borderRadius: '0px 157.68px' }}
-
-              src={Team1}
-            />
-            <p className='font-[semibold] my-1 text-[20px] tracking-[0.02em] text-[#000] text-center'>
-              President
-            </p>
-            <p className='font-[light] text-[20px] tracking-[0.02em] text-[#000] text-center'>
-              U Tin Aung Soe
-            </p>
-          </div>
           <div
             className=' rounded-[20px]  mt-10'
 
@@ -259,7 +242,7 @@ const About = () => {
             <Image
 
               className='w-[273px] h-[292px]'
-              style={{ borderRadius: '147.68px 147.68px 0px 0px' }}
+              style={{ borderRadius: '0px 157.68px' }}
 
               src={Team2}
             />
@@ -268,6 +251,25 @@ const About = () => {
             </p>
             <p className='font-[light] text-[20px] tracking-[0.02em] text-[#000] text-center'>
               U Thet Win Naing
+            </p>
+          </div>
+          <div
+            className='rounded-[20px]  mt-10'
+
+          >
+            <Image
+              width={325}
+              className='w-[273px] h-[292px]'
+              style={{ borderRadius: '147.68px 147.68px 0px 0px' }}
+
+
+              src={Team1}
+            />
+            <p className='font-[semibold] my-1 text-[20px] tracking-[0.02em] text-[#000] text-center'>
+              President
+            </p>
+            <p className='font-[light] text-[20px] tracking-[0.02em] text-[#000] text-center'>
+              U Tin Aung Soe
             </p>
           </div>
           <div
