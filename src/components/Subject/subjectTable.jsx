@@ -73,7 +73,7 @@ export default function AttendanceTable() {
         .get(`subjects`, { params: { limit: 80, rowsPerPage: rowsPerPage } })
         .then(res => {
           setSubjectList(res.data.data)
-          console.log(res.data, 'att')
+          // console.log(res.data, 'att')
           setDataCount(res.data.count)
           setPages(res.data.count % rowsPerPage === 0
             ? res.data.count / rowsPerPage
@@ -95,7 +95,7 @@ export default function AttendanceTable() {
 
   const handleOpen = event => {
     onOpen()
-    console.log(event.currentTarget.getAttribute('data-key'))
+    // console.log(event.currentTarget.getAttribute('data-key'))
     setDelID(event.currentTarget.getAttribute('data-key'))
   }
 
@@ -105,7 +105,7 @@ export default function AttendanceTable() {
   }
 
   const handleDelete = async () => {
-    console.log(setDelID)
+    // console.log(setDelID)
     await apiInstance.delete('subjects/' + delID).then(() => {
       setSubjectList(subjectList.filter(item => item._id !== delID))
       onClose()

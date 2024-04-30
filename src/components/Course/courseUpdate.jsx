@@ -37,12 +37,12 @@ export default function DepartmentInputForm() {
   } = useForm();
 
   const AddVideo = (val) => {
-    console.log(val, "val");
+    // console.log(val, "val");
     const newData = {
       links: val,
     };
     setNewVideoLink([...newVideoLink, newData]);
-    console.log([...newVideoLink, newData], "res");
+    // console.log([...newVideoLink, newData], "res");
   };
 
   const DeleteVideo = async (val) => {
@@ -106,7 +106,7 @@ export default function DepartmentInputForm() {
     };
     const getCourse = async () => {
       await apiInstance.get(`courses/${CourseID}`).then((res) => {
-        console.log(res.data.data, "cou res");
+        // console.log(res.data.data, "cou res");
         setCourseList(res.data.data)
 
         setCategory(res.data.data?.category?._id)

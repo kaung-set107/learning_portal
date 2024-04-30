@@ -7,6 +7,7 @@ import { Carousel } from 'react-responsive-carousel';
 // import "react-multi-carousel/lib/styles.css";
 import MSINav from "./msinav";
 import { Testimonials } from "./home_components/Testimonials";
+// import { NewsVsActivities } from "./home_components/NewsVsActivities";
 import { format } from 'date-fns';
 import Welcome from "../../assets/img/welcomeTeam.jpg";
 import Sli1 from '../../assets/Slider/Sli1.jpg'
@@ -23,7 +24,7 @@ import EBlue from "../../assets/img/EllipseHalf-blue.png";
 import EHalf from "../../assets/img/EllipseHalf.png";
 import posed, { PoseGroup } from 'react-pose';
 import Footer from "./footer";
-import apiInstance from "../../util/api";
+import apiInstance from "../../util/api"
 import { getFile } from "../../util";
 import { Fade } from "react-awesome-reveal";
 import { useNavigate } from "react-router";
@@ -130,7 +131,7 @@ const Body = () => {
       <MSINav />
 
       {/* Banner */}
-      <div className='h-[60vh] mb-[100px]'>
+      <div className='h-[20vh] sm:h-[60vh] mb-[100px]'>
 
         <Carousel
 
@@ -162,57 +163,25 @@ const Body = () => {
         >
           {bannerList.map((i) => (
             <>
-              <img src={getFile({ payload: i })} className='h-[70vh] w-[160vh] container' />
+              <img src={getFile({ payload: i })} className=' h-[30vh] sm:h-[70vh] w-[10vh] sm:w-[160vh] container' />
             </>
           ))}
 
-
-
-          {/* <div style={{
-            backgroundImage: `url(${Sli2})`, backgroundRepeat: 'no-repeat', backgroundSize: 'contain'
-          }} className='h-[50vh] sm:h-[70vh]  container' ></div> */}
-          {/* 
-          <img src={Sli2} className='h-[70vh] w-[160vh] container ' />
-
-
-          <img src={Sli3} className='h-[70vh] w-[160vh] container' />
-          <img src={Sli4} className='h-[70vh] w-[160vh] container' />
-          <img src={Sli5} className='h-[70vh] w-[160vh] container' />
-          <img src={Sli6} className='h-[70vh] w-[160vh] container' /> */}
-
-
-
         </Carousel>
       </div>
-      {/* <div>
-          {console.log(bannerList[bannerList?.length - 1], 'list')}
 
-        </div> */}
-      {/* <div style={{
-        backgroundImage: `url(${CVBanner})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'
-      }} className='h-[50vh] sm:h-[70vh]  container' >
-
-        <div style={{
-          background: "linear-gradient(0deg, rgba(0, 0, 0, 0.47) 0%, rgba(0, 0, 0, 0.47) 100%)"
-        }} className='flex  container flex-col gap-1 justify-center items-center absolute w-full h-[50vh] sm:h-[70vh]'>
-          <span className=' text-[22px] sm:text-[48px] font-medium text-[#FFF]'>"Explore Limitless Opportunities:</span>
-          <span className='text-[16px] sm:text-[48px] font-medium text-[#FFF]'>Your Gateway to Overseas MSI Education"</span>
-        </div >
-
-      </div > */}
-      {/* Header */}
 
       < div className='flex justify-around pl-[26px]  sm:pl-[57px] pr-[26px] sm:pr-[57px] pt-[20px] sm:pt-[100px] relative container overflow-hidden' >
 
         <div
-          className="absolute bg-[#0B2743] top-0 sm:top-2 -left-[130px] sm:-left-48 lg:-left-[240px] w-[150px] h-[150px] rounded-full md:w-[300px] md:h-[300px] lg:w-[300px] lg:h-[200px]"
+          className="absolute bg-[#0B2743] top-0 sm:top-2 -left-[130px] sm:-left-48 lg:-left-[240px] w-[170px] h-[140px] rounded-full md:w-[300px] md:h-[300px] lg:w-[300px] lg:h-[200px]"
 
         ></div>
         <div className='w-[654px] flex flex-col gap-10  mt-10'>
           <ScrollAnimation animateIn='wobble'
           >
             <h1
-              className='text-[20px] md:text-[28px] lg:text-[38px]  text-secondary font-semibold w-[300px] sm:w-[562px] font-Poppins '
+              className='text-[20px] md:text-[28px] lg:text-[38px] text-center sm:text-start  text-secondary font-semibold w-[300px] sm:w-[562px] font-Poppins '
               style={{ color: "#1F4164", fontWeight: "900" }}
             >
 
@@ -248,7 +217,7 @@ const Body = () => {
 
         <img
           src={EHalf}
-          className="absolute  right-0 w-[100px]  top-[520px]"
+          className="absolute  right-0 w-[80px]  top-[520px]"
           alt=""
         />
 
@@ -264,7 +233,7 @@ const Body = () => {
         < div className='flex flex-col p-5 md:p-5  relative container' id='cou' >
 
           <h1
-            className=' p-10 md:p-20  flex justify-center text-[25px] sm:text-[40px] font-[semibold] py-5'
+            className=' p-10 md:p-20  flex justify-center text-[30px] sm:text-[40px] font-[semibold] py-5'
             style={{ color: "#BC1F40", fontWeight: "900" }}
           >
             Courses We Offer
@@ -275,14 +244,14 @@ const Body = () => {
               <div
                 onClick={() => { handleRoute(e), window.scroll(0, 0) }}
 
-                className='w-[300px] h-[420px]'
+                className='w-[320px] sm:w-[300px] h-[420px]'
               >
                 <div>
                   <Image
                     // style={{ width: "500px", height: "280px" }}
                     alt={e.image?.originalname}
                     src={getFile({ payload: e.image })}
-                    className='w-[200px] h-full md:w-[300px] md:h-[200px] lg:w-[320px] lg:h-[250px] sm:hover:-translate-y-2 sm:hover:scale-105 duration-500'
+                    className='w-[320px] h-full md:w-[300px] md:h-[200px] lg:w-[320px] lg:h-[250px] sm:hover:-translate-y-2 sm:hover:scale-105 duration-500'
                   />
                   <div className='flex p-5 flex-col justify-start flex-grow '>
                     <span className='w-[280px] text-[14px] font-semibold text-[#B72041] flex'>MSI Academy &nbsp;<li>
@@ -333,13 +302,13 @@ const Body = () => {
           </div>
 
           <Link href='/home-course' className='flex justify-center py-5 pt-20 md:pt-24 lg:pt-36 sm:pt-0 '>
-            <span className=' text-[18px] sm:text-[20px] py-2 text-[#1F4164] hover:text-danger font-semibold text-center cursor-pointer border-1 border-[#1F4164] w-[130px] rounded-lg hover:border-danger-400'>
+            <span className=' text-[16px] sm:text-[20px] py-2 text-[#1F4164] hover:text-danger font-semibold text-center cursor-pointer border-1 border-[#1F4164] w-[110px] sm:w-[130px] rounded-lg hover:border-danger-400'>
               See All
             </span>
           </Link>
         </div >
       </ScrollAnimation >
-      < div style={{ background: "var(--blue-pale, #F4FAFF)", height: '1020px' }} className='flex flex-col gap-10 sm:gap-24 relative container' >
+      < div style={{ background: "var(--blue-pale, #F4FAFF)" }} className='flex flex-col gap-10 sm:gap-24 relative container h-[800px] sm:h-[1200px]' >
         {/* <img
           src={EBlue}
           className="absolute bottom-0 left-0 z-0 w-[150px] md:w-[150px]"
@@ -347,7 +316,7 @@ const Body = () => {
         /> */}
         < div className='flex flex-col justify-center items-center gap-4 pt-[44px]' >
           <span className='text-[#1F4164] text-[30px] sm:text-[48px] font-semibold w-full  sm:w-[679px] h-[55px] text-center'>Our Events</span>
-          <p className='text-[#1F4164] text-[16px] sm:text-[18px] font-normal w-full  sm:w-[639px] h-[54px] text-center'>
+          <p className='text-[#1F4164] text-[14px] sm:text-[18px] font-normal w-full  sm:w-[639px] h-[54px] text-center'>
             Clarity gives you the blocks & components you need to create a truly professional website, landing page or admin panel for your SaaS.
           </p>
         </div >
@@ -404,7 +373,7 @@ const Body = () => {
                         "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 125.65%)",
                     }}
                   >
-                    <h3 className='text-[16px] w-[200px] sm:w-full sm:text-[20px]  text-white font-semibold '>
+                    <h3 className='text-[16px] w-[200px] sm:w-full sm:text-[20px]  text-white font-semibold pt-[80px] sm:pt-0 '>
                       {b.title}
                     </h3>
                     <p className='font-[light] text-[15px] text-white'>

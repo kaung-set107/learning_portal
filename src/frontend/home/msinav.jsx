@@ -209,7 +209,7 @@ export default function App() {
                 />
               </NavbarContent>
 
-              <NavbarMenu className='bg-white top-14'>
+              <NavbarMenu className='bg-white top-[100px]'>
                 <NavbarItem>
                   <Link
                     to='/'
