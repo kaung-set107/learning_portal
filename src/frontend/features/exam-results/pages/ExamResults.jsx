@@ -5,7 +5,7 @@ import TableHeading from "../../../components/general/typography/TableHeading";
 import { getTableData } from "../data";
 import Loading from "../../../components/general/Loading";
 import { examResultsApi } from "../api";
-import BatchesDropdown from "../../batches/components/BatchesDropdown";
+// import BatchesDropdown from "../../batches/components/BatchesDropdown";
 import { Chip } from "@nextui-org/react";
 import { Select, SelectItem } from "@nextui-org/select";
 import CustomButton from "../../../components/general/CustomButton";
@@ -95,7 +95,7 @@ const ExamResults = () => {
   };
 
   const handleClearAllFilter = () => {
-    setFilters((prev) => ({ ...prev, exam: {}, batch: {} }));
+    setFilters((prev) => ({ ...prev, exam: {} }));
   };
 
   const fetchData = () => {
@@ -110,9 +110,8 @@ const ExamResults = () => {
       defaultPayload.exam = state.exam._id;
     }
 
-    if (state && state.batch) {
-      data.batch = state.batch;
-      defaultPayload.batch = state.batch?._id ?? state.batch;
+    if(state && state.subject) {
+      data.batch = {_id: state.subject.course?._id ?? state.subject.course}
     }
 
     let newFilters = { ...filters, ...data };
@@ -158,7 +157,7 @@ const ExamResults = () => {
               setFilters((prev) => ({ ...prev, subject: value }))
             }
           />
-          {filters.subject && filters.subject?._id && (
+          {/* {filters.subject && filters.subject?._id && (
             <BatchesDropdown
               className="shrink-0 w-[200px]"
               filters={filters}
@@ -166,7 +165,7 @@ const ExamResults = () => {
                 setFilters((prev) => ({ ...prev, batch: value }))
               }
             />
-          )}
+          )} */}
           {filters.subject && filters.subject?._id && (
             <ExamsDropdown
               subject={filters.subject._id}
@@ -192,9 +191,9 @@ const ExamResults = () => {
               {filters.exam && Object.keys(filters.exam).length > 0 && (
                 <Chip>Exam: {filters.exam.title}</Chip>
               )}
-              {filters.batch && Object.keys(filters.batch).length > 0 && (
-                <Chip>Batch: {filters.batch.name}</Chip>
-              )}
+              {/* {filters.batch && Object.keys(filters.batch).length > 0 && (
+                <Chip>Batch: {filters.batch._id}</Chip>
+              )} */}
               {filters.subject && Object.keys(filters.subject).length > 0 && (
                 <Chip>Subject: {filters.subject.title}</Chip>
               )}

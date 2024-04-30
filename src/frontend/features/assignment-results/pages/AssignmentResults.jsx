@@ -7,7 +7,7 @@ import Loading from "../../../components/general/Loading";
 import { assignmentResultsApi } from "../api";
 import AssignmentResultCheckModal from "../components/AssignmentResultCheckModal";
 import AssignmentsDropdown from "../../assignments/components/AssignmentsDropDown";
-import BatchesDropdown from "../../batches/components/BatchesDropdown";
+// import BatchesDropdown from "../../batches/components/BatchesDropdown";
 import { Chip } from "@nextui-org/react";
 import { Select, SelectItem } from "@nextui-org/select";
 import CustomButton from "../../../components/general/CustomButton";
@@ -110,7 +110,7 @@ const AssignmentResults = () => {
   };
 
   const handleClearAllFilter = () => {
-    setFilters((prev) => ({ ...prev, assignment: {}, batch: {} }));
+    setFilters((prev) => ({ ...prev, assignment: {} }));
   };
 
   const fetchData = () => {
@@ -125,9 +125,8 @@ const AssignmentResults = () => {
       defaultPayload.assignment = state.assignment._id;
     }
 
-    if (state && state.batch) {
-      data.batch = state.batch;
-      defaultPayload.batch = state.batch?._id ?? state.batch;
+    if(state && state.subject) {
+      data.batch = {_id: state.subject.course?._id ?? state.subject.course}
     }
 
     let newFilters = { ...filters, ...data };
@@ -179,15 +178,16 @@ const AssignmentResults = () => {
               setFilters((prev) => ({ ...prev, subject: value }))
             }
           />
-          {filters.subject && filters.subject?._id && (
+          {/* {filters.subject && filters.subject?._id && (
             <BatchesDropdown
+              isDisabled
               className="shrink-0 w-[200px]"
               filters={filters}
               setBatch={(value) =>
                 setFilters((prev) => ({ ...prev, batch: value }))
               }
             />
-          )}
+          )} */}
           {filters.subject && filters.subject?._id && (
             <AssignmentsDropdown
               subject={filters.subject._id}
@@ -213,9 +213,9 @@ const AssignmentResults = () => {
               {filters.assignment && Object.keys(filters.assignment).length > 0 && (
                 <Chip>Assignment: {filters.assignment.title}</Chip>
               )}
-              {filters.batch && Object.keys(filters.batch).length > 0 && (
+              {/* {filters.batch && Object.keys(filters.batch).length > 0 && (
                 <Chip>Batch: {filters.batch.name}</Chip>
-              )}
+              )} */}
               {filters.subject && Object.keys(filters.subject).length > 0 && (
                 <Chip>Subject: {filters.subject.title}</Chip>
               )}
