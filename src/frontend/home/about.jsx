@@ -80,7 +80,7 @@ const About = () => {
             <div className='flex justify-start pt-[35px]'>
               <img
                 src={Sli3}
-                className='w-[60px] h-[60px] '
+                className='w-[70px] h-[70px] '
                 alt=''
                 style={{ borderRadius: '19px' }}
               />
@@ -110,7 +110,7 @@ const About = () => {
             <div className='flex justify-start pt-[35px] overflow-hidden'>
               <img
                 src={Sli5}
-                className='w-[84px] h-[83px] absolute lg:left-[420px]'
+                className='w-[84px] h-[83px] absolute lg:left-[370px]'
                 alt=''
                 style={{ borderRadius: ' 0px 39.755px 0px 0px' }}
               />
@@ -123,7 +123,7 @@ const About = () => {
             <div className='flex justify-end pt-[45px] overflow-hidden'>
               <img
                 src={Sli1}
-                className='w-[131px] h-[131px] absolute top-[480px] lg:left-[450px]'
+                className='w-[131px] h-[131px] absolute top-[480px] lg:left-[410px]'
                 alt=''
                 style={{ borderRadius: ' 0px 0px 71.559px 0px' }}
               />

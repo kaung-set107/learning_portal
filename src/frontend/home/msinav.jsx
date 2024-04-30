@@ -105,7 +105,7 @@ export default function App() {
               color: "#224362",
             }}
           >
-            <span className='hover:-translate-y-1 hover:scale-125 duration-500'>
+            <span className='hover:-translate-y-1 hover:scale-105 duration-500'>
               <Link
                 to='/'
                 className={

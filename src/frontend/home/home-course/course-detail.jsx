@@ -69,9 +69,9 @@ export default function CourseDetail(props) {
       <div className=' sm:pt-[24px] sm:pr-[20px] sm:pb-[100px] sm:pl-[40px] '>
         <>
           {/* <Head /> */}
-          <div className='flex flex-col gap-5 sm:gap-10 md:gap-20 duration-100'>
+          <div className='flex flex-col gap-5 sm:gap-10 md:gap-10 duration-100'>
             {/* Video Section */}
-            <div className='flex flex-col gap-10 md:gap-56 pt-5 md:pt-20 md:flex-row'>
+            <div className='flex flex-col gap-10 md:gap-32 pt-5 md:pt-20 md:flex-row'>
               {!showVideoList[0] ? (
                 <div className='flex justify-center pt-[40px] w-full gap-2 md:w-[900px]'>
                   <Image src={Loading} className='transform-x-[-1] w-[350px] h-[250px]' />
@@ -89,7 +89,7 @@ export default function CourseDetail(props) {
                         }
                         //   title={assignList.name}
                         allowFullScreen
-                        className='border w-[375px] h-[136px] md:w-[911px] md:h-[306px]'
+                        className='border w-[375px] h-[136px] md:w-[711px] md:h-[306px]'
                         allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
                       // style={{ width:'1400px',height:'500px' }}
                       ></iframe>

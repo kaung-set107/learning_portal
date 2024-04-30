@@ -325,7 +325,7 @@ export default function DepartmentInputForm() {
                 </Button>
               }
             />
-            {newVideoLink.map((i, ind) => (
+            {newVideoLink && newVideoLink.map((i, ind) => (
               <div key={i} className='mt-3'>
                 <Input
                   type='text'
