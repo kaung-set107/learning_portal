@@ -72,20 +72,20 @@ const Body = () => {
             <Image src={Loading} className='transform-x-[-1] w-[350px] h-[250px]' />
 
           </div>) : (
-          <div className='grid grid-cols-1 sm:grid-cols-4 gap-2 md:gap-5 lg:gap-10 sm:gap-0 items-center justify-between md:flex-row sm:py-10 2xl:py-0'>
+          <div className='grid grid-cols-1 sm:grid-cols-4 gap-2 md:gap-5 lg:gap-10 2xl:gap-20 sm:gap-0 items-center justify-center md:flex-row sm:py-10 2xl:py-20'>
 
             {courseList.map((e) => (
               <div
                 onClick={() => handleRoute(e)}
 
-                className='w-[300px] h-[420px] '
+                className='w-[300px] 2xl:w-[380px] h-[420px]'
               >
-                <div>
+                <div >
                   <Image
                     // style={{ width: "500px", height: "280px" }}
                     alt={e.image?.originalname}
                     src={getFile({ payload: e.image })}
-                    className='w-[200px] h-full md:w-[300px] md:h-[200px] lg:w-[300px] lg:h-[250px] sm:hover:-translate-y-2 sm:hover:scale-105 duration-500'
+                    className='w-[200px] h-full md:w-[300px] md:h-[200px] lg:w-[300px] lg:h-[250px] 2xl:w-[370px] sm:hover:-translate-y-2 sm:hover:scale-105 duration-500'
                   />
                   <div className='flex p-5 flex-col justify-start flex-grow '>
                     <span className='w-[280px] text-[14px] font-semibold text-[#B72041] flex'>MSI Academy &nbsp;<li>

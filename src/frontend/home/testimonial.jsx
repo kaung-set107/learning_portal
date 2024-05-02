@@ -10,7 +10,7 @@ import { getFile } from '../../util';
 import Loading from '../../assets/img/finalloading.gif'
 export default function Testimonial() {
     const [testimonialList, setTestimonialList] = useState([])
-
+    const [show, setShow] = useState(false)
     useEffect(() => {
         const getTestimonial = async () => {
             await apiInstance
@@ -24,49 +24,62 @@ export default function Testimonial() {
 
         getTestimonial();
     }, [])
+
+    const handleSeeMore = (id) => {
+        console.log(id, 'id')
+        if (testimonialList.filter((el, ind) => ind === id)[0]) {
+            setShow(true)
+        }
+
+    }
+    const handleSeeLess = (id) => {
+        console.log(id, 'id')
+        setShow(false)
+
+    }
     return (
         <div>
             <MSINav />
             <div className='container'>
                 <div className='w-[152px] h-[60px] p-24'>
-                    <span className='text-[40px] font-bold text-[#0B2743] font-nunito pl-[450px]'>Testimonials</span>
+                    <span className='text-[40px] font-bold text-[#0B2743] font-nunito pl-[300px] lg:pl-[340px] xl:pl-[550px]'>Testimonials</span>
                 </div >
                 {!testimonialList[0] ? (
                     <div className='flex justify-center pt-[40px]'>
                         <Image src={Loading} className='transform-x-[-1] w-[350px] h-[250px]' />
 
-                    </div>) : (<div className='flex flex-col gap-20 '>
+                    </div>) : (<div className='flex flex-col gap-3 '>
                         {testimonialList.map((item, index) => (
                             <div>
                                 {index % 2 !== 0 ? (
                                     <div className={index % 2 !== 0 ? ' h-[720px] flex justify-around gap-[106px]' : 'h-[720px] flex gap-[106px] '} key={index}  >
 
                                         <div className='w-[702px] h-[276px] flex justify-end '>
-                                            <div className='pl-[120px] pt-[69px] pr-[52px] pb-[151px] flex flex-col gap-10'>
-                                                <img src={Quote} className='w-[60px] h-[60px]' />
-                                                <span className='text-[28px] font-semibold text-[#0B2743] '>
+                                            <div className=' flex flex-col gap-7'>
+                                                <img src={Quote} className='w-[25px] lg:w-[30px] xl:w-[40px] lg:h-[60px]' />
+                                                <span className='text-[20px] lg:text-[25px] xl:text-[28px] 2xl:text-[30px] font-semibold text-[#0B2743] '>
 
-                                                    Error voluptate adipisci. Quas a delectus optio ut. Non consequatur voluptatem quia rerum cum similique enim. Error voluptate adipisci. Quas a delectus optio ut. Non consequatur voluptatem quia rerum cum similique enim.
+                                                    {item?.description.substring(0, 500)} ......
                                                 </span>
                                                 <div className='flex justify-end items-end'>
-                                                    <img src={Quote} className='w-[60px] h-[60px]' />
+                                                    <img src={Quote} className='w-[25px] lg:w-[30px] xl:w-[40px] lg:h-[60px]' />
                                                 </div>
 
                                             </div>
 
                                         </div>
-                                        <div className={index % 2 !== 0 ? 'w-[400px] h-[720px] bg-[#0B2743]' : 'w-[400px] h-[720px] bg-[#B7203F]'}>
+                                        <div className={index % 2 !== 0 ? 'w-[330px] md:w-[348px] h-[512px] lg:w-[360px] xl:w-[380px] bg-[#0B2743]' : 'w-[348px] h-[512px] bg-[#B7203F]'}>
 
-                                            <div className='w-[318px] h-[512px] '>
-                                                <div className='overflow-hidden'>
-                                                    <img src={`data:image/jpeg;base64,${item?.image}`} className='w-[318px] h-[500px] md:left-[799px] pt-[69px] absolute' />
+                                            <div className='flex flex-col gap-5'>
+                                                <div className='flex justify-center'>
+                                                    <img src={`data:image/jpeg;base64,${item?.image}`} className='w-[230px] md:w-[251px] h-[396px] lg:w-[260px] xl:w-[280px] pt-[69px] flex justify-center rounded-lg' />
                                                 </div>
-                                                <div className='overflow-hidden'>
-                                                    <div className='flex flex-col gap-1'>
-                                                        <span className='text-[20px] font-extrabold text-[#FAFAFA] w-[300px] pl-[52px] pt-[560px] absolute '>
+                                                <div className='flex justify-center'>
+                                                    <div className='flex flex-col gap-1 w-[251px] h-[396px] '>
+                                                        <span className='text-[20px] font-extrabold text-[#FAFAFA] w-[300px]  '>
                                                             {item?.title}
                                                         </span>
-                                                        <span className='text-[16px] font-normal text-[#FAFAFA] w-[291px] h-[22px] pl-[52px] pt-[599px] absolute '>
+                                                        <span className='text-[16px] font-normal text-[#FAFAFA] w-[291px] h-[22px] '>
                                                             MSI Academy Student
                                                         </span>
                                                     </div>
@@ -78,18 +91,18 @@ export default function Testimonial() {
                                     </div>
                                 ) : (
                                     <div className={index % 2 !== 0 ? ' h-[720px] flex justify-around gap-[106px]' : 'h-[720px] flex gap-[106px] '} key={index}  >
-                                        <div className={index % 2 !== 0 ? 'w-[400px] h-[720px] bg-[#0B2743]' : 'w-[400px] h-[720px] bg-[#B7203F]'}>
+                                        <div className={index % 2 !== 0 ? 'w-[348px] h-[512px] bg-[#0B2743]' : 'w-[348px] h-[512px] bg-[#B7203F]'}>
 
-                                            <div className='w-[318px] h-[512px]'>
-                                                <div className='pl-[134px] pt-[69px] pr-[52px] pb-[151px] overflow-hidden'>
-                                                    <img src={`data:image/jpeg;base64,${item?.image}`} className='w-[318px] h-[500px] absolute' />
+                                            <div className='flex flex-col gap-5'>
+                                                <div className='flex justify-center'>
+                                                    <img src={`data:image/jpeg;base64,${item?.image}`} className='w-[230px] md:w-[251px] h-[396px] lg:w-[260px] xl:w-[280px] pt-[69px] flex justify-center rounded-lg' />
                                                 </div>
-                                                <div className='pl-[134px] pt-[360px] pr-[75px] pb-[99px] overflow-hidden  '>
-                                                    <div className='flex flex-col gap-1'>
-                                                        <span className='text-[20px] font-extrabold text-[#FAFAFA] w-[200px] '>
+                                                <div className='flex justify-center'>
+                                                    <div className='flex flex-col gap-1 w-[251px] h-[396px] '>
+                                                        <span className='text-[20px] font-extrabold text-[#FAFAFA] w-[300px]  '>
                                                             {item?.title}
                                                         </span>
-                                                        <span className='text-[16px] font-normal text-[#FAFAFA] w-[191px] h-[22px] '>
+                                                        <span className='text-[16px] font-normal text-[#FAFAFA] w-[291px] h-[22px] '>
                                                             MSI Academy Student
                                                         </span>
                                                     </div>
@@ -98,15 +111,15 @@ export default function Testimonial() {
                                             </div>
 
                                         </div>
-                                        <div className='w-[702px] h-[276px] flex justify-end '>
-                                            <div className='pl-[120px] pt-[69px] pr-[52px] pb-[151px] flex flex-col gap-10'>
-                                                <img src={Quote} className='w-[60px] h-[60px]' />
-                                                <span className='text-[28px] font-semibold text-[#0B2743] '>
 
-                                                    Error voluptate adipisci. Quas a delectus optio ut. Non consequatur voluptatem quia rerum cum similique enim. Error voluptate adipisci. Quas a delectus optio ut. Non consequatur voluptatem quia rerum cum similique enim.
+                                        <div className='w-[702px] h-[276px] flex justify-end '>
+                                            <div className=' flex flex-col gap-7'>
+                                                <img src={Quote} className='w-[25px] lg:w-[30px] xl:w-[40px] lg:h-[60px]' />
+                                                <span className='text-[20px] lg:text-[25px] xl:text-[28px] 2xl:text-[30px] font-semibold text-[#0B2743] '>
+                                                    {item?.description.substring(0, 550)} ......
                                                 </span>
                                                 <div className='flex justify-end items-end'>
-                                                    <img src={Quote} className='w-[60px] h-[60px]' />
+                                                    <img src={Quote} className='w-[25px] lg:w-[30px] xl:w-[40px] lg:h-[60px]' />
                                                 </div>
 
                                             </div>
@@ -124,7 +137,7 @@ export default function Testimonial() {
 
 
             </div >
-            <div className='pt-[194px]'>
+            <div className='md:pt-[10px] lg:pt-[20px] xl:pt-[30px]'>
                 <Footer />
             </div>
 

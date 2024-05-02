@@ -39,6 +39,7 @@ import "animate.css/animate.min.css";
 // import { Wave } from 'react-animated-text';
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import Activities from "./home_components/activities";
 const Body = () => {
   const navigate = useNavigate();
   const [courseList, setCourseList] = useState([]);
@@ -163,7 +164,7 @@ const Body = () => {
         >
           {bannerList.map((i) => (
             <>
-              <img src={getFile({ payload: i })} className=' h-[30vh] sm:h-[70vh] w-[10vh] sm:w-[160vh] container' />
+              <img src={getFile({ payload: i })} className=' h-[30vh] sm:h-[70vh] w-[10vh] container' />
             </>
           ))}
 
@@ -308,7 +309,7 @@ const Body = () => {
           </Link>
         </div >
       </ScrollAnimation >
-      < div style={{ background: "var(--blue-pale, #F4FAFF)" }} className='flex flex-col gap-10 sm:gap-24 relative container h-[800px] sm:h-[1200px]' >
+      < div style={{ background: "var(--blue-pale, #F4FAFF)" }} className='flex flex-col gap-10 sm:gap-24 relative container h-[800px] lg:h-[880px] xl:h-[950px] sm:h-[1200px]' >
         {/* <img
           src={EBlue}
           className="absolute bottom-0 left-0 z-0 w-[150px] md:w-[150px]"
@@ -396,7 +397,7 @@ const Body = () => {
         </div>
 
       </div >
-
+      <Activities />
       <Testimonials />
 
       <div className='mt-4 mx-2'>
