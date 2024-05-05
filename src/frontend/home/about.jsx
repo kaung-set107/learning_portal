@@ -1,5 +1,5 @@
 import { ReactElement, useState, useEffect } from "react";
-import { Image, Button, Card } from "@nextui-org/react";
+import { Image, Button, Card, ButtonGroup } from "@nextui-org/react";
 import { Link } from "@nextui-org/react";
 import MSINav from "./msinav";
 import { MsiAchievements } from "./home_components/MsiAchievements";
@@ -7,7 +7,7 @@ import { StudentAchievements } from "./home_components/StudentAchievements";
 import Team1 from "../../assets/img/team1.png";
 import Team2 from "../../assets/img/team2.png";
 import Team3 from "../../assets/img/team3.png";
-import Rec1 from "../../assets/img/rec1.png";
+import HeadImg from "../../assets/img/headImg.png";
 import Wave from '../../assets/img/wave.svg'
 import Sli1 from '../../assets/Slider/Sli1.jpg'
 import Sli2 from '../../assets/Slider/Sli2.jpg'
@@ -44,121 +44,15 @@ const About = () => {
     <div className=''>
       <MSINav />
       {/* Intro MSI */}
-      <div className='flex items-center justify-around gap-48 flex-wrap md:my-[100px] h-[435px] container'>
-        <div className='flex'>
-          {/* First */}
-          <div className='flex flex-col h-[456px]'>
-            <div className='flex justify-start'>
-              <img
-                src={Sli1}
-                className='w-[164px] h-[163px]'
-                alt=''
-                style={{ borderRadius: '79.509px 0px 0px 0px' }}
-              />
-            </div>
-
-            <div className='flex justify-end pt-[45px]'>
-              <img
-                src={Sli2}
-                className='w-[90px] h-[90px]'
-                alt=''
-                style={{ borderRadius: '0px 0px 0px 39.755px' }}
-              />
-            </div>
-            <div className='flex justify-start pt-[45px]'>
-              <img
-                src={Sli3}
-                className='w-[112px] h-[112px]'
-                alt=''
-                style={{ borderRadius: '0px 0px 0px 71.559px' }}
-              />
-            </div>
-
-          </div>
-          {/* Second */}
-          <div className='flex flex-col h-[456px] pl-[27px]'>
-            <div className='flex justify-start pt-[35px]'>
-              <img
-                src={Sli3}
-                className='w-[70px] h-[70px] '
-                alt=''
-                style={{ borderRadius: '19px' }}
-              />
-
-            </div>
-
-            <div className='flex justify-end pt-[45px]'>
-              <img
-                src={Sli4}
-                className='w-[144px] h-[143px]'
-                alt=''
-                style={{ borderRadius: '0px 79.509px 0px 0px' }}
-              />
-            </div>
-            <div className='flex justify-start pt-[45px]'>
-              <img
-                src={Sli5}
-                className='w-[103px] h-[102px]'
-                alt=''
-                style={{ borderRadius: ' 0px 0px 47.706px 0px' }}
-              />
-            </div>
-
-          </div>
-          {/* Third */}
-          <div className='flex flex-col h-[456px] lg:pl-[10px]'>
-            <div className='flex justify-start pt-[35px] overflow-hidden'>
-              <img
-                src={Sli5}
-                className='w-[84px] h-[83px] absolute lg:left-[370px]'
-                alt=''
-                style={{ borderRadius: ' 0px 39.755px 0px 0px' }}
-              />
-
-            </div>
-
-            <div className='flex justify-end pt-[45px]'>
-
-            </div>
-            <div className='flex justify-end pt-[45px] overflow-hidden'>
-              <img
-                src={Sli1}
-                className='w-[131px] h-[131px] absolute top-[480px] lg:left-[410px]'
-                alt=''
-                style={{ borderRadius: ' 0px 0px 71.559px 0px' }}
-              />
-            </div>
-
-          </div>
+      <div className='flex items-center justify-around gap-48 flex-wrap  h-[615px] ' style={{ backgroundImage: `url(${HeadImg})`, backgroundSize: 'cover' }}>
+        <div className='flex flex-col justify-center '>
+          <span className='text-[30px] md:text-[35px] lg:text-[40px] 2xl:[48px] font-medium text-[#fff] flex justify-center'>"Explore Limitless Opportunities:</span>
+          <span className='text-[30px] md:text-[35px] lg:text-[40px] 2xl:[48px] font-medium text-[#fff] flex justify-center'>Your Gateway to Overseas MSI Education"</span>
+          <Link href='/booking' className='mt-[80px] flex justify-center'>
+            <Button className='w-[150px] md:w-[160px] lg:w-[190px] 2xl:w-[229px] h-[55px] lg:h-[60px] 2xL:h-[66px] bg-[#0B2743] text-[#fff] text-[16px] md:text-[18px] lg:text-[20px] 2xl:text-[24px] font-medium'>Book Now</Button>
+          </Link>
         </div>
-        <div className='w-[639px]'>
-          <h1 className='text-[60px] md:text-[70px] leading-[60px] font-semibold'>
-            {/* <small className='text-[#224362]'>About </small> <br />
-            <small className='text-[#BC1F40]'>MSI Academy</small> */}
-            <span className='gradient text-[40px] font-medium font-[Poppins]'>MSI Academy</span>
-          </h1>
-          <p className=' font-normal text-[16px] my-5 w-[605px]'>
-            MSI Academy was founded in 2018 and located in the calming
-            environment and heart of Sanchaung, Yangon. The academy has GED
-            foundation, GED preparation, IELTS courses, Duolingo, General
-            English 4 skills, 2 skills, and university preparation courses. As
-            of pandemic reason, the academy provides both online and in person
-            classes.
-          </p>
-          <div className=' bg-slate-400 w-[639px] h-[1px]'></div>
-          <div className='flex flex-col gap-1 text-[18px] font-medium mt-5'>
-            <span>Have any questons?.</span>
-            <span>Contact us !</span>
-            <span className='mt-4'>+959 422 557 884</span>
-          </div>
-          {/* <p className='font-[regular] text-xl'>
-            Experienced and Skillful lecturers are providing the fruitful
-            lectures with real world knowledges for the students.The academy has
-            conducted foreign education in Southeast Asian countries and
-            European countries and consulted many students with the dreams of
-            international education.
-          </p> */}
-        </div>
+
         {/* <div className='my-10 relative'>
 
           <iframe
@@ -177,8 +71,8 @@ const About = () => {
         </div> */}
       </div>
       {/* About MSI */}
-      <div className=' absolute pl-[150px] lg:pl-[50px] pr-[50px] top-[520px] mt-32'>
-        <div className='flex  gap-10 lg:gap-24  md:my-[100px] pl-[78px] lg:pl-[40px] pr-[75px] bg-white lg:w-[1150px] h-[556px] lg:h-[480px]'>
+      <div className=' absolute pl-[150px] lg:pl-[20px] xl:pl-[60px] 2xl:pl-[260px] pr-[50px] lg:top-[560px] xl:top-[570px] 2xl:top-[580px] mt-32'>
+        <div className='flex gap-10 lg:gap-24 pl-[78px] lg:pt-[50px] lg:pl-[40px] pr-[75px] bg-white md:w-[1100px] lg:w-[1150px] h-[556px] lg:h-[480px]'>
           <div className='w-[480px]'>
             <h1 className='text-[60px] md:text-[70px] leading-[60px] font-semibold flex flex-col gap-0'>
               {/* <small className='text-[#224362]'>About </small> <br />
@@ -222,11 +116,9 @@ const About = () => {
       {/* Background Color */}
       <div className='overflow-hidden pt-[90px]'>
 
-        <div className='w-full md:w-[1980px] lg:w-[2000px] h-[527px] bg-[#0B2743] overflow-hidden'>
-
-
+        <div className='w-full md:w-[1980px] lg:w-[2000px] md:h-[400px] lg:h-[420px] bg-[#0B2743] overflow-hidden'>
         </div>
-        <div className='w-[238px] h-[238px] bg-[#0B2743] rounded-[50%] -left-[150px] top-[1250px] absolute'></div>
+        <div className='w-[238px] h-[238px] bg-[#0B2743] rounded-[50%] -left-[150px] md:top-[1220px] lg:top-[1200px] 2xl:top-[1180px] absolute'></div>
       </div>
       {/* Founder */}
       <div className='w-[946px] h-[420px] flex flex-col gap-10 justify-center pt-[290px] container'>

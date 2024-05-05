@@ -1,11 +1,11 @@
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import cer1 from "../../../assets/img/cer1.jpg";
-import cer2 from "../../../assets/img/cer2.jpg";
-import cer3 from "../../../assets/img/cer3.jpg";
-import cer4 from "../../../assets/img/cer4.jpg";
-import cer5 from "../../../assets/img/cer5.jpg";
-import cer6 from "../../../assets/img/cer6.jpg";
+import cer1 from "../../../assets/StudentAchievements/1.png";
+import cer2 from "../../../assets/StudentAchievements/2.png";
+import cer3 from "../../../assets/StudentAchievements/3.png";
+import cer4 from "../../../assets/StudentAchievements/4.png";
+import cer5 from "../../../assets/StudentAchievements/5.png";
+import cer6 from "../../../assets/StudentAchievements/6.png";
 import { Image } from "@nextui-org/react";
 import EHalf from "../../../assets/img/EllipseHalf.png";
 export const StudentAchievements = () => {
@@ -28,7 +28,7 @@ export const StudentAchievements = () => {
       <h2 className='bg-[#BC1F40] text-[#fff] text-center font-semibold text-4xl p-16 mr-9 mb-9 mt-12 w-full overflow-hidden'>
         <img
           src={EHalf}
-          className="absolute  right-0 w-[120px]  top-[1940px]"
+          className="absolute  right-0 w-[120px] md:top-[1860px]  lg:top-[1840px] 2xl:top-[1820px]"
           alt=""
         />
         Students Achievements

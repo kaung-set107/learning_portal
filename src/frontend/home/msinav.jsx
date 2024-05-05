@@ -87,7 +87,7 @@ export default function App() {
 
   return (
     <>
-      <div className='sticky top-0 bg-white z-50  md:shadow-md lg:shadow-lg   w-full p-5 '>
+      <div className='sticky top-0 bg-white z-50  md:shadow-md lg:shadow-lg   w-full md:p-5 lg:p-6 2xl:p-7 '>
         <div className='flex sm:gap-10 gap-20  xl:gap-5 2xl:gap-96 justify-between sm:justify-between lg:justify-around '>
           <div className=''>
             <Image
@@ -96,7 +96,7 @@ export default function App() {
             />
           </div>
           <div
-            className='hidden md:flex justify-end 2xl:justify-end gap-10 w-full '
+            className='hidden md:flex justify-end 2xl:justify-end gap-10 w-full items-center '
             style={{
               borderRadius: "200px",
 
