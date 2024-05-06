@@ -109,6 +109,9 @@ import QuizResults from "./frontend/features/quiz-results/pages/QuizResults.jsx"
 import InstructorQuizResult from "./frontend/features/quiz-results/pages/QuizResult.jsx";
 import QuizUpdate from "./frontend/features/quizzes/pages/QuizUpdate.jsx";
 import ExamResults from "./frontend/features/exam-results/pages/ExamResults.jsx";
+
+//Activities
+import ActivitiesInput from './pages/Activities/activitiesInput.jsx'
 export default function RouteFile() {
   console.log(localStorage.getItem("user"), "local use");
   return (
@@ -168,6 +171,8 @@ export default function RouteFile() {
             ></Route>
             {/*End Student Register and Detail */}
 
+            {/* News & Activities */}
+            <Route path="/activities-input" element={<ActivitiesInput />}></Route>
             {/*Start Student Enroll */}
             <Route path="/enroll-list" element={<Enrollment />}></Route>
             <Route path="/enroll-detail/:id" element={<EnrollDetail />}></Route>

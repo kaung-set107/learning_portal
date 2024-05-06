@@ -71,8 +71,8 @@ const About = () => {
         </div> */}
       </div>
       {/* About MSI */}
-      <div className=' absolute pl-[150px] lg:pl-[20px] xl:pl-[60px] 2xl:pl-[260px] pr-[50px] lg:top-[560px] xl:top-[570px] 2xl:top-[580px] mt-32'>
-        <div className='flex gap-10 lg:gap-24 pl-[78px] lg:pt-[50px] lg:pl-[40px] pr-[75px] bg-white md:w-[1100px] lg:w-[1150px] h-[556px] lg:h-[480px]'>
+      <div className=' absolute pl-[150px] lg:pl-[60px] xl:pl-[60px] 2xl:pl-[260px] pr-[50px] lg:top-[560px] xl:top-[570px] 2xl:top-[590px] lg:mt-[120px]'>
+        <div className='flex gap-10 lg:gap-24 pl-[78px] lg:pt-[50px] lg:pl-[40px] pr-[75px] bg-white md:w-[1100px] lg:w-[1150px] h-[556px] lg:h-[480px] 2xl:w-[1200px] 2xl:h-[500px]'>
           <div className='w-[480px]'>
             <h1 className='text-[60px] md:text-[70px] leading-[60px] font-semibold flex flex-col gap-0'>
               {/* <small className='text-[#224362]'>About </small> <br />
