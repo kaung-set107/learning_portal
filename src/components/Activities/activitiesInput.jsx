@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import apiInstance from "../../util/api";
 import { Card, Input, Button, Textarea, Checkbox } from "@nextui-org/react";
@@ -5,85 +6,84 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { FileUploader } from 'react-drag-drop-files'
-import Timeline from 'react-calendar-timeline'
-// make sure you include the timeline stylesheet or the timeline will not be styled
-import 'react-calendar-timeline/lib/Timeline.css'
-import moment from 'moment'
 import Swal from "sweetalert2";
-// import { Editor } from "react-draft-wysiwyg";
-// import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { Select, SelectItem } from '@nextui-org/select'
+import FileBase64 from 'react-file-base64';
 const fileTypes = ['JPG', 'PNG', 'GIF']
-
-
-export default function Banner() {
-    const currentDate = new Date(Date.now()).toLocaleDateString('en-US');
-    const groups = [{ id: 1, title: 'group 1' }, { id: 2, title: 'group 2' }]
-
-    const items = [
-        {
-            id: 1,
-            group: 1,
-            title: 'item 1',
-            color: 'rgb(158, 14, 206)',
-            selectedBgColor: 'rgba(225, 166, 244, 1)',
-            bgColor: 'rgba(225, 166, 244, 0.6)',
-            start_time: moment(),
-            end_time: moment().add(1, 'hour')
-        },
-        {
-            id: 2,
-            group: 2,
-            title: 'item 2',
-            start_time: moment().add(-0.5, 'hour'),
-            end_time: moment().add(0.5, 'hour')
-        },
-        {
-            id: 3,
-            group: 1,
-            title: 'item 3',
-            start_time: moment().add(2, 'hour'),
-            end_time: moment().add(3, 'hour')
-        }
-    ]
+export default function ActivitiesInput() {
     const variant = 'bordered';
     const [title, setTitle] = useState("");
-    const [imageList, setImageList] = useState([])
-    const Last = imageList.map((i) => {
-        return {
-            lastModified: i.lastModified,
-            lastModifiedDate: i.lastModifiedDate,
-            name: i.name,
-            size: i.size,
-            type: i.type,
-            webkitRelativePath: i.webkitRelativePath
-        }
-    })
-    console.log(Last, 'iii')
+    const [previewImg, setPreviewImg] = useState([])
+    const [imageList1, setImageList1] = useState([])
+    const [imageList2, setImageList2] = useState([])
+    const [imageList3, setImageList3] = useState([])
+    // const Last = imageList.map((i) => {
+    //     return {
+    //         lastModified: i.lastModified,
+    //         lastModifiedDate: i.lastModifiedDate,
+    //         name: i.name,
+    //         size: i.size,
+    //         type: i.type,
+    //         webkitRelativePath: i.webkitRelativePath
+    //     }
+    // })
+    // console.log(Last, 'iii')
     const [view, setView] = useState('')
-    const [description, setDescription] = useState('')
+    const [description1, setDescription1] = useState('')
+    const [description2, setDescription2] = useState('')
+    const [description3, setDescription3] = useState('')
     const bSize = { "width": "full", "height": "full" }
     // console.log(
-    //     listData.selectedFile?.split('base64,')[1]
+    //     JSON.stringify({ description1: description1, description2: description2, description3: description3 }), 'desc'
     // )
-    const handleChange = e => {
+    const handlePreviewImg = e => {
         let array = []
         for (const item of e) {
             array.push(item)
         }
-        setImageList(array)
+        setPreviewImg(array)
+    }
+    const handleChange1 = e => {
+        let array = []
+        for (const item of e) {
+            array.push(item)
+        }
+        setImageList1(array)
+    }
+    const handleChange2 = e => {
+        let array = []
+        for (const item of e) {
+            array.push(item)
+        }
+        setImageList2(array)
+    }
+    const handleChange3 = e => {
+        let array = []
+        for (const item of e) {
+            array.push(item)
+        }
+        setImageList3(array)
     }
     const create = () => {
         const formData = new FormData();
         // formData.append("bannerSize", bSize);
-        imageList.forEach(item => {
-            formData.append('images', item) // Assuming 'item' is a File object
+        formData.append('title', title);
+        formData.append('descriptionList', JSON.stringify({ description1: description1, description2: description2, description3: description3 }));
+        previewImg.forEach(item => {
+            formData.append('bannerImage', item) // Assuming 'item' is a File object
+        })
+        imageList1.forEach(item => {
+            formData.append('section1', item) // Assuming 'item' is a File object
+        })
+        imageList2.forEach(item => {
+            formData.append('section2', item) // Assuming 'item' is a File object
+        })
+        imageList3.forEach(item => {
+            formData.append('section3', item) // Assuming 'item' is a File object
         })
 
-        formData.append("view", view);
-        formData.append("section", 'hello');
-
         apiInstance
-            .post("banners", formData, {
+            .post("news-and-activities", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
@@ -107,71 +107,126 @@ export default function Banner() {
     return (
         <div className='gap-3 '>
             <div className='rounded-none py-3 text-left'>
-                <Link to='/testimonial' className=''>
+                <Link to='/activities-list' className=''>
                     <FontAwesomeIcon icon={faCircleChevronLeft} size='2xl' />
                 </Link>
             </div>
 
             <div className='flex flex-col mx-8 w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
                 <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-                    <label className='text-sm font-semibold'>Uploaded Date</label>
-                    <Input
-                        type='date'
-                        variant='bordered'
-                        placeholder='Enter name ...'
-                        onChange={(e) => setTitle(e.target.value)}
-                    />
-                </div>
-                <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-                    <label className='text-sm font-semibold'>View</label>
+                    <label className='text-sm font-semibold'>Title</label>
                     <Input
                         type='text'
                         variant='bordered'
-                        placeholder='eg: home '
-                        onChange={(e) => setView(e.target.value)}
+                        placeholder='Enter title ...'
+                        onChange={(e) => setTitle(e.target.value)}
                     />
                 </div>
-
 
 
             </div>
 
-            <div className='mx-8 flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
+
+            <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-2 mt-3'>
+                <div className='flex flex-col w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-2 mx-8 mt-5'>
+                    <label className='text-sm font-semibold'>Preview Image</label>
+
+                    <FileUploader
+                        multiple={true}
+                        handleChange={handlePreviewImg}
+                        name='file'
+                        types={fileTypes}
+                        className='w-full'
+                    />
+
+                </div>
+                <div className='flex flex-col w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-2 mx-8 mt-5'>
+                    <label className='text-sm font-semibold'>Section 1 Image</label>
+
+                    <FileUploader
+                        multiple={true}
+                        handleChange={handleChange1}
+                        name='file'
+                        types={fileTypes}
+                        className='w-full'
+                    />
+
+                </div>
+            </div>
+            <div className=' flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
+                <div className='flex flex-col w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-2 mx-8 mt-5'>
+                    <label className='text-sm font-semibold'>Section 2 Image</label>
+
+                    <FileUploader
+                        multiple={true}
+                        handleChange={handleChange2}
+                        name='file'
+                        types={fileTypes}
+                        className='w-full'
+                    />
+
+                </div>
+                <div className='flex flex-col w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-2 mx-8 mt-5'>
+                    <label className='text-sm font-semibold'>Section 3 Image</label>
+
+                    <FileUploader
+                        multiple={true}
+                        handleChange={handleChange3}
+                        name='file'
+                        types={fileTypes}
+                        className='w-full'
+                    />
+
+                </div>
+            </div>
+            <div className='mx-4 flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-5'>
                 <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 '>
+
                     <Textarea
                         className='text-sm font-semibold'
                         variant='bordered'
                         type='text'
-                        label='Description'
-                        placeholder='description'
-                        onChange={(e) => setDescription(e.target.value)}
+                        label='Description 1'
+                        placeholder='description....'
+                        onChange={(e) => setDescription1(e.target.value)}
                         labelPlacement='outside'
                     />
+
                 </div>
             </div>
-            <div className='flex flex-col w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-2 mx-8 mt-5'>
-                <label className='text-sm font-semibold'>Photo</label>
+            <div className='mx-4 flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
+                <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 '>
 
-                <FileUploader
-                    multiple={true}
-                    handleChange={handleChange}
-                    name='file'
-                    types={fileTypes}
-                    className='w-full'
-                />
+                    <Textarea
+                        className='text-sm font-semibold'
+                        variant='bordered'
+                        type='text'
+                        label='Description 2'
+                        placeholder='description....'
+                        onChange={(e) => setDescription2(e.target.value)}
+                        labelPlacement='outside'
+                    />
+
+                </div>
+
+            </div>
+            <div className='mx-4 flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
+                <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 '>
+
+                    <Textarea
+                        className='text-sm font-semibold'
+                        variant='bordered'
+                        type='text'
+                        label='Description 3'
+                        placeholder='description.....'
+                        onChange={(e) => setDescription3(e.target.value)}
+                        labelPlacement='outside'
+                    />
+
+                </div>
 
             </div>
 
-            <div className='flex flex-col mx-8 w-[900px] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
-                Rendered by react!
-                <Timeline
-                    groups={groups}
-                    items={items}
-                    defaultTimeStart={moment().add(-12, 'hour')}
-                    defaultTimeEnd={moment().add(12, 'hour')}
-                    style={{ backgroundColor: moment().add(4, 'hour') < currentDate ? 'red' : 'limegreen' }}
-                />
-            </div>
             <div className='flex justify-center gap-10 py-4'>
                 <Button color='danger'>
                     <Link to='/category'>Cancel</Link>
@@ -180,6 +235,6 @@ export default function Banner() {
                     Create
                 </Button>
             </div>
-        </div >
+        </div>
     );
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Act1 from '../../../assets/img/act1.png'
 import Act2 from '../../../assets/img/act2.png'
 import Act3 from '../../../assets/img/act3.png'
@@ -6,7 +6,10 @@ import Act4 from '../../../assets/img/act4.png'
 import Act5 from '../../../assets/img/act5.png'
 import Act6 from '../../../assets/img/act6.png'
 import Globe from '../../../assets/img/msiglobe.png'
-import { Image, Link } from '@nextui-org/react'
+import { Image } from '@nextui-org/react'
+import { Link } from 'react-router-dom'
+import apiInstance from '../../../util/api'
+import { getFile } from '../../../util'
 
 export default function Activities() {
     const data = [
@@ -18,6 +21,20 @@ export default function Activities() {
         { id: 6, title: 'MSI Students Discussion For Better Thinking', img: Act6 },
 
     ]
+    const [newsList, setNewsList] = useState([])
+    useEffect(() => {
+        const getNews = async () => {
+            await apiInstance
+                .get(`news-and-activities`)
+                .then((res) => {
+                    setNewsList(res.data.data);
+                    console.log(res.data.data, 'att')
+
+                });
+        };
+
+        getNews();
+    }, [])
     return (
         <div className='container'>
             <div className='lg:h-[1200px] 2xl:h-[1300px] '>
@@ -27,8 +44,8 @@ export default function Activities() {
                 </div>
                 <div className='grid grid-cols-1 sm:grid-cols-4 gap-2 md:gap-5 lg:gap-10 2xl:gap-10 sm:gap-0 items-center justify-center md:flex-row sm:py-10 2xl:py-20'>
 
-                    {data.slice(0, 8).map((e) => (
-                        <div
+                    {newsList.slice(0, 8).map((e) => (
+                        <Link to={'/activities-detail/' + e._id}
                             // onClick={() => handleRoute(e)}
 
                             className=''
@@ -37,17 +54,17 @@ export default function Activities() {
                             <Image
                                 // style={{ width: "500px", height: "280px" }}
                                 // alt={e.image?.originalname}
-                                src={e.img}
+                                src={e.images ? getFile({ payload: e.images?.bannerImage[0] }) : ''}
                                 className='w-[200px] h-full md:w-[300px] md:h-[200px] lg:w-[300px] lg:h-[250px] 2xl:w-full sm:hover:-translate-y-2 sm:hover:scale-105 duration-500'
                             />
                             <div className='flex p-5 flex-col justify-start flex-grow '>
 
-                                <span
+                                <Link to={'/activities-detail/' + e._id}
 
                                     className='2xl:w-[344px] lg:h-[56px] text-[#0B2743] text-[18px] lg:text-[20px] 2xl:text-[24px] font-medium'
                                 >
                                     {e.title}
-                                </span>
+                                </Link>
 
 
                             </div>
@@ -61,7 +78,7 @@ export default function Activities() {
                                 </div>
                             </div>
 
-                        </div>
+                        </Link>
                     ))}
 
                 </div>

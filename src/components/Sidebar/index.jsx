@@ -249,7 +249,7 @@ export default function Sidebar(props) {
                           <span className="ml-4 font-medium ">Banner</span>
                         </div>
                       </Link>
-                      <Link to="/activities-input">
+                      <Link to="/activities-list">
                         <div className="hover:bg-blue-100 px-4 py-3 m-auto text-sm">
                           {/* <FontAwesomeIcon icon={faLaptopFile} size='xl' /> */}
                           &nbsp;

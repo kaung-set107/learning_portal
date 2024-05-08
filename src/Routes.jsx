@@ -112,6 +112,8 @@ import ExamResults from "./frontend/features/exam-results/pages/ExamResults.jsx"
 
 //Activities
 import ActivitiesInput from './pages/Activities/activitiesInput.jsx'
+import ActivitiesList from './pages/Activities/activitiesList.jsx'
+import ActivitiesDetail from './frontend/home/news_activities_detail.jsx'
 export default function RouteFile() {
   console.log(localStorage.getItem("user"), "local use");
   return (
@@ -129,7 +131,7 @@ export default function RouteFile() {
           <Route path="/login" element={<Login />}></Route>
           <Route path="/" element={<FHome />}></Route>
           <Route path="/test" element={<Test />}></Route>
-
+          <Route path="/activities-detail/:id" element={<ActivitiesDetail />}></Route>
           <Route path="/about" element={<About />}></Route>
           <Route path="/contact" element={<Contact />}></Route>
           <Route path="/events" element={<EventPage />}></Route>
@@ -173,6 +175,8 @@ export default function RouteFile() {
 
             {/* News & Activities */}
             <Route path="/activities-input" element={<ActivitiesInput />}></Route>
+            <Route path="/activities-list" element={<ActivitiesList />}></Route>
+
             {/*Start Student Enroll */}
             <Route path="/enroll-list" element={<Enrollment />}></Route>
             <Route path="/enroll-detail/:id" element={<EnrollDetail />}></Route>
