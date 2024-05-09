@@ -210,7 +210,7 @@ export default function CourseDetail(props) {
                   Subjects
                 </span>
                 <div className='grid grid-cols-1 sm:grid-cols-3 gap-10 pt-10'>
-                  {subjectList.slice(0, 3).map((e) => (
+                  {subjectList.map((e) => (
                     <>
                       <div
                         style={{
@@ -221,7 +221,7 @@ export default function CourseDetail(props) {
                           height: "463px",
                           padding: "14px 13px",
                         }}
-                        className='w-full sm:min-w:[490px]  flex flex-col gap-3 sm:hover:-translate-y-2  sm:hover:scale-110 hover:bg-indigo-500 duration-500'
+                        className='w-full sm:min-w:[490px]  flex flex-col gap-3 sm:hover:-translate-y-2  sm:hover:scale-105 hover:bg-indigo-500 duration-700'
                       >
                         <Image
                           radius='sm'

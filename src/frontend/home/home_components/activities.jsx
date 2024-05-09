@@ -42,7 +42,7 @@ export default function Activities() {
                     <span className='text-[26px] lg:text-[30px] 2xl:text-[36px] font-semibold font-[Poppins] flex justify-center items-center text-[#0B2743]'>News & Activities</span>
                     <span className='text-[18px] lg:text-[20px] 2xl:text-[24px] font-medium font-[Poppins] text-[#0B2743'>Latest Post</span>
                 </div>
-                <div className='grid grid-cols-1 sm:grid-cols-4 gap-2 md:gap-5 lg:gap-10 2xl:gap-10 sm:gap-0 items-center justify-center md:flex-row sm:py-10 2xl:py-20'>
+                <div className='grid grid-cols-1 sm:grid-cols-4 gap-2 md:gap-5 lg:gap-5 2xl:gap-10 sm:gap-0 items-center justify-center md:flex-row sm:py-10 2xl:py-20'>
 
                     {newsList.slice(0, 8).map((e) => (
                         <Link to={'/activities-detail/' + e._id}
@@ -55,15 +55,15 @@ export default function Activities() {
                                 // style={{ width: "500px", height: "280px" }}
                                 // alt={e.image?.originalname}
                                 src={e.images ? getFile({ payload: e.images?.bannerImage[0] }) : ''}
-                                className='w-[200px] h-full md:w-[300px] md:h-[200px] lg:w-[300px] lg:h-[250px] 2xl:w-full sm:hover:-translate-y-2 sm:hover:scale-105 duration-500'
+                                className='w-[200px] h-full md:w-[300px] md:h-[200px] lg:w-[320px] lg:h-[250px] 2xl:w-full sm:hover:-translate-y-2 sm:hover:scale-105 duration-500'
                             />
                             <div className='flex p-5 flex-col justify-start flex-grow '>
 
                                 <Link to={'/activities-detail/' + e._id}
 
-                                    className='2xl:w-[344px] lg:h-[56px] text-[#0B2743] text-[18px] lg:text-[20px] 2xl:text-[24px] font-medium'
+                                    className='2xl:w-[344px] lg:h-[56px] text-[#0B2743] text-[18px] lg:text-[18px] 2xl:text-[24px] font-medium'
                                 >
-                                    {e.title}
+                                    {e.title.substring(0, 40)}...
                                 </Link>
 
 
@@ -71,10 +71,10 @@ export default function Activities() {
                             <div className='flex justify-between items-center p-2'>
                                 <div className='flex gap-2'>
                                     <Image src={Globe} className='w-[25px] h-[35px] rounded-xl' />
-                                    <span className='flex justify-center items-center pt-2'>MSI ACADEMY</span>
+                                    <span className='flex justify-center items-center pt-1'>MSI ACADEMY</span>
                                 </div>
                                 <div>
-                                    <span className='2xl:text-[16px] font-normal'>August 20, 2022</span>
+                                    <span className='lg:text-[15px] 2xl:text-[16px] font-normal'>August 20, 2022</span>
                                 </div>
                             </div>
 

@@ -42,8 +42,9 @@ export default function BatchList() {
     const [delID, setDelID] = useState(null);
     const [page, setPage] = React.useState(1);
     const [pages, setPages] = React.useState(1);
-    const [rowsPerPage, setRowsPerPage] = React.useState(15);
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [batchList, setBatchList] = React.useState([]);
+    const [dataCount, setDataCount] = useState('')
 
     const items = React.useMemo(() => {
         const start = (page - 1) * rowsPerPage;
@@ -60,7 +61,11 @@ export default function BatchList() {
     const onRowsChange = (event) => {
         const newRowsPerPage = parseInt(event.target.value);
         setRowsPerPage(newRowsPerPage);
-        setPages(Math.ceil(batchList.length / newRowsPerPage));
+        setPages(
+            dataCount % rowsPerPage === 0
+                ? dataCount / rowsPerPage
+                : Math.round(dataCount / rowsPerPage) + 1
+        );
         setPage(1); // Reset the current page to 1 when rows per page changes
     };
 
@@ -71,7 +76,14 @@ export default function BatchList() {
                 .then((res) => {
                     setBatchList(res.data.data);
                     console.log(res.data.data, 'att')
-                    setPages(res.data._metadata.page_count);
+                    setDataCount(res.data.count);
+                    setPages(
+                        res.data.count % rowsPerPage === 0
+                            ? res.data.count / rowsPerPage
+                            : Math.floor(
+                                res.data.count / rowsPerPage
+                            ) + 1
+                    );
                 });
         };
 
@@ -118,7 +130,7 @@ export default function BatchList() {
             </div>
             <div className='flex justify-between items-center mb-3'>
                 <span className='text-default-400 text-small'>
-                    Total {batchList.length} Batches
+                    Total {batchList.length} News & Activities
                 </span>
                 <label className='flex items-center text-default-400 text-small'>
                     Rows per page:
@@ -187,7 +199,7 @@ export default function BatchList() {
                             <TableCell>
                                 <div className='relative flex items-center gap-2'>
                                     <Tooltip content='Edit Position'>
-                                        <Link to={"/batch-update/" + item._id}>
+                                        <Link to={"/activities-update/" + item._id}>
                                             <span className='text-lg text-default-400 cursor-pointer active:opacity-50'>
                                                 <EditIcon />
                                             </span>
