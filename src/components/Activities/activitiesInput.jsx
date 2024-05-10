@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import { Select, SelectItem } from '@nextui-org/select'
 import FileBase64 from 'react-file-base64';
 const fileTypes = ['JPG', 'PNG', 'GIF']
+
 export default function ActivitiesInput() {
     const variant = 'bordered';
     const [title, setTitle] = useState("");
@@ -191,6 +192,8 @@ export default function ActivitiesInput() {
                         onChange={(e) => setDescription1(e.target.value)}
                         labelPlacement='outside'
                     />
+
+                    {/* <CKEditor data="<p>Hello from CKEditor 5!</p>" /> */}
 
                 </div>
             </div>

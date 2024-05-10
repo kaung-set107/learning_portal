@@ -9,6 +9,7 @@ import { FileUploader } from 'react-drag-drop-files'
 import Swal from "sweetalert2";
 import { getFile } from "../../util";
 const fileTypes = ['JPG', 'PNG', 'GIF']
+
 export default function ActivitiesInput() {
     const variant = 'bordered';
     const [title, setTitle] = useState("");
