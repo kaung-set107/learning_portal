@@ -256,6 +256,13 @@ export default function Sidebar(props) {
                           <span className="ml-4 font-medium ">News & Activities</span>
                         </div>
                       </Link>
+                      <Link to="/achievement-list">
+                        <div className="hover:bg-blue-100 px-4 py-3 m-auto text-sm">
+                          {/* <FontAwesomeIcon icon={faLaptopFile} size='xl' /> */}
+                          &nbsp;
+                          <span className="ml-4 font-medium ">Achievements</span>
+                        </div>
+                      </Link>
                     </AccordionItem>
                   </Accordion>
                   <Divider></Divider>

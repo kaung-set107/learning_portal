@@ -267,7 +267,7 @@ export default function ActivitiesInput() {
                     <Link to='/category'>Cancel</Link>
                 </Button>
                 <Button color='primary' onClick={create}>
-                    Create
+                    Update
                 </Button>
             </div>
         </div>

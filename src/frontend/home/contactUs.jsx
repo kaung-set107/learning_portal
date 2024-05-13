@@ -52,12 +52,12 @@ export default function Contact() {
     return (
         <div className='contact'>
             <MSINav />
-            <div className=''>
-                <div className='bg-[#fff] h-[900px] w-[1000px] overflow-visible'>
+            <div className='bg-[#0B2743]'>
+                <div className='bg-[#fff] h-[900px] w-[1000px] overflow-visible '>
                     <div className='w-[545px] h-[480px] p-24 absolute left-[20px]'>
                         <div className='flex w-[356px] h-[68px] font-[Montserrat-Bold] gap-4'>
-                            <span className='text-[50px] font-bold'>Get </span>
-                            <span className='text-[50px] font-bold'>in</span>
+                            <span className='text-[50px] text-[#0B2743] font-bold'>Get </span>
+                            <span className='text-[50px] text-[#0B2743] font-bold'>in</span>
                             <span className='text-[#BC1F40] text-[50px] font-bold'>Touch</span>
                         </div>
                         <span className='text-[14px] font-semibold w-[844px] h-[24px]'>Contact MSI Academy & start your journey with us!</span>

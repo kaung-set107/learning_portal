@@ -1,4 +1,4 @@
-import { Carousel } from "react-responsive-carousel";
+import Carousel from "react-multi-carousel";
 import ms1 from "../../../assets/MSIAchievement/1.jpg";
 import ms2 from "../../../assets/MSIAchievement/2.png";
 import ms3 from "../../../assets/MSIAchievement/3.png";
@@ -33,7 +33,44 @@ import {
   VerticalTimelineElement,
 } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
+import React, { useState, useEffect } from 'react'
+import { getFile } from "../../../util";
+import apiInstance from "../../../util/api";
 export const MsiAchievements = () => {
+  const [achievementList, setAchievementList] = useState([])
+  const responsive = {
+    superLargeDesktop: {
+      // the naming can be any, depends on you.
+      breakpoint: { max: 4000, min: 3000 },
+      items: 5
+    },
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 4
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 2
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1
+    }
+  };
+  useEffect(() => {
+    const getNews = async () => {
+      await apiInstance
+        .get(`achievements`)
+        .then((res) => {
+          setAchievementList(res.data.data.filter(el => el.type === 'school'));
+          // console.log(res.data.data, 'att')
+
+        });
+    };
+
+    getNews();
+
+  }, []);
   const images = [
     {
       img1: ms1,
@@ -108,58 +145,52 @@ export const MsiAchievements = () => {
       </h2>
 
       <Carousel
-        interval={3000}
-        // showIndicators={false}
         autoPlay={true}
-        infiniteLoop={true}
-        transitionTime={1000}
-        showStatus={false}
-        showThumbs={false}
+        responsive={responsive}
+        additionalTransfrom={0}
+        arrows
+        autoPlaySpeed={2000}
+        centerMode={false}
+        containerClass="container"
+        dotListClass=""
+        draggable
+        focusOnSelect={false}
+        infinite
+        itemClass=""
+        keyBoardControl
+        minimumTouchDrag={80}
+        partialVisible
+        pauseOnHover
+        renderArrowsWhenDisabled={false}
+        renderButtonGroupOutside={false}
+        renderDotsOutside={false}
+        rewind={false}
+        rewindWithAnimation={false}
+        rtl={false}
+        shouldResetAutoplay
+        showDots={false}
+        sliderClass=""
+        slidesToSlide={1}
+        swipeable
 
       >
 
-        {images.map((st, index) => (
+        {achievementList.map((st, index) => (
           <div
             key={index}
-            className='bg-[#fff] grid grid-cols-1 lg:grid-cols-4 md:py-10 lg:py-12 2xl:py-14 px-5'
+            className='flex gap-2 justify-center '
           >
-            <div className='p-5'>
+            <div className='flex flex-col lg:gap-2 '>
               <Image
-                src={st.img1}
-                style={{ width: "370px", height: "300px" }}
-                className='object-cover rounded-xl'
+                src={getFile({ payload: st.image })}
+
+                className=' w-[200px] h-[170px] sm:w-[177px] sm:h-[177px] md:w-[177px] md:h-[177px] lg:w-[250px] lg:h-[220px] xl:w-[310px] xl:h-[290px] 2xl:w-[400px] 2xl:h-[350px] mb-10 sm:mb-0 sm:mt-2'
+
                 alt='testimonal participant'
               />
-              <span className='text-[16px] md:text-[16px] lg:text-[18px] xl-[19px] 2xl:text0[20px] font-semibold'>{st.desc1}</span>
-            </div>
-            <div className='p-5'>
-              <Image
-                src={st.img2}
-                style={{ width: "370px", height: "300px" }}
-                className='object-cover rounded-xl'
-                alt='testimonal participant'
-              />
-              <span className='text-[16px] md:text-[16px] lg:text-[18px] xl-[19px] 2xl:text0[20px] font-semibold'>{st.desc2}</span>
+              <span className='text-[16px] md:text-[16px] lg:text-[18px] xl-[19px] 2xl:text0[20px] font-semibold'>{st.title}</span>
             </div>
 
-            <div className='p-5'>
-              <Image
-                src={st.img3}
-                style={{ width: "370px", height: "300px" }}
-                className='object-cover rounded-xl'
-                alt='testimonal participant'
-              />
-              <span className='text-[16px] md:text-[16px] lg:text-[18px] xl-[19px] 2xl:text0[20px] font-semibold'>{st.desc3}</span>
-            </div>
-            <div className='p-5'>
-              <Image
-                src={st.img4}
-                style={{ width: "370px", height: "300px" }}
-                className='object-cover rounded-xl'
-                alt='testimonal participant'
-              />
-              <span className='text-[16px] md:text-[16px] lg:text-[18px] xl-[19px] 2xl:text0[20px] font-semibold'>{st.desc4}</span>
-            </div>
 
           </div>
         ))}
