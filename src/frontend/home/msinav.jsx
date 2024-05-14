@@ -119,6 +119,18 @@ export default function App() {
             </span>
             <span className='hover:-translate-y-1 hover:scale-110 duration-500'>
               <Link
+                to='/about'
+                className={
+                  location.pathname === "/about"
+                    ? "font-semibold text-[18px] md:text-[14px] xl:text-[16px] 2xl:text-[20px]"
+                    : "text-[18px] md:text-[14px] xl:text-[16px] 2xl:text-[20px]"
+                }
+              >
+                About
+              </Link>
+            </span>
+            <span className='hover:-translate-y-1 hover:scale-110 duration-500'>
+              <Link
                 to='/home-course'
                 className={
                   location.pathname === "/home-course" ||
@@ -181,18 +193,7 @@ export default function App() {
                 Booking
               </Link>
             </span>
-            <span className='hover:-translate-y-1 hover:scale-110 duration-500'>
-              <Link
-                to='/about'
-                className={
-                  location.pathname === "/about"
-                    ? "font-semibold text-[18px] md:text-[14px] xl:text-[16px] 2xl:text-[20px]"
-                    : "text-[18px] md:text-[14px] xl:text-[16px] 2xl:text-[20px]"
-                }
-              >
-                About
-              </Link>
-            </span>
+
             <span
               className='hover:-translate-y-1 hover:scale-110 duration-500'
             >
