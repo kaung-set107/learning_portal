@@ -109,7 +109,7 @@ export default function BatchList() {
 
     const handleDelete = async () => {
         // console.log(setDelID);
-        await apiInstance.delete("news-and-activities/" + delID).then(() => {
+        await apiInstance.delete("achievements/" + delID).then(() => {
             setBatchList(batchList.filter((item) => item._id !== delID));
             onClose();
         });
