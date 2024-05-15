@@ -111,7 +111,8 @@ const ExamResults = () => {
     }
 
     if(state && state.subject) {
-      data.batch = {_id: state.subject.course?._id ?? state.subject.course}
+      // data.batch = {_id: state.subject.course?._id ?? state.subject.course}
+      data.subject = state.subject
     }
 
     let newFilters = { ...filters, ...data };
