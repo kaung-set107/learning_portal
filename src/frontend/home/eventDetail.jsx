@@ -24,7 +24,7 @@ export default function EventDetail() {
             await apiInstance.get(`events/${EventID}`).then((res) => {
                 setEventList(res.data.data);
                 console.log(res.data.data, 'list')
-                const img = `data:image/jpeg;base64,${res.data.data.image}`
+                const img = res.data.data.thumbnail ? getFile({ payload: res.data.data.thumbnail[0] }) : ''
                 setImgFile(img)
             });
         };
@@ -58,12 +58,12 @@ export default function EventDetail() {
                         <div className='text-[20px] flex gap-10'>
                             <span className='w-[240px]'>Event Time</span>
                             <b className='text-[blue]'>-</b>
-                            <span>9:00 A.M To 12:00 P.M</span>
+                            <span>{eventList.startTime} To {eventList.endTime}</span>
                         </div>
                         <div className='text-[20px] flex gap-10'>
                             <span className='w-[240px]'>Event Location</span>
                             <b className='text-[blue]'>-</b>
-                            <span>Room 303, Third Floor, Khattar Street, Grand Khattar Residence, Sanchaung Township, Yangon, Myanmar.</span>
+                            <span>{eventList?.location}</span>
                         </div>
                     </div>
                 </div>
@@ -83,9 +83,8 @@ export default function EventDetail() {
                     <div className='bg-[#fff] w-[100px] h-[100px] opacity-[0.1] rounded-[100%] left-[39px] -top-9 absolute '></div>
                     <div className=' w-[525px] xl:w-[530px] h-[482px] flex flex-col gap-10'>
                         <span className='text-[28px] font-light uppercase text-[#fff]'>Speaker</span>
-                        <p className='text-[20px] font-normal text-[#fff]'>
-                            Ma Phoo Phoo is an experienced IELTS coach dedicated to helping students succeed in the IELTS exam. With [number of years] years of experience in language teaching, they specialize in personalized coaching tailored to each student's needs. Known for their interactive approach and proven results, [Name of Coach] has helped numerous students achieve their desired scores and advance their academic and professional goals.
-                            <div className='bg-[#fff] w-[80px] h-[80px] opacity-[0.1] rounded-[100%] left-[590px] top-[470px] absolute '></div>
+                        <p className='text-[20px] font-normal text-[#fff] h-[200px]'>
+                            {eventList.speaker ? eventList.speaker.introduction : ''}
                         </p>
                         <div className='text-[#fff] flex gap-2'>
                             <FontAwesomeIcon icon={faStar} size='2xl' />
@@ -94,14 +93,14 @@ export default function EventDetail() {
                             <FontAwesomeIcon icon={faStar} size='2xl' />
                             <FontAwesomeIcon icon={faStar} size='2xl' />
                             <div className='text-[#fff] flex flex-col gap-1 pl-[640px] xl:pl-[370px]'>
-                                <span className='text-[40px] font-extrabold flex justify-end items-end'>Ma Phoo Phoo</span>
-                                <span className='pl-20 w-[300px] text-[20px] font-bold flex justify-end items-end'>IELTS Coach</span>
+                                <span className='text-[40px] font-extrabold flex justify-end items-end'>{eventList.speaker ? eventList.speaker.name : ''}</span>
+                                <span className='pl-20 w-[300px] text-[20px] font-bold flex justify-end items-end'>{eventList.speaker ? eventList.speaker.specialty : ''}</span>
                             </div>
                         </div>
 
                         <div className=' w-[440px] xl:w-[400px] xl:h-[350px] h-[440px] absolute -right-[20px] top-0' style={{ borderRadius: '157.68px 0px', backgroundColor: 'white' }}>
 
-                            <Image src={`data:image/jpeg;base64,${eventList?.image}`} className=' w-[416px] h-[416px] xl:w-[360px] xl:h-[330px] left-[13px] top-[10px] bottom-[10px]' style={{ borderRadius: '157.68px 0px' }} />
+                            <Image src={eventList.speaker ? getFile({ payload: eventList.speaker.image[0] }) : ''} className=' w-[416px] h-[416px] xl:w-[360px] xl:h-[330px] left-[13px] top-[10px] bottom-[10px]' style={{ borderRadius: '157.68px 0px' }} />
 
 
                         </div>

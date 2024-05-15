@@ -20,6 +20,7 @@ import QuizPage from "../../ByUser/Quiz/quizpage";
 import PP from '../../../assets/img/student.jpg'
 import { getFile } from "../../../util";
 import ExamRes from './examResultPage'
+import ExamPage from './examPage'
 import apiInstance from "../../../util/api";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -44,7 +45,7 @@ export default function CourseDetail(props) {
   const location = useLocation();
   const navigate = useNavigate();
   const subjectData = location.state.data;
-  // console.log(subjectData, "sub data");
+  console.log(subjectData.exams, "sub data");
   const courseData = location.state.courseData;
   // console.log(props.id, "id");
   const [showMid, setShowMid] = useState(false);
@@ -54,9 +55,17 @@ export default function CourseDetail(props) {
   const [nestedExamVal, setNestedExamVal] = useState([]);
   const [showNestedOrigin, setShowNestedOrigin] = useState(true)
   const [showResult, setShowResult] = useState(false)
+  const [showExamPage, setShowExamPage] = useState(false)
   const [value, setValue] = useState([])
   const [midExamList, setMidExamList] = useState([])
   const [finalExamList, setFinalExamList] = useState([])
+  const [examPageData, setExamPageData] = useState('')
+
+  const handleExamPage = (val) => {
+    setShowExamPage(true)
+    setShowResult(false)
+    setExamPageData(val)
+  }
   const handleExam = (val) => {
     if (val.term === 'mid') {
       setShowMid(true)
@@ -123,7 +132,9 @@ export default function CourseDetail(props) {
 
   }
   // Handle Tabs
-
+  // const date = new Date(isoString);
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  // return new Date(isoString).toLocaleDateString('en-US', options);
 
   return (
     <>
@@ -142,53 +153,12 @@ export default function CourseDetail(props) {
       {showMid && (
         <>
           {showNestedOrigin && (
-            <div className='flex flex-col gap-32'>
-              <div className='h-[308px] w-full flex flex-col gap-5 pl-16'>
-                <div className='flex flex-col gap-5'>
-                  <div className='flex justify-between'>
-                    <span className='text-[40px] font-bold'>Mid-Term Exam</span>
-                    <Button className='flex justify-center w-10' onClick={handleBack}>Back</Button>
-                  </div>
-
-                  <div className='text-[24px] font-semibold flex flex-col gap-2 ml-[30px]'>
-                    <div >
-                      <li>Must be able to answer the Project Management (Week-4) Quiz.</li>
-                      <li>Must have passed (90%).</li>
-                      <li>There is no number of times, but the opportunity to answer</li>
-
-                      <li className='w-[1315px]'>In answering, if you take the quiz for the first (2) times and want to take it again for the (3rd) time, you can answer it immediately, and you can take the quiz for the (3rd) time only after 5 (5) hours have passed.</li>
-
-
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <span className='text-[#ED1D25] text-[24px] font-bold'> Note. . After taking the first (2) exams, you will be able to retake the exam only after 5 (5) hours have passed.</span>
-                </div>
-                {/* <div className='flex justify-center p-5'>
-                  {
-                    value.showToStudent === false ? (
-                      <Button color='primary' disabled className='flex justify-center w-40 items-center cursor-not-allowed opacity-60' >Start</Button>
-
-                    ) : (
-                      <Button color='primary' className='flex justify-center w-40 items-center' onClick={handleBack}>Start</Button>
-
-                    )
-                  }
-                </div> */}
-              </div>
-              <div className='flex flex-col w-full pl-16 gap-12'>
-                <div className='bg-[#215887] w-[1360px] p-12 rounded-lg text-[24px] font-semibold text-[#fff]' onClick={() => handleNestedExam(1)}>In App Exam</div>
-                <div className='bg-[#ED1D25] w-[1360px] p-12 rounded-lg text-[24px] font-semibold text-[#fff]' onClick={() => handleNestedExam(2)} >Outside App Exam</div>
-                {/* <div className='bg-[#FFB700] w-[1360px] p-12 rounded-lg text-[24px] font-semibold text-[#fff]' onClick={() => handleNestedExam(3)} >Openbook Exam</div> */}
-              </div>
-            </div>
+            <div></div>
 
           )}
 
           {nestedExamVal && !showNestedOrigin && (
             <>
-
               {showResult ? (
                 <div className='mx-10'>
                   <ExamRes ResData={ResData} showResult={showResult} />
@@ -522,10 +492,9 @@ export default function CourseDetail(props) {
 
                 </div>
               )}
+
+
             </>
-
-
-
           )}
 
         </>
@@ -539,6 +508,43 @@ export default function CourseDetail(props) {
             {showNestedOrigin && (<div className='flex flex-col gap-12'>
               <div className='bg-[#215887] w-[1360px] p-12 rounded-lg text-[24px] font-semibold text-[#fff]' onClick={() => handleNestedExam(1)}>In App Exam</div>
               <div className='bg-[#ED1D25] w-[1360px] p-12 rounded-lg text-[24px] font-semibold text-[#fff]' onClick={() => handleNestedExam(2)} >Outside App Exam</div>
+              <div className='flex flex-col gap-32'>
+                <div className='h-[308px] w-full flex flex-col gap-5 pl-16'>
+                  <div className='flex flex-col gap-5'>
+                    <div className='flex justify-between'>
+                      <span className='text-[40px] font-bold'>Mid-Term Exam</span>
+                      {/* <Button className='flex justify-center w-10' onClick={handleBack}>Back</Button> */}
+                    </div>
+
+                    <div className='text-[24px] font-semibold flex flex-col gap-2 ml-[30px]'>
+                      <div >
+                        <li>Must be able to answer the Project Management (Week-4) Quiz.</li>
+                        <li>Must have passed (90%).</li>
+                        <li>There is no number of times, but the opportunity to answer</li>
+
+                        <li className='w-[1315px]'>In answering, if you take the quiz for the first (2) times and want to take it again for the (3rd) time, you can answer it immediately, and you can take the quiz for the (3rd) time only after 5 (5) hours have passed.</li>
+
+
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <span className='text-[#ED1D25] text-[24px] font-bold'> Note. . After taking the first (2) exams, you will be able to retake the exam only after 5 (5) hours have passed.</span>
+                  </div>
+                  {/* <div className='flex justify-center p-5'>
+                  {
+                    value.showToStudent === false ? (
+                      <Button color='primary' disabled className='flex justify-center w-40 items-center cursor-not-allowed opacity-60' >Start</Button>
+
+                    ) : (
+                      <Button color='primary' className='flex justify-center w-40 items-center' onClick={handleBack}>Start</Button>
+
+                    )
+                  }
+                </div> */}
+                </div>
+
+              </div>
               {/* <div className='bg-[#FFB700] w-[1360px] p-12 rounded-lg text-[24px] font-semibold text-[#fff]' onClick={() => handleNestedExam(3)} >Openbook Exam</div> */}
             </div>)}
 
@@ -549,6 +555,10 @@ export default function CourseDetail(props) {
                 {showResult ? (
                   <div className='mx-10'>
                     <ExamRes ResData={ResData} showResult={showResult} />
+                  </div>
+                ) : showExamPage ? (
+                  <div className='mx-10'>
+                    <ExamPage ResData={examPageData} showResult={showExamPage} />
                   </div>
                 ) : (
                   <div className="flex justify-center items-center w-full flex-col mb-20">
@@ -562,40 +572,35 @@ export default function CourseDetail(props) {
                           </div>
                         }
                       >
-                        <div className='h-[308px] w-full flex flex-col gap-5 pl-16'>
-                          <div className='flex flex-col gap-5'>
-                            <div className='flex justify-between'>
-                              <span className='text-[40px] font-bold'>Mid-Term Exam</span>
-                              <Button className='flex justify-center w-10' onClick={handleBack}>Back</Button>
-                            </div>
+                        {subjectData.exams.filter(el => el.examType === 'inapp').map((item, index) => (
+                          <div className='flex flex-col justify-start pt-10  pl-10 pb-8 pr-10' >
+                            <div className='flex gap-48 bg-[#215887] p-12  border-4 border-l-red-500 w-[1560px] h-[250px] '>
+                              <div className='flex justify-start text-[24px] text-[#fff] font-semibold items-center'>Exam</div>
+                              <div className='flex flex-col gap-2 justify-start items-start w-[500px]'>
+                                <span className='text-[32px] text-[#fff] font-semibold'>{item?.title}</span>
+                                <div className='text-[16px] text-[#fff] font-medium flex gap-3'>
+                                  <span>Start Date : </span>
+                                  <span>{new Date(item?.examDate).toLocaleDateString('en-US', options)}</span>
+                                </div>
 
-                            <div className='text-[24px] font-semibold flex flex-col gap-2 ml-[30px]'>
-                              <div >
-                                <li>Must be able to answer the Project Management (Week-4) Quiz.</li>
-                                <li>Must have passed (90%).</li>
-                                <li>There is no number of times, but the opportunity to answer</li>
+                                <div className='text-[16px] text-[#fff] font-medium flex gap-3'>
+                                  <span>Start Time : </span>
+                                  <span>{item?.startTime}</span>
+                                </div>
+                              </div>
 
-                                <li className='w-[1315px]'>In answering, if you take the quiz for the first (2) times and want to take it again for the (3rd) time, you can answer it immediately, and you can take the quiz for the (3rd) time only after 5 (5) hours have passed.</li>
-
-
+                              <div className='flex flex-col gap-4  justify-center items-end w-[400px]'>
+                                <div><Button className='bg-[#4674ff] text-[#fff] w-[150px] ' onClick={() => handleExamPage(item)}>Take Exam</Button></div>
+                                <div className='flex gap-2'>
+                                  <span className='text-[#fff]'>Reference link :</span>
+                                  <a href={JSON.parse(item.links)[0].links} className='text-[#fff]'> {JSON.parse(item.links)[0].links}</a>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          <div>
-                            <span className='text-[#ED1D25] text-[24px] font-bold'> Note. . After taking the first (2) exams, you will be able to retake the exam only after 5 (5) hours have passed.</span>
-                          </div>
-                          <div className='flex justify-center p-5'>
-                            {
-                              value.showToStudent === false ? (
-                                <Button color='primary' disabled className='flex justify-center w-40 items-center cursor-not-allowed opacity-60' >Start</Button>
 
-                              ) : (
-                                <Button color='primary' className='flex justify-center w-40 items-center' onClick={handleBack}>Start</Button>
-
-                              )
-                            }
                           </div>
-                        </div>
+                        ))}
+
                       </Tab>
                       <Tab
                         key="complete"
@@ -606,41 +611,45 @@ export default function CourseDetail(props) {
                           </div>
                         }
                       >
-                        <div className='flex flex-col justify-start pt-10 w-[1560px] h-[204px] pl-10 pb-8 pr-10' >
+                        <div className='flex flex-col justify-start pt-10  pl-10 pb-8 pr-10' >
 
 
-                          <div className='grid grid-cols-3 bg-[#215887]   p-12  border-4 border-l-red-500 '>
-                            <div className='flex justify-center text-[24px] text-[#fff] font-semibold items-center'>Exam</div>
-                            <div className='flex flex-col gap-2 justify-start'>
-                              <span className='text-[32px] text-[#fff] font-semibold'>Title</span>
-                              <div className='text-[16px] text-[#fff] font-medium'>Description</div>
-                              <div className='flex flex-col  gap-1'>
-                                <span className='text-[16px] text-[#fff] font-semibold'>Reference link </span>
-                                <div className='grid grid-cols-3'>
-
-
-
-                                  <div className="text-[16px] text-[#4b4eff] font-semibold px-3 ">
-                                    <a target="_blank" rel='noreferrer' href='#'>
-                                      Links
-                                    </a>
+                          <div className='flex gap-48 bg-[#215887] p-12  border-4 border-l-red-500 w-[1560px] h-[250px]  '>
+                            <div className='flex justify-start text-[24px] text-[#fff] font-semibold items-center'>Exam</div>
+                            <div className='flex flex-col gap-2 justify-start items-start w-[800px]'>
+                              <span className='text-[32px] text-[#fff] font-semibold'>Introduction to IELTS</span>
+                              <div className='flex gap-10'>
+                                <div className='flex flex-col gap-5'>
+                                  <div className='text-[16px] text-[#fff] font-medium flex gap-3'>
+                                    <span>Start Date : </span>
+                                    <span>April 11, 2024</span>
+                                  </div>
+                                  <div className='text-[16px] text-[#fff] font-medium flex gap-3'>
+                                    <span>Start Time : </span>
+                                    <span>12:00 PM</span>
                                   </div>
 
-
                                 </div>
-                              </div>
-                              <div className='flex flex-col'>
-                                <span className='text-[16px] text-[#fff] font-semibold'>Document File link </span>
-
+                                <div className='flex flex-col gap-5'>
+                                  <div className='text-[16px] text-[#fff] font-medium flex gap-3'>
+                                    <span>Completed Date : </span>
+                                    <span>April 11, 2024</span>
+                                  </div>
+                                  <div className='text-[16px] text-[#fff] font-medium flex gap-3'>
+                                    <span>Completed Time : </span>
+                                    <span>12:00 PM</span>
+                                  </div>
+                                </div>
                               </div>
 
                             </div>
 
-
-
-
-                            <div className='flex flex-col gap-4  justify-center'>
-
+                            <div className='flex flex-col gap-4  justify-center items-end w-[400px]'>
+                              <div><Button className='bg-[#4674ff] text-[#fff] w-[150px] '>View Answer</Button></div>
+                              <div className='flex gap-2'>
+                                <span className='text-[#fff]'>Reference link :</span>
+                                <span className='text-[#fff]'> www.msi.com/basicielts</span>
+                              </div>
                             </div>
                           </div>
 
@@ -655,35 +664,17 @@ export default function CourseDetail(props) {
                           </div>
                         }
                       >
-                        <div className='flex flex-col justify-start pt-10 w-[1560px] h-[204px] pl-10 pb-8 pr-10' >
+                        <div className='flex flex-col justify-start pt-10  pl-10 pb-8 pr-10' >
 
 
-                          <div className='flex justify-between bg-[#215887]   p-12  border-4 border-l-red-500 '>
-                            <div className='flex justify-center text-[24px] text-[#fff] font-semibold items-center'>Exam</div>
-
-                            <div className='flex flex-col gap-2 justify-start w-[400px]'>
-                              <span className='text-[32px] text-[#fff] font-semibold'>Title</span>
-                              <div className='text-[16px] text-[#fff] font-medium'>Description</div>
-                              <div className='flex flex-col  gap-1'>
-                                <span className='text-[16px] text-[#fff] font-semibold'>Reference link </span>
-                                <div className='grid grid-cols-3'>
-
-
-
-                                  <div className="text-[16px] text-[#4b4eff] font-semibold px-3 ">
-                                    <a target="_blank" rel='noreferrer' href='#'>
-                                      Links
-                                    </a>
-                                  </div>
-
-
-                                </div>
+                          <div className='flex justify-between bg-[#215887] w-[1560px] h-[250px]   p-12  border-4 border-l-red-500 '>
+                            <div className='flex justify-start text-[24px] text-[#fff] font-semibold items-center'>Exam</div>
+                            <div className='flex flex-col gap-2 justify-start items-start w-[800px]'>
+                              <span className='text-[32px] text-[#fff] font-semibold'>Introduction to IELTS</span>
+                              <div className='flex gap-2'>
+                                <span className='text-[#fff]'>Reference link :</span>
+                                <span className='text-[#fff]'> www.msi.com/basicielts</span>
                               </div>
-                              <div className='flex flex-col'>
-                                <span className='text-[16px] text-[#fff] font-semibold'>Document File link </span>
-
-                              </div>
-
                             </div>
 
                             <div className='flex flex-col gap-4  justify-center w-[167px] pt-[5px] pb-[5px] pl-[10px] pr-[10px]' >
