@@ -336,7 +336,7 @@ export default function Eventupdate() {
                     <Link to='/category'>Cancel</Link>
                 </Button>
                 <Button color='primary' onClick={create}>
-                    Register
+                    Update
                 </Button>
             </div>
         </div>

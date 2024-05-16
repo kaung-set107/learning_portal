@@ -21,7 +21,7 @@ import { Link, useLocation } from "react-router-dom";
 import apiInstance from "../../util/api";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import MSI from "../../assets/img/msilogo.jpg";
+import MSI from "../../assets/img/MSILOGO.jpg";
 export default function App() {
   const location = useLocation()
   const ID = location.pathname.split('/')[2]
