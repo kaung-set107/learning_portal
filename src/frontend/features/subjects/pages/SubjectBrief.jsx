@@ -128,13 +128,13 @@ const SubjectBrief = () => {
       setIsSubmitting(true);
       let res = await examsApi.generateExamResults({
         _id: id,
-        batch: subject.data.course.batch,
+        batch: subject.data?.course?.batch,
       });
       await getSubject();
       showSuccess({ text: res.message, type: "noti-box" });
-      await getSubject();
       setIsSubmitting(false);
     } catch (error) {
+      console.log(error)
       showError({ axiosResponse: error });
     } finally {
       setIsSubmitting(false);
