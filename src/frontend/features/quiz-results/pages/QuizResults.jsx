@@ -9,7 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import CustomButton from "../../../components/general/CustomButton";
 import { quizzesApi } from "../../quizzes/api";
 import { showError } from "../../../../util/noti";
-import BatchesDropdown from "../../batches/components/BatchesDropdown";
+// import BatchesDropdown from "../../batches/components/BatchesDropdown";
 
 const QuizResults = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -29,7 +29,6 @@ const QuizResults = () => {
     try {
       let res = await quizResultsApi.getAll({
         quiz: quiz._id,
-        batch: filters.batch?._id,
       });
       console.log(res);
       setQuizResults(res);
@@ -144,7 +143,7 @@ const QuizResults = () => {
           <h3 className="text-xl font-bold"><span className="uppercase">{quiz.type}</span>: {quiz[quiz.type].title}</h3>
         </div>
         <div className="flex justify-between items-center mb-3">
-          <div>
+          {/* <div>
             <BatchesDropdown
               className="shrink-0 w-[200px]"
               filters={filters}
@@ -152,12 +151,12 @@ const QuizResults = () => {
                 setFilters((prev) => ({ ...prev, batch: value }))
               }
             />
-          </div>
-          <CustomButton
+          </div> */}
+          {/* <CustomButton
             onClick={() => fetchData()}
             isLoading={isFetching}
             title="Fetch"
-          />
+          /> */}
         </div>
         <div>
           <div>

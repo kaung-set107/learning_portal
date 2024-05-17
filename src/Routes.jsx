@@ -111,6 +111,8 @@ import InstructorQuizResult from "./frontend/features/quiz-results/pages/QuizRes
 import QuizUpdate from "./frontend/features/quizzes/pages/QuizUpdate.jsx";
 import ExamResults from "./frontend/features/exam-results/pages/ExamResults.jsx";
 
+import InstructorExamResult from "./frontend/features/exam-results/pages/ExamResult.jsx";
+
 //Activities
 import ActivitiesInput from './pages/Activities/activitiesInput.jsx'
 import ActivitiesList from './pages/Activities/activitiesList.jsx'
@@ -121,6 +123,7 @@ import ActivitiesUpdate from './pages/Activities/activitiesUpdate.jsx'
 import AchievementList from './pages/Achievements/achievementList.jsx'
 import AchievementInput from './pages/Achievements/achievementInput.jsx'
 import AchievementUpdate from './pages/Achievements/achievementUpdate.jsx'
+
 export default function RouteFile() {
   console.log(localStorage.getItem("user"), "local use");
   return (
@@ -271,6 +274,7 @@ export default function RouteFile() {
               </Route>
               <Route path="exam-results">
                 <Route index element={<ExamResults />} />
+                <Route path=":id" element={<InstructorExamResult/>} />
               </Route>
               <Route path="surveys">
                 {/* <Route path=":id/survey-results" element={<SurveyResults />} /> */}

@@ -1,7 +1,7 @@
 import axios from 'axios'
 // const url = 'http://localhost:9000/api/'
-const url = 'http://learningportalbackend.kwintechnologies.com:3600/api/'
-// const url = "http://localhost:3600/api/"
+// const url = 'http://learningportalbackend.kwintechnologies.com:3600/api/'
+const url = "http://localhost:3600/api/"  
 const storeToken = localStorage.getItem('token')
 
 const apiInstance = axios.create({

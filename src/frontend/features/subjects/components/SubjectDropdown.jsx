@@ -16,7 +16,7 @@ const SubjectsDropdown = (props) => {
       let res = await subjectsApi.getAll({ instructors: getCurrentUserId() });
       setSubjects(res);
 
-      if(res.data.length > 0) setSubject(res.data[0])
+      if(res.data.length > 0 && !filters?.subject?._id) setSubject(res.data[0])
     } catch (error) {
       console.log(error);
     } finally {

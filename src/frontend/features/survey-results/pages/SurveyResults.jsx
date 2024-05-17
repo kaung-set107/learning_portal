@@ -5,26 +5,26 @@ import TableHeading from "../../../components/general/typography/TableHeading";
 import { getTableData } from "../data";
 import Loading from "../../../components/general/Loading";
 import { surveyResultsApi } from "../api";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import CustomButton from "../../../components/general/CustomButton";
 import { surveysApi } from "../../surveys/data";
 import { showError } from "../../../../util/noti";
-import BatchesDropdown from "../../batches/components/BatchesDropdown";
-import { batchesApi } from "../../batches/api";
+// import BatchesDropdown from "../../batches/components/BatchesDropdown";
+// import { batchesApi } from "../../batches/api";
 
 const SurveyResults = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isFetching, setIsFetching] = useState(true);
   const [surveyResults, setSurveyResults] = useState([]);
   const [survey, setSurvey] = useState({});
-  const [currentBatch, setCurrentBatch] = useState()
-  const [filters, setFilters] = useState({
-    batch: "",
-  });
+  // const [currentBatch, setCurrentBatch] = useState()
+  // const [filters, setFilters] = useState({
+  //   batch: "",
+  // });
 
   const navigate = useNavigate();
 
-  const {id} = useParams()
+  // const {id} = useParams()
 
   const {
     state: { survey: surveyId },
@@ -33,10 +33,9 @@ const SurveyResults = () => {
   const getSurveyResults = async () => {
     setIsFetching(true);
     try {
-      console.log('here', filters)
       let res = await surveyResultsApi.getAll({
         survey: survey._id,
-        batch: filters.batch?._id,
+        // batch: filters.batch?._id,
       });
       console.log(res);
       setSurveyResults(res);
@@ -59,20 +58,20 @@ const SurveyResults = () => {
     }
   };
 
-  const getCurrentBatch = async () => {
-    try {
-      let res = await batchesApi.getCurrentBatchBySubject({ subject: id });
-      setCurrentBatch(res.data)
-      setFilters(prev => ({...prev, batch: res.data}))
-    } catch (error) {
-      console.log(error);
-      showError({ axiosResponse: error });
-    }
-  }
+  // const getCurrentBatch = async () => {
+  //   try {
+  //     let res = await batchesApi.getCurrentBatchBySubject({ subject: id });
+  //     setCurrentBatch(res.data)
+  //     setFilters(prev => ({...prev, batch: res.data}))
+  //   } catch (error) {
+  //     console.log(error);
+  //     showError({ axiosResponse: error });
+  //   }
+  // }
 
-  const fetchData = () => {
-    getSurveyResults();
-  };
+  // const fetchData = () => {
+  //   getSurveyResults();
+  // };
 
   const getViewButton = (resultId) => {
     return (
@@ -91,16 +90,16 @@ const SurveyResults = () => {
 
   useEffect(() => {
     getSurvey();
-    getCurrentBatch()
+    // getCurrentBatch()
   }, []);
 
   useEffect(() => {
     
-    if(Object.keys(survey).length > 0 && filters.batch) {
+    if(Object.keys(survey).length > 0) {
       if (survey._id) getSurveyResults();
     }
 
-  }, [survey, filters]);
+  }, [survey]);
 
   let content;
 
@@ -125,7 +124,7 @@ const SurveyResults = () => {
         </div>
 
         <div className="flex justify-between items-center mb-3">
-          <div>
+          {/* <div>
             <BatchesDropdown
               className="shrink-0 w-[200px]"
               filters={filters}
@@ -133,12 +132,12 @@ const SurveyResults = () => {
                 setFilters((prev) => ({ ...prev, batch: value }))
               }
             />
-          </div>
-          <CustomButton
+          </div> */}
+          {/* <CustomButton
             onClick={() => fetchData()}
             isLoading={isFetching}
             title="Fetch"
-          />
+          /> */}
         </div>
         <div className="flex items-center justify-between mb-12">
           <TableHeading title={`${survey.title}'s Survey Results`} />

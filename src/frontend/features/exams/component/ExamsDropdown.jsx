@@ -49,11 +49,12 @@ const ExamsDropdown = (props) => {
           items={exams.data}
           color="primary"
           label="Exam"
-          selectedKeys={
-            filters.exam?._id && exams.data.length > 0
-              ? [filters.exam?._id]
-              : []
-          }
+          // selectedKeys={
+          //   filters.exam?._id && exams.data.length > 0
+          //     ? [filters.exam?._id]
+          //     : []
+          // }
+          selectedKeys={[filters?.exam?._id]}
           placeholder={exams?.data?.length > 0 ? `Select an exam` : "No Exam!"}
           className="max-w-xs"
           onSelectionChange={(e) => handleExamSelect(e.currentKey)}
