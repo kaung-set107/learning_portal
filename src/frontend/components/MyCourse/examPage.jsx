@@ -145,7 +145,7 @@ const ExamPage = ({ ResData, showResult }) => {
 
     const handleResult = () => {
 
-        console.log(studentAnswerList, 'studentAnswerList');
+        // console.log(studentAnswerList, 'studentAnswerList');
 
         // console.log(studentAnswerList.filter(el => quizList.questions.find(i => i._id === el.id)), 'studentAnswerList')
         //Quiz-Result Create
