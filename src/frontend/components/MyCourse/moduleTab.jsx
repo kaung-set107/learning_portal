@@ -177,6 +177,7 @@ const CourseDetail = (props) => {
     };
     getEnrol();
     getSubjects();
+    window.scroll(0, 0)
 
     // getSurveyResult()
 

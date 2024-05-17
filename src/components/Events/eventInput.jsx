@@ -230,7 +230,7 @@ export default function Event() {
                 </div>
                 <div className='mx-8 flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
                     <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-                        <label className={description ? 'text-sm font-semibold' : 'text-red-600 font-semibold'}>Event Start Time</label>
+                        <label className={startTime ? 'text-sm font-semibold' : 'text-red-600 font-semibold'}>Event Start Time</label>
                         <Input
                             variant='bordered'
                             type='time'
@@ -242,7 +242,7 @@ export default function Event() {
                         />
                     </div>
                     <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-                        <label className={description ? 'text-sm font-semibold' : 'text-red-600 font-semibold'}>Event End Time</label>
+                        <label className={endTime ? 'text-sm font-semibold' : 'text-red-600 font-semibold'}>Event End Time</label>
                         <Input
                             variant='bordered'
                             type='time'

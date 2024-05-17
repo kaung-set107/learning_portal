@@ -144,7 +144,7 @@ export default function Eventupdate() {
             <div className='flex flex-col mx-8 w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
                 <div className='flex gap-4'>
                     <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-                        <label className='text-sm font-semibold'>Title</label>
+                        <label className={title ? 'text-sm font-semibold' : 'text-red-600 font-semibold'}>Title</label>
                         <Input
                             type='text'
                             variant='bordered'
@@ -154,7 +154,7 @@ export default function Eventupdate() {
                         />
                     </div>
                     <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-                        <label className='text-sm font-semibold'>Sub Title</label>
+                        <label className={subTitle ? 'text-sm font-semibold' : 'text-red-600 font-semibold'}>Sub Title</label>
                         <Input
                             type='text'
                             variant='bordered'
@@ -184,7 +184,7 @@ export default function Eventupdate() {
 
                 <div className='flex gap-4'>
                     <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-                        <label className='text-sm font-semibold'>Start Date</label>
+                        <label className={startDate ? 'text-sm font-semibold' : 'text-red-600 font-semibold'}>Start Date</label>
                         <Input
                             type='date'
                             variant='bordered'
@@ -194,7 +194,7 @@ export default function Eventupdate() {
                         />
                     </div>
                     <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-                        <label className='text-sm font-semibold'>End Date</label>
+                        <label className={endDate ? 'text-sm font-semibold' : 'text-red-600 font-semibold'}>End Date</label>
                         <Input
                             type='date'
                             variant='bordered'
@@ -256,7 +256,7 @@ export default function Eventupdate() {
                 </div>
                 <div className='flex gap-5'>
                     <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
-                        <label className='text-sm font-semibold'>Speaker Name</label>
+                        <label className={speakerName ? 'text-sm font-semibold' : 'text-red-600 font-semibold'}>Speaker Name</label>
                         <Input
                             type='text'
                             variant='bordered'
@@ -281,10 +281,11 @@ export default function Eventupdate() {
             </div>
             <div className='mx-8 flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
                 <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+                    <label className={startTime ? 'text-sm font-semibold' : 'text-red-600 font-semibold'}>Event Start Time</label>
                     <Input
                         variant='bordered'
                         type='time'
-                        label='Event Start Time'
+
                         placeholder=".."
                         value={startTime}
                         onChange={(e) => setStartTime(e.target.value)}
@@ -292,10 +293,11 @@ export default function Eventupdate() {
                     />
                 </div>
                 <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+                    <label className={endTime ? 'text-sm font-semibold' : 'text-red-600 font-semibold'}>Event End Time</label>
                     <Input
                         variant='bordered'
                         type='time'
-                        label='Event End Time'
+
                         placeholder=".."
                         value={endTime}
                         onChange={(e) => setEndTime(e.target.value)}
@@ -318,10 +320,11 @@ export default function Eventupdate() {
             </div>
             <div className='mx-8 flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
                 <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+                    <label className={description ? 'text-sm font-semibold' : 'text-red-600 font-semibold'}>Description</label>
                     <Textarea
                         variant='bordered'
                         type='text'
-                        label='Description'
+
                         placeholder='description'
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}

@@ -74,7 +74,7 @@ export default function Activities() {
                                     <span className='flex justify-center items-center pt-1'>MSI ACADEMY</span>
                                 </div>
                                 <div>
-                                    <span className='lg:text-[15px] 2xl:text-[16px] font-normal'>August 20, 2022</span>
+                                    {/* <span className='lg:text-[15px] 2xl:text-[16px] font-normal'>August 20, 2022</span> */}
                                 </div>
                             </div>
 

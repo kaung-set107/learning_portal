@@ -37,7 +37,7 @@ export default function Newsdetail() {
                         <span className='flex justify-center items-center pt-2'>MSI ACADEMY</span>
                     </div>
                     <div>
-                        <span className='2xl:text-[16px] font-normal'>August 20, 2022</span>
+                        {/* <span className='2xl:text-[16px] font-normal'>August 20, 2022</span> */}
                     </div>
                 </div>
                 <div className='flex flex-col gap-32'>
