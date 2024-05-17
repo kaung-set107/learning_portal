@@ -70,7 +70,7 @@ export default function ExamUpdateModal(props) {
         duration: +formData.duration,
         creditMark: +formData.creditMark,
         passMark: +formData.passMark,
-        examType: formData.examType.currentKey ?? formData.examType[0],
+        examType: formData.examType?.currentKey ?? formData.examType[0],
       };
       if (formData.newQuestion) {
         payload.question = formData.newQuestion;
@@ -106,7 +106,7 @@ export default function ExamUpdateModal(props) {
       duration: exam.data.duration ?? "",
       examType: exam.data.examType ? [exam.data.examType] : [],
       creditMark: exam.data.creditMark ?? "",
-      passMark: exam.data.passMark ?? "",
+      passMark: exam.data.passMark ?? "", 
     });
 
     setLinks(JSON.parse(exam.data.links));

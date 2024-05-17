@@ -53,29 +53,36 @@ const ExamCard = (props) => {
               />
             )}
             {examData.quiz && (
-              <CustomButton
-                size="sm"
-                onClick={() => quizUpdate(examData)}
-                title="Quiz Update"
-              />
-            )}
-          </>
-        )}
-
-        {examData.examType === "outside" &&
-          (
-            <>
-              {!examData.resultsGenerated && generateHandleExamResultsGenerateBtn &&
-                generateHandleExamResultsGenerateBtn(examData._id)}
-              {examData.resultsGenerated && (
+              <div className="flex justify-between gap-3">
+                <CustomButton
+                  size="sm"
+                  onClick={() => quizUpdate(examData)}
+                  title="Quiz Update"
+                />
                 <CustomButton
                   size="sm"
                   onClick={() => goToExamResults(examData)}
                   title="Results"
                 />
-              )}
-            </>
-          )}
+              </div>
+            )}
+          </>
+        )}
+
+        {examData.examType === "outside" && (
+          <>
+            {!examData.resultsGenerated &&
+              generateHandleExamResultsGenerateBtn &&
+              generateHandleExamResultsGenerateBtn(examData._id)}
+            {examData.resultsGenerated && (
+              <CustomButton
+                size="sm"
+                onClick={() => goToExamResults(examData)}
+                title="Results"
+              />
+            )}
+          </>
+        )}
         <ExamUpdateModal
           subjectId={subjectId}
           examData={examData}

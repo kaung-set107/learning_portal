@@ -287,9 +287,6 @@ export default function Sidebar(props) {
                   <Divider></Divider>
                 </>
               )}
-
-
-
               {/* instructor sidebar */}
               {getCurrentUser().roles.includes("instructor") && (
                 <>
@@ -302,9 +299,7 @@ export default function Sidebar(props) {
                       startContent={<FontAwesomeIcon icon={faGear} size="xl" />}
                     >
                       <Divider></Divider>
-                      <Link
-                        to="/by-instructor/subjects"
-                      >
+                      <Link to="/by-instructor/subjects">
                         <div className="hover:bg-blue-100 px-4 py-3 m-auto text-sm">
                           &nbsp;
                           <span className="ml-4 font-medium ">Subjects</span>
@@ -347,7 +342,6 @@ export default function Sidebar(props) {
                     </AccordionItem>
                   </Accordion>
                 </>
-
               )}
 
               <Divider></Divider>
