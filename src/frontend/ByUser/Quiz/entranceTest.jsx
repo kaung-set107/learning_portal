@@ -23,29 +23,34 @@ function EntranceTestPage() {
     const entranceID = location.state.entranceID.entranceTests[0]._id
     const batchID = location.state.batchID
     // const enrollID = location.state.enrollID
-    const [arr, setArr] = useState([]);
+
     const [timeLeft, setTimeLeft] = useState("");
     const [clicked, setClicked] = useState("");
 
     const navigate = useNavigate();
+    const [selectedOption, setSelectedOption] = useState("");
     // const LMID = location.pathname.split("/")[2];
     const [index, setIndex] = useState("");
+    const [showAlert, setShowAlert] = useState(false);
 
-    const [selectedOption, setSelectedOption] = useState("");
     const [selectedCheckbox, setSelectedCheckbox] = useState("");
+    const [arr, setArr] = useState([]);
     const [showResult, setShowResult] = useState(false);
     const [oneHour, setOneHour] = useState("");
-    const [showTimer, setShowTimer] = useState(false);
+
     const [isCorrect, setIsCorrect] = useState("");
-    const [showAlert, setShowAlert] = useState(false);
+
     let [points, setPoints] = useState(null);
     const [counter, setCounter] = useState(0);
     const [quizList, setQuizList] = useState([]);
+    const [studentID, setStudentID] = useState("");
     const [nextAnswer, setNextAnswer] = useState(false);
     const [showOrigin, setShowOrigin] = useState(true);
+    const [showTimer, setShowTimer] = useState(false);
     const [trueAnswerList, setTrueAnswerList] = useState([]);
+    const [studentAnswerList, setStudentAnswerList] = useState([]);
     // const [trueAnswer, setTrueAnswer] = useState('')
-    const [studentID, setStudentID] = useState("");
+
     const [studentAnswer, setStudentAnswer] = useState("");
     const [caList, setCaList] = useState([])
     const [multiAns, setMultiAns] = useState([])
@@ -63,7 +68,7 @@ function EntranceTestPage() {
     // const [multiAnswerList, setMultiAnswerList] = useState([])
     const [final, setFinal] = useState('')
 
-    const [studentAnswerList, setStudentAnswerList] = useState([]);
+
     // const arrList = [...arr, trueAnswerList.filter((el) => el.id === quizList.questions[counter]._id)[1]]
     console.log([...arr, trueAnswerList.filter((el) => el.id === quizList.questions[counter]._id)[1]], 'true ori');
 

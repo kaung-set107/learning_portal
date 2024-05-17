@@ -22,6 +22,7 @@ import Nav from "../../home/header";
 import PF from '../../../assets/img/pf.png'
 import QP from '../../../assets/img/qp.png'
 const ExamResult = ({ ResData, showResult }) => {
+    const [quizResult, setQuizResult] = useState([]);
     const [activeTab, setActiveTab] = useState(1);
     const [effectValue, setEffectValue] = useState("");
     const handleTabClick = (tabNumber, effect) => {
@@ -36,10 +37,19 @@ const ExamResult = ({ ResData, showResult }) => {
     return (
         <div>
             {/* body */}
+            {quizResult?.status ? ('')
 
-
-
+                : (
+                    <div className='flex flex-col gap-10 items-center pt-[40px]'>
+                        <Image src={Loading} className='transform-x-[-1] w-[500px]' />
+                        <span className='text-[20px] font-semibold'>
+                            Please wait ! We are checking your Result
+                        </span>
+                    </div>
+                )
+            }
             <div>
+
                 <div className='flex flex-col gap-20 w-full h-[1500px] mt-5'>
                     {/* First Section */}
                     <div className='flex justify-between'>
@@ -59,11 +69,11 @@ const ExamResult = ({ ResData, showResult }) => {
                     {/* Second Section */}
                     <div className='flex gap-10'>
                         <div>
-                            <Image src={ResData.image} className='rounded-[50%] w-[105px] h-[100px]' />
+                            {/* <Image src={ResData.image} className='rounded-[50%] w-[105px] h-[100px]' /> */}
                         </div>
                         <div className='flex flex-col gap-2'>
-                            <span className='text-[24px] font-semibold'>{ResData.name}</span>
-                            <span className='text-[16px] font-semibold'>Student ID : {ResData.studentID}</span>
+                            <span className='text-[24px] font-semibold'></span>
+                            <span className='text-[16px] font-semibold'>Student ID : </span>
                             <span className='text-[16px] font-medium text-[#2C62EE]'><FontAwesomeIcon icon={faEye} size='sm' /> &nbsp;View Profile</span>
                         </div>
                     </div>
@@ -134,7 +144,7 @@ const ExamResult = ({ ResData, showResult }) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
 
     );
 };

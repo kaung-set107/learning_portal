@@ -16,7 +16,7 @@ import { faEye, faClock, faCalendarDays, faArrowLeft } from "@fortawesome/free-s
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 // import apiInstance from "../../util/api";
-import Exam from "./examTab";
+import Exam from "./examResultPage";
 // import Assignment from "./assignTab";
 // import Module from "./moduleTab";
 // import TabValueComponent from "./sub-detail-head";
@@ -30,8 +30,9 @@ const ExamPage = ({ ResData, showResult }) => {
     const location = useLocation();
     const subjectID = location.state.data._id
     const QuizID = ResData.quiz._id
-    const entranceID = ResData._id
-    const batchID = location.state.batchID
+    const exam = ResData._id
+    const enrollID = location.state.enroll_id
+    console.log(location.state, 'main')
     const [isLoading, setIsLoading] = useState(true);
     const [timerStartBtn, setTimerStartBtn] = useState(5); // Timer set for 5 seconds
     const [counter, setCounter] = useState(0);
@@ -46,13 +47,15 @@ const ExamPage = ({ ResData, showResult }) => {
     const [clicked, setClicked] = useState("");
     const [multiAns, setMultiAns] = useState([])
     const [nextAnswer, setNextAnswer] = useState(false);
+    const [arr, setArr] = useState([]);
+    // const [showResult, setShowResult] = useState(false);
     const navigate = useNavigate();
     const [index, setIndex] = useState("");
     const [showAlert, setShowAlert] = useState(false);
     const [selectedOption, setSelectedOption] = useState("");
     const [trueAnswerList, setTrueAnswerList] = useState([]);
     const [studentAnswerList, setStudentAnswerList] = useState([]);
-    // const [showResult, setShowResult] = useState(false);
+    const [showExamResult, setShowExamResult] = useState(false);
 
     const TotalMark = trueAnswerList.map((i) => i.markTotal)
         .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
@@ -142,17 +145,18 @@ const ExamPage = ({ ResData, showResult }) => {
 
     const handleResult = () => {
 
-        // console.log(studentAnswerList, 'studentAnswerList');
+        console.log(studentAnswerList, 'studentAnswerList');
 
         // console.log(studentAnswerList.filter(el => quizList.questions.find(i => i._id === el.id)), 'studentAnswerList')
         //Quiz-Result Create
         const data = {
-            // enrollment: enrollID,
+            enrollment: enrollID,
             quiz: QuizID,
+            // type: ResData.examType,
             student: studentID,
-            batch: batchID,
+            batch: '661626364b091b37492de8e0',
             subject: subjectID,
-            // entranceTest: entranceID,
+            // exam: exam,
             answerDate: Date.now(),
             updatedQuestions: quizList.questions.map((i) => {
                 return {
@@ -164,17 +168,16 @@ const ExamPage = ({ ResData, showResult }) => {
                     answerType: i.answerType,
                     correctAnswer: i.correctAnswer,
                     studentAnswer: i.type === 'trueFalse' ? studentAnswerList.filter((el) => el.id === i._id)[0]
-                        ?.studentAnswer : studentAnswerList.filter((el) => el.id === i._id)[1].studentAnswer.slice(-2),
+                        ?.studentAnswer : studentAnswerList.filter((el) => el.id === i._id)[0]?.studentAnswer.slice(-(i.correctAnswer.length)),
                 };
             }),
             totalMark: quizList.questions[counter].type === 'trueFalse' ? TotalMark : points,
             status: quizList.questions[counter].type === 'trueFalse' ? (TotalMark === quizList.passMark && "pass") || (TotalMark > quizList.passMark && "distinction") || ((TotalMark < quizList.passMark && TotalMark === quizList.creditMark) && "credit") || (TotalMark < quizList.creditMark && "fail") : (points >= quizList.passMark ? "pass" : "fail"),
         };
-        // alert(JSON.stringify(data));
+        alert(JSON.stringify(data));
         apiInstance
             .post("quiz-results", data)
             .then(function () {
-
                 navigate("/quiz-result");
             })
             .catch((error) => {
@@ -184,7 +187,7 @@ const ExamPage = ({ ResData, showResult }) => {
         localStorage.removeItem("formSubmission");
 
         setShowOrigin(false);
-        setShowResult(true);
+        setShowExamResult(true);
     };
 
     const handleCheckboxSelect = (event, index, data, correct, counter, mark, counterId) => {
@@ -604,7 +607,7 @@ const ExamPage = ({ ResData, showResult }) => {
                                     }
                                 </>
                             )}
-                            {/* {showResult && <ResultPage />} */}
+                            {/* {showExamResult && <Exam />} */}
                         </div >
                     </div>
                 </div>) : (

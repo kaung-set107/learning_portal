@@ -327,7 +327,7 @@ export default function Result() {
                 style={{ padding: "24px 16px 24px 72px" }}
                 id={i._id.slice(-2)}
               >
-                {console.log(i.studentAnswer.map((i) => (parseInt(i)))[0] - 1, 'stu')}
+                {/* {console.log(i.studentAnswer.map((i) => (parseInt(i)))[0] - 1, 'stu')} */}
                 <div>
                   <Card
                     className='flex justify-start mt-5 p-[24px] border-1 border-[#10C278] rounded-[12px]'
