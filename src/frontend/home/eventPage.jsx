@@ -23,7 +23,7 @@ export default function EventPage() {
         <div>
             <MSINav />
             {/* Event */}
-            < div style={{ background: "var(--blue-pale, #F4FAFF)", height: '120vh' }} className='flex flex-col gap-10 sm:gap-24' >
+            < div style={{ background: "var(--blue-pale, #F4FAFF)", }} className='flex flex-col gap-10 sm:gap-24' >
                 <div className='flex flex-col justify-center items-center gap-4 pt-[44px]'>
                     <span className='text-[#1F4164] text-[30px] sm:text-[48px] font-semibold w-full  sm:w-[679px] h-[55px] text-center'>Our Events</span>
                     <p className='text-[#1F4164] text-[16px] sm:text-[18px] font-normal w-full  sm:w-[639px] h-[54px] text-center'>
@@ -38,8 +38,8 @@ export default function EventPage() {
                     <>
                         {/* Web */}
                         {/* Web */}
-                        < div className='hidden sm:grid grid-cols-4 lg:gap-5 items-center justify-around flex-wrap pl-[130px] pr-[33px]' >
-                            {eventList?.slice(0, 4)?.map((b, index) => (
+                        < div className='hidden sm:grid grid-cols-4 lg:gap-5 items-center justify-around  pl-[130px] pr-[33px] w-full h-full' >
+                            {eventList?.map((b, index) => (
                                 <Link href={`/events/${b._id}`} key={index}>
                                     <div className='relative cursor-pointer hover:translate-y-1 hover:scale-105 duration-500'>
                                         <Image
@@ -109,8 +109,10 @@ export default function EventPage() {
 
 
             </div >
-            <div className='lg:pt-[100px]'></div>
-            <Footer />
+
+            <div className='md:mt-[80px] lg:mt-[100px] xl:mt-[120px] 2xl:mt-[140px]'>
+                <Footer />
+            </div>
         </div>
     )
 }

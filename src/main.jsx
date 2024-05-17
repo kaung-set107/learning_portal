@@ -19,6 +19,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
   <NextUIProvider>
     <NextThemesProvider attribute='class' defaultTheme='light'>
+
       <RouteFile />
     </NextThemesProvider>
   </NextUIProvider>

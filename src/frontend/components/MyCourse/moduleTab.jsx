@@ -402,8 +402,8 @@ const CourseDetail = (props) => {
           <div>
             {/* Right Header */}
             {showVideo && (
-              <div className='flex justify-between gap-20'>
-                <div className='w-[710px] h-[60px] flex flex-col'>
+              <div className='flex gap-10'>
+                <div className='w-[410px] h-[60px] flex flex-col'>
                   <span className='text-[20px] text-[#0025A9] font-semibold'>
                     {LMDataList.title}
                   </span>
@@ -413,29 +413,30 @@ const CourseDetail = (props) => {
                     value={65}
                     color='primary'
                     showValueLabel={true}
-                    className='w-[710px]'
+                    className='w-[200px]'
                   />
                 </div>
-                <div className='flex gap-5 pt-[32px]'>
+                <div className='flex w-[200px] gap-5 pt-[32px]'>
                   <Button
-                    className='w-[44px] h-[44px]'
+                    className='w-[34px] h-[34px]'
                     color='primary'
                     variant='bordered'
                   >
                     <FontAwesomeIcon icon={faAngleLeft} size='xl' />
                   </Button>
-                  <Button color='primary' className='w-[44px] h-[44px]'>
+                  <Button color='primary' className='w-[34px] h-[34px]'>
                     <FontAwesomeIcon icon={faAngleRight} size='xl' />
                   </Button>
                 </div>
               </div>
             )}
           </div>
-          <div className=''>
+          <div className='w-[800px]'>
             {/* Right Video Section */}
             {showVideo &&
               showVideoList.map((video) => (
                 <div key={video} className='text-blue-700 gap-5 '>
+                  {console.log(video.links?.split("/")[3])}
                   <iframe
                     src={
                       "https://www.youtube.com/embed/" +
@@ -443,22 +444,22 @@ const CourseDetail = (props) => {
                     }
                     //   title={assignList.name}
                     allowFullScreen
-                    className=' w-full h-[442px]'
+                    className=' w-[700px] h-[442px]'
                     allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
                   // style={{ width:'1400px',height:'500px' }}
                   ></iframe>
-                  <div className='flex justify-between pt-[20px]'>
-                    <span className='w-[311px] h-[16px] text-[32px] text-[#0025A9] font-semibold'>
+                  <div className='flex justify-between w-[600px] pt-[20px]'>
+                    <span className='w-[311px] h-[16px] text-[22px] text-[#0025A9] font-semibold'>
                       {LMDataList.title}
                     </span>
                     <Button
                       color='primary'
-                      className='w-[178px] h-[44px] text-[16px] font-normal'
+                      className='w-[108px] h-[34px] text-[16px] font-normal'
                     >
                       Complete
                     </Button>
                   </div>
-                  <div className='flex w-full flex-col pt-[20px]'>
+                  <div className='flex w-[700px] flex-col pt-[20px]'>
                     <Tabs
 
                       variant='light'
@@ -472,12 +473,12 @@ const CourseDetail = (props) => {
                       <Tab title='Summary' value={0} key='sum'>
                         <div className='bg-[#EBF0FF] text-[#001769] rounded-lg w-full h-[auto] p-[20px] flex flex-col gap-2'>
 
-                          <span className='w-[902px] h-[24px] text-[12px] sm:text-[16px] font-semibold'>
+                          <span className='w-[402px] h-[24px] text-[12px] sm:text-[16px] font-semibold'>
                             This video is all about giving you the insights of IELTS with the best explanation.
                           </span>
 
 
-                          <span className='w-[902px] h-[24px] pt-5 text-[20px] font-semibold'>
+                          <span className='w-[402px] h-[24px] pt-5 text-[20px] font-semibold'>
                             Document Files
                           </span>
                           <div className='grid grid-cols-2 justify-start gap-5 pt-10'>
@@ -521,10 +522,10 @@ const CourseDetail = (props) => {
                                 {LMDataList?.summaryNote}
                               </p>
                             </div>
-                            <div className='flex gap-10 w-full'>
+                            <div className='flex gap-10 w-[400px]'>
                               <div className='flex flex-col gap-2 items-center'>
                                 <span className=' text-[#000] text-[20px] font-semibold mt-5 w-full'>Files  </span>
-                                <p className=' text-[#000] text-[16px] font-semibold w-[842px] pt-2'>
+                                <p className=' text-[#000] text-[16px] font-semibold w-[420px] pt-2'>
                                   {LMDataList.summaryFile && LMDataList.summaryFile.map((i, index) => (
                                     <div className="sm:flex justify-start gap-5" key={i._id}>
                                       <a

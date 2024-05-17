@@ -131,7 +131,7 @@ export const Testimonials = () => {
                 <span className='flex justify-center font-semibold text-[18px] sm:text-[18px] my-3 text-[#fff] lg:w-[300px]'>{st?.title}</span>
               </div>
               <div className=' flex justify-center'>
-                <span className=' text-center font-normal text-[16px] sm:text-[16px] lg:text-[14px]  w-[300px] h-[204px] text-[#fff]'>{st.description.substring(0, 250)}...</span>
+                <span className=' text-center font-normal text-[16px] sm:text-[16px] lg:text-[14px]  w-[300px] h-[204px] text-[#fff]'>{st.description.substring(0, 200)}...</span>
 
               </div>
             </div>

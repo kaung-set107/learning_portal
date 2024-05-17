@@ -39,6 +39,7 @@ export default function AttendanceTable() {
   const [pages, setPages] = React.useState(1);
   const [rowsPerPage, setRowsPerPage] = React.useState(15);
   const [courseList, setCourseList] = React.useState([]);
+  const [dataCount, setDataCount] = useState('')
 
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
@@ -55,7 +56,16 @@ export default function AttendanceTable() {
   const onRowsChange = (event) => {
     const newRowsPerPage = parseInt(event.target.value);
     setRowsPerPage(newRowsPerPage);
-    setPages(Math.ceil(courseList.length / newRowsPerPage));
+    // console.log(
+    //   res.data.counts.registerWaitingListCount / rowsPerPage,
+    //   "rrreer"
+    // );
+    setPages(
+      dataCount % rowsPerPage === 0
+        ? dataCount / rowsPerPage
+        : Math.round(dataCount / rowsPerPage) + 1
+    );
+
     setPage(1); // Reset the current page to 1 when rows per page changes
   };
 
@@ -65,8 +75,15 @@ export default function AttendanceTable() {
         .get(`courses`, { params: { limit: 80, rowsPerPage: rowsPerPage } })
         .then((res) => {
           setCourseList(res.data.data);
-          // console.log(res.data.data, 'att')
-          setPages(res.data._metadata.page_count);
+          // console.log(res.data, 'att')
+          setDataCount(res.data.count);
+          setPages(
+            res.data.count % rowsPerPage === 0
+              ? res.data.count / rowsPerPage
+              : Math.floor(
+                res.data.count / rowsPerPage
+              ) + 1
+          );
         });
     };
 
@@ -80,7 +97,7 @@ export default function AttendanceTable() {
 
   const handleOpen = (event) => {
     onOpen();
-    console.log(event.currentTarget.getAttribute("data-key"));
+    // console.log(event.currentTarget.getAttribute("data-key"));
     setDelID(event.currentTarget.getAttribute("data-key"));
   };
 
@@ -90,7 +107,7 @@ export default function AttendanceTable() {
   };
 
   const handleDelete = async () => {
-    console.log(setDelID);
+    // console.log(setDelID);
     await apiInstance.delete("courses/" + delID).then(() => {
       setCourseList(courseList.filter((item) => item._id !== delID));
       onClose();

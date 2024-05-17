@@ -43,9 +43,9 @@ export default function BatchList() {
     const [delID, setDelID] = useState(null);
     const [page, setPage] = React.useState(1);
     const [pages, setPages] = React.useState(1);
-    const [rowsPerPage, setRowsPerPage] = React.useState(15);
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [testimonialList, setTestimonialList] = React.useState([]);
-
+    const [dataCount, setDataCount] = useState('')
     const items = React.useMemo(() => {
         const start = (page - 1) * rowsPerPage;
         const end = start + rowsPerPage;
@@ -61,7 +61,11 @@ export default function BatchList() {
     const onRowsChange = (event) => {
         const newRowsPerPage = parseInt(event.target.value);
         setRowsPerPage(newRowsPerPage);
-        setPages(Math.ceil(testimonialList.length / newRowsPerPage));
+        setPages(
+            dataCount % rowsPerPage === 0
+                ? dataCount / rowsPerPage
+                : Math.round(dataCount / rowsPerPage) + 1
+        );
         setPage(1); // Reset the current page to 1 when rows per page changes
     };
 
@@ -72,7 +76,14 @@ export default function BatchList() {
                 .then((res) => {
                     setTestimonialList(res.data.data);
                     // console.log(res.data.data, 'att')
-                    setPages(res.data._metadata.page_count);
+                    setDataCount(res.data.count);
+                    setPages(
+                        res.data.count % rowsPerPage === 0
+                            ? res.data.count / rowsPerPage
+                            : Math.floor(
+                                res.data.count / rowsPerPage
+                            ) + 1
+                    );
                 });
         };
 

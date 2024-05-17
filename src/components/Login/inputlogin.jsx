@@ -228,7 +228,7 @@ export default function Login() {
             id="player"
             muted
             autoPlay="autoplay"
-            className='object-cover  h-[650px] md:h-[750px]'
+            className={showRegisterPage ? ' object-fill h-[500px] md:h-[550px] lg:h-[730px] 2xl:h-[750px]' : ' object-fill h-[500px] md:h-[550px] lg:h-[600px] 2xl:h-[650px]'}
             loop
             src={LoginVideo}
 
@@ -286,25 +286,25 @@ export default function Login() {
 
         {/* Login Page */}
         {showLoginPage && (
-          <div className='p-4 sm:p-7 md:p-10 flex flex-col justify-center'>
+          <div className='p-4 sm:p-7 md:p-10 lg:p-[12px] 2xl:p-[14px] flex flex-col justify-center'>
 
             <div className='flex flex-col  ' style={{ fontFamily: 'JaguarJC' }}>
               {/* Header Logo */}
               <div className='flex justify-center flex-col items-center'>
 
-                <Image src={MSI} className='w-[180px] sm:w-[200px] md:w-[260px] h-[130px]' />
+                <Image src={MSI} className='w-[180px] sm:w-[200px] md:w-[260px] lg:w-[270px] 2xl:w-[280px] md:h-[90px] lg:h-[100px] 2xl:h-[110px]' />
 
                 <div className='w-[250px] sm:w-[280px] md:w-[318px] text-center'>
-                  <span className='text-[#262626] text-[24px] sm:text-[28px] md:text-[48px] font-bold ml-2 sm:ml-5'>Welcome to</span>
+                  <span className='text-[#262626] text-[24px] sm:text-[28px] md:text-[30px] lg:text-[38px] 2xl:text-[42px] font-bold ml-2 sm:ml-5'>Welcome to</span>
                 </div>
 
-                <div className='flex gap-2 w-[250px] sm:w-[318px] ml-24 sm:ml-10'>
-                  <span className='text-[#C1193E] text-[24px] sm:text-[48px] font-bold'>MSI</span> <span className='text-[#1F4163] text-[24px] sm:text-[48px] font-bold'>Academy</span>
+                <div className='flex gap-2 w-[250px] sm:w-[318px] ml-24 sm:ml-10 md:ml-[12px] lg:ml-[100px]'>
+                  <span className='text-[#C1193E] text-[24px] sm:text-[28px] md:text-[32px] lg:text-[40px] 2xl:text-[48px] font-bold'>MSI</span> <span className='text-[#1F4163] text-[24px] sm:text-[28px] md:text-[32px] lg:text-[40px] 2xl:text-[48px] font-bold'>Academy</span>
                 </div>
               </div>
 
               {/* Login Form */}
-              <div className='pt-8 w-full sm:w-[450px] md:w-[650px] lg:w-[522px]'>
+              <div className='pt-8 w-full sm:w-[450px] md:w-[650px] lg:w-[522px] lg:p-5'>
                 <form className='' onSubmit={handleSubmit}>
                   <div className='flex flex-col w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
                     <div>

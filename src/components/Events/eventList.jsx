@@ -43,7 +43,8 @@ export default function BatchList() {
     const [delID, setDelID] = useState(null);
     const [page, setPage] = React.useState(1);
     const [pages, setPages] = React.useState(1);
-    const [rowsPerPage, setRowsPerPage] = React.useState(15);
+    const [dataCount, setDataCount] = useState('')
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [eventList, setEventList] = React.useState([]);
 
     const items = React.useMemo(() => {
@@ -61,7 +62,11 @@ export default function BatchList() {
     const onRowsChange = (event) => {
         const newRowsPerPage = parseInt(event.target.value);
         setRowsPerPage(newRowsPerPage);
-        setPages(Math.ceil(eventList.length / newRowsPerPage));
+        setPages(
+            dataCount % rowsPerPage === 0
+                ? dataCount / rowsPerPage
+                : Math.round(dataCount / rowsPerPage) + 1
+        );
         setPage(1); // Reset the current page to 1 when rows per page changes
     };
 
@@ -72,7 +77,14 @@ export default function BatchList() {
                 .then((res) => {
                     setEventList(res.data.data);
                     // console.log(res.data.data, 'att')
-                    setPages(res.data._metadata.page_count);
+                    setDataCount(res.data.count);
+                    setPages(
+                        res.data.count % rowsPerPage === 0
+                            ? res.data.count / rowsPerPage
+                            : Math.floor(
+                                res.data.count / rowsPerPage
+                            ) + 1
+                    );
                 });
         };
 
@@ -179,7 +191,7 @@ export default function BatchList() {
                             <TableCell>{item?.code}</TableCell>
                             <TableCell>{item?.startDate?.split('T')[0]}</TableCell>
                             <TableCell>{item?.endDate?.split('T')[0]}</TableCell>
-                            <TableCell>{item?.title}</TableCell>
+                            <TableCell>{item?.title.substring(0, 40)}</TableCell>
                             <TableCell>{item?.subTitle}</TableCell>
                             <TableCell>{item?.location}</TableCell>
                             <TableCell><Image src={`data:image/jpeg;base64,${item?.image}`} className='w-[40px] h-[30px]' /></TableCell>
@@ -187,7 +199,7 @@ export default function BatchList() {
                             <TableCell>{item?.remark}</TableCell>
 
                             <TableCell className='w-52'>
-                                {item?.description?.split(" ").slice(0, 10).join(" ")} ....
+                                {item?.description?.substring(0, 40)} ....
                             </TableCell>
 
                             <TableCell>

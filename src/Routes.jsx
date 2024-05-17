@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Login from "./pages/Login/login";
 // Home Web Page
+import NewsAndActivities from './frontend/home/home-course/activitiesAll.jsx'
 import Contact from './frontend/home/contactUs.jsx'
 import EventPage from './frontend/home/eventPage.jsx'
 import TestimonialPage from './frontend/home/testimonial.jsx'
@@ -109,7 +110,19 @@ import QuizResults from "./frontend/features/quiz-results/pages/QuizResults.jsx"
 import InstructorQuizResult from "./frontend/features/quiz-results/pages/QuizResult.jsx";
 import QuizUpdate from "./frontend/features/quizzes/pages/QuizUpdate.jsx";
 import ExamResults from "./frontend/features/exam-results/pages/ExamResults.jsx";
+
 import InstructorExamResult from "./frontend/features/exam-results/pages/ExamResult.jsx";
+
+//Activities
+import ActivitiesInput from './pages/Activities/activitiesInput.jsx'
+import ActivitiesList from './pages/Activities/activitiesList.jsx'
+import ActivitiesDetail from './frontend/home/news_activities_detail.jsx'
+import ActivitiesUpdate from './pages/Activities/activitiesUpdate.jsx'
+
+//AchievementList
+import AchievementList from './pages/Achievements/achievementList.jsx'
+import AchievementInput from './pages/Achievements/achievementInput.jsx'
+import AchievementUpdate from './pages/Achievements/achievementUpdate.jsx'
 
 export default function RouteFile() {
   console.log(localStorage.getItem("user"), "local use");
@@ -128,9 +141,10 @@ export default function RouteFile() {
           <Route path="/login" element={<Login />}></Route>
           <Route path="/" element={<FHome />}></Route>
           <Route path="/test" element={<Test />}></Route>
-
+          <Route path="/activities-detail/:id" element={<ActivitiesDetail />}></Route>
           <Route path="/about" element={<About />}></Route>
           <Route path="/contact" element={<Contact />}></Route>
+          <Route path="/news-activities" element={<NewsAndActivities />}></Route>
           <Route path="/events" element={<EventPage />}></Route>
           <Route path="/events/:id" element={<EventDetailPage />}></Route>
           <Route path="/booking" element={<Booking />}></Route>
@@ -169,6 +183,16 @@ export default function RouteFile() {
               element={<MyCourseSubDetailID />}
             ></Route>
             {/*End Student Register and Detail */}
+
+            {/* News & Activities */}
+            <Route path="/activities-input" element={<ActivitiesInput />}></Route>
+            <Route path="/activities-update/:id" element={<ActivitiesUpdate />}></Route>
+            <Route path="/activities-list" element={<ActivitiesList />}></Route>
+
+            {/* Achievements */}
+            <Route path="/achievement-list" element={<AchievementList />}></Route>
+            <Route path="/achievement-update/:id" element={<AchievementUpdate />}></Route>
+            <Route path="/achievement-input" element={<AchievementInput />}></Route>
 
             {/*Start Student Enroll */}
             <Route path="/enroll-list" element={<Enrollment />}></Route>

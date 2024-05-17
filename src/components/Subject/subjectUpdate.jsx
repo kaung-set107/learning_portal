@@ -30,6 +30,18 @@ export default function SubjectInputForm() {
   const [courseId, setCourseId] = useState('')
   const [image, setImage] = useState('')
   const [fee, setFee] = useState(0)
+  const [instructors, setInstructors] = useState('');
+  const [instructorIDList, setInstructorIDList] = useState([])
+  const [oldVideoLink, setOldVideoLink] = useState([])
+  const [subImage, setSubImage] = useState('')
+  const AddVideo = (val) => {
+    console.log(val, "val");
+    const newData = {
+      links: val,
+    };
+    setNewVideoLink([...newVideoLink, newData]);
+    console.log([...newVideoLink, newData], "res");
+  };
 
   const handleImage = (e) => {
     if (e.target.files) {
@@ -37,33 +49,48 @@ export default function SubjectInputForm() {
       console.log(e.target.files, "file");
     }
   };
-
+  const DeleteVideo = async (val) => {
+    // console.log(val, "val");
+    setNewVideoLink(newVideoLink.filter((el) => el.links !== val));
+  };
   const create = () => {
     const formData = new FormData();
 
     formData.append("title", title);
-    formData.append("course", courseId)
-    formData.append("fee", fee);
+    formData.append("course", course);
     formData.append("description", desc);
-    formData.append("image", image);
+    formData.append("image", image ? image : subImage);
+    formData.append("instructors", instructors ? JSON.stringify({ data: instructors?.split(',') }) : JSON.stringify({ data: instructorIDList }));
+    // formData.append("fromDate", fromDate);
+    // formData.append("toDate", toDate);
 
+    formData.append("previewVideo", JSON.stringify(newVideoLink));
     apiInstance
       .put(`subjects/${Id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       })
+
       .then(function () {
         Swal.fire({
           icon: "success",
-          title: "Login Successful",
-          text: "Welcome back!",
-          confirmButtonText: "OK",
-          confirmButtonColor: "#3085d6",
+          title: "Created Successful",
+          text: "Nice!",
+          showConfirmButton: false,
+          timer: 2000
+
         });
       })
       .catch((error) => {
-        alert(error);
+        Swal.fire({
+          icon: "error",
+          title: "Something Wrong",
+          text: "Please try again!!",
+          showConfirmButton: false,
+          timer: 2000
+
+        });
       });
   };
   useEffect(() => {
@@ -84,14 +111,20 @@ export default function SubjectInputForm() {
           setCourse(res.data.data.course?.title)
           setCourseId(res.data.data.course?._id)
           setInstructorList(res.data.data.instructors)
-
+          setInstructorIDList(res.data.data.instructors.map((i) => (i._id)))
+          setOldVideoLink(res.data.data?.previewVideo)
+          setNewVideoLink(JSON.parse(res.data.data?.previewVideo))
           setProfileAnchor(
             res.data.data.image
               ? getFile({ payload: res.data.data.image })
               : ''
           )
-
-          console.log(res.data.data, 'res')
+          setSubImage(
+            res.data.data.image
+              ? getFile({ payload: res.data.data.image })
+              : ''
+          )
+          console.log(res.data.data.instructors, 'res')
 
 
         })
@@ -127,10 +160,9 @@ export default function SubjectInputForm() {
               placeholder='About this subject'
               value={desc}
               variant={variant}
-              {...register("description", {
-                required: true,
-                onChange: (e) => setDesc(e.target.value),
-              })}
+
+              onChange={(e) => setDesc(e.target.value)}
+
             />
           </div>
         </div>
@@ -142,10 +174,9 @@ export default function SubjectInputForm() {
               Course
             </label>
             <select
-              {...register("course", {
-                required: true,
-                onChange: (e) => setCourse(e.target.value),
-              })}
+
+              onChange={(e) => setCourse(e.target.value)}
+
               className='bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-xl m-0 px-0 py-2 focus:ring-gray-500 focus:border-gray-500 block w-full p-3 dark:bg-default-100 dark:border-gray-600 dark:placeholder-gray-100 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500'
             >
               <option hidden>{course}</option>
@@ -165,15 +196,14 @@ export default function SubjectInputForm() {
               Instructor
             </label>
             <Select
-              label="Select Instructor"
+              label={instructorList.map((i) => (i.name))}
               // placeholder="Select Instructor"
               selectionMode="multiple"
               className="w-full"
 
-              {...register("instructor", {
-                required: true,
-                onChange: (e) => setInstructors(e.target.value),
-              })}
+
+              onChange={(e) => setInstructors(e.target.value)}
+
             >
 
               {instructorList.map((item) => (
@@ -198,6 +228,12 @@ export default function SubjectInputForm() {
               labelPlacement='outside'
               onChange={handleImage}
             />
+            <div className='flex flex-col gap-0'>
+              <img src={subImage} className='w-[120px] h-[120px] rounded-md' />
+              <div className='flex justify-center overflow-hidden'>
+                {/* <span className='text-[29px] font-extrabold text-[red] items-center justify-center w-[30px] cursor-pointer' onClick={() => handleDelete(ind)}><FontAwesomeIcon icon={faCircleXmark} /></span> */}
+              </div>
+            </div>
           </div>
 
           <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
@@ -217,7 +253,7 @@ export default function SubjectInputForm() {
                 </Button>
               }
             />
-            {newVideoLink.map((i) => (
+            {newVideoLink && newVideoLink.map((i) => (
               <div key={i} className='mt-3'>
                 <Input
                   type='text'
@@ -239,7 +275,7 @@ export default function SubjectInputForm() {
           </div>
 
         </div>
-        <div className='grid grid-cols-2 mb-6 md:mb-0 gap-4 mt-1'>
+        {/* <div className='grid grid-cols-2 mb-6 md:mb-0 gap-4 mt-1'>
           <Input
             type='date'
             label='Start Date'
@@ -257,7 +293,7 @@ export default function SubjectInputForm() {
             labelPlacement='outside'
           />
           <div></div>
-        </div>
+        </div> */}
 
         <div className='flex justify-center gap-10 py-4'>
           <Button color='danger'>

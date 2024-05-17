@@ -39,6 +39,12 @@ const SubjectDetail = (props) => {
   const [teacherName, setTeacherName] = useState([]);
   const [teacherImage, setTeacherImage] = useState([]);
   const [showVideoList, setShowVideoList] = useState([])
+  const [showMore, setShowMore] = useState(false)
+  const handleMore = (id) => {
+    console.log(id, 'id')
+    setShowMore(true)
+
+  }
   useEffect(() => {
     const getCourseDetail = async () => {
       await apiInstance.get("courses/" + props.id).then((res) => {
@@ -341,13 +347,13 @@ const SubjectDetail = (props) => {
 
                     <div
                       style={{
-                        padding: "80px 10px 40px 20px",
+                        padding: "30px 10px 40px 20px",
                       }}
                       className='w-full h-[130px] md:w-[718px] md:h-[365px]'
                     >
                       {/* Info */}
                       <div className='flex flex-col gap-2'>
-                        <span className='text-[16px] md:text-[40px] font-bold'>
+                        <span className='text-[16px] md:text-[30px] lg:text-[35px] 2xl:text-[40px] font-bold'>
                           Tr.{tlist.name ? tlist.name : 'Hein'}
                         </span>
                         <span className='text-[16px] md:text-[24px] font-medium'>
@@ -369,12 +375,16 @@ const SubjectDetail = (props) => {
                           //   fontSize: "24px",
                           //   fontWeight: "500",
                           // }}
-                          className='text-[12px] md:text-[20px] font-medium'
+                          onClick={() => handleMore(tlist._id)}
+                          className='text-[12px] md:text-[20px] h-[200px] font-medium'
                         >
-                          {tlist?.introduction}
+
+                          {showMore ? <span>
+                            {tlist?.introduction}
+                          </span> : tlist?.introduction.substring(0, 400)}
                         </p>
                         {/* Email & Phone */}
-                        <div className=''>
+                        <div className='lg:pt-[50px]'>
                           <span
                             style={{
                               color: "#FFF",
@@ -403,7 +413,7 @@ const SubjectDetail = (props) => {
           </div>
 
           {/* Course Curriculum Section */}
-          <div className='container pt-[150px]'>
+          <div className='container pt-[200px] md:pt-[230px] lg:pt-[250px] xl:pt-[260px] 2xl:pt-[270px]'>
             <div className=' flex flex-col w-[345px] pt-[64px] pb-[24px]  gap-5 md:w-[100%] md:p-[24px] md:pt-[150px] mx-4 md:mx-0'>
               <span className='text-[20px] md:text-[40px] font-bold'>
                 Course Curriculum
