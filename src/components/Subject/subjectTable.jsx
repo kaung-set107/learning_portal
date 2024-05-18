@@ -1,10 +1,8 @@
 import {
-
   Tooltip,
   Table,
   TableHeader,
   Modal,
-
   ModalContent,
   User,
   Kbd,
@@ -17,105 +15,143 @@ import {
   TableColumn,
   TableBody,
   TableRow,
-  TableCell
-} from '@nextui-org/react'
-import React, { useState } from 'react'
-import { useEffect } from 'react'
-import apiInstance from '../../util/api'
-import { EditIcon } from '../Table/editicon'
-import { EyeIcon } from '../Table/eyeicon'
-import { DeleteIcon } from '../Table/deleteicon'
-import { Link } from 'react-router-dom'
-import { PlusIcon } from '../../assets/Icons/PlusIcon'
-
-import { getFile } from '../../util/index';
+  TableCell,
+} from "@nextui-org/react";
+import React, { useState } from "react";
+import { useEffect } from "react";
+import apiInstance from "../../util/api";
+import { EditIcon } from "../Table/editicon";
+import { EyeIcon } from "../Table/eyeicon";
+import { DeleteIcon } from "../Table/deleteicon";
+import { Link } from "react-router-dom";
+import { PlusIcon } from "../../assets/Icons/PlusIcon";
+import { FaCopy } from "react-icons/fa";
+import {subjectsApi} from "../../frontend/features/subjects/api.js"
+import { getFile } from "../../util/index";
+import SubjectCopyModal from "../../frontend/features/subjects/components/SubjectCopyModal";
+import { showError, showSuccess } from "../../util/noti";
 
 export default function AttendanceTable() {
-
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const [delID, setDelID] = useState(null)
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [delID, setDelID] = useState(null);
   const [dataCount, setDataCount] = useState("");
-  const [page, setPage] = React.useState(1)
-  const [pages, setPages] = React.useState(1)
-  const [rowsPerPage, setRowsPerPage] = React.useState(15)
-  const [subjectList, setSubjectList] = React.useState([])
+  const [page, setPage] = React.useState(1);
+  const [pages, setPages] = React.useState(1);
+  const [rowsPerPage, setRowsPerPage] = React.useState(15);
+  const [subjectList, setSubjectList] = React.useState([]);
+  const {
+    isOpen: isSubjectCopyOpen,
+    onOpen: onSubjectCopyOpen,
+    onClose: onSubjectCopyClose,
+  } = useDisclosure();
+  const [selectedSubjectId, setSelectedSubjectId] = useState("");
+  const [copyingSubject, setCopyingSubject] = useState(false);
 
   const items = React.useMemo(() => {
-    const start = (page - 1) * rowsPerPage
-    const end = start + rowsPerPage
-    return subjectList.slice(start, end)
-  }, [page, subjectList])
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    return subjectList.slice(start, end);
+  }, [page, subjectList]);
 
-
-
-  const handleKeyDown = event => {
-    if (event.key === 'Enter' && isOpen) {
-      handleDelete()
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" && isOpen) {
+      handleDelete();
     }
-  }
+  };
 
-  const onRowsChange = event => {
-    const newRowsPerPage = parseInt(event.target.value)
-    setRowsPerPage(newRowsPerPage)
-    setPages(dataCount % rowsPerPage === 0
-      ? dataCount / rowsPerPage
-      : Math.floor(
-        dataCount / rowsPerPage
-      ) + 1)
-    setPage(1) // Reset the current page to 1 when rows per page changes
-  }
+  const onRowsChange = (event) => {
+    const newRowsPerPage = parseInt(event.target.value);
+    setRowsPerPage(newRowsPerPage);
+    setPages(
+      dataCount % rowsPerPage === 0
+        ? dataCount / rowsPerPage
+        : Math.floor(dataCount / rowsPerPage) + 1
+    );
+    setPage(1); // Reset the current page to 1 when rows per page changes
+  };
 
-
+  const getSubject = async () => {
+    await apiInstance
+      .get(`subjects`, { params: { limit: 80, rowsPerPage: rowsPerPage } })
+      .then((res) => {
+        setSubjectList(res.data.data);
+        // console.log(res.data, 'att')
+        setDataCount(res.data.count);
+        setPages(
+          res.data.count % rowsPerPage === 0
+            ? res.data.count / rowsPerPage
+            : Math.floor(res.data.count / rowsPerPage) + 1
+        );
+        setPage(1);
+        //   setPages(res.data._metadata.page_count)
+      });
+  };
 
   useEffect(() => {
-    const getSubject = async () => {
-      await apiInstance
-        .get(`subjects`, { params: { limit: 80, rowsPerPage: rowsPerPage } })
-        .then(res => {
-          setSubjectList(res.data.data)
-          // console.log(res.data, 'att')
-          setDataCount(res.data.count)
-          setPages(res.data.count % rowsPerPage === 0
-            ? res.data.count / rowsPerPage
-            : Math.floor(
-              res.data.count / rowsPerPage
-            ) + 1)
-          setPage(1)
-          //   setPages(res.data._metadata.page_count)
-        })
-    }
-
-    getSubject()
-    document.addEventListener('keydown', handleKeyDown)
+    getSubject();
+    document.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [isOpen, rowsPerPage])
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, rowsPerPage]);
 
-  const handleOpen = event => {
-    onOpen()
+  const handleOpen = (event) => {
+    onOpen();
     // console.log(event.currentTarget.getAttribute('data-key'))
-    setDelID(event.currentTarget.getAttribute('data-key'))
-  }
+    setDelID(event.currentTarget.getAttribute("data-key"));
+  };
 
   const handleClose = () => {
-    onClose()
-    setDelID(null)
-  }
+    onClose();
+    setDelID(null);
+  };
+
+  const handleSubjectCopyModalClose = () => {
+    onSubjectCopyClose();
+  };
+
+  const handleSubjectCopyModalOpen = (subjectId) => {
+    onSubjectCopyOpen();
+    setSelectedSubjectId(subjectId);
+  };
 
   const handleDelete = async () => {
     // console.log(setDelID)
-    await apiInstance.delete('subjects/' + delID).then(() => {
-      setSubjectList(subjectList.filter(item => item._id !== delID))
-      onClose()
-    })
-  }
+    await apiInstance.delete("subjects/" + delID).then(() => {
+      setSubjectList(subjectList.filter((item) => item._id !== delID));
+      onClose();
+    });
+  };
+
+  const handleSubjectCopy = async (payload) => {
+    setCopyingSubject(true);
+    // setTimeout(() => {
+    //   console.log("subject is copying", {...payload, subject: selectedSubjectId});
+    //   setCopyingSubject(false);
+    // }, 1500);
+    const modifiedPayload = {
+      ...payload,
+      _id: selectedSubjectId
+    }
+    try {
+      const res = await subjectsApi.copy(modifiedPayload)
+      await getSubject()
+      console.log(res)
+      showSuccess({ text: res.message, type: "noti-box" });
+    } catch (error) {
+      console.log(error)
+      showError({ axiosResponse: error });
+    } finally {
+      setCopyingSubject(false)
+      onSubjectCopyClose()
+    }
+  };
 
   return (
     <>
-      <div className='flex flex-row gap-5 justify-between'>
-        <div className='flex gap-4 mb-3 flex-row'>
+      <div className="flex flex-row gap-5 justify-between">
+        <div className="flex gap-4 mb-3 flex-row">
           {/* <Dropdown>
             <DropdownTrigger className='hidden sm:flex'>
               <Button
@@ -179,48 +215,47 @@ export default function AttendanceTable() {
             Search
           </Button> */}
         </div>
-        <div className='flex gap-2 mb-3 flex-row'>
-
-          <Link to='/subject-add'>
-            <Button endContent={<PlusIcon />} color='primary'>
+        <div className="flex gap-2 mb-3 flex-row">
+          <Link to="/subject-add">
+            <Button endContent={<PlusIcon />} color="primary">
               Add
             </Button>
           </Link>
         </div>
       </div>
-      <div className='flex justify-between items-center mb-3'>
-        <span className='text-default-400 text-small'>
+      <div className="flex justify-between items-center mb-3">
+        <span className="text-default-400 text-small">
           Total {subjectList.length} Subjects
         </span>
-        <label className='flex items-center text-default-400 text-small'>
+        <label className="flex items-center text-default-400 text-small">
           Rows per page:
           <select
-            className='bg-transparent outline-none text-default-400 text-small'
-            onChange={e => onRowsChange(e)}
+            className="bg-transparent outline-none text-default-400 text-small"
+            onChange={(e) => onRowsChange(e)}
           >
-            <option value='5'>5</option>
-            <option value='10'>10</option>
-            <option value='15'>15</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
           </select>
         </label>
       </div>
       <Table
         isHeaderSticky
-        aria-label='Example table with client side sorting'
+        aria-label="Example table with client side sorting"
         classNames={{
-          base: 'max-h-[719px] ',
-          table: 'min-h-[100px]'
+          base: "max-h-[719px] ",
+          table: "min-h-[100px]",
         }}
         bottomContent={
-          <div className='flex w-full justify-center'>
+          <div className="flex w-full justify-center">
             <Pagination
               isCompact
               showControls
               showShadow
-              color='primary'
+              color="primary"
               page={page}
               total={pages}
-              onChange={page => setPage(page)}
+              onChange={(page) => setPage(page)}
             />
           </div>
         }
@@ -234,59 +269,57 @@ export default function AttendanceTable() {
           <TableColumn>Fee</TableColumn>
           <TableColumn>Description</TableColumn>
 
-          <TableColumn key='action'>Action</TableColumn>
+          <TableColumn key="action">Action</TableColumn>
         </TableHeader>
-        <TableBody emptyContent={'No Positions to display.'}>
+        <TableBody emptyContent={"No Positions to display."}>
           {items.map((item, index) => (
             <TableRow key={item._id}>
               <TableCell>{index + 1}</TableCell>
-              <TableCell>
-                {item?.code}
-              </TableCell>
-              <TableCell>
-                {item?.title}
-              </TableCell>
+              <TableCell>{item?.code}</TableCell>
+              <TableCell>{item?.title}</TableCell>
 
+              <TableCell>{item.course?.title}</TableCell>
               <TableCell>
-                {item.course?.title}
+                {" "}
+                <User
+                  avatarProps={{
+                    radius: "lg",
+                    src: item.image ? getFile({ payload: item.image }) : "",
+                  }}
+                />
               </TableCell>
-              <TableCell>    <User
-                avatarProps={{
-                  radius: "lg",
-                  src:
-                    item.image ? getFile({ payload: item.image }) : '',
-                }}
-              />
-
-
-              </TableCell>
-              <TableCell>
-                {item?.fee}
-              </TableCell>
+              <TableCell>{item?.fee}</TableCell>
               <TableCell>{item?.description}</TableCell>
 
-
               <TableCell>
-                <div className='relative flex items-center gap-2'>
-                  <Tooltip content='Edit Position'>
-                    <Link to={'/subject-detail/' + item._id}>
-                      <span className='text-lg text-default-400 cursor-pointer active:opacity-50'>
+                <div className="relative flex items-center gap-2">
+                  <Tooltip content="Edit Position">
+                    <Link to={"/subject-detail/" + item._id}>
+                      <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                         <EyeIcon />
                       </span>
                     </Link>
                   </Tooltip>
-                  <Tooltip content='Edit Position'>
-                    <Link to={'/subject-update/' + item._id}>
-                      <span className='text-lg text-default-400 cursor-pointer active:opacity-50'>
+                  <Tooltip content="Edit Position">
+                    <Link to={"/subject-update/" + item._id}>
+                      <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                         <EditIcon />
                       </span>
                     </Link>
                   </Tooltip>
-                  <Tooltip color='danger' content='Delete user'>
+                  <Tooltip color="success" content="Subject Copy">
+                    <span
+                      className="text-lg text-yellow-600 cursor-pointer active:opacity-50"
+                      onClick={() => handleSubjectCopyModalOpen(item._id)}
+                    >
+                      <FaCopy />
+                    </span>
+                  </Tooltip>
+                  <Tooltip color="danger" content="Delete user">
                     <span
                       data-key={item._id}
-                      className='text-lg text-danger cursor-pointer active:opacity-50'
-                      onClick={e => handleOpen(e)}
+                      className="text-lg text-danger cursor-pointer active:opacity-50"
+                      onClick={(e) => handleOpen(e)}
                     >
                       <DeleteIcon />
                     </span>
@@ -297,33 +330,40 @@ export default function AttendanceTable() {
           ))}
         </TableBody>
       </Table>
-      <Modal backdrop='blur' isOpen={isOpen} onClose={handleClose}>
+      <Modal backdrop="blur" isOpen={isOpen} onClose={handleClose}>
         <ModalContent>
-          {handleClose => (
+          {(handleClose) => (
             <>
-              <ModalHeader className='flex flex-col gap-1'>
+              <ModalHeader className="flex flex-col gap-1">
                 Delete Course
               </ModalHeader>
               <ModalBody>
                 <p>Are you sure you want to delete this position?</p>
               </ModalBody>
               <ModalFooter>
-                <Button color='default' variant='light' onClick={handleClose}>
+                <Button color="default" variant="light" onClick={handleClose}>
                   No, Cancel
                 </Button>
                 <Button
-                  color='danger'
+                  color="danger"
                   onPress={() => handleDelete()}
                   onKeyDown={handleKeyDown}
                 >
                   Yes, I am sure
-                  <Kbd className='bg-danger-500' keys={['enter']}></Kbd>
+                  <Kbd className="bg-danger-500" keys={["enter"]}></Kbd>
                 </Button>
               </ModalFooter>
             </>
           )}
         </ModalContent>
       </Modal>
+
+      <SubjectCopyModal
+        isOpen={isSubjectCopyOpen}
+        onClose={handleSubjectCopyModalClose}
+        handleSubmit={handleSubjectCopy}
+        isSubmitting={copyingSubject}
+      />
     </>
-  )
+  );
 }

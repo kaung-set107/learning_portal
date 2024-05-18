@@ -1,7 +1,7 @@
 import apiInstance from "../../../util/api";
 
-const baseUrl = "/subjects";
-const baseName = "subjects";
+const baseUrl = "/instructors";
+const baseName = "instructors";
 
 const getAll = async (payload) => {
   const res = await apiInstance.get(baseUrl, { params: payload });
@@ -40,17 +40,10 @@ const remove = async (payload) => {
   return res.data;
 };
 
-const copy = async (payload) => {
-  const res = await apiInstance.post(baseUrl + `/${payload._id}/copy`, payload);
-  console.log(baseName, res);
-  return res.data;
-};
-
-export const subjectsApi = {
+export const instructorsApi = {
   getAll,
   get,
   create,
   update,
   remove,
-  copy
 };
