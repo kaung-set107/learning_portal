@@ -66,7 +66,7 @@ export default function ExamResultCheckModal(props) {
   } else {
     content = (
       <>
-        <Button onPress={onOpen} color="success" size="sm">
+        <Button onPress={onOpen} color="success">
           Check
         </Button>
         <Modal
