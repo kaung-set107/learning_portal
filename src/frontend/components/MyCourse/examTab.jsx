@@ -64,6 +64,7 @@ export default function CourseDetail(props) {
   const [inAppExamList, setInAppExamList] = useState([])
   const [outsideExamList, setOutsideExamList] = useState([])
   const [examPageData, setExamPageData] = useState('')
+  const [examList, setExamList] = useState([])
 
   const handleExamPage = (val) => {
     setShowExamPage(true)
@@ -128,6 +129,13 @@ export default function CourseDetail(props) {
 
       });
     };
+    const getExamRes = async () => {
+      await apiInstance.get('exam-results').then((res) => {
+        console.log(res.data.data, 'res')
+        setExamList(res.data.data)
+      })
+    }
+    getExamRes()
     getExam()
     getSubjects();
 
@@ -176,20 +184,20 @@ export default function CourseDetail(props) {
             <span className='text-white text-[24px] font-semibold'>Outside Exam</span>
           </div>
           <div className='flex flex-col gap-32'>
-            <div className='h-[308px] w-full flex flex-col gap-5 pl-16'>
+            <div className='h-[308px] flex flex-col gap-5 pl-16'>
               <div className='flex flex-col gap-5'>
                 <div className='flex justify-between'>
                   <span className='text-[40px] font-bold'> Note For Exam</span>
                   {/* <Button className='flex justify-center w-10' onClick={handleBack}>Back</Button> */}
                 </div>
 
-                <div className='text-[24px] font-semibold flex flex-col gap-2 ml-[30px]'>
-                  <div >
+                <div className='text-[24px] lg:text-[20px] font-semibold flex flex-col gap-2 ml-[30px] lg:w-[500px]'>
+                  <div className='lg:w-[1020px]'>
                     <li>Must be able to answer the Project Management (Week-4) Quiz.</li>
                     <li>Must have passed (90%).</li>
                     <li>There is no number of times, but the opportunity to answer</li>
 
-                    <li className='w-[1315px]'>In answering, if you take the quiz for the first (2) times and want to take it again for the (3rd) time, you can answer it immediately, and you can take the quiz for the (3rd) time only after 5 (5) hours have passed.</li>
+                    <li className=''>In answering, if you take the quiz for the first (2) times and want to take it again for the (3rd) time, you can answer it immediately, and you can take the quiz for the (3rd) time only after 5 (5) hours have passed.</li>
 
 
                   </div>
@@ -243,7 +251,7 @@ export default function CourseDetail(props) {
             ) : (
               <div className="flex justify-center items-center w-full flex-col mb-20">
                 <div className='relative'>
-                  <Button className='flex justify-center w-10 absolute top-0 right-0 left-[650px]' onClick={handleSecondBack}>Back</Button>
+                  <Button className='flex justify-center w-10 absolute top-0 right-0 lg:left-[450px]' onClick={handleSecondBack}>Back</Button>
                 </div>
 
                 {nestedExamVal === 1 ? (
@@ -257,7 +265,7 @@ export default function CourseDetail(props) {
                         </div>
                       }
                     >
-                      <div className='flex flex-col justify-start pt-10 w-[1560px] h-[204px] pl-10 pb-8 pr-10' >
+                      <div className='flex flex-col justify-start pt-10 w-[1560px] lg:w-[1280px] h-[204px] pl-10 pb-8 pr-10' >
                         {subjectData.exams.filter(el => el.examType === 'inapp').map((item, index) => (
                           <div className='grid grid-cols-2 bg-[#215887] p-12  border-4 border-l-red-500 '>
                             <div className='w-[742px] flex gap-52'>
@@ -317,7 +325,7 @@ export default function CourseDetail(props) {
                         </div>
                       }
                     >
-                      <div className='flex flex-col justify-start pt-10 w-[1560px] h-[204px] pl-10 pb-8 pr-10' >
+                      <div className='flex flex-col justify-start pt-10 w-[1560px] lg:w-[1280px] h-[204px] pl-10 pb-8 pr-10' >
 
 
                         <div className='grid grid-cols-2 bg-[#215887] p-12  border-4 border-l-red-500 '>
@@ -381,38 +389,45 @@ export default function CourseDetail(props) {
                         </div>
                       }
                     >
-                      <div className='flex flex-col justify-start pt-10 w-[1560px] h-[204px] pl-10 pb-8 pr-10' >
+                      <div className='flex flex-col justify-start pt-10 w-[1560px] lg:w-[1280px] h-[204px] pl-10 pb-8 pr-10' >
+
+                        {subjectData.exams.filter(el => el.examType === 'inapp').map((item, index) => (
+                          <>
+                            {examList.filter(el => el.exam === item._id).map((exmItem, ind) => (
+                              <div className='grid grid-cols-2 bg-[#215887] p-12  border-4 border-l-red-500 '>
+                                <div className='w-[742px] h-[135px] flex gap-52'>
+                                  <div className='flex justify-start text-[24px] text-[#fff] font-semibold items-center'>Exam</div>
+                                  <div className='flex flex-col gap-5 justify-start'>
+                                    <span className='text-[32px] text-[#fff] font-semibold flex flex-col'>Introduction to IELTS</span>
+
+                                    <div className="text-[16px] text-[#fff]  font-semibold px-3 ">
+                                      <span>Refference Link : </span>
+                                      <a href='https:// www.google.com' className='underline' >
+                                        www.google.com
+                                      </a>
+                                    </div>
 
 
-                        <div className='grid grid-cols-2 bg-[#215887] p-12  border-4 border-l-red-500 '>
-                          <div className='w-[742px] h-[135px] flex gap-52'>
-                            <div className='flex justify-start text-[24px] text-[#fff] font-semibold items-center'>Exam</div>
-                            <div className='flex flex-col gap-5 justify-start'>
-                              <span className='text-[32px] text-[#fff] font-semibold flex flex-col'>Introduction to IELTS</span>
-
-                              <div className="text-[16px] text-[#fff]  font-semibold px-3 ">
-                                <span>Refference Link : </span>
-                                <a href='https:// www.google.com' className='underline' >
-                                  www.google.com
-                                </a>
-                              </div>
 
 
+                                  </div>
+                                </div>
 
-
-                            </div>
-                          </div>
-
-                          <div className='flex flex-col items-end gap-2 justify-end'>
-                            <Button className='bg-[#ED1D25] text-[#fff] text-[16px] font-semibold' onClick={() => setShowResult(true)}>See Result</Button>
-                            {/* <div className="text-[16px] text-[#fff]  font-semibold px-3 ">
+                                <div className='flex flex-col items-end gap-2 justify-end'>
+                                  <Button className='bg-[#ED1D25] text-[#fff] text-[16px] font-semibold' onClick={() => setShowResult(true)}>See Result</Button>
+                                  {/* <div className="text-[16px] text-[#fff]  font-semibold px-3 ">
                                   <span>Refference Link : </span>
                                   <a href='https:// www.google.com' className='underline' >
                                     www.google.com
                                   </a>
                                 </div> */}
-                          </div>
-                        </div>
+                                </div>
+                              </div>
+                            ))}
+                          </>
+
+                        ))}
+
 
                       </div>
                     </Tab>

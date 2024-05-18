@@ -132,7 +132,7 @@ const Body = () => {
       <MSINav />
 
       {/* Banner */}
-      <div className='h-[20vh] sm:h-[60vh] mb-[100px]'>
+      <div className='h-[30vh] sm:h-[60vh] mb-[100px]'>
 
         <Carousel
 
@@ -144,7 +144,7 @@ const Body = () => {
           showThumbs={false}
           // centerMode={true}
           stopOnHover={true}
-          centerSlidePercentage='90'
+          centerSlidePercentage='100'
           // customLeftArrow={<FontAwesomeIcon
           //   icon={faChevronLeft}
 
@@ -164,7 +164,7 @@ const Body = () => {
         >
           {bannerList.map((i) => (
             <>
-              <img src={getFile({ payload: i })} className=' h-[30vh] sm:h-[70vh] w-[10vh] container' />
+              <img src={getFile({ payload: i })} className=' h-[50vh] sm:h-[70vh] lg:h-[80vh] lg:w-full w-[10vh] ' />
             </>
           ))}
 
@@ -172,13 +172,13 @@ const Body = () => {
       </div>
 
 
-      < div className='flex justify-around pl-[26px]  sm:pl-[57px] pr-[26px] sm:pr-[57px] pt-[20px] sm:pt-[100px] relative container overflow-hidden' >
+      < div className='flex justify-around pl-[26px]  sm:pl-[57px] pr-[26px] sm:pr-[57px] pt-[20px] sm:pt-[100px] relative  overflow-hidden' >
 
         <div
-          className="absolute bg-[#0B2743] top-0 sm:top-2 -left-[130px] sm:-left-48 lg:-left-[240px] w-[170px] h-[140px] rounded-full md:w-[300px] md:h-[300px] lg:w-[300px] lg:h-[200px]"
+          className="absolute bg-[#0B2743] top-0 sm:top-2 lg:top-16 -left-[130px] sm:-left-48 lg:-left-[240px] w-[170px] h-[140px] rounded-full md:w-[300px] md:h-[300px] lg:w-[300px] lg:h-[200px]"
 
         ></div>
-        <div className='w-[654px] flex flex-col gap-10  mt-10'>
+        <div className='w-[654px] flex flex-col gap-10  mt-14 lg:mt-16'>
           <ScrollAnimation animateIn='wobble'
           >
             <h1
@@ -212,13 +212,13 @@ const Body = () => {
           </div>
 
         </div>
-        <div className='hidden sm:flex overflow-hidden'>
-          <Image src={MSIHead} className='sm:w-[400px] sm:h-[350px] ' />
+        <div className='hidden sm:flex overflow-hidden lg:mt-16 mt-14'>
+          <Image src={MSIHead} className='md:w-[400px] md:h-[400px] lg:w[450px] lg:h-[450px] ' />
         </div>
 
         <img
           src={EHalf}
-          className="absolute  right-0 w-[80px]  top-[520px]"
+          className="absolute  right-0 w-[80px]  lg:top-[600px]"
           alt=""
         />
 
@@ -231,7 +231,7 @@ const Body = () => {
       <ScrollAnimation animateIn='fadeIn'
         animateOut='fadeOut'
         scrollableParentSelector='#cou'>
-        < div className='flex flex-col p-5 md:p-5  relative container' id='cou' >
+        < div className='flex flex-col p-5 md:p-5  relative ' id='cou' >
 
           <h1
             className=' p-10 md:p-20  flex justify-center text-[30px] sm:text-[40px] font-[semibold] py-5'
@@ -240,22 +240,22 @@ const Body = () => {
             Courses We Offer
           </h1>
 
-          <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-36 lg:gap-10 2xl:gap-10 sm:gap-0 items-center justify-center sm:py-10 2xl:py-20'>
+          <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-36 lg:gap-10 2xl:gap-10 sm:gap-0 items-center justify-center sm:py-10 2xl:py-20 container'>
             {courseList?.slice(0, 4).map((e) => (
               <div
                 onClick={() => handleRoute(e)}
 
-                className='w-[310px]  md:w-[320px] lg:w-[300px] xl:w-[310px] 2xl:w-[400px] md:h-[480px] h-[470px]'
+                className='w-[310px]  md:w-[320px] lg:w-[300px] xl:w-[310px] 2xl:w-[370px] md:h-[480px] h-[470px]'
               >
                 <div >
                   <Image
                     // style={{ width: "500px", height: "280px" }}
                     alt={e.image?.originalname}
                     src={getFile({ payload: e.image })}
-                    className='w-[310px] h-full md:w-[280px] md:h-[200px] lg:w-[300px] lg:h-[270px] xl:w-[310px] xl:h-[270px] 2xl:w-[370px] sm:hover:-translate-y-2 sm:hover:scale-105 duration-500'
+                    className='w-[310px] h-full md:w-[280px] md:h-[200px] lg:w-[280px] lg:h-[250px] xl:w-[300px] xl:h-[260px] 2xl:w-[370px] sm:hover:-translate-y-2 sm:hover:scale-105 duration-500'
                   />
-                  <div className='flex p-5 flex-col justify-start flex-grow '>
-                    <span className='w-[280px] text-[14px] font-semibold text-[#B72041] flex'>MSI Academy
+                  <div className='flex p-5 flex-col justify-start flex-grow 2xl:w-[350px]'>
+                    <span className='w-[280px]  text-[14px] font-semibold text-[#B72041] flex'>MSI Academy
                     </span>
                     <span
                       style={{
@@ -264,7 +264,7 @@ const Body = () => {
                         fontSize: "20px",
                         letterSpacing: "-0.96px",
                       }}
-                      className='w-[290px] h-[60px]'
+                      className='w-[290px] h-auto py-2'
                     >
                       {e.title}
                     </span>

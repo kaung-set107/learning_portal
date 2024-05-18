@@ -37,7 +37,7 @@ export default function Activities() {
     }, [])
     return (
         <div className='container'>
-            <div className='lg:h-[800px] 2xl:h-[1300px] '>
+            <div className='lg:h-[800px] 2xl:h-[800px] '>
                 <div className='flex flex-col gap-5 justify-center'>
                     <span className='text-[26px] lg:text-[30px] 2xl:text-[36px] font-semibold font-[Poppins] flex justify-center items-center text-[#0B2743]'>News & Activities</span>
                     <span className='text-[18px] lg:text-[20px] 2xl:text-[24px] font-medium font-[Poppins] text-[#0B2743'>Latest Post</span>
@@ -82,7 +82,7 @@ export default function Activities() {
                     ))}
 
                 </div>
-                <div className='flex justify-center mt-20 py-3 sm:py-0 '>
+                <div className='flex justify-center mt-5 py-3 sm:py-0 '>
                     <Link to='/news-activities'>
                         <button className='text-[#696A75] text-[16px] hover:text-primary font-semibold border-1 border-slate-700 p-2 rounded-lg sm:hover:-translate-y-1 sm:hover:scale:110 duration-500'>
                             View All Post

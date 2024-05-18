@@ -9,7 +9,7 @@ import {
 } from "@nextui-org/react";
 import { Link, useLocation } from "react-router-dom";
 // import {useEffect,useState} from 'react'
-
+import Loading from '../../../assets/img/finalloading.gif'
 import { faEye, faClock, faCalendarDays, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
@@ -21,6 +21,7 @@ import TabValueComponent from "./sub-detail-head";
 import Nav from "../../home/header";
 import PF from '../../../assets/img/pf.png'
 import QP from '../../../assets/img/qp.png'
+import apiInstance from "../../../util/api";
 const ExamResult = ({ ResData, showResult }) => {
     const [quizResult, setQuizResult] = useState([]);
     const [activeTab, setActiveTab] = useState(1);
@@ -31,26 +32,20 @@ const ExamResult = ({ ResData, showResult }) => {
     const location = useLocation();
     // console.log(location.state?.data, "body");
 
-    const SubData = location.state;
-    // console.log(ResData, "dat");
+    useEffect(() => {
+        const getExamRes = async () => {
+            await apiInstance.get('exam-results').then((res) => {
+                console.log(res.data.data, 'res')
+            })
+        }
+        getExamRes()
+    }, [])
 
     return (
         <div>
             {/* body */}
-            {quizResult?.status ? ('')
-
-                : (
-                    <div className='flex flex-col gap-10 items-center pt-[40px]'>
-                        <Image src={Loading} className='transform-x-[-1] w-[500px]' />
-                        <span className='text-[20px] font-semibold'>
-                            Please wait ! We are checking your Result
-                        </span>
-                    </div>
-                )
-            }
-            <div>
-
-                <div className='flex flex-col gap-20 w-full h-[1500px] mt-5'>
+            {quizResult?.status ?
+                < div className='flex flex-col gap-20 w-full h-[1500px] mt-5'>
                     {/* First Section */}
                     <div className='flex justify-between'>
                         <div className='flex gap-5'>
@@ -143,6 +138,18 @@ const ExamResult = ({ ResData, showResult }) => {
                         <div className='text-[#0025A9] w-[1200px] h-[125px] rounded-lg p-10 bg-[#EBF0FF] text-[20px] font-semibold'>Great Job! Keep Trying.</div>
                     </div>
                 </div>
+                : (
+                    <div className='flex flex-col gap-10 items-center pt-[40px]'>
+                        <Image src={Loading} className='transform-x-[-1] w-[500px]' />
+                        <span className='text-[20px] font-semibold'>
+                            Please wait ! We are checking your Result
+                        </span>
+                    </div>
+                )
+            }
+            <div>
+
+
             </div>
         </div >
 

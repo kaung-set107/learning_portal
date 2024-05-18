@@ -48,6 +48,7 @@ const ExamPage = ({ ResData, showResult }) => {
     const [multiAns, setMultiAns] = useState([])
     const [nextAnswer, setNextAnswer] = useState(false);
     const [arr, setArr] = useState([]);
+    const [timer, setTimer] = useState(0);
     // const [showResult, setShowResult] = useState(false);
     const navigate = useNavigate();
     const [index, setIndex] = useState("");
@@ -56,6 +57,7 @@ const ExamPage = ({ ResData, showResult }) => {
     const [trueAnswerList, setTrueAnswerList] = useState([]);
     const [studentAnswerList, setStudentAnswerList] = useState([]);
     const [showExamResult, setShowExamResult] = useState(false);
+    const [multiTrueAnswerList, setMultiTrueAnswerList] = useState([]);
 
     const TotalMark = trueAnswerList.map((i) => i.markTotal)
         .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
@@ -64,24 +66,16 @@ const ExamPage = ({ ResData, showResult }) => {
         setBack(!showResult);
     };
 
+    const MulTotalMark = multiTrueAnswerList.filter(el => el.id).map((i) => i.markTotal).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
     console.log(quizList, "body");
+
+
     const handleStart = () => {
-        setShowTimer(true);
+        setShowTimer(prev => !prev);
 
-        const timerInterval = setInterval(() => {
-            setTimeLeft((prevTime) => {
-                if (prevTime === 0) {
-                    clearInterval(timerInterval);
-
-                    nextQuestion();
-                    return 10; // Reset timer for the next question
-                }
-                return prevTime - 1;
-            });
-        }, 1000);
 
         // Clear interval when the component unmounts or when moving to the next question
-        return () => clearInterval(timerInterval);
+        // return () => clearInterval(timerInterval);
     };
     const nextQuestion = (studentAnswer, cas, ind) => {
         // console.log(quizList.questions[counter].correctAnswer === cas, 'cas')
@@ -145,7 +139,7 @@ const ExamPage = ({ ResData, showResult }) => {
 
     const handleResult = () => {
 
-        // console.log(studentAnswerList, 'studentAnswerList');
+        console.log(studentAnswerList, 'studentAnswerList');
 
         // console.log(studentAnswerList.filter(el => quizList.questions.find(i => i._id === el.id)), 'studentAnswerList')
         //Quiz-Result Create
@@ -156,7 +150,7 @@ const ExamPage = ({ ResData, showResult }) => {
             student: studentID,
             batch: '661626364b091b37492de8e0',
             subject: subjectID,
-            // exam: exam,
+            exam: exam,
             answerDate: Date.now(),
             updatedQuestions: quizList.questions.map((i) => {
                 return {
@@ -174,7 +168,7 @@ const ExamPage = ({ ResData, showResult }) => {
             totalMark: quizList.questions[counter].type === 'trueFalse' ? TotalMark : points,
             status: quizList.questions[counter].type === 'trueFalse' ? (TotalMark === quizList.passMark && "pass") || (TotalMark > quizList.passMark && "distinction") || ((TotalMark < quizList.passMark && TotalMark === quizList.creditMark) && "credit") || (TotalMark < quizList.creditMark && "fail") : (points >= quizList.passMark ? "pass" : "fail"),
         };
-        alert(JSON.stringify(data));
+        // alert(JSON.stringify(data));
         apiInstance
             .post("quiz-results", data)
             .then(function () {
@@ -283,10 +277,10 @@ const ExamPage = ({ ResData, showResult }) => {
 
             // console.log(newFormSubmissions, 'new radio')
 
-            setIsCorrect("Correct");
+            // setIsCorrect("Correct");
         } else {
             // setStudentAnswer(val + 1)
-            setIsCorrect("incorrect");
+            // setIsCorrect("incorrect");
         }
         const newFormSubmissionsforStudentAnswer = [...studentAnswerList];
         newFormSubmissionsforStudentAnswer.push({ studentAnswer: TrueFalseAns, id: counterid });
@@ -306,59 +300,32 @@ const ExamPage = ({ ResData, showResult }) => {
         window.scroll(0, 0)
         const item = localStorage.getItem('hello');
         // Update state with the retrieved item
-        // setStoredItem(item);
+
         console.log(item, 'under its array')
-        // const final = caList.every(item => multiAns.includes(item))
-        // setFinal(final)
-        // console.log(final, 'hee hee')
 
-        // setMultiAnswerList(multiAnswerList)
-        // const getQuiz = async () => {
-        //     await apiInstance.get("quizzes").then((res) => {
-        //         if (
-        //             res.data.data.filter((el) => el._id === ResData._id)[0] !==
-        //             undefined
-        //         ) {
-        //             setQuizList(
-        //                 res.data.data.filter((el) => el._id === QuizID)[0]
-        //             );
-        //             console.log(res.data.data.filter((el) => el._id === QuizID)[0], 'quizList')
-        //             setTimeLeft(
-        //                 res.data.data.filter((el) => el._id === QuizID)[0]
-        //                     .duration * 60
-        //             );
-        //         }
 
-        //         // console.log(
-        //         //   res.data.data.filter((el) => el.learningMaterial === LMID)[0],
-        //         //   "att"
-        //         // );
-        //         //   setPages(res.data._metadata.page_count)
-        //     });
-        // };
-        // getQuiz();
         const dataFromLocalStorage = localStorage.getItem("id");
         // console.log(dataFromLocalStorage,'local')
 
-        // setQuizList(res.data.data.filter(el=>el.instructor))
-        // console.log((dataFromLocalStorage),'hello')
         setStudentID(dataFromLocalStorage);
         //   setPages(res.data._metadata.page_count)
-        const interval = setInterval(() => {
-            setTimerStartBtn((prevTimer) => {
-                if (prevTimer && 0) {
-                    return prevTimer - 1;
-                } else {
-                    clearInterval(interval); // Clear the interval when the timer reaches 0
-                    setIsLoading(false); // Set loading to false
-                    return 0;
-                }
-            });
-        }, 2000);
+        let interval = null;
+        if (showTimer) {
+            interval = setInterval(() => {
+                setTimer(prevTimer => {
+
+                    return prevTimer + 1; // Increment timer value by 1 second
+
+                });
+            }, 1000);
+        } else {
+            clearInterval(interval);
+        }
+
         return () => clearInterval(interval);
 
 
-    }, [isLoading]);
+    }, [isLoading, showTimer]);
     const SubData = location.state;
     // console.log(ResData, "dat");
     const displayMinutes = Math.floor(timeLeft / 60);
@@ -408,8 +375,11 @@ const ExamPage = ({ ResData, showResult }) => {
                                                             Start Quiz
                                                         </Button>
                                                     ) : (
-                                                        <Button color='light'>
-                                                            Start Quiz <Spinner size='sm' />
+                                                        // <Button color='light'>
+                                                        //     Start Quiz <Spinner size='sm' />
+                                                        // </Button>
+                                                        <Button color='primary' onClick={handleStart} size='md'>
+                                                            Start Quiz
                                                         </Button>
                                                     )}
                                                 </div>
@@ -440,9 +410,9 @@ const ExamPage = ({ ResData, showResult }) => {
                                                             {quizList.questions[counter].mark}{" "}
                                                         </span>
                                                         <span className='p-[20px] text-[20px] font-light w-[200px]'>
-                                                            Time : {displayMinutes < 10 ? "0" : ""}
-                                                            {displayMinutes}:{displaySeconds < 10 ? "0" : ""}
-                                                            {displaySeconds}
+                                                            Time :{timer}s
+
+
                                                         </span>
                                                     </div>
 

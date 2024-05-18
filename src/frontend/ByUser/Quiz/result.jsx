@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, Button, Tooltip, Image } from "@nextui-org/react";
 import apiInstance from "../../../util/api";
 import QuizPhoto from "../../../assets/quiz.webp";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { getFile } from "../../../util";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,6 +19,9 @@ import { Stack } from "@mui/material";
 import moment from "moment-timezone";
 import Nav from "../../home/header";
 export default function Result() {
+  const location = useLocation()
+  const SubData = location.state
+  console.log(location.state, 'subd')
   const dataFromLocalStorage = localStorage.getItem("id");
   const navigate = useNavigate();
   const [quizResult, setQuizResult] = useState([]);
@@ -30,6 +33,8 @@ export default function Result() {
   const [subList, setSubList] = useState([]);
   const [quizNavigationID, setQuizNavigationID] = useState("");
   const [originMark, setOriginMark] = useState('')
+  const [subjectID, setSubjectID] = useState('')
+  const [headTitle, setHeadTitle] = useState('')
   // console.log(quizID, 'id')
 
   useEffect(() => {
@@ -61,14 +66,24 @@ export default function Result() {
         setLMList(res.data.data);
       });
     };
-    const getSUB = async () => {
-      await apiInstance.get("subjects").then((res) => {
-        // console.log(res.data.data, "lm");
-        setSubList(res.data.data);
+
+    const getSubInfo = async () => {
+      await apiInstance.get(`exams/${quizResult?.quiz?.exam}`).then((res) => {
+        console.log(res.data.data.subject, "lm");
+        // setLMList(res.data.data.subject);
+        setSubjectID(res.data.data.subject)
       });
     };
-
+    const getSUB = async () => {
+      await apiInstance.get("subjects").then((res) => {
+        console.log(res.data.data.filter(el => el._id === subjectID)[0].title, "sub info");
+        setSubList(res.data.data);
+        setHeadTitle(res.data.data.filter(el => el._id === subjectID)[0]?.title)
+      });
+    };
     getSUB();
+    getSubInfo()
+
     getLM();
     getQuizz();
     getStudent();
@@ -116,7 +131,7 @@ export default function Result() {
     };
     getResult();
     // return () => clearTimeout(timer);
-  }, [setQuizResult, setQuizID, setUpdatedQuestionList]);
+  }, [setQuizResult, setQuizID, setUpdatedQuestionList, subjectID]);
 
   const handleQuizNavigation = (data) => {
     // console.log(data, "navi");
@@ -158,14 +173,14 @@ export default function Result() {
             </Tooltip>
             <div className='p-1'>
               <span className='text-[32px] font-bold text-[#131313]'>
-                Batch - 6, Module 1: Introduction to IELTS
+                {headTitle} Exam
               </span>
             </div>
           </div>
           {/* Quiz With UI Design */}
-          <div className='flex flex-row gap-48 pt-14'>
+          <div className='flex flex-row gap-48 pt-14 lg:pt-5'>
             {/* Left Side */}
-            <div className='flex flex-col gap-10 w-[887px] h-[570px] pl-24 pt-14'>
+            <div className='flex flex-col gap-10 lg:gap-5 w-[887px] lg:w-[700px] h-[570px] pl-24 pt-14'>
               {/* 1 */}
               <div className='flex gap-20 w-[855px] h-[52px]'>
                 <span className='text-[20px] text-[#053CFF] font-semibold w-[136px]'>
