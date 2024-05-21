@@ -36,7 +36,7 @@ import { EyeFilledIcon } from "./EyeFilledIcon";
 import { EyeSlashFilledIcon } from "./EyeSlashFilledIcon";
 import Swal from "sweetalert2";
 import { getFile } from "../../util/index";
-import MSI from "../../assets/img/MSI.svg";
+import MSI from "../../assets/img/MSILOGO.jpg";
 export default function NavBar() {
   const navigate = useNavigate();
   const [imgUrl, setImgUrl] = useState("");
@@ -183,10 +183,10 @@ export default function NavBar() {
         location.pathname !== "/student" &&
         location.pathname !== "/by-instructor" && (
           <Navbar
-            maxWidth='full'
+            // maxWidth='full'
             isBordered
             isBlurred={false}
-            className='py-4 sticky-top '
+            className='py-4 sticky-top w-full lg:w-[1000px] xl:w-[1000px] 2xl:w-[1200px] '
           >
             {/* <h3>Hello</h3> */}
 
@@ -196,7 +196,7 @@ export default function NavBar() {
 
             <NavbarContent
               as='div'
-              className='items-center mt-2 flex-grow'
+              className='items-center mt-2 flex-grow  w-full lg:w-[1024px] xl:w-[1000px] 2xl:w-[1536px]'
               justify='end'
             >
               {/* <Input

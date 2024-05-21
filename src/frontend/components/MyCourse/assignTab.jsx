@@ -22,7 +22,7 @@ export default function App() {
 
   const assignmentList = location.state.data.assignments
   const courseId = location.state.data
-  console.log(courseId, 'c')
+  console.log(assignmentList, 'c')
   const enrollID = location.state.enroll_id;
   const [completeList, setCompleteList] = useState([])
   const [checkedList, setCheckedList] = useState([])
@@ -98,11 +98,11 @@ export default function App() {
         // console.log(studentID, 'lll ')
         // const CompleteStatusAssign = res.data.data.filter(el => el.status === "submitted")
         // const CheckedStatusAssign = res.data.data.filter(el => el.status === "checked")
-        console.log(res.data.data.filter(el => el.status === "published"), 'stttututtu')
+        console.log(res.data.data.filter(el => el.status === "submitted").filter(el => el.student._id === LoginStudentID).filter(el => el.assignment !== null), 'stttututtu')
 
-        setCompleteList(res.data.data.filter(el => el.status === "submitted").filter(el => el.student._id === studentID).filter(el => el.assignment !== null))
+        setCompleteList(res.data.data.filter(el => el.status === "submitted").filter(el => el.student._id === LoginStudentID).filter(el => el.assignment !== null))
         setCheckedList(res.data.data.filter(el => el.status === "published").filter(el => el.student._id === LoginStudentID).filter(el => el.assignment !== null))
-        console.log(res.data.data.filter(el => el.status === "published").filter(el => el.student._id === studentID).filter(el => el.assignment !== null), 'check')
+        // console.log(res.data.data.filter(el => el.status === "published").filter(el => el.student._id === studentID).filter(el => el.assignment !== null), 'check')
       }
 
       )
@@ -135,10 +135,10 @@ export default function App() {
       .then(function () {
         Swal.fire({
           icon: "success",
-          title: "Uploaded Your Assignemnt Successful",
-          text: "Nice!",
-          confirmButtonText: "OK",
-          confirmButtonColor: "#3085d6",
+          title: "Uploaded Your Assignemnt",
+          text: "Successful!",
+          showConfirmButton: false,
+          timer: 2000,
         });
         setImage(null)
       })
@@ -148,8 +148,8 @@ export default function App() {
   };
 
   return (
-    <div className="flex justify-center items-center w-full flex-col mb-20">
-      <Tabs aria-label="Options" color="primary" variant="bordered">
+    <div className="flex justify-center items-center w-[500px] lg:w-[1024px] xl:w-[1280px] 2xl:w-[1440px] flex-col mb-20">
+      <Tabs aria-label="Options" color="primary" variant="bordered" size='sm'>
         <Tab
           key="photos"
           title={
@@ -159,7 +159,7 @@ export default function App() {
             </div>
           }
         >
-          <div className='flex flex-col justify-start pt-10 w-[1560px] h-[204px] pl-10 pb-8 pr-10'>
+          <div className='flex flex-col gap-10 lg:gap-5 justify-start pt-10 w-[768px] lg:w-[1200px] xl:w-[1280px] 2xl:w-[1440px] h-[204px] pl-10 pb-8 pr-10'>
             {assignmentList.map((item, index) => (
 
               <div className='grid grid-cols-3 bg-[#215887]   p-12  border-4 border-l-red-500 ' key={item._id}>
@@ -169,7 +169,7 @@ export default function App() {
                   <div className='text-[16px] text-[#fff] font-medium'>{item?.description}</div>
                   <div className='flex flex-col  gap-1'>
                     <span className='text-[16px] text-[#fff] font-semibold'>Reference link </span>
-                    <div className='grid grid-cols-3'>
+                    <div className='grid grid-cols-1'>
                       {JSON.parse(item.links).map((e) => (
 
 
@@ -245,9 +245,11 @@ export default function App() {
 
                       <div className='flex justify-start gap-2'>
                         <Button>Cancel</Button>
+                        {completeList ? (<Button color='primary' className='cursor-not-allowed opacity-50' >Upload</Button>
 
-                        <Button color='primary' onClick={() => handleCreateAssignment(item._id)}>Upload</Button>
+                        ) : (<Button color='primary' onClick={() => handleCreateAssignment(item._id)}>Upload</Button>
 
+                        )}
 
                       </div>
                     </div></>
@@ -270,7 +272,7 @@ export default function App() {
             </div>
           }
         >
-          <div className='flex flex-col justify-start pt-10 w-[1560px] h-[204px] pl-10 pb-8 pr-10' >
+          <div className='flex flex-col gap-10 lg:gap-5 justify-start pt-10 w-[768px] lg:w-[1200px] xl:w-[1280px] 2xl:w-[1440px] h-[204px] pl-10 pb-8 pr-10' >
             {completeList.map((item, index) => (
 
               <div className='grid grid-cols-3 bg-[#215887]   p-12  border-4 border-l-red-500 ' key={item._id}>
@@ -297,36 +299,36 @@ export default function App() {
                     <div className='flex flex-col'>
                       <span className='text-[16px] text-[#fff] font-semibold'>Document File link </span>
                       {/* {item.assets.map((i) => (
-                      <> */}
+                        <>
 
-                      {/* <div className="sm:flex justify-start gap-5">
-                        <a
-                          href={getFile({ payload: item?.assignment.question })}
-                          onClick={
-                            item?.assignment.question.originalname?.split(".")[1] === "pdf"
-                              ? () => downloadPDF(item?.assignment.question)
-                              : download
-                          }>
-                          <Image
-                            radius="sm"
-                            alt={item?.assignment.question.title}
-                            className="object-cover w-[40px] h-[40px]"
-                            src={
-                              item?.assignment.question.originalname?.split(".")[1] === "pdf"
-                              && PdfPhoto
-                              || item?.assignment.question.originalname?.split(".")[1] === "xlsx"
-                              && ExcelPhoto || item?.assignment.question.originalname?.split(".")[1] === "csv"
-                              && CSV || item?.assignment.question.originalname?.split(".")[1] === "pptx"
-                              && PPTX || item?.assignment.question.originalname?.split(".")[1] === "docx"
-                              && DOCX
-                              || getFile({ payload: item?.assignment.question })
-                            }
-                          />
-                        </a>
-                        <b className="text-[16px] text-[#4b4eff] font-semibold mt-3">{item?.assignment.question?.originalname}</b>
-                      </div> */}
-                      {/* </>
-                    ))} */}
+                          <div className="sm:flex justify-start gap-5">
+                            <a
+                              href={getFile({ payload: item?.assignment.question })}
+                              onClick={
+                                item?.assignment.question.originalname?.split(".")[1] === "pdf"
+                                  ? () => downloadPDF(item?.assignment.question)
+                                  : download
+                              }>
+                              <Image
+                                radius="sm"
+                                alt={item?.assignment.question.title}
+                                className="object-cover w-[40px] h-[40px]"
+                                src={
+                                  item?.assignment.question.originalname?.split(".")[1] === "pdf"
+                                  && PdfPhoto
+                                  || item?.assignment.question.originalname?.split(".")[1] === "xlsx"
+                                  && ExcelPhoto || item?.assignment.question.originalname?.split(".")[1] === "csv"
+                                  && CSV || item?.assignment.question.originalname?.split(".")[1] === "pptx"
+                                  && PPTX || item?.assignment.question.originalname?.split(".")[1] === "docx"
+                                  && DOCX
+                                  || getFile({ payload: item?.assignment.question })
+                                }
+                              />
+                            </a>
+                            <b className="text-[16px] text-[#4b4eff] font-semibold mt-3">{item?.assignment.question?.originalname}</b>
+                          </div>
+                        </>
+                      ))} */}
                     </div>
 
                   </div>)
@@ -334,8 +336,8 @@ export default function App() {
                 }
 
 
-                <div className='flex flex-col gap-4  justify-center'>
-
+                <div className='flex  gap-4  justify-center items-center'>
+                  <Button className='bg-red-600 text-[#fff]' >Completed</Button>
                 </div>
               </div>
 
@@ -359,7 +361,7 @@ export default function App() {
             </div>
 
           ) : (
-            <div className='flex flex-col justify-start pt-10 w-[1560px] h-[204px] pl-10 pb-8 pr-10' >
+            <div className='flex flex-col gap-10 lg:gap-5 justify-start pt-10 w-[768px] lg:w-[1200px] xl:w-[1280px] 2xl:w-[1440px] h-[204px] pl-10 pb-8 pr-10' >
               {checkedList.map((item, index) => (
 
                 <div className='grid grid-cols-3 bg-[#215887]   p-12  border-4 border-l-red-500 ' key={item._id}>

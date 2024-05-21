@@ -87,8 +87,8 @@ export default function App() {
 
   return (
     <>
-      <div className='sticky top-0 bg-white z-50  md:shadow-md lg:shadow-lg   w-full md:p-5 lg:p-6 2xl:p-10 '>
-        <div className='flex sm:gap-10 gap-20  xl:gap-5 2xl:gap-[50px] justify-between sm:justify-between lg:justify-around '>
+      <div className='sticky top-0 bg-white z-50  md:shadow-md lg:shadow-lg w-full  md:p-5 lg:p-6 2xl:p-10 '>
+        <div className='flex sm:gap-10 gap-20  xl:gap-5 2xl:gap-[50px]  w-full  justify-between sm:justify-between lg:justify-around '>
           <div className=''>
             <Image
               src={MSI}
@@ -96,7 +96,7 @@ export default function App() {
             />
           </div>
           <div
-            className='hidden lg:flex justify-end 2xl:justify-end gap-10 w-full items-center '
+            className='hidden lg:flex justify-end 2xl:justify-end gap-10 items-center w-full lg:w-[1024px] xl:w-[1280px] 2xl:w-[1536px] '
             style={{
               borderRadius: "200px",
 

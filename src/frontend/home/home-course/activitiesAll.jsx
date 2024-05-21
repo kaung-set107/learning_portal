@@ -73,10 +73,10 @@ export default function Activities() {
 
 
                                 </div>
-                                <div className='flex flex-col justify-start items-start sm:flex md:flex-col lg:flex-col xl:flex-row 2xl:flex-row  sm:justify-between md:justify-start md:items-start lg:justify-start xl:justify-center sm:items-start xl:items-center xl:gap-2 lg:items-start p-2'>
-                                    <div className='flex gap-2'>
+                                <div className='flex flex-col justify-start items-start sm:flex md:flex-col lg:flex-col xl:flex-row 2xl:flex-row  sm:justify-between md:justify-start md:items-start lg:justify-start xl:justify-start sm:items-start xl:items-center xl:gap-2 lg:items-start p-2'>
+                                    <div className='flex gap-2 justify-start items-start '>
                                         <Image src={Globe} className='w-[25px] h-[35px] rounded-xl' />
-                                        <span className='flex justify-center items-center pt-1'>MSI ACADEMY</span>
+                                        <span className=' pt-1'>MSI ACADEMY</span>
                                     </div>
                                     <div className='pl-8 sm:pl-7 md:pl-8 lg:pl-7 xl:pl-0 2xl:pl-0'>
                                         {/* <span className='lg:text-[15px] 2xl:text-[16px] font-normal'>August 20, 2022</span> */}

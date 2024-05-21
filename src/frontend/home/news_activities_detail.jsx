@@ -27,7 +27,7 @@ export default function Newsdetail() {
     return (
         <div>
             <MSINav />
-            <div className='flex flex-col  lg:mx-[256px] xl:mx-[260px] 2xl:mx-[270px] pt-[40px] container '>
+            <div className='flex flex-col w-[1024px] lg:mx-[125px] xl:mx-[135px] 2xl:mx-[155px] pt-[40px] container '>
                 <div className='flex justify-start'>
                     <span className='text-[25px] sm:text-[36px] font-semibold font-[Work Sans]'>{newsList?.title}</span>
                 </div>
@@ -41,22 +41,22 @@ export default function Newsdetail() {
                     </div>
                 </div>
                 <div className='flex flex-col gap-32'>
-                    <div className='flex flex-col gap-10 justify-start items-start'>
-                        <img src={newsList?.images ? getFile({ payload: newsList?.images?.section1[0] }) : ''} className='w-[400px] h-[200px] sm:w-[928px] sm:h-[536px]' />
+                    <div className='flex flex-col gap-10 justify-start items-start lg:w-[1024px] 2xl:w-[1200px]'>
+                        <Image src={newsList?.images ? getFile({ payload: newsList?.images?.section1[0] }) : ''} className='w-[400px] h-[200px] lg:w-[1024px] 2xl:w-[1280px] sm:h-[536px]' />
                         <div>
-                            <p className='text-[16px] sm:text-[20px] w-[400px] sm:w-[620px] md:w-[650px] font-normal'>{newsList?.descriptionList?.description1}</p>
+                            <p className='text-[16px] sm:text-[20px] w-[400px] sm:w-[620px] md:w-[650px] lg:w-[1000px] xl:w-[1024px] 2xl:w-[1200px] 2xl:leading-[50px] 2xl:text-[25px] font-normal'>{newsList?.descriptionList?.description1}</p>
                         </div>
                     </div>
-                    <div className='flex flex-col gap-10 justify-start items-start'>
-                        <img src={newsList?.images ? getFile({ payload: newsList?.images?.section2[0] }) : ''} className='w-[400px] h-[200px] sm:w-[928px] sm:h-[536px]' />
+                    <div className='flex flex-col gap-10 justify-start items-start lg:w-[1024px] 2xl:w-[1200px]'>
+                        <Image src={newsList?.images ? getFile({ payload: newsList?.images?.section2[0] }) : ''} className='w-[400px] h-[200px] lg:w-[1024px] sm:h-[536px] 2xl:w-[1280px]' />
                         <div>
-                            <p className='text-[16px] sm:text-[20px] w-[400px] sm:w-[620px] md:w-[650px] font-normal'>{newsList?.descriptionList?.description2}</p>
+                            <p className='text-[16px] sm:text-[20px]  w-[400px] sm:w-[620px] md:w-[650px] lg:w-[1000px] xl:w-[1024px] 2xl:w-[1200px] 2xl:leading-[50px] 2xl:text-[25px]  font-normal'>{newsList?.descriptionList?.description2}</p>
                         </div>
                     </div>
-                    <div className='flex flex-col gap-10 justify-start items-start'>
-                        <img src={newsList?.images ? getFile({ payload: newsList?.images?.section3[0] }) : ''} className='w-[400px] h-[200px] sm:w-[928px] sm:h-[536px]' />
+                    <div className='flex flex-col gap-10 justify-start items-start lg:w-[1024px] 2xl:w-[1200px]'>
+                        <Image src={newsList?.images ? getFile({ payload: newsList?.images?.section3[0] }) : ''} className='w-[400px] h-[200px] lg:w-[1024px] 2xl:w-[1280px] sm:h-[536px]' />
                         <div>
-                            <p className='text-[16px] sm:text-[20px] w-[400px] sm:w-[620px] md:w-[650px]  font-normal'>{newsList?.descriptionList?.description3}</p>
+                            <p className='text-[16px] sm:text-[20px] w-[400px] sm:w-[620px] md:w-[650px] lg:w-[1000px] xl:w-[1024px] 2xl:w-[1200px] 2xl:leading-[50px] 2xl:text-[25px] font-normal'>{newsList?.descriptionList?.description3}</p>
                         </div>
                     </div>
                 </div>

@@ -80,8 +80,8 @@ export default function DepartmentInputForm() {
           icon: "success",
           title: "Course Create Successful",
           text: "",
-          confirmButtonText: "OK",
-          confirmButtonColor: "#3085d6",
+          showConfirmButton: false,
+          timer: 2000,
         });
       })
       .catch((error) => {

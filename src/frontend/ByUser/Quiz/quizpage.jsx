@@ -476,7 +476,7 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
 
                     ) : (
                       <div className='bg-[#EBF0FF] rounded-lg w-full h-[auto] p-[20px] flex flex-col gap-20'>
-                        <span className='w-[902px] h-[24px] text-[20px] font-semibold'>
+                        <span className='w-[500px] lg:w-[700px] h-[24px] text-[20px] font-semibold'>
                           This quiz will test your basic knowledge on IELTS
                         </span>
                         <div className='flex justify-end gap-2'>

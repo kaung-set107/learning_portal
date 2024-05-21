@@ -35,12 +35,15 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import ScrollAnimation from 'react-animate-on-scroll';
 import "animate.css/animate.min.css";
+import AOS from 'aos';
+import "aos/dist/aos.css";
 // Define the animation for the text
 // import { Wave } from 'react-animated-text';
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import Activities from "./home_components/activities";
 const Body = () => {
+
   const navigate = useNavigate();
   const [courseList, setCourseList] = useState([]);
   const [catList, setCatList] = useState([]);
@@ -79,6 +82,9 @@ const Body = () => {
     hidden: { opacity: 0, scale: 0 }
   };
   useEffect(() => {
+    AOS.init();
+    AOS.refresh();
+    window.scroll(0, 0)
     const getAssign = async () => {
       await apiInstance.get(`courses`).then((res) => {
         console.log(res.data.data, "course res");
@@ -161,6 +167,7 @@ const Body = () => {
           // customTransition="all .5"
           responsive={responsive}
           className='p-0  bg-transparent'
+
         >
           {bannerList.map((i) => (
             <>
@@ -172,7 +179,7 @@ const Body = () => {
       </div>
 
 
-      < div className='flex justify-around pl-[26px]  sm:pl-[57px] pr-[26px] sm:pr-[57px] pt-[20px] sm:pt-[100px] relative  overflow-hidden' >
+      < div data-aos={"fade-up"} className='flex justify-around pl-[26px]  sm:pl-[57px] pr-[26px] sm:pr-[57px] pt-[20px] sm:pt-[100px] relative  overflow-hidden' >
 
         <div
           className="absolute bg-[#0B2743] top-0 sm:top-2 lg:top-16 -left-[130px] sm:-left-48 lg:-left-[240px] w-[170px] h-[140px] rounded-full md:w-[300px] md:h-[300px] lg:w-[300px] lg:h-[200px]"
@@ -198,12 +205,12 @@ const Body = () => {
             with students' apptitude.
           </p>
           <div className='flex flex-col sm:flex-row gap-10 w-full '>
-            <div className='w-[230px] 2xl:w-[400px] flex gap-2'>
+            <div className='w-[230px] 2xl:w-[400px] flex gap-2' data-aos={"fade-up"}>
 
               <FontAwesomeIcon icon={faCheck} size='md' className='text-[#2563EB] border-1 border-sky-500 rounded-[100%] p-2' />
               <span className='text-[16px] md:text-[18px] lg:text-[20px] leading-[24px] font-medium w-[206px] 2xl:w-[260px]'>Get unlimited design inspirations. Level up your design.</span>
             </div>
-            <div className='w-[230px] flex gap-2 2xl:w-[400px]'>
+            <div className='w-[230px] flex gap-2 2xl:w-[400px]' data-aos={"fade-up"}>
               <FontAwesomeIcon icon={faCheck} size='md' className='text-[#2563EB] border-1 border-sky-500 rounded-[100%] p-2' />
               <span className='text-[16px] md:text-[18px] lg:text-[20px] leading-[24px] font-medium w-[206px]  2xl:w-[260px]'>
                 14+ Premium tailwind UI kits. Start with unlimited product downloads.
@@ -230,8 +237,8 @@ const Body = () => {
       {/* Event */}
       <ScrollAnimation animateIn='fadeIn'
         animateOut='fadeOut'
-        scrollableParentSelector='#cou'>
-        < div className='flex flex-col p-5 md:p-5  relative ' id='cou' >
+        scrollableParentSelector='#cou' >
+        < div className='flex flex-col p-5 md:p-5  relative ' id='cou' data-aos={"fade-up"} >
 
           <h1
             className=' p-10 md:p-20  flex justify-center text-[30px] sm:text-[40px] font-[semibold] py-5'
@@ -240,7 +247,7 @@ const Body = () => {
             Courses We Offer
           </h1>
 
-          <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-36 lg:gap-10 2xl:gap-10 sm:gap-0 items-center justify-center sm:py-10 2xl:py-20 container'>
+          <div data-aos={"fade-up"} className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-36 lg:gap-10 2xl:gap-10 sm:gap-0 items-center justify-center sm:py-10 2xl:py-20 container'>
             {courseList?.slice(0, 4).map((e) => (
               <div
                 onClick={() => handleRoute(e)}
@@ -265,6 +272,7 @@ const Body = () => {
                         letterSpacing: "-0.96px",
                       }}
                       className='w-[290px] h-auto py-2'
+                      data-aos={"fade-up"}
                     >
                       {e.title}
                     </span>
@@ -276,13 +284,14 @@ const Body = () => {
                         // height: "auto",
                       }}
                       className='w-[280px] h-[40px]'
+                      data-aos={"fade-up"}
                     >
                       {e?.description.substring(0, 50)}...
                     </div>
                     {/* card footer */}
                     <div
                       className='py-5 flex justify-center gap-2 md:w-[250px] w-[290px]'
-
+                      data-aos={"fade-up"}
                     >
                       <div className='h-[24px] w-full md:w-[200px]  text-start bg-[#ECEFFF] rounded-2xl md:text-[12px] text-[13px] font-medium'>
                         <span>Duration -</span>
@@ -300,20 +309,20 @@ const Body = () => {
             ))}
           </div>
 
-          <Link href='/home-course' className='flex justify-center py-5 pt-20 md:pt-[25px] lg:pt-[30px] 2xl:pt-[40px] sm:pt-0 '>
+          <Link href='/home-course' data-aos={"zoom-in"} className='flex justify-center py-5 pt-20 md:pt-[25px] lg:pt-[30px] 2xl:pt-[40px] sm:pt-0 '>
             <span className=' text-[16px] sm:text-[20px] py-2 text-[#1F4164] hover:text-danger font-semibold text-center cursor-pointer border-1 border-[#1F4164] w-[110px] sm:w-[130px] rounded-lg hover:border-danger-400'>
               See All
             </span>
           </Link>
         </div >
       </ScrollAnimation >
-      < div style={{ background: "var(--blue-pale, #F4FAFF)" }} className='flex flex-col gap-10 sm:gap-24 relative container h-[800px] lg:h-[880px] xl:h-[950px] sm:h-[1200px]' >
+      < div data-aos={"fade-up"} style={{ background: "var(--blue-pale, #F4FAFF)" }} className='flex flex-col gap-10 sm:gap-24 relative container h-[800px] lg:h-[880px] xl:h-[950px] sm:h-[1200px]' >
         {/* <img
           src={EBlue}
           className="absolute bottom-0 left-0 z-0 w-[150px] md:w-[150px]"
           alt=""
         /> */}
-        < div className='flex flex-col justify-center items-center gap-4 pt-[44px]' >
+        < div className='flex flex-col justify-center items-center gap-4 pt-[44px]' data-aos={"fade-up"} >
           <span className='text-[#1F4164] text-[30px] sm:text-[48px] font-semibold w-full  sm:w-[679px] h-[55px] text-center'>Our Events</span>
           <p className='text-[#1F4164] text-[14px] sm:text-[18px] font-normal w-full  sm:w-[639px] h-[54px] text-center'>
             Clarity gives you the blocks & components you need to create a truly professional website, landing page or admin panel for your SaaS.
@@ -321,7 +330,7 @@ const Body = () => {
         </div >
 
         {/* Web */}
-        < div className='hidden sm:grid grid-cols-4 lg:gap-5 items-center justify-around flex-wrap pl-[130px] pr-[33px]' >
+        < div className='hidden sm:grid grid-cols-4 lg:gap-5 items-center justify-around flex-wrap pl-[130px] pr-[33px]' data-aos={"fade-up"}>
           {eventList?.slice(0, 4)?.map((b, index) => (
             <Link href={`/events/${b._id}`} key={index}>
               <div className='relative cursor-pointer hover:translate-y-1 hover:scale-105 duration-500'>
@@ -354,7 +363,7 @@ const Body = () => {
           )}
         </div >
         {/* Mobile */}
-        < div className='grid sm:hidden grid-cols-1 items-center justify-around flex-wrap pl-[40px] pr-[33px]' >
+        < div data-aos={"fade-up"} className='grid sm:hidden grid-cols-1 items-center justify-around flex-wrap pl-[40px] pr-[33px]' >
           {
             eventList?.slice(0, 1).map((b, index) => (
               <Link href={`/events/${b._id}`} key={index}>
@@ -386,7 +395,7 @@ const Body = () => {
             )
           }
         </div >
-        <div className='flex justify-center '>
+        <div className='flex justify-center ' data-aos={"zoom-in"}>
           <Link href='/events'>
             <button className='text-[#18181B] text-[16px] hover:text-primary font-semibold border-1 border-blue-700 p-2 rounded-lg sm:hover:-translate-y-1 sm:hover:scale:110 duration-500'>
               See All Events &nbsp; <FontAwesomeIcon icon={faArrowUpRightFromSquare} className='text-[blue]' />

@@ -47,6 +47,10 @@ export default function CourseDetail(props) {
   const [timer, setTimer] = useState(5); // Timer set for 5 seconds
   const tabRef = useRef();
   const location = useLocation();
+  const studentID = localStorage.getItem('id')
+  console.log(studentID, "sub data");
+
+  // const exam = ResData._id
   const navigate = useNavigate();
   const subjectData = location.state.data;
   console.log(subjectData, "sub data");
@@ -56,7 +60,7 @@ export default function CourseDetail(props) {
   const [showFinal, setShowFinal] = useState(false);
   const [showOrigin, setShowOrigin] = useState(true);
   const [teacherName, setTeacherName] = useState([]);
-  const [nestedExamVal, setNestedExamVal] = useState([]);
+  const [nestedExamVal, setNestedExamVal] = useState('');
   const [showNestedOrigin, setShowNestedOrigin] = useState(true)
   const [showResult, setShowResult] = useState(false)
   const [showExamPage, setShowExamPage] = useState(false)
@@ -65,7 +69,9 @@ export default function CourseDetail(props) {
   const [outsideExamList, setOutsideExamList] = useState([])
   const [examPageData, setExamPageData] = useState('')
   const [examList, setExamList] = useState([])
-
+  const [examResult, setExamResult] = useState([])
+  const [examValue, setExamValue] = useState('')
+  console.log(examValue, 'examValue')
   const handleExamPage = (val) => {
     setShowExamPage(true)
     setShowResult(false)
@@ -90,11 +96,43 @@ export default function CourseDetail(props) {
   const handleNestedExam = (val) => {
     setNestedExamVal(val)
     setShowOrigin(false)
-    console.log(val)
+    // console.log(val)
   }
 
   useEffect(() => {
+    console.log(examValue, 'ex va')
+    const getExamRes = async () => {
+      await apiInstance.get(`exam-results`).then((res) => {
+        console.log(res.data.data, 'res exam for')
+        setExamList(res.data.data)
+        // setExamResult(res.data.data.filter(el => el.exam._id === examValue._id && el.student === studentID && el.status === 'submitted'))
+        console.log(res.data.data.filter(el => el.exam._id === examValue._id && el.student === studentID && el.status === 'submitted'), 'res check')
+      })
+    }
 
+
+
+
+    const getSubjects = async () => {
+      await apiInstance.get("subjects").then((res) => {
+
+        const Filter = res.data.data.filter((el) => el._id === subjectData._id)[0];
+        setTeacherName(Filter);
+
+      });
+    };
+    const getExam = async () => {
+      await apiInstance.get("exams").then((res) => {
+
+        // console.log(res.data.data.filter(el => el.examType === 'inapp'), 'in app')
+        setInAppExamList(res.data.data.filter(el => el.examType === 'inapp'))
+        setOutsideExamList(res.data.data.filter(el => el.examType !== 'inapp'))
+
+      });
+    };
+    getExamRes()
+    getExam()
+    getSubjects();
     // If not loading, return early from the effect
     if (!isLoading) return;
 
@@ -110,40 +148,15 @@ export default function CourseDetail(props) {
         }
       });
     }, 1000);
-
-
-    const getSubjects = async () => {
-      await apiInstance.get("subjects").then((res) => {
-
-        const Filter = res.data.data.filter((el) => el._id === subjectData._id)[0];
-        setTeacherName(Filter);
-
-      });
-    };
-    const getExam = async () => {
-      await apiInstance.get("exams").then((res) => {
-
-        console.log(res.data.data.filter(el => el.examType === 'inapp'), 'in app')
-        setInAppExamList(res.data.data.filter(el => el.examType === 'inapp'))
-        setOutsideExamList(res.data.data.filter(el => el.examType !== 'inapp'))
-
-      });
-    };
-    const getExamRes = async () => {
-      await apiInstance.get('exam-results').then((res) => {
-        console.log(res.data.data, 'res')
-        setExamList(res.data.data)
-      })
-    }
-    getExamRes()
-    getExam()
-    getSubjects();
-
     // getCourseDetail();
     // Cleanup the interval on component unmount
     return () => clearInterval(interval);
   }, [isLoading]);
+  const handleResPage = (data) => {
 
+    setExamResult(data)
+
+  }
   const handleBack = () => {
 
     setShowOrigin(true)
@@ -172,15 +185,15 @@ export default function CourseDetail(props) {
     <>
 
       {showOrigin && (
-        <div className='flex flex-col gap-5'>
+        <div className='flex flex-col gap-5 justify-center items-center'>
 
 
 
-          <div className={` h-[72px] rounded-[8px] p-20 flex items-center w-full ${twoColor}`} onClick={() => handleNestedExam(1)}>
+          <div className={` h-[72px] rounded-[8px] p-20 flex items-center w-[768px] lg:w-[1200px] xl:w-[1280px] 2xl:w-[1440px] ${twoColor}`} onClick={() => handleNestedExam(1)}>
             <span className='text-white text-[24px] font-semibold'>In App Exam</span>
           </div>
 
-          <div className={` h-[72px] rounded-[8px] p-20 flex items-center w-full ${oneColor}`} onClick={() => handleNestedExam(2)}>
+          <div className={` h-[72px] rounded-[8px] p-20 flex items-center w-[768px] lg:w-[1200px] xl:w-[1280px] 2xl:w-[1440px] ${oneColor}`} onClick={() => handleNestedExam(2)}>
             <span className='text-white text-[24px] font-semibold'>Outside Exam</span>
           </div>
           <div className='flex flex-col gap-32'>
@@ -233,16 +246,18 @@ export default function CourseDetail(props) {
 
       {nestedExamVal && !showOrigin && (
         <>
-          {isLoading ? (
-            <div className='flex justify-center pt-[40px]'>
-              <Image src={Loading} className='transform-x-[-1] w-[350px] h-[250px]' />
-              Please Wait {timer}s
-            </div>) : (
+          {
+            // isLoading ? (
+            // <div className='flex justify-center pt-[40px]'>
+            //   <Image src={Loading} className='transform-x-[-1] w-[350px] h-[250px]' />
+            //   Please Wait {timer}s
+            // </div>) : (
 
             showResult ? (
 
               <div className='mx-10' >
-                <ExamRes ResData={ResData} showResult={showResult} />
+                {console.log(examResult, 'examResult')}
+                <ExamRes ResData={examResult} showResult={showResult} subjectData={subjectData} examFile={examValue} />
               </div>
             ) : showExamPage ? (
               <div className='mx-10'>
@@ -251,11 +266,11 @@ export default function CourseDetail(props) {
             ) : (
               <div className="flex justify-center items-center w-full flex-col mb-20">
                 <div className='relative'>
-                  <Button className='flex justify-center w-10 absolute top-0 right-0 lg:left-[450px]' onClick={handleSecondBack}>Back</Button>
+                  <Button className='flex justify-center lg:w-[100px] absolute top-0 right-0 lg:left-[450px]' onClick={handleSecondBack}>Back</Button>
                 </div>
 
                 {nestedExamVal === 1 ? (
-                  <Tabs aria-label="Options" color="primary" variant="bordered">
+                  <Tabs aria-label="Options" color="primary" variant="bordered" size='sm'>
                     <Tab
                       key="new"
                       title={
@@ -265,7 +280,7 @@ export default function CourseDetail(props) {
                         </div>
                       }
                     >
-                      <div className='flex flex-col justify-start pt-10 w-[1560px] lg:w-[1280px] h-[204px] pl-10 pb-8 pr-10' >
+                      <div className='flex flex-col justify-start pt-10 w-[768px] lg:w-[1200px] xl:w-[1280px] 2xl:w-[1440px] h-[204px] pl-10 pb-8 pr-10' >
                         {subjectData.exams.filter(el => el.examType === 'inapp').map((item, index) => (
                           <div className='grid grid-cols-2 bg-[#215887] p-12  border-4 border-l-red-500 '>
                             <div className='w-[742px] flex gap-52'>
@@ -325,7 +340,7 @@ export default function CourseDetail(props) {
                         </div>
                       }
                     >
-                      <div className='flex flex-col justify-start pt-10 w-[1560px] lg:w-[1280px] h-[204px] pl-10 pb-8 pr-10' >
+                      <div className='flex flex-col justify-start pt-10 w-[768px] lg:w-[1200px] xl:w-[1280px] 2xl:w-[1440px] h-[204px] pl-10 pb-8 pr-10' >
 
 
                         <div className='grid grid-cols-2 bg-[#215887] p-12  border-4 border-l-red-500 '>
@@ -334,26 +349,26 @@ export default function CourseDetail(props) {
                             <div className='flex flex-col gap-5 justify-start'>
                               <span className='text-[32px] text-[#fff] font-semibold flex flex-col'>Introduction to IELTS</span>
 
-                              <div className='flex gap-20'>
-                                <div className='font-medium flex gap-2 w-[300px] text-[#fff]'>
+                              <div className='flex gap-20 lg:gap-5'>
+                                <div className='font-medium flex gap-2 w-[300px] lg:w-[250px] text-[#fff]'>
                                   <span className='text-[16px] font-semibold'>Start Date </span>
                                   <span>:</span>
                                   <span className='text-[16px] font-medium'>April 11, 2024</span>
                                 </div>
-                                <div className=' font-medium flex gap-2 text-[#fff]  w-[300px]'>
+                                <div className=' font-medium flex gap-2 text-[#fff]  w-[300px] lg:w-[250px]'>
                                   <span className='text-[16px]  font-semibold'>Completed Time </span>
                                   <span>:</span>
                                   <span className='text-[16px] font-medium'>12:00 AM</span>
                                 </div>
                               </div>
 
-                              <div className='flex gap-20'>
-                                <div className='font-medium flex gap-2 w-[300px] text-[#fff]'>
+                              <div className='flex gap-20 lg:gap-5'>
+                                <div className='font-medium flex gap-2 w-[300px] lg:w-[250px] text-[#fff]'>
                                   <span className='text-[16px] font-semibold'>Start Time </span>
                                   <span>:</span>
                                   <span className='text-[16px] font-medium'>12:00 AM</span>
                                 </div>
-                                <div className=' font-medium flex gap-2 text-[#fff]  w-[300px]'>
+                                <div className=' font-medium flex gap-2 text-[#fff] lg:w-[250px]  w-[300px]'>
                                   <span className='text-[16px]  font-semibold'>Completed Date </span>
                                   <span>:</span>
                                   <span className='text-[16px] font-medium'>April 11, 2024</span>
@@ -368,7 +383,7 @@ export default function CourseDetail(props) {
                           </div>
 
                           <div className='flex flex-col items-end gap-2 justify-end'>
-                            <Button color='primary' className='w-[163px] h-[44px]'>View Answer</Button>
+                            <Button color='primary' className='w-[163px] lg:w-[120px] h-[44px] lg:text-[16px] text-[15px]'>View Answer</Button>
                             <div className="text-[16px] text-[#fff]  font-semibold px-3 ">
                               <span>Refference Link : </span>
                               <a href='https:// www.google.com' className='underline' >
@@ -389,11 +404,12 @@ export default function CourseDetail(props) {
                         </div>
                       }
                     >
-                      <div className='flex flex-col justify-start pt-10 w-[1560px] lg:w-[1280px] h-[204px] pl-10 pb-8 pr-10' >
+                      <div className='flex flex-col justify-start pt-10 w-[768px] lg:w-[1200px] xl:w-[1280px] 2xl:w-[1440px] h-[204px] pl-10 pb-8 pr-10' >
 
                         {subjectData.exams.filter(el => el.examType === 'inapp').map((item, index) => (
                           <>
-                            {examList.filter(el => el.exam === item._id).map((exmItem, ind) => (
+                            {/* {console.log(examList.filter(el => el.quizResult), 'result')} */}
+                            {examList.filter(el => el.type === 'inApp' && el.status === 'checked').map((res) => (
                               <div className='grid grid-cols-2 bg-[#215887] p-12  border-4 border-l-red-500 '>
                                 <div className='w-[742px] h-[135px] flex gap-52'>
                                   <div className='flex justify-start text-[24px] text-[#fff] font-semibold items-center'>Exam</div>
@@ -413,17 +429,20 @@ export default function CourseDetail(props) {
                                   </div>
                                 </div>
 
-                                <div className='flex flex-col items-end gap-2 justify-end'>
-                                  <Button className='bg-[#ED1D25] text-[#fff] text-[16px] font-semibold' onClick={() => setShowResult(true)}>See Result</Button>
+                                <div className='flex flex-col items-end gap-2 justify-center'>
+                                  <Button className='bg-[#ED1D25] text-[#fff] text-[16px] font-semibold' onClick={() => { setShowResult(true), handleResPage(res), setExamValue(item) }}>See Result</Button>
                                   {/* <div className="text-[16px] text-[#fff]  font-semibold px-3 ">
-                                  <span>Refference Link : </span>
-                                  <a href='https:// www.google.com' className='underline' >
-                                    www.google.com
-                                  </a>
-                                </div> */}
+                                    <span>Refference Link : </span>
+                                    <a href='https:// www.google.com' className='underline' >
+                                      www.google.com
+                                    </a>
+                                  </div> */}
                                 </div>
                               </div>
                             ))}
+
+
+
                           </>
 
                         ))}
@@ -609,161 +628,11 @@ export default function CourseDetail(props) {
               </div>
             )
 
-          )}
+          }
 
 
         </>
       )}
-
-
-
-
-
-
-      {/* {nestedExamVal && !showOrigin && (
-        <>
-
-          {showResult ? (
-            <div className='mx-10'>
-              <ExamRes ResData={ResData} showResult={showResult} />
-            </div>
-          ) : showExamPage ? (
-            <div className='mx-10'>
-              <ExamPage ResData={examPageData} showResult={showExamPage} />
-            </div>
-          ) : (
-            <div className="flex justify-center items-center w-full flex-col mb-20">
-              <Tabs aria-label="Options" color="primary" variant="bordered">
-                <Tab
-                  key="new"
-                  title={
-                    <div className="flex items-center space-x-2">
-                      <FontAwesomeIcon icon={faFireFlameCurved} size='xl' />
-                      <span>New</span>
-                    </div>
-                  }
-                >
-                  {subjectData.exams.filter(el => el.examType === 'inapp').map((item, index) => (
-                    <div className='flex flex-col justify-start pt-10  pl-10 pb-8 pr-10' >
-                      <div className='flex gap-48 bg-[#215887] p-12  border-4 border-l-red-500 w-[1560px] h-[250px] '>
-                        <div className='flex justify-start text-[24px] text-[#fff] font-semibold items-center'>Exam</div>
-                        <div className='flex flex-col gap-2 justify-start items-start w-[500px]'>
-                          <span className='text-[32px] text-[#fff] font-semibold'>{item?.title}</span>
-                          <div className='text-[16px] text-[#fff] font-medium flex gap-3'>
-                            <span>Start Date : </span>
-                            <span>{new Date(item?.examDate).toLocaleDateString('en-US', options)}</span>
-                          </div>
-
-                          <div className='text-[16px] text-[#fff] font-medium flex gap-3'>
-                            <span>Start Time : </span>
-                            <span>{item?.startTime}</span>
-                          </div>
-                        </div>
-
-                        <div className='flex flex-col gap-4  justify-center items-end w-[400px]'>
-                          <div><Button className='bg-[#4674ff] text-[#fff] w-[150px] ' onClick={() => handleExamPage(item)}>Take Exam</Button></div>
-                          <div className='flex gap-2'>
-                            <span className='text-[#fff]'>Reference link :</span>
-                            <a href={JSON.parse(item.links)[0].links} className='text-[#fff]'> {JSON.parse(item.links)[0].links}</a>
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
-                  ))}
-
-                </Tab>
-                <Tab
-                  key="complete"
-                  title={
-                    <div className="flex items-center space-x-2">
-                      <FontAwesomeIcon icon={faStar} size='xl' />
-                      <span>Complete</span>
-                    </div>
-                  }
-                >
-                  <div className='flex flex-col justify-start pt-10  pl-10 pb-8 pr-10' >
-
-
-                    <div className='flex gap-48 bg-[#215887] p-12  border-4 border-l-red-500 w-[1560px] h-[250px]  '>
-                      <div className='flex justify-start text-[24px] text-[#fff] font-semibold items-center'>Exam</div>
-                      <div className='flex flex-col gap-2 justify-start items-start w-[800px]'>
-                        <span className='text-[32px] text-[#fff] font-semibold'>Introduction to IELTS</span>
-                        <div className='flex gap-10'>
-                          <div className='flex flex-col gap-5'>
-                            <div className='text-[16px] text-[#fff] font-medium flex gap-3'>
-                              <span>Start Date : </span>
-                              <span>April 11, 2024</span>
-                            </div>
-                            <div className='text-[16px] text-[#fff] font-medium flex gap-3'>
-                              <span>Start Time : </span>
-                              <span>12:00 PM</span>
-                            </div>
-
-                          </div>
-                          <div className='flex flex-col gap-5'>
-                            <div className='text-[16px] text-[#fff] font-medium flex gap-3'>
-                              <span>Completed Date : </span>
-                              <span>April 11, 2024</span>
-                            </div>
-                            <div className='text-[16px] text-[#fff] font-medium flex gap-3'>
-                              <span>Completed Time : </span>
-                              <span>12:00 PM</span>
-                            </div>
-                          </div>
-                        </div>
-
-                      </div>
-
-                      <div className='flex flex-col gap-4  justify-center items-end w-[400px]'>
-                        <div><Button className='bg-[#4674ff] text-[#fff] w-[150px] '>View Answer</Button></div>
-                        <div className='flex gap-2'>
-                          <span className='text-[#fff]'>Reference link :</span>
-                          <span className='text-[#fff]'> www.msi.com/basicielts</span>
-                        </div>
-                      </div>
-                    </div>
-
-                  </div>
-                </Tab>
-                <Tab
-                  key="result"
-                  title={
-                    <div className="flex items-center space-x-2">
-                      <FontAwesomeIcon icon={faCheck} size='xl' />
-                      <span>Result</span>
-                    </div>
-                  }
-                >
-                  <div className='flex flex-col justify-start pt-10  pl-10 pb-8 pr-10' >
-
-
-                    <div className='flex justify-between bg-[#215887] w-[1560px] h-[250px]   p-12  border-4 border-l-red-500 '>
-                      <div className='flex justify-start text-[24px] text-[#fff] font-semibold items-center'>Exam</div>
-                      <div className='flex flex-col gap-2 justify-start items-start w-[800px]'>
-                        <span className='text-[32px] text-[#fff] font-semibold'>Introduction to IELTS</span>
-                        <div className='flex gap-2'>
-                          <span className='text-[#fff]'>Reference link :</span>
-                          <span className='text-[#fff]'> www.msi.com/basicielts</span>
-                        </div>
-                      </div>
-
-                      <div className='flex flex-col gap-4  justify-center w-[167px] pt-[5px] pb-[5px] pl-[10px] pr-[10px]' >
-                        <Button className='bg-[#ED1D25] text-[#fff] text-[16px] font-semibold' onClick={() => setShowResult(true)}>See Result</Button>
-                      </div>
-                    </div>
-
-                  </div>
-                </Tab>
-              </Tabs>
-
-            </div>
-          )}
-        </>
-
-      )} */}
-
-
 
     </>
   );

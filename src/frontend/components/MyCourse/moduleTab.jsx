@@ -25,6 +25,9 @@ import { useLocation, useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ExcelPhoto from "../../ByInstructor/images/excel.png";
 import PdfPhoto from "../../ByInstructor/images/pdf.png";
+import CSV from '../../../assets/img/csv.png';
+import PPTX from '../../../assets/img/pptx.png';
+import DOCX from '../../../assets/img/docx.png';
 import ZoomPic from '../../../assets/img/pic.jpg'
 import Loading from '../../../assets/img/finalloading.gif'
 import Swal from "sweetalert2";
@@ -39,9 +42,7 @@ import {
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import MeetingModal from './newmeetingmodal'
-import CSV from '../../../assets/img/csv.png';
-import PPTX from '../../../assets/img/pptx.png';
-import DOCX from '../../../assets/img/docx.png';
+
 const CourseDetail = (props) => {
   // const time = new Date().toLocaleTimeString()
 
@@ -288,9 +289,9 @@ const CourseDetail = (props) => {
   return (
     <>
       <div className='flex '>
-        <div className=' border-2 w-[426px] h-[1168px] border-[#ffffff] border-r-[#d2d2ca] '>
+        <div className=' border-2  h-[1168px] border-[#ffffff] border-r-[#d2d2ca] '>
           {examData.subjectSections[0] ? (
-            <div>
+            <div className='w-[280px] lg:w-[300px] 2xl:w-[350px]'>
               {examData.subjectSections.map((item, index) => (
                 <div>
                   <Accordion
@@ -336,7 +337,7 @@ const CourseDetail = (props) => {
                       aria-label='Accordion 1'
                       title={
                         <span className='text-[20px] font-bold text-[#0025A9]'>
-                          Module {index + 1} ({item.title})
+                          Module {index + 1} ({item.title.substring(0, 10)})
                         </span>
                       }
                     //   startContent={
@@ -350,7 +351,7 @@ const CourseDetail = (props) => {
                           {e.showToStudent ? (
                             <div
                               onClick={() => handleVideo(e, index)}
-                              className='py-2 hover:cursor-pointer'
+                              className='py-2 hover:cursor-pointer '
                             >
                               <div className='flex gap-2 justify-between px-4 py-3 align-[center] m-auto text-sm w-[362px] h-[60px] bg-[#EBF0FF] rounded-[8px]'>
                                 <div className='flex'>
@@ -358,7 +359,7 @@ const CourseDetail = (props) => {
                                     {e.duration} mins
                                   </span>
                                   <span className='flex gap-6 p-[4px]  ml-3 text-[#0025A9] text-[20px] font-semibold  border-3 h-[32px] border-[#EBF0FF] border-l-[#0025A9]'>
-                                    {e.title}
+                                    {e.title.substring(0, 20)}
                                   </span>
                                 </div>
                                 <span className='flex gap-6 p-[4px] text-[#8aee58]'></span>
@@ -399,12 +400,12 @@ const CourseDetail = (props) => {
           </div>)}
 
         </div>
-        <div className='flex flex-col gap-10 pl-[20px] w-full pr-[32px]'>
+        <div className='flex flex-col gap-10 pl-[20px] w-[800px] lg:w-[900px] xl:w-[1200px] 2xl:w-[1336px]  pr-[32px]'>
           <div>
             {/* Right Header */}
             {showVideo && (
-              <div className='flex gap-10'>
-                <div className='w-[410px] h-[60px] flex flex-col'>
+              <div className='flex lg:gap-28 gap-10'>
+                <div className='w-[410px] lg:w-[500px] xl:w-[600px] 2xl:w-[780px] h-[60px] flex flex-col'>
                   <span className='text-[20px] text-[#0025A9] font-semibold'>
                     {LMDataList.title}
                   </span>
@@ -414,10 +415,10 @@ const CourseDetail = (props) => {
                     value={65}
                     color='primary'
                     showValueLabel={true}
-                    className='w-[200px]'
+                    className='w-[200px] '
                   />
                 </div>
-                <div className='flex w-[200px] gap-5 pt-[32px]'>
+                <div className='flex w-[200px] lg:w-[210px] xl:w-[220px] 2xl:w-[230px] lg:pt-[45px] gap-5 pt-[32px]'>
                   <Button
                     className='w-[34px] h-[34px]'
                     color='primary'
@@ -432,7 +433,7 @@ const CourseDetail = (props) => {
               </div>
             )}
           </div>
-          <div className='w-[800px]'>
+          <div className='w-[800px] lg:w-[800px] xl:w-[900px] 2xl:w-[1100px]'>
             {/* Right Video Section */}
             {showVideo &&
               showVideoList.map((video) => (
@@ -445,11 +446,11 @@ const CourseDetail = (props) => {
                     }
                     //   title={assignList.name}
                     allowFullScreen
-                    className=' w-[700px] h-[442px]'
+                    className=' w-[700px] lg:w-[800px] xl:w-[900px] 2xl:w-[1080px] h-[442px]'
                     allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
                   // style={{ width:'1400px',height:'500px' }}
                   ></iframe>
-                  <div className='flex justify-between w-[600px] pt-[20px]'>
+                  <div className='flex justify-between w-[800px] lg:w-full pt-[20px] lg:pt-[30px] lg:p-5'>
                     <span className='w-[311px] h-[16px] text-[22px] text-[#0025A9] font-semibold'>
                       {LMDataList.title}
                     </span>
@@ -460,7 +461,7 @@ const CourseDetail = (props) => {
                       Complete
                     </Button>
                   </div>
-                  <div className='flex w-[700px] flex-col pt-[20px]'>
+                  <div className='flex w-[700px] lg:w-[800px] xl:w-[900px] 2xl:w-[1100px] flex-col pt-[20px]'>
                     <Tabs
 
                       variant='light'

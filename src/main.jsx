@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import RouteFile from "./Routes";
 import { NextUIProvider } from "@nextui-org/react";
 import "./index.css";
+
 // import { Provider } from 'react-redux'
 // import { store } from './util/store/store'
 import { ThemeProvider as NextThemesProvider } from "next-themes";

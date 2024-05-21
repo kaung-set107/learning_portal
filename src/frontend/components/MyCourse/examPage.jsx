@@ -26,13 +26,15 @@ import Exam from "./examResultPage";
 import Placement from '../../../assets/img/placementGIF.gif'
 import EHome from '../../../assets/img/EllipseHome.png'
 import EHalf from '../../../assets/img/EllipseHalf.png'
+import Swal from "sweetalert2";
 const ExamPage = ({ ResData, showResult }) => {
     const location = useLocation();
     const subjectID = location.state.data._id
     const QuizID = ResData.quiz._id
     const exam = ResData._id
+    const batchID = location.state.data.course.batch.id
     const enrollID = location.state.enroll_id
-    console.log(location.state, 'main')
+    console.log(location.state.data, 'main')
     const [isLoading, setIsLoading] = useState(true);
     const [timerStartBtn, setTimerStartBtn] = useState(5); // Timer set for 5 seconds
     const [counter, setCounter] = useState(0);
@@ -58,6 +60,8 @@ const ExamPage = ({ ResData, showResult }) => {
     const [studentAnswerList, setStudentAnswerList] = useState([]);
     const [showExamResult, setShowExamResult] = useState(false);
     const [multiTrueAnswerList, setMultiTrueAnswerList] = useState([]);
+    const [alreadyExamRes, setAlreadyExamRes] = useState('')
+    const [alreadyQuizRes, setAlreadyQuizRes] = useState('')
 
     const TotalMark = trueAnswerList.map((i) => i.markTotal)
         .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
@@ -113,7 +117,7 @@ const ExamPage = ({ ResData, showResult }) => {
             }
 
             // handleAns()
-            displayCorrect(answerObj);
+            // displayCorrect(answerObj);
         } else {
             let answerObj = quizList.questions[counter].correctAnswer === cas
             // console.log(answerObj, 'answerobj')
@@ -131,7 +135,7 @@ const ExamPage = ({ ResData, showResult }) => {
             }
 
             // handleAns()
-            displayCorrect(answerObj);
+            // displayCorrect(answerObj);
 
         }
 
@@ -148,7 +152,7 @@ const ExamPage = ({ ResData, showResult }) => {
             quiz: QuizID,
             // type: ResData.examType,
             student: studentID,
-            batch: '661626364b091b37492de8e0',
+            batch: batchID ? batchID : '661626364b091b37492de8e0',
             subject: subjectID,
             exam: exam,
             answerDate: Date.now(),
@@ -157,7 +161,7 @@ const ExamPage = ({ ResData, showResult }) => {
                     question: i.question,
                     type: i.type,
                     mark: i.mark,
-
+                    correctAnswerDescription: i.correctAnswerDescription,
                     options: i.options,
                     answerType: i.answerType,
                     correctAnswer: i.correctAnswer,
@@ -168,11 +172,20 @@ const ExamPage = ({ ResData, showResult }) => {
             totalMark: quizList.questions[counter].type === 'trueFalse' ? TotalMark : points,
             status: quizList.questions[counter].type === 'trueFalse' ? (TotalMark === quizList.passMark && "pass") || (TotalMark > quizList.passMark && "distinction") || ((TotalMark < quizList.passMark && TotalMark === quizList.creditMark) && "credit") || (TotalMark < quizList.creditMark && "fail") : (points >= quizList.passMark ? "pass" : "fail"),
         };
-        // alert(JSON.stringify(data));
+        alert(JSON.stringify(data));
         apiInstance
             .post("quiz-results", data)
             .then(function () {
-                navigate("/quiz-result");
+                Swal.fire({
+                    icon: "success",
+                    title: "Exam File is Uploaded!",
+                    text: "Successful",
+                    showConfirmButton: false,
+                    timer: 2000,
+                });
+                setShowTimer(false)
+                setShowOrigin(true)
+                setIsLoading(true)
             })
             .catch((error) => {
                 console.log(error);
@@ -298,6 +311,21 @@ const ExamPage = ({ ResData, showResult }) => {
     useEffect(() => {
         if (!isLoading) return;
         window.scroll(0, 0)
+
+        const getExamRes = async () => {
+            await apiInstance.get('exam-results').then((res) => {
+                console.log(res.data.data.filter(el => el.exam?._id === exam), 'exam res')
+                setAlreadyExamRes(res.data.data.filter(el => el.exam?._id))
+            })
+        }
+        const getQuizRes = async () => {
+            await apiInstance.get('quiz-results').then((res) => {
+                console.log(res.data.data.filter(el => el.quiz === QuizID), 'res')
+                setAlreadyQuizRes(res.data.data.filter(el => el.quiz === QuizID))
+            })
+        }
+        getQuizRes()
+        getExamRes()
         const item = localStorage.getItem('hello');
         // Update state with the retrieved item
 
@@ -310,22 +338,31 @@ const ExamPage = ({ ResData, showResult }) => {
         setStudentID(dataFromLocalStorage);
         //   setPages(res.data._metadata.page_count)
         let interval = null;
-        if (showTimer) {
-            interval = setInterval(() => {
-                setTimer(prevTimer => {
 
-                    return prevTimer + 1; // Increment timer value by 1 second
+        interval = setInterval(() => {
+            setTimer(prevTimer => {
 
-                });
-            }, 1000);
-        } else {
-            clearInterval(interval);
-        }
+                return prevTimer + 1; // Increment timer value by 1 second
+
+            });
+
+
+        }, 1000);
+        interval = setInterval(() => {
+
+            setIsLoading(false);
+
+        }, 3000);
+        // const timer = setTimeout(() => {
+        //     setIsLoading(false);
+        // }, 3000);
+        // Cleanup the timer
 
         return () => clearInterval(interval);
-
+        // return () => clearTimeout(timer);
 
     }, [isLoading, showTimer]);
+    console.log(alreadyExamRes, 'exam main')
     const SubData = location.state;
     // console.log(ResData, "dat");
     const displayMinutes = Math.floor(timeLeft / 60);
@@ -336,7 +373,7 @@ const ExamPage = ({ ResData, showResult }) => {
 
             {back ? (
                 <div>
-                    <div className='flex flex-col gap-20  h-[500px] mt-5'>
+                    <div className='flex flex-col gap-20  h-[500px] pb-[20px] mt-5'>
                         {/* First Section */}
                         <div className='flex justify-between'>
                             <div className='flex gap-5'>
@@ -346,214 +383,214 @@ const ExamPage = ({ ResData, showResult }) => {
                                 <span className='text-[32px] font-semibold'>In App Exam Page</span>
                             </div>
 
-                            <div className='flex justify-center items-center p-6 w-[500px] h-[43px] bg-[#ECF2FF]  rounded-lg'>
+                            {/* <div className='flex justify-center items-center p-6 w-[500px] h-[43px] bg-[#ECF2FF]  rounded-lg'>
                                 <span className='text-[16px] font-semibold  text-[#3D70F5] w-[391px] h-[19px]'>Result Declared on 12:30 AM | 22 September 2023</span>
-                            </div>
+                            </div> */}
                         </div>
-
                         <div className=''>
-                            {showOrigin && (
-                                <>
-                                    {!showTimer && (
-                                        <div className='flex justify-center font-serif bg-[#fbfcfe] shadow-lg rounded-lg  p-[20px] gap-20 '>
-                                            {/* <img
-                                                src={EHome}
-                                                className='absolute top-0 left-0 -z-40 w-[100px] md:w-[150px]'
-                                                alt=''
-                                            /> */}
-                                            <div className='flex flex-col gap-10 pt-[20px] mt-[110px]'>
-                                                <span className='text-[35px] font-bold w-80'>
-                                                    This placement test will test your basic knowledge on IELTS
-                                                </span>
-                                                <div className='flex gap-2'>
-                                                    <Button color='primary' variant='bordered'>
-                                                        <Link to='/student'>   Cancel</Link>
+                            {
+                                showOrigin && (
+                                    <>
+                                        {!showTimer && (
+                                            <div className='flex justify-center  font-serif bg-[#fbfcfe] shadow-lg rounded-lg    gap-20 '>
 
-                                                    </Button>
-                                                    {!isLoading ? (
-                                                        <Button color='primary' onClick={handleStart} size='md'>
-                                                            Start Quiz
+                                                <div className='flex flex-col gap-10 pt-[20px]  mt-[110px] '>
+                                                    <span className='text-[35px] font-bold w-80'>
+                                                        This placement test will test your basic knowledge on IELTS
+                                                    </span>
+                                                    <div className='flex gap-2'>
+                                                        <Button color='primary' variant='bordered'>
+                                                            <Link to='/student'>   Cancel</Link>
+
                                                         </Button>
-                                                    ) : (
-                                                        // <Button color='light'>
-                                                        //     Start Quiz <Spinner size='sm' />
-                                                        // </Button>
-                                                        <Button color='primary' onClick={handleStart} size='md'>
-                                                            Start Quiz
-                                                        </Button>
-                                                    )}
-                                                </div>
+                                                        {alreadyExamRes && alreadyQuizRes ? (
+                                                            isLoading ?
+                                                                <Button color='light'>
+                                                                    Start Quiz <Spinner size='sm' />
+                                                                </Button> :
+                                                                <div>
+                                                                    <Button color='default' className='cursor-not-allowed'>
+                                                                        Start Quiz
+                                                                    </Button>
+                                                                </div>
+                                                        ) : (
+                                                            isLoading ?
+                                                                <Button color='light'>
+                                                                    Start Quiz <Spinner size='sm' />
+                                                                </Button> :
+                                                                <Button color='primary' checked={showTimer} onClick={handleStart}>
+                                                                    Start Quiz
+                                                                </Button>
 
-                                            </div>
-
-                                            <div className=''>
-                                                <Image src={Placement} className='w-[600px] h-[550px]' />
-                                            </div>
-                                            {/* <img
-                                                src={EHalf}
-                                                className='absolute bottom-0 right-0 -z-10 w-[100px] md:w-[150px]'
-                                                alt=''
-                                            /> */}
-                                        </div>
-                                    )}
-
-                                    {showTimer && (
-                                        <>
-                                            <div className='h-[317px]'>
-                                                <div className='p-[24px] border-1 border-[#10C278] rounded-[12px] flex flex-col gap-10'>
-                                                    <div className='flex justify-between'>
-                                                        <span className='text-[20px] font-semibold p-[10px]'>
-                                                            Question
-                                                        </span>
-                                                        <span className='flex justify-center text-[16px] text-[#BDFFE2] font-medium bg-[#10C278] rounded-[24px] p-[1px] w-[180px] items-center  text-center'>
-                                                            Mark {quizList.questions[counter].mark} out of{" "}
-                                                            {quizList.questions[counter].mark}{" "}
-                                                        </span>
-                                                        <span className='p-[20px] text-[20px] font-light w-[200px]'>
-                                                            Time :{timer}s
-
-
-                                                        </span>
+                                                        )}
                                                     </div>
 
                                                 </div>
-                                                {/* Qusetion And Answer Section */}
-                                                <Card
-                                                    className='mt-5 p-[24px] border-1 border-[#10C278] rounded-[12px]'
-                                                    key={counter}
-                                                >
-                                                    <div>
-                                                        <div className='text-lg py-3 px-3'>
-                                                            <b>({counter + 1})</b> &nbsp;
-                                                            {quizList.questions[counter].question}
+
+                                                <div className=''>
+                                                    <Image src={Placement} className='w-[600px] h-[550px]' />
+                                                </div>
+
+                                            </div>
+                                        )}
+
+                                        {showTimer && (
+                                            <>
+                                                <div className='h-[317px]'>
+                                                    <div className='p-[24px] border-1 border-[#10C278] rounded-[12px] flex flex-col gap-10'>
+                                                        <div className='flex justify-between'>
+                                                            <span className='text-[20px] font-semibold p-[10px]'>
+                                                                Question
+                                                            </span>
+                                                            <span className='flex justify-center text-[16px] text-[#BDFFE2] font-medium bg-[#10C278] rounded-[24px] p-[1px] w-[180px] items-center  text-center'>
+                                                                Mark {quizList.questions[counter].mark} out of{" "}
+                                                                {quizList.questions[counter].mark}{" "}
+                                                            </span>
+                                                            <span className='p-[20px] text-[20px] font-light w-[200px]'>
+                                                                Time :{timer}s
+
+
+                                                            </span>
                                                         </div>
+
+                                                    </div>
+                                                    {/* Qusetion And Answer Section */}
+                                                    <Card
+                                                        className='mt-5 p-[24px] border-1 border-[#10C278] rounded-[12px]'
+                                                        key={counter}
+                                                    >
                                                         <div>
-                                                            <img src={quizList.questions[counter].questionPic} />
-                                                        </div>
-                                                        <div className='mt-5'>
+                                                            <div className='text-lg py-3 px-3'>
+                                                                <b>({counter + 1})</b> &nbsp;
+                                                                {quizList.questions[counter].question}
+                                                            </div>
+                                                            <div>
+                                                                <img src={quizList.questions[counter].questionPic} />
+                                                            </div>
+                                                            <div className='mt-5'>
 
-                                                            {quizList.questions[counter].options.map((e, i) => (
-                                                                <>
-                                                                    {quizList.questions[counter].type === 'trueFalse' ? (
-                                                                        < div
-                                                                            key={i}
-                                                                            className='text-lg font-semibold ml-10'
-                                                                            onClick={() =>
-                                                                                handleAns(
-                                                                                    i,
-                                                                                    e,
-                                                                                    quizList.questions[counter].correctAnswer,
-                                                                                    counter,
-                                                                                    quizList.questions[counter].mark,
-                                                                                    quizList.questions[counter]._id
+                                                                {quizList.questions[counter].options.map((e, i) => (
+                                                                    <>
+                                                                        {quizList.questions[counter].type === 'trueFalse' ? (
+                                                                            < div
+                                                                                key={i}
+                                                                                className='text-lg font-semibold ml-10'
+                                                                                onClick={() =>
+                                                                                    handleAns(
+                                                                                        i,
+                                                                                        e,
+                                                                                        quizList.questions[counter].correctAnswer,
+                                                                                        counter,
+                                                                                        quizList.questions[counter].mark,
+                                                                                        quizList.questions[counter]._id
 
-                                                                                )
-                                                                            }
-                                                                        >
-                                                                            {showTimer && (
-                                                                                <div>
-                                                                                    {/* True False Quiz */}
+                                                                                    )
+                                                                                }
+                                                                            >
+                                                                                {showTimer && (
+                                                                                    <div>
+                                                                                        {/* True False Quiz */}
 
-                                                                                    <input
-                                                                                        type='radio'
-                                                                                        className='w-[20px] h-[20px] mt-1'
-                                                                                        name='answer_group'
-                                                                                        value={e.answer}
-                                                                                        disabled={
-                                                                                            clicked === ""
-                                                                                                ? ""
-                                                                                                : selectedOption === e.answer
+                                                                                        <input
+                                                                                            type='radio'
+                                                                                            className='w-[20px] h-[20px] mt-1'
+                                                                                            name='answer_group'
+                                                                                            value={e.answer}
+                                                                                            disabled={
+                                                                                                clicked === ""
                                                                                                     ? ""
-                                                                                                    : true
-                                                                                        }
-                                                                                    // onChange={(event) =>
-                                                                                    //   handleOptionSelect(event, e, i)
-                                                                                    // }
-                                                                                    />
-
-
-                                                                                    &nbsp;
-
-                                                                                    <span className='ml-2 text-[20px]'>{e.answer}</span>
-
-                                                                                </div>
-                                                                            )}
-                                                                        </div>
-                                                                    ) : (
-                                                                        < div
-                                                                            key={i}
-                                                                            className='text-lg font-semibold ml-10'
-                                                                        // onChange={() =>
-                                                                        //   handleAns(
-                                                                        //     i,
-                                                                        //     e,
-                                                                        //     quizList.questions[counter].correctAnswer,
-                                                                        //     counter,
-                                                                        //     quizList.questions[counter].mark,
-                                                                        //     quizList.questions[counter]._id
-
-                                                                        //   )
-                                                                        // }
-                                                                        >
-                                                                            {showTimer && (
-                                                                                <div>
-
-                                                                                    {/* Multiple Choice Quiz */}
-                                                                                    <input
-                                                                                        type='checkbox'
-                                                                                        name='answer_group'
-                                                                                        value={e.answer}
-                                                                                        // checked={multiAns.map((i, ind) => (selectedItem.map((e, ine) => (ine === ind))))}
-                                                                                        // disabled={
-                                                                                        //   clicked === ""
-                                                                                        //     ? ""
-                                                                                        //     : selectedOption === e.answer
-                                                                                        //     ? ""
-                                                                                        //     : true
+                                                                                                    : selectedOption === e.answer
+                                                                                                        ? ""
+                                                                                                        : true
+                                                                                            }
+                                                                                        // onChange={(event) =>
+                                                                                        //   handleOptionSelect(event, e, i)
                                                                                         // }
-                                                                                        onClick={(event) =>
-                                                                                            handleCheckboxSelect(event,
-                                                                                                i,
-                                                                                                e,
-                                                                                                quizList.questions[counter].correctAnswer,
-                                                                                                counter,
-                                                                                                quizList.questions[counter].mark,
-                                                                                                quizList.questions[counter]._id
-                                                                                            )
-                                                                                        }
-                                                                                    />
-
-                                                                                    &nbsp;
-
-                                                                                    {e.answer}
-
-                                                                                </div>
-                                                                            )}
-                                                                        </div>)}
+                                                                                        />
 
 
-                                                                </>
+                                                                                        &nbsp;
 
-                                                            ))}
-                                                        </div >
-                                                    </div>
-                                                    <div className='py-3'>
+                                                                                        <span className='ml-2 text-[20px]'>{e.answer}</span>
 
-                                                        <Button
-                                                            color='secondary'
-                                                            size='sm'
-                                                            className='ml-10 rounded-md mt-3'
-                                                            onClick={() =>
-                                                                nextQuestion(
-                                                                    multiAns,
-                                                                    quizList.questions[counter].correctAnswer,
-                                                                    counter
-                                                                )
-                                                            }
-                                                        >
-                                                            Next
-                                                        </Button>
-                                                        {/* ) : (
+                                                                                    </div>
+                                                                                )}
+                                                                            </div>
+                                                                        ) : (
+                                                                            < div
+                                                                                key={i}
+                                                                                className='text-lg font-semibold ml-10'
+                                                                            // onChange={() =>
+                                                                            //   handleAns(
+                                                                            //     i,
+                                                                            //     e,
+                                                                            //     quizList.questions[counter].correctAnswer,
+                                                                            //     counter,
+                                                                            //     quizList.questions[counter].mark,
+                                                                            //     quizList.questions[counter]._id
+
+                                                                            //   )
+                                                                            // }
+                                                                            >
+                                                                                {showTimer && (
+                                                                                    <div>
+
+                                                                                        {/* Multiple Choice Quiz */}
+                                                                                        <input
+                                                                                            type='checkbox'
+                                                                                            name='answer_group'
+                                                                                            value={e.answer}
+                                                                                            // checked={multiAns.map((i, ind) => (selectedItem.map((e, ine) => (ine === ind))))}
+                                                                                            // disabled={
+                                                                                            //   clicked === ""
+                                                                                            //     ? ""
+                                                                                            //     : selectedOption === e.answer
+                                                                                            //     ? ""
+                                                                                            //     : true
+                                                                                            // }
+                                                                                            onClick={(event) =>
+                                                                                                handleCheckboxSelect(event,
+                                                                                                    i,
+                                                                                                    e,
+                                                                                                    quizList.questions[counter].correctAnswer,
+                                                                                                    counter,
+                                                                                                    quizList.questions[counter].mark,
+                                                                                                    quizList.questions[counter]._id
+                                                                                                )
+                                                                                            }
+                                                                                        />
+
+                                                                                        &nbsp;
+
+                                                                                        {e.answer}
+
+                                                                                    </div>
+                                                                                )}
+                                                                            </div>)}
+
+
+                                                                    </>
+
+                                                                ))}
+                                                            </div >
+                                                        </div>
+                                                        <div className='py-3'>
+
+                                                            <Button
+                                                                color='secondary'
+                                                                size='sm'
+                                                                className='ml-10 rounded-md mt-3'
+                                                                onClick={() =>
+                                                                    nextQuestion(
+                                                                        multiAns,
+                                                                        quizList.questions[counter].correctAnswer,
+                                                                        counter
+                                                                    )
+                                                                }
+                                                            >
+                                                                Next
+                                                            </Button>
+                                                            {/* ) : (
                       <Button
                         size='sm'
                         className='ml-10 rounded-md mt-3'
@@ -569,15 +606,17 @@ const ExamPage = ({ ResData, showResult }) => {
                         Next
                       </Button>
                     )} */}
-                                                    </div>
-                                                </Card>
-                                            </div>
-                                        </>
-                                    )
-                                    }
-                                </>
-                            )}
-                            {/* {showExamResult && <Exam />} */}
+                                                        </div>
+                                                    </Card>
+                                                </div>
+                                            </>
+                                        )
+                                        }
+                                    </>
+                                )
+
+
+                            }
                         </div >
                     </div>
                 </div>) : (

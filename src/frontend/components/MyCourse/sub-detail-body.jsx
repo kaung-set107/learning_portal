@@ -36,7 +36,7 @@ const AddBody = ({ subData }) => {
   return (
     <div>
       {/* body */}
-      <div className='flex flex-col gap-5 p-12'>
+      <div className='flex flex-col gap-5 p-2'>
         <Nav />
 
         <TabValueComponent
