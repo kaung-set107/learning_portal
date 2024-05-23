@@ -24,8 +24,8 @@ export default function QuestionCreateModal(props) {
 
   const questionTypes = [
     { value: "trueFalse", label: "trueFalse" },
-    // { value: "fillInTheBlank", label: "fillInTheBlank" },
-    // { value: "openQuestion", label: "openQuestion" },
+    { value: "fillInTheBlank", label: "fillInTheBlank" },
+    { value: "openQuestion", label: "openQuestion" },
     { value: "multipleChoice", label: "multipleChoice" },
   ];
 
@@ -43,7 +43,7 @@ export default function QuestionCreateModal(props) {
     correctAnswer: [],
     mark: 1,
     status: "new",
-    correctAnswerDescription: ''
+    correctAnswerDescription: "",
   });
 
   const optionRemoveHandler = (index) => {
@@ -212,22 +212,24 @@ export default function QuestionCreateModal(props) {
                     setValues={handleMultipleSelect}
                   />
 
-                  <div className="flex w-full flex-wrap md:flex-nowrap gap-4 mt-3">
-                    <Input
-                      type="text"
-                      label="Correct Answer Description"
-                      placeholder="correctAnswerDescription"
-                      variant={variant}
-                      value={formData.correctAnswerDescription}
-                      onChange={(e) =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          correctAnswerDescription: e.target.value,
-                        }))
-                      }
-                      labelPlacement="outside"
-                    />
-                  </div>
+                  {(formData.type === "fillInTheBlank" || formData.type === "openQuestion") && (
+                    <div className="flex w-full flex-wrap md:flex-nowrap gap-4 mt-3">
+                      <Input
+                        type="text"
+                        label="Correct Answer Description"
+                        placeholder="correctAnswerDescription"
+                        variant={variant}
+                        value={formData.correctAnswerDescription}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            correctAnswerDescription: e.target.value,
+                          }))
+                        }
+                        labelPlacement="outside"
+                      />
+                    </div>
+                  )}
 
                   <div className="flex items-end w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
                     <Input

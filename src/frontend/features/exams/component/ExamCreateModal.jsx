@@ -49,6 +49,7 @@ export default function ExamCreateModal(props) {
     examType: [],
     creditMark: "",
     passMark: "",
+    totalMark: 0,
   });
 
   const handleAssetChange = (value) => {
@@ -66,7 +67,8 @@ export default function ExamCreateModal(props) {
         duration: +formData.duration,
         creditMark: +formData.creditMark,
         passMark: +formData.passMark,
-        examType: formData.examType.currentKey
+        examType: formData.examType.currentKey,
+        totalMark: +formData.totalMark,
       };
 
       console.log(payload);
@@ -165,114 +167,131 @@ export default function ExamCreateModal(props) {
                     />
                   </div>
 
-                    <div className="mb-3">
-                      <label htmlFor="startTime" className="pb-1 inline-block">
-                        Start Time
-                      </label>
-                      <Input
-                        id="startTime"
-                        type="time"
-                        value={formData.startTime}
-                        onChange={(e) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            startTime: e.target.value,
-                          }))
-                        }
-                        labelPlacement="outside"
-                        variant={variant}
-                      />
-                    </div>
+                  <div className="mb-3">
+                    <label htmlFor="startTime" className="pb-1 inline-block">
+                      Start Time
+                    </label>
+                    <Input
+                      id="startTime"
+                      type="time"
+                      value={formData.startTime}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          startTime: e.target.value,
+                        }))
+                      }
+                      labelPlacement="outside"
+                      variant={variant}
+                    />
+                  </div>
 
-                    <div className="mb-3">
-                      <label htmlFor="endTime" className="pb-1 inline-block">
-                        End Time
-                      </label>
-                      <Input
-                        id="endTime"
-                        type="time"
-                        value={formData.endTime}
-                        onChange={(e) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            endTime: e.target.value,
-                          }))
-                        }
-                        labelPlacement="outside"
-                        variant={variant}
-                      />
-                    </div>
+                  <div className="mb-3">
+                    <label htmlFor="endTime" className="pb-1 inline-block">
+                      End Time
+                    </label>
+                    <Input
+                      id="endTime"
+                      type="time"
+                      value={formData.endTime}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          endTime: e.target.value,
+                        }))
+                      }
+                      labelPlacement="outside"
+                      variant={variant}
+                    />
+                  </div>
 
-                    <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
-                      <Input
-                        type="number"
-                        label="Duration"
-                        placeholder="duration"
-                        variant={variant}
-                        value={formData.duration}
-                        onChange={(e) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            duration: e.target.value,
-                          }))
-                        }
-                        labelPlacement="outside"
-                      />
-                    </div>
+                  <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
+                    <Input
+                      type="number"
+                      label="Duration"
+                      placeholder="duration"
+                      variant={variant}
+                      value={formData.duration}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          duration: e.target.value,
+                        }))
+                      }
+                      labelPlacement="outside"
+                    />
+                  </div>
 
-                    <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
-                      <Input
-                        type="number"
-                        label="Credit Mark"
-                        placeholder="credit Mark"
-                        variant={variant}
-                        value={formData.creditMark}
-                        onChange={(e) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            creditMark: e.target.value,
-                          }))
-                        }
-                        labelPlacement="outside"
-                      />
-                    </div>
+                  <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
+                    <Input
+                      type="number"
+                      label="Credit Mark"
+                      placeholder="credit Mark"
+                      variant={variant}
+                      value={formData.creditMark}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          creditMark: e.target.value,
+                        }))
+                      }
+                      labelPlacement="outside"
+                    />
+                  </div>
 
-                    <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
-                      <Input
-                        type="number"
-                        label="Pass Mark"
-                        placeholder="Pass Mark"
-                        variant={variant}
-                        value={formData.passMark}
-                        onChange={(e) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            passMark: e.target.value,
-                          }))
-                        }
-                        labelPlacement="outside"
-                      />
-                    </div>
+                  <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
+                    <Input
+                      type="number"
+                      label="Pass Mark"
+                      placeholder="Pass Mark"
+                      variant={variant}
+                      value={formData.passMark}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          passMark: e.target.value,
+                        }))
+                      }
+                      labelPlacement="outside"
+                    />
+                  </div>
 
-                    <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
-                      <Select
-                        label="Exam Type"
-                        variant="bordered"
-                        placeholder="Select exam type"
-                        selectedKeys={formData.examType}
-                        className="max-w-xs"
-                        labelPlacement="outside"
-                        onSelectionChange={(keys) =>
-                          setFormData((prev) => ({ ...prev, examType: keys }))
-                        }
-                      >
-                        {examTypes.map((examType) => (
-                          <SelectItem key={examType.value} value={examType.value}>
-                            {examType.label}
-                          </SelectItem>
-                        ))}
-                      </Select>
-                    </div>
+                  <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
+                    <Input
+                      type="number"
+                      label="Total Mark"
+                      placeholder="totalMark"
+                      variant={variant}
+                      value={formData.totalMark}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          totalMark: e.target.value,
+                        }))
+                      }
+                      labelPlacement="outside"
+                    />
+                  </div>
+
+                  <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
+                    <Select
+                      label="Exam Type"
+                      variant="bordered"
+                      placeholder="Select exam type"
+                      selectedKeys={formData.examType}
+                      className="max-w-xs"
+                      labelPlacement="outside"
+                      onSelectionChange={(keys) =>
+                        setFormData((prev) => ({ ...prev, examType: keys }))
+                      }
+                    >
+                      {examTypes.map((examType) => (
+                        <SelectItem key={examType.value} value={examType.value}>
+                          {examType.label}
+                        </SelectItem>
+                      ))}
+                    </Select>
+                  </div>
 
                   <div className="flex w-full items-end flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
                     <Input

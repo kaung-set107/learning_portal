@@ -80,9 +80,9 @@ export const getTableData = ({ getCheckButton, getViewButton }) => {
         key: "action",
         getComponent: (data) => {
           if (data.status === "submitted") {
-            return <div className="flex gap-3">{getViewButton(data._id)}{getCheckButton(data._id)}</div>;
+            return <div className="flex gap-3">{getCheckButton(data._id)}</div>;
           } else {
-            return "No Action!";
+            return <>{getViewButton(data._id)}</>;
           }
         },
       },
