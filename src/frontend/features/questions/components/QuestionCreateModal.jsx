@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input, Textarea } from "@nextui-org/react";
 import { useState } from "react";
 import CustomButton from "../../../components/general/CustomButton";
 import { v4 as uuidv4 } from "uuid";
@@ -41,6 +41,7 @@ export default function QuestionCreateModal(props) {
     options: [],
     answerType: "text",
     correctAnswer: [],
+    inputCorrectAnswer: "",
     mark: 1,
     status: "new",
     correctAnswerDescription: "",
@@ -61,25 +62,37 @@ export default function QuestionCreateModal(props) {
   };
 
   const handleSubmit = async (onClose) => {
-    let modifiedOptions = formData.options.map((option) => ({
-      answer: option.value,
-    }));
-
-    let modifiedCorrectAnswers = formData.correctAnswer.map((each) => {
-      let value;
-      formData.options.map((option, oIndex) => {
-        if (option.key === each) value = oIndex;
-      });
-      if (!isNaN(value + 1)) {
-        return value + 1;
-      }
-    });
-
     let payload = {
-      ...formData,
-      options: modifiedOptions,
-      correctAnswer: modifiedCorrectAnswers,
+      answerType: formData.answerType,
+      mark: formData.mark,
+      question: formData.question,
+      status: formData.status,
+      type: formData.type,
     };
+    
+    if (!isQuestionTypeInput()) {
+      let modifiedOptions = formData.options.map((option) => ({
+        answer: option.value,
+      }));
+
+      let modifiedCorrectAnswers = formData.correctAnswer.map((each) => {
+        let value;
+        formData.options.map((option, oIndex) => {
+          if (option.key === each) value = oIndex;
+        });
+        if (!isNaN(value + 1)) {
+          return value + 1;
+        }
+      });
+      
+      payload.correctAnswerDescription = formData.correctAnswerDescription;
+      payload.options = modifiedOptions;
+      payload.correctAnswer = modifiedCorrectAnswers;
+    } else {
+      payload.inputCorrectAnswer = formData.inputCorrectAnswer
+    }
+
+    // return console.log(payload);
 
     addQuestion(payload);
     onClose();
@@ -114,6 +127,17 @@ export default function QuestionCreateModal(props) {
     }
   };
 
+  const isQuestionTypeInput = () => {
+    if (
+      formData.type === "fillInTheBlank" ||
+      formData.type === "openQuestion"
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <>
       <Button onPress={onOpen} color="primary">
@@ -132,6 +156,7 @@ export default function QuestionCreateModal(props) {
               </ModalHeader>
               <ModalBody>
                 <form>
+                  {/* {`${isQuestionTypeInput()()}`} */}
                   <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
                     <Input
                       type="text"
@@ -203,16 +228,36 @@ export default function QuestionCreateModal(props) {
                     </Select>
                   </div>
 
-                  <CustomMultiSelect
-                    label="Correct Answer"
-                    placeholder="Select correct answer"
-                    labelPlacement="outside"
-                    selectedKeys={formData.correctAnswer}
-                    data={formData.options}
-                    setValues={handleMultipleSelect}
-                  />
+                  {isQuestionTypeInput() && (
+                    <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
+                      <Textarea
+                        label="Correct Answer"
+                        placeholder="Input Correct Answer"
+                        variant={variant}
+                        value={formData.inputCorrectAnswer}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            inputCorrectAnswer: e.target.value,
+                          }))
+                        }
+                        labelPlacement="outside"
+                      />
+                    </div>
+                  )}
 
-                  {(formData.type === "fillInTheBlank" || formData.type === "openQuestion") && (
+                  {!isQuestionTypeInput() && (
+                    <CustomMultiSelect
+                      label="Correct Answer"
+                      placeholder="Select correct answer"
+                      labelPlacement="outside"
+                      selectedKeys={formData.correctAnswer}
+                      data={formData.options}
+                      setValues={handleMultipleSelect}
+                    />
+                  )}
+
+                  {!isQuestionTypeInput() && (
                     <div className="flex w-full flex-wrap md:flex-nowrap gap-4 mt-3">
                       <Input
                         type="text"
@@ -231,49 +276,54 @@ export default function QuestionCreateModal(props) {
                     </div>
                   )}
 
-                  <div className="flex items-end w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
-                    <Input
-                      type="text"
-                      label="Option"
-                      placeholder="option"
-                      variant={variant}
-                      value={option}
-                      onChange={(e) => setOption(e.target.value)}
-                      labelPlacement="outside"
-                    />
-                    <CustomButton
-                      onClick={() =>
-                        setFormData((prev) => {
-                          let newOptions = [...prev.options];
-                          newOptions.push({ key: uuidv4(), value: option });
+                  {!isQuestionTypeInput() && (
+                    <>
+                      <div className="flex items-end w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
+                        <Input
+                          type="text"
+                          label="Option"
+                          placeholder="option"
+                          variant={variant}
+                          value={option}
+                          onChange={(e) => setOption(e.target.value)}
+                          labelPlacement="outside"
+                        />
+                        <CustomButton
+                          onClick={() =>
+                            setFormData((prev) => {
+                              let newOptions = [...prev.options];
+                              newOptions.push({ key: uuidv4(), value: option });
 
-                          return { ...prev, options: newOptions };
-                        })
-                      }
-                      title="Add"
-                    />
-                  </div>
-                  {formData.options.length > 0 && (
-                    <div className="p-3 border rounded-xl mb-3 space-y-3">
-                      <h4 className="mb-3">Option List</h4>
-                      {formData.options.map((option, index) => {
-                        return (
-                          <div
-                            key={option.key}
-                            className="p-2 border rounded-xl flex justify-between items-center"
-                          >
-                            <span>{option.value}</span>
-                            <CustomButton
-                              onClick={() => optionRemoveHandler(index)}
-                              type="delete"
-                              size="sm"
-                              iconOnly
-                              className="p-1"
-                            />
-                          </div>
-                        );
-                      })}
-                    </div>
+                              return { ...prev, options: newOptions };
+                            })
+                          }
+                          title="Add"
+                        />
+                      </div>
+
+                      {formData.options.length > 0 && (
+                        <div className="p-3 border rounded-xl mb-3 space-y-3">
+                          <h4 className="mb-3">Option List</h4>
+                          {formData.options.map((option, index) => {
+                            return (
+                              <div
+                                key={option.key}
+                                className="p-2 border rounded-xl flex justify-between items-center"
+                              >
+                                <span>{option.value}</span>
+                                <CustomButton
+                                  onClick={() => optionRemoveHandler(index)}
+                                  type="delete"
+                                  size="sm"
+                                  iconOnly
+                                  className="p-1"
+                                />
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </>
                   )}
                 </form>
               </ModalBody>
