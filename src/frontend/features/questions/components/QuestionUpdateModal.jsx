@@ -9,15 +9,12 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  useDisclosure,
 } from "@nextui-org/react";
 import { v4 as uuidv4 } from "uuid";
 import CustomMultiSelect from "../../../components/general/CustomMultiSelect";
 
 export default function QuestionUpdateModal(props) {
-  const { questionData } = props;
-
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { questionData, isOpen, onOpen, onOpenChange } = props;
 
   const [option, setOption] = useState("");
   const variant = "bordered";
@@ -184,11 +181,11 @@ export default function QuestionUpdateModal(props) {
     if (Object.keys(questionData).length > 0) fillData();
   }, [questionData]);
 
-  useEffect(() => {
-    console.log(formData);
+  // useEffect(() => {
+  //   console.log(formData);
 
-    if (formData.isOpen) onOpen();
-  }, [formData]);
+  //   if (formData.isOpen) onOpen();
+  // }, [formData]);
 
   let content;
 

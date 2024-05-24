@@ -13,6 +13,7 @@ import QuestionInstructionCreateModal from "./QuestionInstructionCreateModal";
 const QuestionList = (props) => {
   const [currentQuestionData, setCurrentQuestionData] = useState({});
   const { isOpen: isInstructionCreateOpen, onOpen: onInstructionCreateOpen, onOpenChange: onInstructionCreateOpenChange } = useDisclosure();
+  const { isOpen: isQuestionEditOpen, onOpen: onQuestionEditOpen, onOpenChange: onQuestionEditOpenChange } = useDisclosure();
 
   const {
     srcId,
@@ -24,11 +25,12 @@ const QuestionList = (props) => {
     deletedQuestions,
   } = props;
 
-  const handleEditButtonClick = (index) => {
+  const handleEditButtonClick = (e, index) => {
     setCurrentQuestionData({
       ...questions[index],
       updateQuestions: updateQuestions(index),
     });
+    onQuestionEditOpen(e)
   };
 
   const updateQuestions = (index) => (data) => {
@@ -43,6 +45,14 @@ const QuestionList = (props) => {
     );
   };
 
+  const appendQuestionsWithIndex = (index) => (data) => {
+    setQuestions(prev => {
+      let tempList = [...prev]
+      tempList.splice(index, 0, data)
+      return tempList
+    })
+  }
+
   const removeQuestion = async (index) => {
     setQuestions((prev) => {
       if (questions[index]?.status !== "new")
@@ -51,24 +61,23 @@ const QuestionList = (props) => {
     });
   };
 
-  const handleAddInstructionClick = (index) => {
+  const onInstructionCreateOpenClick = (e, index) => {
     setCurrentQuestionData({
       ...questions[index],
-      index,
-      updateQuestions: updateQuestions(index),
+      appendQuestionsWithIndex: appendQuestionsWithIndex(index),
     });
+    onInstructionCreateOpen(e)
   }
 
   return (
     <div>
       <Card shadow="sm">
         <CardBody className="space-y-6">
-          <QuestionUpdateModal questionData={currentQuestionData} />
           {questions &&
             questions.map((question, index) => {
               return (
                 <div key={uuidv4()} className="group p-3 border rounded-xl relative">
-                  <div onClick={onInstructionCreateOpen} className="hidden cursor-pointer group-hover:block border-2 rounded-xl bg-gray-400 absolute px-2 py-1 shadow top-0 -translate-y-1/2 right-1/2">+ Instruction</div>
+                  <div onClick={(e) => onInstructionCreateOpenClick(e, index)} className="hidden cursor-pointer group-hover:block border-2 rounded-xl bg-gray-400 absolute px-2 py-1 shadow top-0 -translate-y-1/2 right-1/2">+ Instruction</div>
                   <div className="absolute right-1 top-1 gap-3 flex">
                     {srcId && imageUploadApi && question?.status !== "new" && (
                       <QuestionImageUploadModal
@@ -81,7 +90,7 @@ const QuestionList = (props) => {
                     <CustomButton
                       iconOnly
                       type="edit"
-                      onClick={() => handleEditButtonClick(index)}
+                      onClick={(e) => handleEditButtonClick(e, index)}
                       title="Edit"
                     />
                     <CustomButton
@@ -176,7 +185,8 @@ const QuestionList = (props) => {
           )}
         </CardBody>
       </Card>
-      <QuestionInstructionCreateModal isOpen={isInstructionCreateOpen} onOpen={onInstructionCreateOpen} onOpenChange={onInstructionCreateOpenChange}/>
+      <QuestionUpdateModal isOpen={isQuestionEditOpen} onOpen={onQuestionEditOpen} onOpenChange={onQuestionEditOpenChange} questionData={currentQuestionData} />
+      <QuestionInstructionCreateModal isOpen={isInstructionCreateOpen} onOpen={onInstructionCreateOpen} onOpenChange={onInstructionCreateOpenChange} questionData={currentQuestionData}/>
     </div>
   );
 };

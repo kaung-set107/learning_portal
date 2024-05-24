@@ -11,7 +11,7 @@ import {
 } from "@nextui-org/react";
 
 export default function QuestionInstructionCreateModal(props) {
-  const { isOpen, onOpen, onOpenChange } = props;
+  const { isOpen, onOpen, onOpenChange, questionData } = props;
 
   const variant = "bordered";
 
@@ -20,8 +20,13 @@ export default function QuestionInstructionCreateModal(props) {
   });
 
   const handleSubmit = () => {
-    console.log('handling')
-  }
+    console.log("handling");
+    let payload = {
+      ...formData
+    }
+
+    questionData.appendQuestionsWithIndex(payload)
+  };
 
   return (
     <>
@@ -42,14 +47,14 @@ export default function QuestionInstructionCreateModal(props) {
                   <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
                     <Input
                       type="text"
-                      label="Question"
-                      placeholder="question"
+                      label="Title"
+                      placeholder="title"
                       variant={variant}
-                      value={formData.question}
+                      value={formData.title}
                       onChange={(e) =>
                         setFormData((prev) => ({
                           ...prev,
-                          question: e.target.value,
+                          title: e.target.value,
                         }))
                       }
                       labelPlacement="outside"

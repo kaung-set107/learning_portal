@@ -56,7 +56,7 @@ const CustomButton = (props) => {
         return title
     }
 
-    const handleOnClick = async () => {
+    const handleOnClick = async (e) => {
         if(type === 'delete') {
             const res = await showConfirmWithInput({title: 'Are you sure to delete?'})
             console.log(res)
@@ -64,7 +64,7 @@ const CustomButton = (props) => {
         }
 
         if(onClick) {
-            onClick()
+            onClick(e)
         } else if(type === 'back') {
             navigate(-1)
         }
