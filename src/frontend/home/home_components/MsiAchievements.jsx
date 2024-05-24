@@ -188,7 +188,7 @@ export const MsiAchievements = () => {
 
                 alt='testimonal participant'
               />
-              <span className='text-[16px] md:text-[16px] lg:text-[18px] xl-[19px] 2xl:text0[20px] font-semibold'>{st.title}</span>
+              <span className='text-[13px] md:text-[14px] lg:text-[15px] xl-[16px] 2xl:text[18px] font-semibold'>{st.title}</span>
             </div>
 
 

@@ -4,9 +4,9 @@ import { Link } from "@nextui-org/react";
 import MSINav from "./msinav";
 import { MsiAchievements } from "./home_components/MsiAchievements";
 import { StudentAchievements } from "./home_components/StudentAchievements";
-import Team1 from "../../assets/img/3.png";
-import Team2 from "../../assets/img/2.png";
-import Team3 from "../../assets/img/1.png";
+import Team1 from "../../assets/img/President.png";
+import Team2 from "../../assets/img/VPresident.png";
+import Team3 from "../../assets/img/FMD.png";
 import HeadImg from "../../assets/img/about.jpg";
 import Wave from '../../assets/img/wave.svg'
 import Sli1 from '../../assets/Slider/Sli1.jpg'
@@ -175,14 +175,14 @@ const About = () => {
               src={Team2}
             />
             <p className='font-[semibold] my-1 text-[20px] tracking-[0.02em] text-[#000] text-center'>
-              Vice - President
+              Vice President
             </p>
             <p className='font-[light] text-[20px] tracking-[0.02em] text-[#000] text-center'>
-              U Thet Win Naing
+              Mr. Thet Win Naing
             </p>
           </div>
           <div
-            className='rounded-[20px]  mt-10'
+            className='rounded-[20px] mt-10'
 
           >
             <Image
@@ -197,7 +197,7 @@ const About = () => {
               President
             </p>
             <p className='font-[light] text-[20px] tracking-[0.02em] text-[#000] text-center'>
-              U Tin Aung Soe
+              Mr. Tin Aung Soe
             </p>
           </div>
           <div
@@ -212,10 +212,10 @@ const About = () => {
               src={Team3}
             />
             <p className='font-[semibold] my-1 text-[20px] tracking-[0.02em] text-[#000] text-center'>
-              Managing Director
+              Founder & Managing Director
             </p>
             <p className='font-[light] text-[20px] tracking-[0.02em] text-[#000] text-center'>
-              Daw Su Su Hlaing
+              MS. Su Su Hlaing
             </p>
           </div>
         </div>
