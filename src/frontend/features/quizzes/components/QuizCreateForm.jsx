@@ -8,15 +8,17 @@ import { quizzesApi } from "../api";
 import QuestionCreateModal from "../../questions/components/QuestionCreateModal";
 import QuestionList from "../../questions/components/QuestionList";
 import { showError, showSuccess } from "../../../../util/noti";
+import QuizQuestionHandler from "../../general/quiz-question/components/QuizQuestionHandler";
 
 const QuizCreateForm = (props) => {
   const { type, successCallback } = props;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [questions, setQuestions] = useState([]);
+  // const [questions, setQuestions] = useState([]);
+  const [questionData, setQuestionData] = useState([]);
 
   const variant = "bordered";
-  
+
   const status = [
     {
       value: "expired",
@@ -42,14 +44,6 @@ const QuizCreateForm = (props) => {
     distinctionMark: 0,
   });
 
-  const addQuestion = (data) => {
-    let newQuestions = [...questions];
-    newQuestions.push(data);
-
-    setQuestions(newQuestions);
-    // setFormData((prev) => ({ ...prev, questions: newQuestions }));
-  };
-
   const preparePayload = () => {
     let payload = {
       ...formData,
@@ -58,7 +52,7 @@ const QuizCreateForm = (props) => {
     // if(type === 'learningMaterial') {
     //     payload['learningMaterial'] = learningMaterial._id
     // }
-    payload.questions = questions;
+    payload.questionData = questionData;
     payload.type = type;
     payload[type] = props[type]._id;
 
@@ -73,7 +67,7 @@ const QuizCreateForm = (props) => {
     try {
       setIsSubmitting(true);
       let res = await quizzesApi.create(payload);
-      if(successCallback) await successCallback();
+      if (successCallback) await successCallback();
       showSuccess({ text: res.message, type: "noti-box" });
     } catch (error) {
       console.log(error);
@@ -82,14 +76,6 @@ const QuizCreateForm = (props) => {
       setIsSubmitting(false);
     }
   };
-
-  useEffect(() => {
-    setFormData((prev) => ({
-      ...prev,
-      numOfQuestions: questions.length,
-      totalMark: questions.length,
-    }));
-  }, [questions]);
 
   return (
     <div>
@@ -158,7 +144,7 @@ const QuizCreateForm = (props) => {
             </div>
             <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
               <Input
-              isDisabled
+                isDisabled
                 type="number"
                 label="Total Mark"
                 placeholder="Total Mark"
@@ -238,7 +224,7 @@ const QuizCreateForm = (props) => {
               </Select>
             </div>
 
-            <div className="mb-3">
+            {/* <div className="mb-3">
               <div className="flex w-full items-center justify-between">
                 <h3 className="text-lg font-bold">Questions</h3>
                 <QuestionCreateModal addQuestion={addQuestion} />
@@ -249,13 +235,21 @@ const QuizCreateForm = (props) => {
                   setQuestions={setQuestions}
                 />
               </div>
+            </div> */}
+
+            <div className="mb-3">
+              <QuizQuestionHandler
+                questionData={questionData}
+                setQuestionData={setQuestionData}
+              />
             </div>
+
             <div className="flex justify-center gap-5 mt-8">
               <CustomButton
                 color="primary"
                 onClick={handleSubmit}
                 isLoading={isSubmitting}
-                title="Create"
+                title="Create Quiz"
               />
             </div>
           </form>

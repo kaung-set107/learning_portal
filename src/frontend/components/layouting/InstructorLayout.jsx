@@ -15,7 +15,7 @@ const InstructorLayout = () => {
 
     if (!isLoading) {
         content = (
-            <div className="flex gap-3 relative">
+            <div className="flex gap-3 relative instructor">
                 <div className="">
                     <Sidebar />
                 </div>
