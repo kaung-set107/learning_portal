@@ -23,6 +23,7 @@ import { getFile } from "../../../util";
 import ExamRes from './examResultPage'
 import ExamPage from './examPage'
 import apiInstance from "../../../util/api";
+import ExamTestData from './examTestData'
 import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -47,11 +48,12 @@ export default function CourseDetail(props) {
   const [timer, setTimer] = useState(5); // Timer set for 5 seconds
   const tabRef = useRef();
   const location = useLocation();
+  const navigate = useNavigate()
   const studentID = localStorage.getItem('id')
   console.log(studentID, "sub data");
 
   // const exam = ResData._id
-  const navigate = useNavigate();
+
   const subjectData = location.state.data;
   console.log(subjectData, "sub data");
   const courseData = location.state.courseData;
@@ -73,9 +75,11 @@ export default function CourseDetail(props) {
   const [examValue, setExamValue] = useState('')
   console.log(examValue, 'examValue')
   const handleExamPage = (val) => {
-    setShowExamPage(true)
-    setShowResult(false)
-    setExamPageData(val)
+    console.log(ExamTestData.quiz, 'hfjsakdsnjkj')
+    navigate(`/exam-page/${val._id}`, { state: { examData: ExamTestData.quiz } })
+    // setShowExamPage(true)
+    // setShowResult(false)
+    // setExamPageData(val)
   }
   const handleExam = (val) => {
     if (val.term === 'mid') {
@@ -258,10 +262,6 @@ export default function CourseDetail(props) {
               <div className='mx-10' >
                 {console.log(examResult, 'examResult')}
                 <ExamRes ResData={examResult} showResult={showResult} subjectData={subjectData} examFile={examValue} />
-              </div>
-            ) : showExamPage ? (
-              <div className='mx-10'>
-                <ExamPage ResData={examPageData} showResult={showExamPage} />
               </div>
             ) : (
               <div className="flex justify-center items-center w-full flex-col mb-20">
