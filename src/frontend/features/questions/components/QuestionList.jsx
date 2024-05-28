@@ -16,58 +16,21 @@ const QuestionList = (props) => {
   const { isOpen: isQuestionEditOpen, onOpen: onQuestionEditOpen, onOpenChange: onQuestionEditOpenChange } = useDisclosure();
 
   const {
-    srcId,
+    // srcId,
     questions,
-    setQuestions,
-    imageUploadApi,
-    successCallback,
-    setDeletedQuestions,
-    deletedQuestions,
+    removeQuestion,
+    updateQuestions,
+    // imageUploadApi,
+    // successCallback,
   } = props;
 
   const handleEditButtonClick = (e, index) => {
     setCurrentQuestionData({
       ...questions[index],
-      updateQuestions: updateQuestions(index),
+      updateQuestions: (payload) => updateQuestions(index, payload),
     });
     onQuestionEditOpen(e)
   };
-
-  const updateQuestions = (index) => (data) => {
-    setQuestions((prev) =>
-      prev.map((each, i) => {
-        if (i === index) {
-          return data;
-        } else {
-          return each;
-        }
-      })
-    );
-  };
-
-  const appendQuestionsWithIndex = (index) => (data) => {
-    setQuestions(prev => {
-      let tempList = [...prev]
-      tempList.splice(index, 0, data)
-      return tempList
-    })
-  }
-
-  const removeQuestion = async (index) => {
-    setQuestions((prev) => {
-      if (questions[index]?.status !== "new")
-        setDeletedQuestions([...deletedQuestions, questions[index]]);
-      return prev.filter((question, qindex) => qindex !== index);
-    });
-  };
-
-  const onInstructionCreateOpenClick = (e, index) => {
-    setCurrentQuestionData({
-      ...questions[index],
-      appendQuestionsWithIndex: appendQuestionsWithIndex(index),
-    });
-    onInstructionCreateOpen(e)
-  }
 
   return (
     <div>
@@ -77,16 +40,15 @@ const QuestionList = (props) => {
             questions.map((question, index) => {
               return (
                 <div key={uuidv4()} className="group p-3 border rounded-xl relative">
-                  <div onClick={(e) => onInstructionCreateOpenClick(e, index)} className="hidden cursor-pointer group-hover:block border-2 rounded-xl bg-gray-400 absolute px-2 py-1 shadow top-0 -translate-y-1/2 right-1/2">+ Instruction</div>
                   <div className="absolute right-1 top-1 gap-3 flex">
-                    {srcId && imageUploadApi && question?.status !== "new" && (
+                    {/* {srcId && imageUploadApi && question?.status !== "new" && (
                       <QuestionImageUploadModal
                         successCallback={successCallback}
                         srcId={srcId}
                         questionIndex={index}
                         uploadApi={imageUploadApi}
                       />
-                    )}
+                    )} */}
                     <CustomButton
                       iconOnly
                       type="edit"

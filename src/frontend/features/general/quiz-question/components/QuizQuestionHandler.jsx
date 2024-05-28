@@ -1,11 +1,13 @@
 /* eslint-disable react/prop-types */
+import { useState } from "react";
 import CustomButton from "../../../../components/general/CustomButton";
 import NotiInfo from "../../../../components/general/typography/NotiInfo";
-import { isInstruction } from "../helper";
+import { isInstruction, isParagraph, isQuestions } from "../helper";
 import SectionList from "./SectionList";
 
 const QuizQuestionHandler = (props) => {
   const { questionData, setQuestionData } = props;
+  // const [deletedQuestions, setDeletedQuestions] = useState([]) // need to save according to image deletion
 
   const createSection = () => {
     setQuestionData((prev) => [...prev, {}]);
@@ -17,14 +19,93 @@ const QuizQuestionHandler = (props) => {
     );
   };
 
+  const removeParagraph = (sectionIndex, paragraphIndex) => {
+    setQuestionData((prev) => {
+      let questionDataClone = [...prev];
+
+      questionDataClone[sectionIndex]["paragraph"] = questionDataClone[
+        sectionIndex
+      ]["paragraph"].filter((each, index) => index !== paragraphIndex);
+
+      return questionDataClone;
+    });
+  };
+
+  const updateQuestions = (sectionIndex, questionIndex, payload) => {
+    setQuestionData((prev) => {
+      let questionDataClone = [...prev];
+
+      questionDataClone[sectionIndex]["questions"][questionIndex] = {
+        ...payload,
+      };
+
+      return questionDataClone;
+    });
+  };
+
+  const removeQuestion = (sectionIndex, questionIndex) => {
+    setQuestionData((prev) => {
+      let questionDataClone = [...prev];
+
+      questionDataClone[sectionIndex]["questions"] = questionDataClone[
+        sectionIndex
+      ]["questions"].filter((each, index) => index !== questionIndex);
+
+      return questionDataClone;
+    });
+  };
+
   const addSectionData = (sectionIndex, payload) => {
     setQuestionData((prev) => {
-      let newQuestionData = [...prev]
-      if (isInstruction(payload.type)) {
-        newQuestionData[sectionIndex].instruction = payload.value;
+      let newQuestionData = [...prev];
+      if (isInstruction(payload.sectionDataType)) {
+        newQuestionData[sectionIndex][payload.sectionDataType] = payload.value;
       }
 
-      return newQuestionData
+      if (isParagraph(payload.sectionDataType)) {
+        if (!newQuestionData[sectionIndex][payload.sectionDataType]) {
+          newQuestionData[sectionIndex][payload.sectionDataType] = [];
+        }
+
+        newQuestionData[sectionIndex][payload.sectionDataType].push(payload.value);
+      }
+
+      if (isQuestions(payload.sectionDataType)) {
+        if (!newQuestionData[sectionIndex][payload.sectionDataType]) {
+          newQuestionData[sectionIndex][payload.sectionDataType] = [];
+        }
+
+        let question = { ...payload };
+        delete question.sectionDataType;
+
+        newQuestionData[sectionIndex][payload.sectionDataType].push(question);
+      }
+
+      return newQuestionData;
+    });
+  };
+
+  const updateSectionData = (sectionIndex, payload) => {
+    setQuestionData((prev) => {
+      let newQuestionData = [...prev];
+      if (isInstruction(payload.sectionDataType)) {
+        newQuestionData[sectionIndex][payload.sectionDataType] = payload.value;
+      }
+
+      if (isParagraph(payload.sectionDataType)) {
+        newQuestionData[sectionIndex][payload.sectionDataType] = payload.value;
+      }
+
+      return newQuestionData;
+    });
+  };
+
+  const removeSectionData = (sectionIndex, type) => {
+    setQuestionData((prev) => {
+      let newQuestionData = [...prev];
+      delete newQuestionData[sectionIndex][type];
+
+      return newQuestionData;
     });
   };
 
@@ -45,6 +126,11 @@ const QuizQuestionHandler = (props) => {
             data={questionData}
             removeSection={removeSection}
             addSectionData={addSectionData}
+            removeParagraph={removeParagraph}
+            removeSectionData={removeSectionData}
+            removeQuestion={removeQuestion}
+            updateQuestions={updateQuestions}
+            updateSectionData={updateSectionData}
           />
         ) : (
           <div className="h-[300px] border bg-gray-100 p-3 flex items-center justify-center rounded-md">

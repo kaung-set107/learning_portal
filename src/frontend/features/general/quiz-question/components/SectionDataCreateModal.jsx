@@ -10,7 +10,7 @@ import {
 } from "@nextui-org/react";
 import { Select, SelectItem } from "@nextui-org/select";
 import CustomButton from "../../../../components/general/CustomButton";
-import { isInstruction } from "../helper";
+import { isInstruction, isParagraph } from "../helper";
 
 const sectionDataTypes = [
   {
@@ -20,11 +20,7 @@ const sectionDataTypes = [
   {
     value: "paragraph",
     label: "Paragraph",
-  },
-  {
-    value: "questions",
-    label: "Questions",
-  },
+  }
 ];
 
 export default function SectionDataCreateModal(props) {
@@ -32,20 +28,41 @@ export default function SectionDataCreateModal(props) {
 
   const variant = "bordered";
 
-  const [formData, setFormData] = useState({
-    type: "",
-    value: "", // if type is instruction
-  });
-
-  const prepareForm = () => {
-    return formData;
+  const initialForm = {
+    sectionDataType: "",
+    value: "", // if type is instruction or paragraph
   };
 
-  const handleSubmit = () => {
+  const [formData, setFormData] = useState(initialForm);
+
+  const resetForm = () => {
+    setFormData(() => {
+      return initialForm;
+    });
+  };
+
+  const prepareForm = () => {
+    let payload = {
+      sectionDataType: formData.sectionDataType,
+    };
+
+    if (
+      isInstruction(formData.sectionDataType) ||
+      isParagraph(formData.sectionDataType)
+    ) {
+      payload.value = formData.value;
+    }
+
+    return payload;
+  };
+
+  const handleSubmit = (onClose) => {
     console.log("submitting");
     const form = prepareForm();
     console.log(form);
     addSectionData(sectionIndex, form);
+    resetForm();
+    onClose();
   };
 
   return (
@@ -72,7 +89,7 @@ export default function SectionDataCreateModal(props) {
                       onSelectionChange={(e) =>
                         setFormData((prev) => ({
                           ...prev,
-                          type: e.currentKey,
+                          sectionDataType: e.currentKey,
                         }))
                       }
                     >
@@ -82,7 +99,8 @@ export default function SectionDataCreateModal(props) {
                     </Select>
                   </div>
                   {/* {`${isQuestionTypeInput()()}`} */}
-                  {isInstruction(formData.type) && (
+                  {(isInstruction(formData.sectionDataType) ||
+                    isParagraph(formData.sectionDataType)) && (
                     <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
                       <Input
                         type="text"
@@ -107,7 +125,7 @@ export default function SectionDataCreateModal(props) {
                   Close
                 </Button>
                 <CustomButton
-                  onClick={() => handleSubmit()}
+                  onClick={() => handleSubmit(onClose)}
                   color="primary"
                   title="Create"
                 />

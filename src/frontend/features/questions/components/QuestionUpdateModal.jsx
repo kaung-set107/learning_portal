@@ -177,7 +177,6 @@ export default function QuestionUpdateModal(props) {
   };
 
   useEffect(() => {
-    console.log(questionData);
     if (Object.keys(questionData).length > 0) fillData();
   }, [questionData]);
 
