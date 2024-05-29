@@ -11,6 +11,7 @@ import Heading from "../../../../components/general/typography/Heading";
 import NotiInfo from "../../../../components/general/typography/NotiInfo";
 import SectionDataUpdateModal from "./SectionDataUpdateModal";
 import QuestionCreateModal from "../../../questions/components/QuestionCreateModal";
+import ParagraphUpdateModal from "./ParagraphUpdateModal";
 
 const SectionList = (props) => {
   const {
@@ -20,8 +21,12 @@ const SectionList = (props) => {
     removeSectionData,
     removeQuestion,
     removeParagraph,
+    updateParagraph,
     updateQuestions,
     updateSectionData,
+    successCallback,
+    srcId,
+    imageUploadApi,
   } = props;
   const {
     isOpen: isSectionDataCreateOpen,
@@ -35,9 +40,16 @@ const SectionList = (props) => {
     onOpenChange: onSectionDataUpdateOpenChange,
   } = useDisclosure();
 
+  const {
+    isOpen: isParagraphUpdateOpen,
+    onOpen: onParagraphUpdateOpen,
+    onOpenChange: onParagraphUpdateOpenChange,
+  } = useDisclosure();
+
   const [currentSelectedSectionIndex, setCurrentSelectedSectionIndex] =
     useState(null);
   const [currentSelectedSection, setCurrentSelectedSection] = useState({});
+  const [currentSelectedParagraph, setCurrentSelectedParagraph] = useState({});
 
   const handleSectionDataCreateModalOpenClick = (sectionIndex) => {
     setCurrentSelectedSectionIndex(sectionIndex);
@@ -52,6 +64,12 @@ const SectionList = (props) => {
     onSectionDataUpdateOpen();
   };
 
+  const handleParagraphUpdateModalOpenClick = (sectionIndex, paragraph) => {
+    setCurrentSelectedSectionIndex(sectionIndex);
+    setCurrentSelectedParagraph(paragraph);
+    onParagraphUpdateOpen();
+  };
+
   const getSectionDataUpdateButton = (sectionIndex, sectionDataType) => {
     return (
       <CustomButton
@@ -60,6 +78,20 @@ const SectionList = (props) => {
         className="bg-opacity-50"
         onClick={() =>
           handleSectionDataUpdateModalOpenClick(sectionIndex, sectionDataType)
+        }
+        title="Edit"
+      />
+    );
+  };
+
+  const getParagraphUpdateButton = (sectionIndex, paragraph) => {
+    return (
+      <CustomButton
+        iconOnly
+        type="edit"
+        className="bg-opacity-50"
+        onClick={() =>
+          handleParagraphUpdateModalOpenClick(sectionIndex, paragraph)
         }
         title="Edit"
       />
@@ -112,8 +144,12 @@ const SectionList = (props) => {
                     sectionIndex={index}
                     removeSectionData={removeSectionData}
                     getSectionDataUpdateButton={getSectionDataUpdateButton}
+                    getParagraphUpdateButton={getParagraphUpdateButton}
                     removeQuestion={removeQuestion}
                     updateQuestions={updateQuestions}
+                    successCallback={successCallback}
+                    srcId={srcId}
+                    imageUploadApi={imageUploadApi}
                   />
                 )}
               </div>
@@ -135,6 +171,20 @@ const SectionList = (props) => {
         onOpen={onSectionDataUpdateOpen}
         onOpenChange={onSectionDataUpdateOpenChange}
         updateSectionData={updateSectionData}
+      />
+      <ParagraphUpdateModal
+        paragraph={currentSelectedParagraph}
+        sectionIndex={currentSelectedSectionIndex}
+        isOpen={isParagraphUpdateOpen}
+        onOpen={onParagraphUpdateOpen}
+        onOpenChange={onParagraphUpdateOpenChange}
+        updateParagraph={(payload) =>
+          updateParagraph(
+            currentSelectedSectionIndex,
+            currentSelectedParagraph.key,
+            payload
+          )
+        }
       />
     </>
   );

@@ -1,12 +1,18 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
 import CustomButton from "../../../../components/general/CustomButton";
 import NotiInfo from "../../../../components/general/typography/NotiInfo";
 import { isInstruction, isParagraph, isQuestions } from "../helper";
 import SectionList from "./SectionList";
 
 const QuizQuestionHandler = (props) => {
-  const { questionData, setQuestionData } = props;
+  const {
+    questionData,
+    setQuestionData,
+    setDeletedQuestions,
+    successCallback,
+    srcId,
+    imageUploadApi,
+  } = props;
   // const [deletedQuestions, setDeletedQuestions] = useState([]) // need to save according to image deletion
 
   const createSection = () => {
@@ -26,6 +32,16 @@ const QuizQuestionHandler = (props) => {
       questionDataClone[sectionIndex]["paragraph"] = questionDataClone[
         sectionIndex
       ]["paragraph"].filter((each, index) => index !== paragraphIndex);
+
+      return questionDataClone;
+    });
+  };
+
+  const updateParagraph = (sectionIndex, paragraphIndex, payload) => {
+    setQuestionData((prev) => {
+      let questionDataClone = [...prev];
+
+      questionDataClone[sectionIndex]["paragraph"][paragraphIndex] = payload;
 
       return questionDataClone;
     });
@@ -51,6 +67,13 @@ const QuizQuestionHandler = (props) => {
         sectionIndex
       ]["questions"].filter((each, index) => index !== questionIndex);
 
+      setDeletedQuestions((prev) => {
+        return [
+          ...prev,
+          questionDataClone[sectionIndex]["questions"][questionIndex],
+        ];
+      });
+
       return questionDataClone;
     });
   };
@@ -67,7 +90,9 @@ const QuizQuestionHandler = (props) => {
           newQuestionData[sectionIndex][payload.sectionDataType] = [];
         }
 
-        newQuestionData[sectionIndex][payload.sectionDataType].push(payload.value);
+        newQuestionData[sectionIndex][payload.sectionDataType].push(
+          payload.value
+        );
       }
 
       if (isQuestions(payload.sectionDataType)) {
@@ -127,10 +152,14 @@ const QuizQuestionHandler = (props) => {
             removeSection={removeSection}
             addSectionData={addSectionData}
             removeParagraph={removeParagraph}
+            updateParagraph={updateParagraph}
             removeSectionData={removeSectionData}
             removeQuestion={removeQuestion}
             updateQuestions={updateQuestions}
             updateSectionData={updateSectionData}
+            successCallback={successCallback}
+            srcId={srcId}
+            imageUploadApi={imageUploadApi}
           />
         ) : (
           <div className="h-[300px] border bg-gray-100 p-3 flex items-center justify-center rounded-md">

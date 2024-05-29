@@ -15,6 +15,10 @@ const SectionCard = (props) => {
     updateQuestions,
     removeQuestion,
     getSectionDataUpdateButton,
+    getParagraphUpdateButton,
+    successCallback,
+    srcId,
+    imageUploadApi,
   } = props;
 
   return (
@@ -58,7 +62,10 @@ const SectionCard = (props) => {
                   <CustomCard className="min-h-[100px]">
                     <p>{each}</p>
                     <div className="absolute right-2 top-2 flex gap-3">
-                      {/* {getSectionDataUpdateButton(sectionIndex, "paragraph")} */}
+                      {getParagraphUpdateButton(sectionIndex, {
+                        key: paragraphIndex,
+                        value: each,
+                      })}
                       <CustomButton
                         iconOnly
                         type="delete"
@@ -78,25 +85,30 @@ const SectionCard = (props) => {
       )}
       {sectionData.questions && (
         <>
-          <div className="flex justify-between items-center mb-3">
-            <ListInfo title="Questions" />
-            <CustomButton
-              iconOnly
-              type="delete"
-              className="bg-opacity-50"
-              onClick={() => removeSectionData(sectionIndex, "questions")}
-              title="Remove"
+          <CustomCard className="bg-white relative">
+            <div className="flex justify-between items-center mb-3">
+              <ListInfo title="Questions" />
+              <CustomButton
+                iconOnly
+                type="delete"
+                className="bg-opacity-50"
+                onClick={() => removeSectionData(sectionIndex, "questions")}
+                title="Remove"
+              />
+            </div>
+            <QuestionList
+              successCallback={successCallback}
+              srcId={srcId}
+              imageUploadApi={imageUploadApi}
+              questions={sectionData.questions}
+              updateQuestions={(questionIndex, payload) =>
+                updateQuestions(sectionIndex, questionIndex, payload)
+              }
+              removeQuestion={(questionIndex) =>
+                removeQuestion(sectionIndex, questionIndex)
+              }
             />
-          </div>
-          <QuestionList
-            questions={sectionData.questions}
-            updateQuestions={(questionIndex, payload) =>
-              updateQuestions(sectionIndex, questionIndex, payload)
-            }
-            removeQuestion={(questionIndex) =>
-              removeQuestion(sectionIndex, questionIndex)
-            }
-          />
+          </CustomCard>
         </>
       )}
       {!(sectionData.questions?.length > 0) && (
