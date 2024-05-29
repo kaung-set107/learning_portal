@@ -23,6 +23,9 @@ export default function AddBody() {
 
   const [list, setList] = useState([]);
   // console.log(location.pathname, "lllll");
+  useEffect(() => {
+    window.scroll(0, 0)
+  }, [])
 
   const Val = location.state ? location.state.title : "English";
 

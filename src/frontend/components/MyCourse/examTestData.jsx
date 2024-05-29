@@ -37,15 +37,16 @@ with his measures. He has dissolved Representative Houses repeatedly, for opposi
 his invasions on the rights of the people.`],
                 questions: [
                     {
+                        id: 1,
                         question: "Paragraph 3 can be summed up as",
                         type: "trueFalse",
                         mark: 1,
                         options: [
                             {
-                                answer: " a list of laws for life in the colonies written by the King of Great Britain",
+                                answer: " for life in the colonies written by the King of Great Britain",
                             },
                             {
-                                answer: "a list of laws created for the newly independent United States of America",
+                                answer: " the newly independent United States of America",
                             },
                         ],
                         answerType: "radio",
@@ -53,13 +54,14 @@ his invasions on the rights of the people.`],
                         correctAnswerDescription: "a list of laws created for the newly independent United States of America",
                     },
                     {
+                        id: 2,
                         question: `Which of the following quotations expresses the Declaration’s main idea that the American colonies 
 want independence from Great Britain?`,
                         type: "trueFalse",
                         mark: 1,
                         options: [
                             {
-                                answer: " “We hold these truths to be self-evident, that all men are created equal”",
+                                answer: " “ to be self-evident, that all men are created equal”",
                             },
                             {
                                 answer: " “they are endowed by their Creator with certain unalienable Rights”",
@@ -107,36 +109,44 @@ with his measures. He has dissolved Representative Houses repeatedly, for opposi
 his invasions on the rights of the people.`],
                 questions: [
                     {
+                        id: 3,
                         question: "Paragraph 3 can be summed up as",
-                        type: "trueFalse",
+                        type: "multipleChoice",
                         mark: 1,
                         options: [
                             {
-                                answer: " a list of laws for life in the colonies written by the King of Great Britain",
+                                answer: " a  of laws for life in the colonies written by the King of Great Britain",
                             },
                             {
-                                answer: "a list of laws created for the newly independent United States of America",
+                                answer: " of laws created for the newly independent United States of America",
                             },
+                            {
+                                answer: " newly independent United States of America",
+                            }
                         ],
-                        answerType: "radio",
-                        correctAnswer: [2],
+                        answerType: "checkbox",
+                        correctAnswer: [2, 3],
                         correctAnswerDescription: "a list of laws created for the newly independent United States of America",
                     },
                     {
+                        id: 4,
                         question: `Which of the following quotations expresses the Declaration’s main idea that the American colonies 
 want independence from Great Britain?`,
-                        type: "trueFalse",
+                        type: "multipleChoice",
                         mark: 1,
                         options: [
                             {
-                                answer: " “We hold these truths to be self-evident, that all men are created equal”",
+                                answer: " “We hold these truths to be ”",
                             },
                             {
-                                answer: " “they are endowed by their Creator with certain unalienable Rights”",
+                                answer: " “they are endowed by their Creator with certain”",
                             },
+                            {
+                                answer: "endowed by their Creator with certain”",
+                            }
                         ],
-                        answerType: "radio",
-                        correctAnswer: [1],
+                        answerType: "checkbox",
+                        correctAnswer: [1, 2],
                         correctAnswerDescription: " “We hold these truths to be self-evident, that all men are created equal”",
                     },
                 ],

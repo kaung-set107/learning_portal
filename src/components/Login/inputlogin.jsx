@@ -228,7 +228,7 @@ export default function Login() {
             id="player"
             muted
             autoPlay="autoplay"
-            className={showRegisterPage ? ' object-fill h-[500px] md:h-[550px] lg:h-[730px] 2xl:h-[800px]' : ' object-fill  h-[500px] md:h-[550px] lg:h-[800px] xl:h-[600px] 2xl:h-[720px]'}
+            className={showRegisterPage ? ' object-fill h-[500px] md:h-[550px] lg:h-[730px] 2xl:h-[800px]' : ' object-fill   h-screen'}
             loop
             src={LoginVideo}
 

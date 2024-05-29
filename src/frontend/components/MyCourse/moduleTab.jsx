@@ -415,7 +415,7 @@ const CourseDetail = (props) => {
                     value={65}
                     color='primary'
                     showValueLabel={true}
-                    className='w-[200px] '
+                    className='lg:w-[300px] xl:w-[350px] 2xl:w-[400px] '
                   />
                 </div>
                 <div className='flex w-[200px] lg:w-[210px] xl:w-[220px] 2xl:w-[230px] lg:pt-[45px] gap-5 pt-[32px]'>

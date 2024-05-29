@@ -8,7 +8,8 @@ import {
     Divider,
     Textarea,
     ScrollShadow,
-    Progress
+    Progress,
+    RadioGroup, Radio
 } from "@nextui-org/react";
 import apiInstance from "../../../util/api";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -16,7 +17,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import ExamOriginalPage from './examTab'
 import { faEye, faClock, faCalendarDays, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 // import apiInstance from "../../util/api";
 import ExamTestData from "./examTestData";
 // import Assignment from "./assignTab";
@@ -38,9 +39,9 @@ const ExamPage = () => {
     const exam = ExamData //._id
     const batchID = location.state //.data.course.batch.id
     const enrollID = location.state //.enroll_id
-    console.log(ExamData.questionData, 'Hello')
+    // console.log(ExamData.questionData, 'Hello')
     const [isLoading, setIsLoading] = useState(true);
-    const [timerStartBtn, setTimerStartBtn] = useState(5); // Timer set for 5 seconds
+    const [optionIndex, setOptionIndex] = useState(5); // Timer set for 5 seconds
     const [counter, setCounter] = useState(0);
     let [points, setPoints] = useState(null);
     const [activeTab, setActiveTab] = useState(1);
@@ -52,7 +53,7 @@ const ExamPage = () => {
     // const [quizList, setQuizList] = useState(ResData.quiz);
     const [quizList, setQuizList] = useState(ExamData.questionData);
     const [studentID, setStudentID] = useState("");
-    const [clicked, setClicked] = useState("");
+    const [clicked, setClicked] = useState(false);
     const [multiAns, setMultiAns] = useState([])
     const [nextAnswer, setNextAnswer] = useState(false);
     const [arr, setArr] = useState([]);
@@ -60,25 +61,27 @@ const ExamPage = () => {
     const ti = timer / 30
     // const [showResult, setShowResult] = useState(false);
     const navigate = useNavigate();
-    const [index, setIndex] = useState("");
+    const [ansIndex, setAnsIndex] = useState("");
     const [showAlert, setShowAlert] = useState(false);
-    const [selectedOption, setSelectedOption] = useState("");
+    const [tempArr, setTempArr] = useState([]);
     const [trueAnswerList, setTrueAnswerList] = useState([]);
     const [studentAnswerList, setStudentAnswerList] = useState([]);
     const [showExamResult, setShowExamResult] = useState(false);
     const [multiTrueAnswerList, setMultiTrueAnswerList] = useState([]);
     const [alreadyExamRes, setAlreadyExamRes] = useState('')
     const [alreadyQuizRes, setAlreadyQuizRes] = useState('')
-    const [value, setValue] = useState(0);
+
+    const [count, setCount] = useState('')
+    // console.log(trueAnswerList.slice(0, trueAnswerList.length - 1)., 'dis')
     const TotalMark = trueAnswerList.map((i) => i.markTotal)
         .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-    console.log(TotalMark, "time");
+    // console.log(TotalMark, "time");
     const handleBack = () => {
         navigate('/student')
     };
 
     const MulTotalMark = multiTrueAnswerList.filter(el => el.id).map((i) => i.markTotal).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-    console.log(quizList, "body");
+    // console.log(quizList, "body");
     const handleShowFail = () => {
         // alert('Fail')
         setShowOrigin(true)
@@ -91,22 +94,24 @@ const ExamPage = () => {
         window.scroll(0, 0)
 
         setShowTimer(prev => !prev);
+        let interval = null;
         interval = setInterval(() => {
             setTimer(prevTimer => {
 
-                if (prevTimer >= (ExamData.duration * 60)) {
-                    // if (((TotalMark + MulTotalMark) === quizList.passMark && "pass") || ((TotalMark + MulTotalMark) > quizList.passMark && "credit"))
-                    if (quizList) {
-                        handleResult();
-                    } else {
-                        handleShowFail()
+                // if (prevTimer >= (ExamData.duration * 60)) {
+                //     // if (((TotalMark + MulTotalMark) === quizList.passMark && "pass") || ((TotalMark + MulTotalMark) > quizList.passMark && "credit"))
+                //     if (quizList) {
+                //         handleResult();
+                //     } else {
+                //         handleShowFail()
 
-                    } // Stop the timer when it reaches 30 seconds
-                    // handleShowFail()
-                    return prevTimer; // Return current timer value
-                } else {
-                    return prevTimer + 1; // Increment timer value by 1 second
-                }
+                //     }
+                //     // Stop the timer when it reaches 30 seconds
+                //     // handleShowFail()
+                //     return prevTimer; // Return current timer value
+                // } else {
+                return prevTimer + 1; // Increment timer value by 1 second
+
             });
 
 
@@ -114,12 +119,10 @@ const ExamPage = () => {
         }, 1000);
 
 
-        return () => clearInterval(interval);
 
-
-
+        // return () => clearTimeout(UseTimer);
         // Clear interval when the component unmounts or when moving to the next question
-        // return () => clearInterval(timerInterval);
+        // return () => clearInterval(interval);
     };
     const nextQuestion = (studentAnswer, cas, ind) => {
         // console.log(quizList.questions[counter].correctAnswer === cas, 'cas')
@@ -128,7 +131,7 @@ const ExamPage = () => {
         // console.log(caList, 'caList')
         setClicked("");
         setNextAnswer(true);
-        setIndex(""); //to check incorrect or correct answer
+        setAnsIndex(""); //to check incorrect or correct answer
         if (cas === null) {
             alert("Must select an answer before proceeding to the next question");
             return;
@@ -187,32 +190,55 @@ const ExamPage = () => {
 
         // console.log(studentAnswerList.filter(el => quizList.questions.find(i => i._id === el.id)), 'studentAnswerList')
         //Quiz-Result Create
-        // const data = {
-        //     enrollment: enrollID,
-        //     quiz: QuizID,
-        //     // type: ResData.examType,
-        //     student: studentID,
-        //     batch: batchID ? batchID : '661626364b091b37492de8e0',
-        //     subject: subjectID,
-        //     exam: exam,
-        //     answerDate: Date.now(),
-        //     updatedQuestions: quizList.questions.map((i) => {
-        //         return {
-        //             question: i.question,
-        //             type: i.type,
-        //             mark: i.mark,
-        //             correctAnswerDescription: i.correctAnswerDescription,
-        //             options: i.options,
-        //             answerType: i.answerType,
-        //             correctAnswer: i.correctAnswer,
-        //             studentAnswer: i.type === 'trueFalse' ? studentAnswerList.filter((el) => el.id === i._id)[0]
-        //                 ?.studentAnswer : studentAnswerList.filter((el) => el.id === i._id)[0]?.studentAnswer.slice(-(i.correctAnswer.length)),
-        //         };
-        //     }),
-        //     totalMark: quizList.questions[counter].type === 'trueFalse' ? TotalMark : points,
-        //     status: quizList.questions[counter].type === 'trueFalse' ? (TotalMark === quizList.passMark && "pass") || (TotalMark > quizList.passMark && "distinction") || ((TotalMark < quizList.passMark && TotalMark === quizList.creditMark) && "credit") || (TotalMark < quizList.creditMark && "fail") : (points >= quizList.passMark ? "pass" : "fail"),
-        // };
-        // alert(JSON.stringify(data));
+        const data = {
+            enrollment: '6606457adcff8f51e221874c',
+            quiz: '662cb830d0b9c59af73036ea',
+            // type: ResData.examType,
+            student: '659cf0d7aa53ed4939c56542',
+            batch: '661626364b091b37492de8e0',
+            subject: '65a8fb6a33174d205c13e668',
+            exam: '661766a0b2e144c764351155',
+            answerDate: Date.now(),
+            updatedQuestions: quizList.map((first) => {
+                return {
+                    instruction: first.instruction,
+                    paragraph: first.paragraph.map((i) => (i)),
+                    questions: first.questions.map((i) => {
+                        return {
+                            question: i.question,
+                            type: i.type,
+                            mark: i.mark,
+                            correctAnswerDescription: i.correctAnswerDescription,
+                            options: i.options,
+                            answerType: i.answerType,
+                            correctAnswer: i.correctAnswer,
+                            studentAnswer: i.type === 'trueFalse' ? studentAnswerList.filter((el) => el.id === i.id)[0]
+                                ?.studentAnswer : studentAnswerList.filter((el) => el.id === i.id)[0]?.studentAnswer.slice(-(i.correctAnswer.length)),
+                        };
+                    }),
+
+                    // status: first.questions[counter].type === 'trueFalse' ? (TotalMark === first.passMark && "pass") || (TotalMark > first.passMark && "distinction") || ((TotalMark < first.passMark && TotalMark === first.creditMark) && "credit") || (TotalMark < first.creditMark && "fail") : (points >= first.passMark ? "pass" : "fail"),
+
+                }
+
+            }),
+            totalMark: TotalMark,
+
+
+
+        }
+        console.log(data, 'res');
+        Swal.fire({
+            icon: "success",
+            title: "Exam File is Uploaded!",
+            text: "Successful",
+            showConfirmButton: false,
+            timer: 2000,
+        });
+        navigate('/student')
+        setShowTimer(false)
+        setShowOrigin(true)
+        // setIsLoading(true)
         // apiInstance
         //     .post("quiz-results", data)
         //     .then(function () {
@@ -231,27 +257,31 @@ const ExamPage = () => {
         //         console.log(error);
         //     });
 
-        // localStorage.removeItem("formSubmission");
+        localStorage.removeItem("formSubmission");
 
-        // setShowOrigin(false);
-        // setShowExamResult(true);
+        setShowOrigin(false);
+        setShowExamResult(true);
     };
 
     const handleCheckboxSelect = (event, index, data, correct, counter, mark, counterId) => {
-        setIndex(index);
-        // console.log(correct, 'll')
+        // setNextAnswer(false);
+        // setIndex(index + 1);
+        // console.log(counter, 'll')
 
         if (event.target.checked) {
+
+            // setNumber(prevCount => prevCount + 1)
             const multi = [...multiAns, index + 1]
             setMultiAns(multi);
-            // We get answer with index no
-            // console.log(multi, 'multi ans list')
 
-            const correctList = correct.map((i) => (parseInt(i)))
+            const II = multi.slice(-(correct.length)) //to get last studentAnswer's length
+
+            setCount(II) //to show that we choose answer count
+
+            const correctList = correct.map((i) => (parseInt(i))) //to get not include single code in correctAnswer
             // console.log(correctList, 'corr ans list')
-            // console.log(correctList.every(item => multi.includes(item)), 'true?')
 
-            if (correctList.every(item => multi.includes(item))) {
+            if (correctList.every(item => II.includes(item)) && correctList.length === II.length) {
                 // setStudentAnswer(val + 1)
 
                 const newFormSubmissions = [...trueAnswerList];
@@ -259,31 +289,47 @@ const ExamPage = () => {
                     id: counterId,
                     correct: correctList,
                     markTotal: mark,
-                    studentAnswer: multi
-                });
+                    studentAnswer: II
+                }); // to get trueAnswer list
 
                 localStorage.setItem(
                     "formSubmission",
                     JSON.stringify(newFormSubmissions)
-                );
+                ); //stored data in localStorage because we need remember student's every questions answer
 
-                setTrueAnswerList(newFormSubmissions);
+                const getUniqueById = (arr) => {
+                    return Object.values(arr.reduce((acc, obj) => {
+                        acc[obj.id] = obj;
+                        return acc;
+                    }, {}));
+                }; //to get same ID object data as one obj data
 
-                // console.log(newFormSubmissions, 'setTrueAnswerList')
+                // Usage
+                const uniqueObjects = getUniqueById(newFormSubmissions);
+                // console.log(uniqueObjects, 'mul real');
+                setMultiTrueAnswerList(uniqueObjects);
+
+                console.log(uniqueObjects, 'setMulTrueAnswerList')
                 // console.log(quiz.questions.filter(el=>el.correctAnswer === val+1))
-                setIsCorrect("Correct");
-            } else {
-                // setStudentAnswer(val + 1)
-                setIsCorrect("incorrect");
+
             }
 
             // Create the main array and push the sub-arrays into it
-            const mainArray = [...studentAnswerList, ...[{ studentAnswer: multi, id: counterId }]];
+            const mainArray = [...studentAnswerList, ...[{ studentAnswer: II, id: counterId }]];
 
+            const getUniqueById = (arr) => {
+                return Object.values(arr.reduce((acc, obj) => {
+                    acc[obj.id] = obj;
+                    return acc;
+                }, {}));
+            }; //to get same ID object data as one obj data
 
-            // console.log(mainArray, 'final final')
-            setStudentAnswerList(mainArray);
+            // Usage
+            const stuList = getUniqueById(mainArray);
+            // console.log(stuList, 'final final')
+            setStudentAnswerList(stuList);
         } else {
+            setNumber('')
             // setMultiAns(multiAns.filter((el, index) => (el.res === index + 1)))
             const multi = multiAns.filter(data => data !== counterId)
             setMultiAns(multi)
@@ -293,16 +339,36 @@ const ExamPage = () => {
 
     }
 
-    const handleAns = (val, studentChoose, ca, index, mark, counterid) => {
+    const handleAns = (secInd, val, studentChoose, ca, index, mark, secItems, counterid) => {
         setNextAnswer(false);
         setClicked(true);
         setShowAlert(true);
-        setIndex(val);
+        // setOptionIndex(val)
+        setAnsIndex(counterid);
+        // setSelectedValue(val)
+        // setOriIndexList([...oriIndexList, val])
 
+        // setDisabledValues([...disabledValues, val]);
+        console.log(val, 'ansIndex')
 
-        // console.log('hello', [...multiAns, studentChoose]);
+        const newAns = [...tempArr];
+        newAns.push({
+            ans: studentChoose.answer,
 
+        });
 
+        localStorage.setItem(
+            "newAnswer",
+            JSON.stringify(newAns)
+
+        );
+        // const annn = localStorage.getItem(
+        //     "newAns"
+
+        // );
+        console.log('hello', newAns);
+
+        setTempArr(newAns)
         const TrueFalseAns = [...arr, val + 1] // to get student's index choose value with array list style
         // console.log(TrueFalseAns, 'studentChoose list')
 
@@ -328,7 +394,7 @@ const ExamPage = () => {
 
             setTrueAnswerList(newFormSubmissions);
 
-            // console.log(newFormSubmissions, 'new radio')
+            console.log(newFormSubmissions, 'new radio')
 
             // setIsCorrect("Correct");
         } else {
@@ -379,15 +445,16 @@ const ExamPage = () => {
         //   setPages(res.data._metadata.page_count)
         let interval = null;
         // let timeLeft = (ExamData.duration * 1000)
-        interval = setInterval(() => {
-            setValue((v) => (v >= 100 ? 0 : v + 10));
-        }, 500);
+        // interval = setInterval(() => {
+        //     setValue((v) => (v >= 100 ? 0 : v + 10));
+        // }, 500);
 
         interval = setInterval(() => {
 
             setIsLoading(false);
 
         }, 3000);
+
         // const timer = setTimeout(() => {
         //     setIsLoading(false);
         // }, 3000);
@@ -396,12 +463,14 @@ const ExamPage = () => {
         return () => clearInterval(interval);
         // return () => clearTimeout(timer);
 
-    }, [isLoading, showTimer]);
-    console.log(alreadyExamRes, 'exam main')
+    }, [count, isLoading, showTimer]);
+    // console.log(alreadyExamRes, 'exam main')
     const SubData = location.state;
     // console.log(ResData, "dat");
     const displayMinutes = Math.floor(timeLeft / 60);
     const displaySeconds = timeLeft % 60;
+    // console.log(disabledValues.every(item => oriIndexList.includes(item)), 'same?')
+
     return (
         <div>
             {/* body */}
@@ -423,7 +492,7 @@ const ExamPage = () => {
 
                                 <div className='flex justify-start items-start p-6 w-[500px] h-[43px]  rounded-lg'>
                                     <div className=' text-[20px] font-bold w-[200px] '>
-                                        Time {convertSecondsToMinutes(value)}
+                                        Time {convertSecondsToMinutes(timer)} s
                                         {/* {timer > 30 ? (
                                         <span className='bg-red-300 p-2 rounded-lg'>{ti.toFixed(2)} s</span>
                                     ) : timer} */}
@@ -431,14 +500,14 @@ const ExamPage = () => {
                                     {/* <span className='p-[10px] text-[20px] font-bold '>s</span> */}
                                 </div>
                                 <div className='py-2'>
-                                    <Progress
+                                    {/* <Progress
 
                                         size="md"
-                                        value={value}
+                                        value={timer}
                                         color="danger"
                                         showValueLabel={false}
-                                        className=""
-                                    />
+                                        className="max-w-md"
+                                    /> */}
                                 </div>
                             </div>
                         )}
@@ -474,10 +543,10 @@ const ExamPage = () => {
                                                         // ) : (
                                                         isLoading ?
                                                             <Button color='light'>
-                                                                Start Quiz <Spinner size='sm' />
+                                                                Start Exam <Spinner size='sm' />
                                                             </Button> :
                                                             <Button color='primary' checked={showTimer} onClick={handleStart}>
-                                                                Start Quiz
+                                                                Start Exam
                                                             </Button>
 
                                                         // )
@@ -545,109 +614,108 @@ const ExamPage = () => {
                                                                                     </div>
                                                                                     <div className='mt-5'>
 
-                                                                                        {secItem.options.map((e, i) => (
-                                                                                            <>
-                                                                                                {secItem.type === 'trueFalse' ? (
-                                                                                                    < div
-                                                                                                        key={i}
-                                                                                                        className='text-lg font-semibold ml-10'
-                                                                                                        onClick={() =>
-                                                                                                            handleAns(
-                                                                                                                i,
-                                                                                                                e,
-                                                                                                                secItem.correctAnswer,
-                                                                                                                secIndex,
-                                                                                                                secItem.mark,
-                                                                                                                secItem?._id
 
-                                                                                                            )
-                                                                                                        }
-                                                                                                    >
-                                                                                                        {showTimer && (
-                                                                                                            <div className='flex justify-between'>
-                                                                                                                {/* True False Quiz */}
+                                                                                        <>
+                                                                                            {secItem.type === 'trueFalse' ? (
+                                                                                                < div
+                                                                                                    className='text-lg font-semibold ml-10'
+                                                                                                >
+                                                                                                    {showTimer && (
+                                                                                                        <div className='flex justify-between'>
+                                                                                                            {/* True False Exam */}
 
-                                                                                                                <input
+                                                                                                            <RadioGroup
+
+                                                                                                                className='flex flex-col gap-2'
+                                                                                                                orientation="horizontal"
+
+                                                                                                            >
+                                                                                                                {secItem.options.map((e, i) => (
+                                                                                                                    <Radio value={e.answer}
+                                                                                                                        onChange={() =>
+                                                                                                                            handleAns(
+                                                                                                                                secIndex,
+                                                                                                                                i,
+                                                                                                                                e,
+                                                                                                                                secItem.correctAnswer,
+                                                                                                                                secIndex,
+                                                                                                                                secItem.mark,
+                                                                                                                                item.questions,
+                                                                                                                                secItem?.id
+
+                                                                                                                            )}>{e.answer}</Radio>
+                                                                                                                ))}
+
+                                                                                                            </RadioGroup>
+                                                                                                            {/* <input
                                                                                                                     type='radio'
                                                                                                                     className='w-[20px] h-[20px] mt-1'
-                                                                                                                    name='answer_group'
+                                                                                                                    name={secIndex !== i}
                                                                                                                     value={e.answer}
                                                                                                                     disabled={
-                                                                                                                        clicked === ""
-                                                                                                                            ? ""
-                                                                                                                            : selectedOption === e.answer
-                                                                                                                                ? ""
-                                                                                                                                : true
+
+                                                                                                                        clicked
+                                                                                                                            ? secIndex !== i ? true : ''
+                                                                                                                            : ""
                                                                                                                     }
                                                                                                                 // onChange={(event) =>
                                                                                                                 //   handleOptionSelect(event, e, i)
                                                                                                                 // }
-                                                                                                                />
+                                                                                                                /> */}
 
 
-                                                                                                                &nbsp;
+                                                                                                            &nbsp;
 
-                                                                                                                <span className='ml-2 text-[20px] lg:text-[16px]'>{e.answer}</span>
+                                                                                                            {/* <span className='ml-2 text-[20px] lg:text-[16px]'>{e.answer}</span> */}
 
-                                                                                                            </div>
-                                                                                                        )}
-                                                                                                    </div>
-                                                                                                ) : (
-                                                                                                    < div
-                                                                                                        key={i}
-                                                                                                        className='text-lg font-semibold ml-10'
-                                                                                                    // onChange={() =>
-                                                                                                    //   handleAns(
-                                                                                                    //     i,
-                                                                                                    //     e,
-                                                                                                    //     quizList.questions[counter].correctAnswer,
-                                                                                                    //     counter,
-                                                                                                    //     quizList.questions[counter].mark,
-                                                                                                    //     quizList.questions[counter]._id
+                                                                                                        </div>
+                                                                                                    )}
+                                                                                                </div >
+                                                                                            ) : (
+                                                                                                < div
 
-                                                                                                    //   )
-                                                                                                    // }
-                                                                                                    >
-                                                                                                        {showTimer && (
-                                                                                                            <div>
-
-                                                                                                                {/* Multiple Choice Quiz */}
-                                                                                                                <input
-                                                                                                                    type='checkbox'
-                                                                                                                    name='answer_group'
-                                                                                                                    value={e.answer}
-                                                                                                                    // checked={multiAns.map((i, ind) => (selectedItem.map((e, ine) => (ine === ind))))}
-                                                                                                                    // disabled={
-                                                                                                                    //   clicked === ""
-                                                                                                                    //     ? ""
-                                                                                                                    //     : selectedOption === e.answer
-                                                                                                                    //     ? ""
-                                                                                                                    //     : true
-                                                                                                                    // }
-                                                                                                                    onClick={(event) =>
-                                                                                                                        handleCheckboxSelect(event,
-                                                                                                                            i,
-                                                                                                                            e,
-                                                                                                                            secItem.correctAnswer,
-                                                                                                                            secIndex,
-                                                                                                                            secItem.mark,
-                                                                                                                            secItem?._id
-                                                                                                                        )
-                                                                                                                    }
-                                                                                                                />
-
-                                                                                                                &nbsp;
-
-                                                                                                                {e.answer}
-
-                                                                                                            </div>
-                                                                                                        )}
-                                                                                                    </div>)}
+                                                                                                    className='text-lg font-semibold ml-10'
 
 
-                                                                                            </>
+                                                                                                >
+                                                                                                    {showTimer && (
+                                                                                                        <div>
 
-                                                                                        ))}
+                                                                                                            {/* Multiple Choice Quiz */}
+                                                                                                            {secItem.options.map((e, i) => (
+                                                                                                                <div className='flex gap-1'>
+                                                                                                                    <input
+                                                                                                                        type='checkbox'
+                                                                                                                        name='answer_group'
+                                                                                                                        value={e.answer}
+
+                                                                                                                        onClick={(event) =>
+                                                                                                                            handleCheckboxSelect(event,
+                                                                                                                                i,
+                                                                                                                                e,
+                                                                                                                                secItem.correctAnswer,
+                                                                                                                                secIndex,
+                                                                                                                                secItem.mark,
+                                                                                                                                secItem?.id
+                                                                                                                            )
+                                                                                                                        }
+                                                                                                                    />
+
+
+                                                                                                                    <span>{e.answer}</span>
+
+                                                                                                                </div>
+                                                                                                            ))}
+
+
+                                                                                                        </div>
+                                                                                                    )}
+                                                                                                </div>)}
+
+
+                                                                                        </>
+
+
                                                                                     </div >
                                                                                 </div>
                                                                                 <div className='py-3'>
@@ -683,7 +751,7 @@ const ExamPage = () => {
                       </Button>
                     )} */}
                                                                                 </div>
-                                                                            </div>
+                                                                            </div >
                                                                             <Divider></Divider>
                                                                         </>
                                                                     ))}
@@ -711,8 +779,8 @@ const ExamPage = () => {
 
                                                     ))}
                                                     <div className='py-2 flex justify-end lg:gap-2 xl:gap-3 2xl:gap-4'>
-                                                        <Button color='light' className='text-rose-600 font-medium' size='xl'>Cancel</Button>
-                                                        <Button color='primary' size='xl'>Submit</Button>
+                                                        <Button color='light' className='text-rose-600 font-medium' size='xl' onClick={() => navigate('/student')}>Cancel</Button>
+                                                        <Button color='primary' size='xl' onClick={handleResult}>Submit</Button>
                                                     </div>
                                                 </div>
 

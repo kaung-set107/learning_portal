@@ -193,11 +193,11 @@ export default function CourseDetail(props) {
 
 
 
-          <div className={` h-[72px] rounded-[8px] p-20 flex items-center w-[768px] lg:w-[1200px] xl:w-[1280px] 2xl:w-[1440px] ${twoColor}`} onClick={() => handleNestedExam(1)}>
+          <div className={` h-[72px] rounded-[8px] p-20 flex items-center w-[768px] lg:w-[1200px] xl:w-[1250px] 2xl:w-[1440px] ${twoColor}`} onClick={() => handleNestedExam(1)}>
             <span className='text-white text-[24px] font-semibold'>In App Exam</span>
           </div>
 
-          <div className={` h-[72px] rounded-[8px] p-20 flex items-center w-[768px] lg:w-[1200px] xl:w-[1280px] 2xl:w-[1440px] ${oneColor}`} onClick={() => handleNestedExam(2)}>
+          <div className={` h-[72px] rounded-[8px] p-20 flex items-center w-[768px] lg:w-[1200px] xl:w-[1250px] 2xl:w-[1440px] ${oneColor}`} onClick={() => handleNestedExam(2)}>
             <span className='text-white text-[24px] font-semibold'>Outside Exam</span>
           </div>
           <div className='flex flex-col gap-32'>
