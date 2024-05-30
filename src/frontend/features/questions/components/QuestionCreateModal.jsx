@@ -42,6 +42,7 @@ export default function QuestionCreateModal(props) {
     answerType: "text",
     correctAnswer: [],
     inputCorrectAnswer: "",
+    inputCount: 1,
     mark: 1,
     status: "new",
     correctAnswerDescription: "",
@@ -69,7 +70,7 @@ export default function QuestionCreateModal(props) {
       status: formData.status,
       type: formData.type,
     };
-    
+
     if (!isQuestionTypeInput()) {
       let modifiedOptions = formData.options.map((option) => ({
         answer: option.value,
@@ -84,12 +85,13 @@ export default function QuestionCreateModal(props) {
           return value + 1;
         }
       });
-      
+
       payload.correctAnswerDescription = formData.correctAnswerDescription;
       payload.options = modifiedOptions;
       payload.correctAnswer = modifiedCorrectAnswers;
     } else {
-      payload.inputCorrectAnswer = formData.inputCorrectAnswer
+      payload.inputCorrectAnswer = formData.inputCorrectAnswer;
+      payload.inputCount = formData.inputCount;
     }
 
     // return console.log(payload);
@@ -229,21 +231,39 @@ export default function QuestionCreateModal(props) {
                   </div>
 
                   {isQuestionTypeInput() && (
-                    <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
-                      <Textarea
-                        label="Correct Answer"
-                        placeholder="Input Correct Answer"
-                        variant={variant}
-                        value={formData.inputCorrectAnswer}
-                        onChange={(e) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            inputCorrectAnswer: e.target.value,
-                          }))
-                        }
-                        labelPlacement="outside"
-                      />
-                    </div>
+                    <>
+                      <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
+                        <Textarea
+                          label="Correct Answer"
+                          placeholder="Input Correct Answer"
+                          variant={variant}
+                          value={formData.inputCorrectAnswer}
+                          onChange={(e) =>
+                            setFormData((prev) => ({
+                              ...prev,
+                              inputCorrectAnswer: e.target.value,
+                            }))
+                          }
+                          labelPlacement="outside"
+                        />
+                      </div>
+                      <div className="flex w-full flex-wrap md:flex-nowrap gap-4 mt-3">
+                        <Input
+                          type="number"
+                          label="Input Count"
+                          placeholder="Input Count"
+                          variant={variant}
+                          value={formData.inputCount}
+                          onChange={(e) =>
+                            setFormData((prev) => ({
+                              ...prev,
+                              inputCount: e.target.value,
+                            }))
+                          }
+                          labelPlacement="outside"
+                        />
+                      </div>
+                    </>
                   )}
 
                   {!isQuestionTypeInput() && (

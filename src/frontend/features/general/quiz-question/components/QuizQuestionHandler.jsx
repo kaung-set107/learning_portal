@@ -8,10 +8,13 @@ const QuizQuestionHandler = (props) => {
   const {
     questionData,
     setQuestionData,
+    deletedQuestions,
     setDeletedQuestions,
     successCallback,
     srcId,
     imageUploadApi,
+    deletedQuestionData,
+    setDeletedQuestionData,
   } = props;
   // const [deletedQuestions, setDeletedQuestions] = useState([]) // need to save according to image deletion
 
@@ -20,9 +23,20 @@ const QuizQuestionHandler = (props) => {
   };
 
   const removeSection = (sectionIndex) => {
-    setQuestionData((prev) =>
-      prev.filter((each, index) => index !== sectionIndex)
-    );
+    setQuestionData((prev) => {
+      let sectionDataClone = [...prev];
+
+      console.log(deletedQuestionData);
+
+      if (setDeletedQuestionData) {
+        setDeletedQuestionData([
+          ...deletedQuestionData,
+          { ...sectionDataClone[sectionIndex] },
+        ]);
+      }
+
+      return prev.filter((each, index) => index !== sectionIndex);
+    });
   };
 
   const removeParagraph = (sectionIndex, paragraphIndex) => {
@@ -63,16 +77,16 @@ const QuizQuestionHandler = (props) => {
     setQuestionData((prev) => {
       let questionDataClone = [...prev];
 
+      if (setDeletedQuestions) {
+        setDeletedQuestions([
+          ...deletedQuestions,
+          { ...questionDataClone[sectionIndex]["questions"][questionIndex] },
+        ]);
+      }
+
       questionDataClone[sectionIndex]["questions"] = questionDataClone[
         sectionIndex
       ]["questions"].filter((each, index) => index !== questionIndex);
-
-      setDeletedQuestions((prev) => {
-        return [
-          ...prev,
-          questionDataClone[sectionIndex]["questions"][questionIndex],
-        ];
-      });
 
       return questionDataClone;
     });

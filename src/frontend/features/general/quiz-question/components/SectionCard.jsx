@@ -31,6 +31,7 @@ const SectionCard = (props) => {
             {getSectionDataUpdateButton(sectionIndex, "instruction")}
             <CustomButton
               iconOnly
+              confirmBox
               type="delete"
               className="bg-opacity-50"
               onClick={() => removeSectionData(sectionIndex, "instruction")}
@@ -46,6 +47,7 @@ const SectionCard = (props) => {
             <div>
               <CustomButton
                 iconOnly
+                confirmBox
                 type="delete"
                 className="bg-opacity-50"
                 onClick={() => removeSectionData(sectionIndex, "paragraph")}
@@ -68,6 +70,7 @@ const SectionCard = (props) => {
                       })}
                       <CustomButton
                         iconOnly
+                        confirmBox
                         type="delete"
                         className="bg-opacity-50"
                         onClick={() =>
@@ -90,6 +93,7 @@ const SectionCard = (props) => {
               <ListInfo title="Questions" />
               <CustomButton
                 iconOnly
+                confirmBox
                 type="delete"
                 className="bg-opacity-50"
                 onClick={() => removeSectionData(sectionIndex, "questions")}

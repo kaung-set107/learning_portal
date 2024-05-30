@@ -109,7 +109,6 @@ const ExamCard = (props) => {
         <CustomButton
           iconOnly
           type="delete"
-          size="sm"
           onClick={() => handleExamDelete(examData._id)}
           isLoading={isSubmitting}
           title="Delete"

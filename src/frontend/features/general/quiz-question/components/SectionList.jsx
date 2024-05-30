@@ -123,6 +123,7 @@ const SectionList = (props) => {
                     title="Add Section Data +"
                   />
                   <CustomButton
+                    confirmBox
                     iconOnly
                     type="delete"
                     className="bg-opacity-50"
@@ -149,7 +150,9 @@ const SectionList = (props) => {
                     updateQuestions={updateQuestions}
                     successCallback={successCallback}
                     srcId={srcId}
-                    imageUploadApi={imageUploadApi}
+                    imageUploadApi={(payload) =>
+                      imageUploadApi({ ...payload, sectionIndex: index })
+                    }
                   />
                 )}
               </div>

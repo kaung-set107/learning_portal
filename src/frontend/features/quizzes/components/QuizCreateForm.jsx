@@ -1,14 +1,13 @@
 /* eslint-disable react/prop-types */
 import { Input, Card, CardBody } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CustomButton from "../../../components/general/CustomButton";
 import SubHeading from "../../../components/general/typography/SubHeading";
 import { Select, SelectItem } from "@nextui-org/select";
 import { quizzesApi } from "../api";
-import QuestionCreateModal from "../../questions/components/QuestionCreateModal";
-import QuestionList from "../../questions/components/QuestionList";
 import { showError, showSuccess } from "../../../../util/noti";
 import QuizQuestionHandler from "../../general/quiz-question/components/QuizQuestionHandler";
+import { useNavigate } from "react-router";
 
 const QuizCreateForm = (props) => {
   const { type, successCallback } = props;
@@ -16,6 +15,8 @@ const QuizCreateForm = (props) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   // const [questions, setQuestions] = useState([]);
   const [questionData, setQuestionData] = useState([]);
+
+  const navigate = useNavigate();
 
   const variant = "bordered";
 
@@ -41,7 +42,7 @@ const QuizCreateForm = (props) => {
     totalMark: 0,
     passMark: 0,
     creditMark: 0,
-    distinctionMark: 0,
+    // distinctionMark: 0,
   });
 
   const preparePayload = () => {
@@ -68,7 +69,9 @@ const QuizCreateForm = (props) => {
       setIsSubmitting(true);
       let res = await quizzesApi.create(payload);
       if (successCallback) await successCallback();
+      
       showSuccess({ text: res.message, type: "noti-box" });
+      navigate(`/by-instructor/quizzes/${res.data._id}/edit`)
     } catch (error) {
       console.log(error);
       showError({ axiosResponse: error });
@@ -191,7 +194,7 @@ const QuizCreateForm = (props) => {
                 labelPlacement="outside"
               />
             </div>
-            <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
+            {/* <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
               <Input
                 type="number"
                 label="Distinction Mark"
@@ -206,7 +209,7 @@ const QuizCreateForm = (props) => {
                 }
                 labelPlacement="outside"
               />
-            </div>
+            </div> */}
             <div className="flex w-full flex-wrap md:flex-nowrap mb-6 gap-4 mt-3">
               <Select
                 items={status}

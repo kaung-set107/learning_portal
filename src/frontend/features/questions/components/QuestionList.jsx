@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Card, CardBody, useDisclosure } from "@nextui-org/react";
+import { useDisclosure } from "@nextui-org/react";
 import { v4 as uuidv4 } from "uuid";
 import ListInfo from "../../../components/general/typography/ListInfo";
 import ListDetail from "../../../components/general/typography/ListDetail";
@@ -41,7 +41,7 @@ const QuestionList = (props) => {
   };
 
   return (
-    <div>
+    <div className="space-y-3">
       {questions &&
         questions.map((question, index) => {
           return (
@@ -66,6 +66,7 @@ const QuestionList = (props) => {
                 />
                 <CustomButton
                   iconOnly
+                  confirmBox
                   type="delete"
                   onClick={() => removeQuestion(index)}
                   title="Remove"
@@ -143,6 +144,12 @@ const QuestionList = (props) => {
                   <div>
                     <ListInfo title="Input Correct Answer" />
                     <ListDetail title={question.inputCorrectAnswer} />
+                  </div>
+                )}
+                {question.inputCount && (
+                  <div>
+                    <ListInfo title="Input Count" />
+                    <ListDetail title={question.inputCount} />
                   </div>
                 )}
               </div>

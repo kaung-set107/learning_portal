@@ -45,14 +45,17 @@ const QuizUpdateForm = (props) => {
     totalMark: 0,
     passMark: 0,
     creditMark: 0,
-    distinctionMark: 0,
+    // distinctionMark: 0,
     deletedQuestions: [],
+    deletedQuestionData: []
   });
 
   const preparePayload = () => {
     let payload = {
       ...formData,
     };
+
+    console.log(payload.deletedQuestions)
 
     if (!(payload.deletedQuestions && payload.deletedQuestions.length > 0))
       delete payload.deletedQuestions;
@@ -114,7 +117,7 @@ const QuizUpdateForm = (props) => {
         totalMark: quizData.totalMark,
         passMark: quizData.passMark,
         creditMark: quizData.creditMark,
-        distinctionMark: quizData.distinctionMark,
+        // distinctionMark: quizData.distinctionMark,
         numOfQuestions: quizData.numOfQuestions,
         status: quizData.status,
       };
@@ -249,7 +252,7 @@ const QuizUpdateForm = (props) => {
                 labelPlacement="outside"
               />
             </div>
-            <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
+            {/* <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
               <Input
                 type="number"
                 label="Distinction Mark"
@@ -264,7 +267,7 @@ const QuizUpdateForm = (props) => {
                 }
                 labelPlacement="outside"
               />
-            </div>
+            </div> */}
             <div className="flex w-full flex-wrap md:flex-nowrap mb-6 gap-4 mt-3">
               <Select
                 items={status}
@@ -310,9 +313,9 @@ const QuizUpdateForm = (props) => {
                 questionData={questionData}
                 setQuestionData={setQuestionData}
                 deletedQuestions={formData.deletedQuestions}
-                setDeletedQuestions={(data) =>
-                  setFormData((prev) => ({ ...prev, deletedQuestions: data }))
-                }
+                setDeletedQuestions={(data) => setFormData((prev) => ({ ...prev, deletedQuestions: data }))}
+                deletedQuestionData={formData.deletedQuestionData}
+                setDeletedQuestionData={(data) => setFormData((prev) => ({ ...prev, deletedQuestionData: data }))}
               />
             </div>
 

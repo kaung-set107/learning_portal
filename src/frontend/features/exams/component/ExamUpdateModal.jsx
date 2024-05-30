@@ -156,7 +156,6 @@ export default function ExamUpdateModal(props) {
           onPress={onOpen}
           type="edit"
           iconOnly
-          size="sm"
           title="Update"
         />
         <Modal

@@ -43,17 +43,8 @@ const remove = async (payload) => {
 
 const updateQuestionImage = async (payload) => {
   const res = await apiInstance.put(
-    baseUrl + `/${payload._id}/questions/${payload.questionIndex}`,
+    baseUrl + `/${payload._id}/question-data/${payload.sectionIndex}/questions/${payload.questionIndex}`,
     getFormData(payload)
-  );
-
-  return res.data
-};
-
-const removeQuestion = async (payload) => {
-  const res = await apiInstance.delete(
-    baseUrl + `/${payload._id}/questions/${payload.questionIndex}`,
-    payload
   );
 
   return res.data
@@ -65,6 +56,5 @@ export const quizzesApi = {
   create,
   update,
   remove,
-  updateQuestionImage,
-  removeQuestion
+  updateQuestionImage
 };

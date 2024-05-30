@@ -14,7 +14,7 @@ import { v4 as uuidv4 } from "uuid";
 import CustomMultiSelect from "../../../components/general/CustomMultiSelect";
 
 export default function QuestionUpdateModal(props) {
-  const { questionData, isOpen, onOpen, onOpenChange } = props;
+  const { questionData, isOpen, onOpenChange } = props;
 
   const [option, setOption] = useState("");
   const variant = "bordered";
@@ -39,6 +39,7 @@ export default function QuestionUpdateModal(props) {
     answerType: "",
     correctAnswer: [],
     inputCorrectAnswer: "",
+    inputCount: 1,
     description: "",
     isLoading: true,
     correctAnswerDescription: "",
@@ -87,6 +88,7 @@ export default function QuestionUpdateModal(props) {
       payload.correctAnswer = modifiedCorrectAnswers;
     } else {
       payload.inputCorrectAnswer = formData.inputCorrectAnswer;
+      payload.inputCount = formData.inputCount;
     }
 
     payload.type = formData.type;
@@ -147,6 +149,7 @@ export default function QuestionUpdateModal(props) {
         newData.correctAnswer = modifiedCorrectAnswer;
       } else {
         newData.inputCorrectAnswer = questionData.inputCorrectAnswer;
+        newData.inputCount = questionData.inputCount ?? 1;
       }
 
       return {
@@ -280,21 +283,39 @@ export default function QuestionUpdateModal(props) {
                     </div>
 
                     {isQuestionTypeInput() && (
-                      <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
-                        <Textarea
-                          label="Correct Answer"
-                          placeholder="Input Correct Answer"
-                          variant={variant}
-                          value={formData.inputCorrectAnswer}
-                          onChange={(e) =>
-                            setFormData((prev) => ({
-                              ...prev,
-                              inputCorrectAnswer: e.target.value,
-                            }))
-                          }
-                          labelPlacement="outside"
-                        />
-                      </div>
+                      <>
+                        <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
+                          <Textarea
+                            label="Correct Answer"
+                            placeholder="Input Correct Answer"
+                            variant={variant}
+                            value={formData.inputCorrectAnswer}
+                            onChange={(e) =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                inputCorrectAnswer: e.target.value,
+                              }))
+                            }
+                            labelPlacement="outside"
+                          />
+                        </div>
+                        <div className="flex w-full flex-wrap md:flex-nowrap gap-4 mt-3">
+                          <Input
+                            type="number"
+                            label="Input Count"
+                            placeholder="Input Count"
+                            variant={variant}
+                            value={formData.inputCount}
+                            onChange={(e) =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                inputCount: e.target.value,
+                              }))
+                            }
+                            labelPlacement="outside"
+                          />
+                        </div>
+                      </>
                     )}
 
                     {!isQuestionTypeInput() && (
