@@ -4,11 +4,13 @@ import QuizUpdateForm from "../components/QuizUpdateForm";
 import { useEffect, useState } from "react";
 import CustomButton from "../../../components/general/CustomButton";
 import { quizzesApi } from "../api";
+import Loading from "../../../components/general/Loading";
 
 const QuizUpdate = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const [quizData, setQuizData] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
 
   const getQuiz = async () => {
     try {
@@ -17,6 +19,8 @@ const QuizUpdate = () => {
       setQuizData(res.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -25,23 +29,33 @@ const QuizUpdate = () => {
     if (!(state.type && state[state.type] && state.quizData)) {
       navigate(-1);
     } else {
-      setQuizData(state.quizData);
+      // setQuizData(state.quizData);
+      getQuiz();
     }
   }, []);
 
   return (
-    <div>
-      {quizData && Object.keys(quizData).length > 0 && (
-        <>
-          <div className="flex items-center justify-between mb-12">
-            <CustomButton type="back" title={`Back`} />
-          </div>
-          <QuizUpdateForm
-            {...{ ...state, quizData, successCallback: getQuiz }}
-          />
-        </>
+    <>
+      {isLoading && (
+        <div className="h-[500px] flex justify-center items-center">
+          <Loading />
+        </div>
       )}
-    </div>
+      {!isLoading && (
+        <div>
+          {quizData && Object.keys(quizData).length > 0 && (
+            <>
+              <div className="flex items-center justify-between mb-12">
+                <CustomButton type="back" title={`Back`} />
+              </div>
+              <QuizUpdateForm
+                {...{ ...state, quizData, successCallback: getQuiz }}
+              />
+            </>
+          )}
+        </div>
+      )}
+    </>
   );
 };
 
