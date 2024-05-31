@@ -44,7 +44,7 @@ const getLogo = (file) => {
 
 /* eslint-disable react/prop-types */
 const FileLoader = (props) => {
-  const { file, files } = props;
+  const { file } = props;
   return (
     <div className="">
       <a

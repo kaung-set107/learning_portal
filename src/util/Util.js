@@ -53,9 +53,32 @@ export const dateForInput = function (date) {
   return moment.utc(date).tz(config.timeZone).format("YYYY-MM-DD");
 };
 
-export const dateForDisplay = function (date) {
-  return moment.utc(date).tz(config.timeZone).format("D-M-Y hh:mm");
+export const dateForDisplay = function (date, payload) {
+  return moment.utc(date).tz(config.timeZone).format(payload?.format ?? "D-M-Y hh:mm");
 };
+
+export function convertTo12Hour(timeString) {
+  // Check for valid time format (HH:MM)
+  const timeRegex = /^([0-1][\d]|2[0-3]):([0-5][\d])$/;
+  const match = timeString.match(timeRegex);
+  if (!match) {
+    return "Invalid time format";
+  }
+
+  let hours = parseInt(match[1]);
+  const minutes = match[2];
+  let amPm = "AM";
+
+  // Convert to 12-hour format and set AM/PM
+  if (hours >= 12) {
+    amPm = "PM";
+    hours = hours % 12 || 12; // Handle noon (12 PM)
+  } else if (hours === 0) {
+    hours = 12; // Handle midnight (12 AM)
+  }
+
+  return `${hours}:${minutes} ${amPm}`;
+}
 
 export const getCurrentUser = () => {
   return JSON.parse(localStorage.getItem("user"));

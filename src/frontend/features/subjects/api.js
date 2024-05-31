@@ -40,10 +40,17 @@ const remove = async (payload) => {
   return res.data;
 };
 
+const copy = async (payload) => {
+  const res = await apiInstance.post(baseUrl + `/${payload._id}/copy`, payload);
+  console.log(baseName, res);
+  return res.data;
+};
+
 export const subjectsApi = {
   getAll,
   get,
   create,
   update,
   remove,
+  copy
 };

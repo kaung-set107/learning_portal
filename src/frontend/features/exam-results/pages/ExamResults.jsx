@@ -9,7 +9,7 @@ import { examResultsApi } from "../api";
 import { Chip } from "@nextui-org/react";
 import { Select, SelectItem } from "@nextui-org/select";
 import CustomButton from "../../../components/general/CustomButton";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SubjectsDropdown from "../../subjects/components/SubjectDropdown";
 import ExamsDropdown from "../../exams/component/ExamsDropdown";
 import ExamResultCheckModal from "../components/ExamResultCheckModal";
@@ -57,6 +57,8 @@ const ExamResults = () => {
     status: "submitted",
   });
 
+  const navigate = useNavigate();
+
   const { state } = useLocation();
 
   console.log(state);
@@ -70,7 +72,17 @@ const ExamResults = () => {
     );
   };
 
-  const tableData = getTableData({getCheckButton});
+  const getViewButton = (id) => {
+    return (
+      <CustomButton
+        title="View"
+        onClick={() => navigate(`/by-instructor/exam-results/${id}`)}
+      />
+    );
+  };
+
+
+  const tableData = getTableData({getCheckButton, getViewButton});
 
   const getExamResults = async (defaultPayload) => {
     let payload = {

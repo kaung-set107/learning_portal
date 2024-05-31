@@ -57,6 +57,7 @@ export default function ExamUpdateModal(props) {
     examType: [],
     creditMark: "",
     passMark: "",
+    totalMark: 0,
   });
 
   const handleSubmit = async (onClose) => {
@@ -71,6 +72,7 @@ export default function ExamUpdateModal(props) {
         creditMark: +formData.creditMark,
         passMark: +formData.passMark,
         examType: formData.examType?.currentKey ?? formData.examType[0],
+        totalMark: +formData.totalMark,
       };
       if (formData.newQuestion) {
         payload.question = formData.newQuestion;
@@ -106,7 +108,8 @@ export default function ExamUpdateModal(props) {
       duration: exam.data.duration ?? "",
       examType: exam.data.examType ? [exam.data.examType] : [],
       creditMark: exam.data.creditMark ?? "",
-      passMark: exam.data.passMark ?? "", 
+      passMark: exam.data.passMark ?? "",
+      totalMark: exam.data.totalMark ?? 0,
     });
 
     setLinks(JSON.parse(exam.data.links));
@@ -153,7 +156,6 @@ export default function ExamUpdateModal(props) {
           onPress={onOpen}
           type="edit"
           iconOnly
-          size="sm"
           title="Update"
         />
         <Modal
@@ -339,6 +341,23 @@ export default function ExamUpdateModal(props) {
                     </div>
 
                     <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
+                      <Input
+                        type="number"
+                        label="Total Mark"
+                        placeholder="totalMark"
+                        variant={variant}
+                        value={formData.totalMark}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            totalMark: e.target.value,
+                          }))
+                        }
+                        labelPlacement="outside"
+                      />
+                    </div>
+
+                    <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
                       <Select
                         label="Exam Type"
                         variant="bordered"
@@ -382,6 +401,7 @@ export default function ExamUpdateModal(props) {
                         title="Add"
                       />
                     </div>
+
                     <div className="rounded-xl border space-y-2 p-3 mb-3">
                       <h3 className="font-bold mb-3">Links</h3>
                       {links.map((each, index) => {

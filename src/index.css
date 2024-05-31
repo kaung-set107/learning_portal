@@ -1,10 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+@import "react-big-calendar/lib/sass/styles";
+@import "react-big-calendar/lib/addons/dragAndDrop/styles";
 
-  @import 'react-big-calendar/lib/sass/styles';
-  @import 'react-big-calendar/lib/addons/dragAndDrop/styles';
 /* 
 .example-container div {
   background: white;
@@ -15,14 +17,18 @@
 } */
 
 @font-face {
-  font-family: 'Inter';
-  src: url('../public/fonts/InterVariable.ttf') format('truetype');
+  font-family: "Inter";
+  src: url("../public/fonts/InterVariable.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
-body{
-  font-family:Inter;
+body {
+  font-family: Inter;
+}
+
+body .instructor > * {
+  font-family: "Nunito", sans-serif;
 }
 /* .refresh {
   padding: 10px;
@@ -46,21 +52,19 @@ body{
   color:transparent;
 } */
 
-.contact{
-background-color: #BC1F40;
+.contact {
+  background-color: #bc1f40;
 }
 
-.flip{
-   -webkit-transform: scaleX(-1);
+.flip {
+  -webkit-transform: scaleX(-1);
   transform: scaleX(-1);
-
 }
 
-.gradient{
-
-background: linear-gradient(93deg, #BC1F40 0.86%, #1F4260 55%);
-background-clip: text;
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-/* font-family:'Poppins'; */
+.gradient {
+  background: linear-gradient(93deg, #bc1f40 0.86%, #1f4260 55%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* font-family:'Poppins'; */
 }

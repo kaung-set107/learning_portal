@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input, Textarea } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import CustomButton from "../../../components/general/CustomButton";
 import { Select, SelectItem } from "@nextui-org/select";
@@ -9,23 +9,20 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  useDisclosure,
 } from "@nextui-org/react";
 import { v4 as uuidv4 } from "uuid";
 import CustomMultiSelect from "../../../components/general/CustomMultiSelect";
 
 export default function QuestionUpdateModal(props) {
-  const { questionData } = props;
-
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { questionData, isOpen, onOpenChange } = props;
 
   const [option, setOption] = useState("");
   const variant = "bordered";
 
   const questionTypes = [
     { value: "trueFalse", label: "trueFalse" },
-    // { value: "fillInTheBlank", label: "fillInTheBlank" },
-    // { value: "openQuestion", label: "openQuestion" },
+    { value: "fillInTheBlank", label: "fillInTheBlank" },
+    { value: "openQuestion", label: "openQuestion" },
     { value: "multipleChoice", label: "multipleChoice" },
   ];
 
@@ -36,10 +33,13 @@ export default function QuestionUpdateModal(props) {
   ];
 
   const [formData, setFormData] = useState({
-    questions: [],
+    question: "",
     type: "",
     options: [],
     answerType: "",
+    correctAnswer: [],
+    inputCorrectAnswer: "",
+    inputCount: 1,
     description: "",
     isLoading: true,
     correctAnswerDescription: "",
@@ -61,29 +61,37 @@ export default function QuestionUpdateModal(props) {
   };
 
   const handleSubmit = async (onClose) => {
-    let modifiedOptions = formData.options.map((option) => ({
-      answer: option.value,
-    }));
-
-    let modifiedCorrectAnswers = formData.correctAnswer.map((each) => {
-      let value;
-      formData.options.map((option, oIndex) => {
-        if (option.key === each) value = oIndex;
-      });
-
-      return value + 1;
-    });
-
     let payload = {
-      ...formData,
-      options: modifiedOptions,
-      correctAnswer: modifiedCorrectAnswers,
-      type: formData.type?.currentKey ?? formData.type[0],
+      answerType: formData.answerType,
+      mark: formData.mark,
+      question: formData.question,
+      status: formData.status,
+      type: formData.type,
     };
 
-    delete payload.isLoading;
-    delete payload.isOpen;
+    if (!isQuestionTypeInput()) {
+      let modifiedOptions = formData.options.map((option) => ({
+        answer: option.value,
+      }));
 
+      let modifiedCorrectAnswers = formData.correctAnswer.map((each) => {
+        let value;
+        formData.options.map((option, oIndex) => {
+          if (option.key === each) value = oIndex;
+        });
+
+        return value + 1;
+      });
+
+      payload.correctAnswerDescription = formData.correctAnswerDescription;
+      payload.options = modifiedOptions;
+      payload.correctAnswer = modifiedCorrectAnswers;
+    } else {
+      payload.inputCorrectAnswer = formData.inputCorrectAnswer;
+      payload.inputCount = formData.inputCount;
+    }
+
+    payload.type = formData.type;
     console.log(questionData);
 
     questionData.updateQuestions(payload);
@@ -94,48 +102,74 @@ export default function QuestionUpdateModal(props) {
     if (e.currentKey == "trueFalse") {
       setFormData((prev) => ({
         ...prev,
-        type: [e.currentKey],
+        type: e.currentKey,
         answerType: "radio",
       }));
     } else if (e.currentKey == "multipleChoice") {
       setFormData((prev) => ({
         ...prev,
-        type: [e.currentKey],
+        type: e.currentKey,
         answerType: "checkbox",
       }));
     } else {
       setFormData((prev) => ({
         ...prev,
-        type: [e.currentKey],
+        type: e.currentKey,
         answerType: "text",
       }));
     }
   };
 
   const fillData = () => {
-    let modifiedOptions = questionData.options.map((option) => ({
-      key: uuidv4(),
-      value: option.answer,
-    }));
-
-    let modifiedCorrectAnswer = questionData.correctAnswer.map((ans) => {
-      // let item = modifiedOptions.filter((each) => each.value === ans)[0];
-      // console.log(item);
-      // return item.key;
-      return modifiedOptions[ans - 1].key;
-    });
-
     setFormData((prev) => {
-      return {
+      let newData = {
         ...prev,
         ...questionData,
-        options: modifiedOptions,
-        correctAnswer: modifiedCorrectAnswer,
-        type: questionData.type ? [questionData.type] : [],
+      };
+
+      if (
+        !(
+          questionData.type === "fillInTheBlank" ||
+          questionData.type === "openQuestion"
+        )
+      ) {
+        let modifiedOptions = questionData.options.map((option) => ({
+          key: uuidv4(),
+          value: option.answer,
+        }));
+
+        let modifiedCorrectAnswer = questionData.correctAnswer.map((ans) => {
+          // let item = modifiedOptions.filter((each) => each.value === ans)[0];
+          // console.log(item);
+          // return item.key;
+          return modifiedOptions[ans - 1].key;
+        });
+
+        newData.options = modifiedOptions;
+        newData.correctAnswer = modifiedCorrectAnswer;
+      } else {
+        newData.inputCorrectAnswer = questionData.inputCorrectAnswer;
+        newData.inputCount = questionData.inputCount ?? 1;
+      }
+
+      return {
+        ...newData,
+        type: questionData.type,
         isLoading: false,
         isOpen: true,
       };
     });
+  };
+
+  const isQuestionTypeInput = () => {
+    if (
+      formData.type === "fillInTheBlank" ||
+      formData.type === "openQuestion"
+    ) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   const handleMultipleSelect = (e) => {
@@ -146,15 +180,14 @@ export default function QuestionUpdateModal(props) {
   };
 
   useEffect(() => {
-    console.log(questionData);
     if (Object.keys(questionData).length > 0) fillData();
   }, [questionData]);
 
-  useEffect(() => {
-    console.log(formData);
+  // useEffect(() => {
+  //   console.log(formData);
 
-    if (formData.isOpen) onOpen();
-  }, [formData]);
+  //   if (formData.isOpen) onOpen();
+  // }, [formData]);
 
   let content;
 
@@ -211,32 +244,6 @@ export default function QuestionUpdateModal(props) {
                       />
                     </div>
 
-                    <CustomMultiSelect
-                      label="Correct Answer"
-                      placeholder="Select correct answer"
-                      labelPlacement="outside"
-                      selectedKeys={formData.correctAnswer}
-                      data={formData.options}
-                      setValues={handleMultipleSelect}
-                    />
-
-                    <div className="flex w-full flex-wrap md:flex-nowrap gap-4 mt-3">
-                      <Input
-                        type="text"
-                        label="Correct Answer Description"
-                        placeholder="correctAnswerDescription"
-                        variant={variant}
-                        value={formData.correctAnswerDescription}
-                        onChange={(e) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            correctAnswerDescription: e.target.value,
-                          }))
-                        }
-                        labelPlacement="outside"
-                      />
-                    </div>
-
                     <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
                       <Select
                         items={questionTypes}
@@ -244,7 +251,7 @@ export default function QuestionUpdateModal(props) {
                         placeholder="Select an question type"
                         className="max-w-xs"
                         labelPlacement="outside"
-                        selectedKeys={formData.type ?? []}
+                        selectedKeys={[formData.type]}
                         onSelectionChange={(e) => onQuestionTypeChange(e)}
                       >
                         {(type) => (
@@ -275,49 +282,123 @@ export default function QuestionUpdateModal(props) {
                       </Select>
                     </div>
 
-                    <div className="flex items-end w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
-                      <Input
-                        type="text"
-                        label="Option"
-                        placeholder="option"
-                        variant={variant}
-                        value={option}
-                        onChange={(e) => setOption(e.target.value)}
-                        labelPlacement="outside"
-                      />
-                      <CustomButton
-                        onClick={() =>
-                          setFormData((prev) => {
-                            let newOptions = [...prev.options];
-                            newOptions.push({ key: uuidv4(), value: option });
+                    {isQuestionTypeInput() && (
+                      <>
+                        <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
+                          <Textarea
+                            label="Correct Answer"
+                            placeholder="Input Correct Answer"
+                            variant={variant}
+                            value={formData.inputCorrectAnswer}
+                            onChange={(e) =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                inputCorrectAnswer: e.target.value,
+                              }))
+                            }
+                            labelPlacement="outside"
+                          />
+                        </div>
+                        <div className="flex w-full flex-wrap md:flex-nowrap gap-4 mt-3">
+                          <Input
+                            type="number"
+                            label="Input Count"
+                            placeholder="Input Count"
+                            variant={variant}
+                            value={formData.inputCount}
+                            onChange={(e) =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                inputCount: e.target.value,
+                              }))
+                            }
+                            labelPlacement="outside"
+                          />
+                        </div>
+                      </>
+                    )}
 
-                            return { ...prev, options: newOptions };
-                          })
-                        }
-                        title="Add"
+                    {!isQuestionTypeInput() && (
+                      <CustomMultiSelect
+                        label="Correct Answer"
+                        placeholder="Select correct answer"
+                        labelPlacement="outside"
+                        selectedKeys={formData.correctAnswer}
+                        data={formData.options}
+                        setValues={handleMultipleSelect}
                       />
-                    </div>
-                    {formData.options.length > 0 && (
-                      <div className="p-3 border rounded-xl mb-3 space-y-3">
-                        <h4 className="mb-3">Option List</h4>
-                        {formData.options.map((option, index) => {
-                          return (
-                            <div
-                              key={option.key}
-                              className="p-2 border rounded-xl flex justify-between items-center"
-                            >
-                              <span>{option.value}</span>
-                              <CustomButton
-                                onClick={() => optionRemoveHandler(index)}
-                                type="delete"
-                                size="sm"
-                                iconOnly
-                                className="p-1"
-                              />
-                            </div>
-                          );
-                        })}
+                    )}
+
+                    {!isQuestionTypeInput() && (
+                      <div className="flex w-full flex-wrap md:flex-nowrap gap-4 mt-3">
+                        <Input
+                          type="text"
+                          label="Correct Answer Description"
+                          placeholder="correctAnswerDescription"
+                          variant={variant}
+                          value={formData.correctAnswerDescription}
+                          onChange={(e) =>
+                            setFormData((prev) => ({
+                              ...prev,
+                              correctAnswerDescription: e.target.value,
+                            }))
+                          }
+                          labelPlacement="outside"
+                        />
                       </div>
+                    )}
+
+                    {!isQuestionTypeInput() && (
+                      <>
+                        <div className="flex items-end w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
+                          <Input
+                            type="text"
+                            label="Option"
+                            placeholder="option"
+                            variant={variant}
+                            value={option}
+                            onChange={(e) => setOption(e.target.value)}
+                            labelPlacement="outside"
+                          />
+                          <CustomButton
+                            onClick={() =>
+                              setFormData((prev) => {
+                                let newOptions = [...prev.options];
+                                newOptions.push({
+                                  key: uuidv4(),
+                                  value: option,
+                                });
+
+                                return { ...prev, options: newOptions };
+                              })
+                            }
+                            title="Add"
+                          />
+                        </div>
+
+                        {formData.options.length > 0 && (
+                          <div className="p-3 border rounded-xl mb-3 space-y-3">
+                            <h4 className="mb-3">Option List</h4>
+                            {formData.options.map((option, index) => {
+                              return (
+                                <div
+                                  key={option.key}
+                                  className="p-2 border rounded-xl flex justify-between items-center"
+                                >
+                                  <span>{option.value}</span>
+                                  <CustomButton
+                                    onClick={() => optionRemoveHandler(index)}
+                                    type="delete"
+                                    size="sm"
+                                    iconOnly
+                                    className="p-1"
+                                  />
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </>
                     )}
                   </form>
                 </ModalBody>

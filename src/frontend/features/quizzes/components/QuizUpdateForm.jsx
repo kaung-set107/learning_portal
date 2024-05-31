@@ -5,16 +5,15 @@ import CustomButton from "../../../components/general/CustomButton";
 import SubHeading from "../../../components/general/typography/SubHeading";
 import { Select, SelectItem } from "@nextui-org/select";
 import { quizzesApi } from "../api";
-import QuestionCreateModal from "../../questions/components/QuestionCreateModal";
-import QuestionList from "../../questions/components/QuestionList";
 import { showError, showSuccess } from "../../../../util/noti";
 import { useNavigate } from "react-router-dom";
+import QuizQuestionHandler from "../../general/quiz-question/components/QuizQuestionHandler";
 
 const QuizUpdateForm = (props) => {
   const { type, successCallback, quizData } = props;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [questions, setQuestions] = useState([]);
+  const [questionData, setQuestionData] = useState([]);
 
   const navigate = useNavigate();
 
@@ -38,7 +37,7 @@ const QuizUpdateForm = (props) => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    questions: [],
+    questionData: [],
     numOfQuestions: 0,
     examDate: "",
     duration: 1,
@@ -46,30 +45,26 @@ const QuizUpdateForm = (props) => {
     totalMark: 0,
     passMark: 0,
     creditMark: 0,
-    distinctionMark: 0,
-    deletedQuestions: []
+    // distinctionMark: 0,
+    deletedQuestions: [],
+    deletedQuestionData: []
   });
-
-  const addQuestion = (data) => {
-    let newQuestions = [...questions];
-    newQuestions.push(data);
-
-    setQuestions(newQuestions);
-    // setFormData((prev) => ({ ...prev, questions: newQuestions }));
-  };
 
   const preparePayload = () => {
     let payload = {
       ...formData,
     };
 
-    if(!(payload.deletedQuestions && payload.deletedQuestions.length > 0)) delete payload.deletedQuestions
+    console.log(payload.deletedQuestions)
+
+    if (!(payload.deletedQuestions && payload.deletedQuestions.length > 0))
+      delete payload.deletedQuestions;
 
     // if(type === 'learningMaterial') {
     //     payload['learningMaterial'] = learningMaterial._id
     // }
     payload._id = quizData._id;
-    payload.questions = questions;
+    payload.questionData = questionData;
     payload.type = type;
     payload[type] = props[type]._id;
 
@@ -77,13 +72,13 @@ const QuizUpdateForm = (props) => {
   };
 
   const resetPayload = () => {
-    setFormData(prev => {
+    setFormData((prev) => {
       return {
         ...prev,
-        deletedQuestions: [] 
-      }
-    })
-  }
+        deletedQuestions: [],
+      };
+    });
+  };
 
   const handleSubmit = async () => {
     let payload = preparePayload();
@@ -93,24 +88,22 @@ const QuizUpdateForm = (props) => {
     try {
       setIsSubmitting(true);
       let res = await quizzesApi.update(payload);
-      if(successCallback) await successCallback();
+      if (successCallback) await successCallback();
       showSuccess({ text: res.message, type: "noti-box" });
     } catch (error) {
       console.log(error);
       showError({ axiosResponse: error });
     } finally {
       setIsSubmitting(false);
-      resetPayload()
+      resetPayload();
     }
   };
 
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
-      numOfQuestions: questions.length,
-      totalMark: questions.length,
     }));
-  }, [questions]);
+  }, [questionData]);
 
   const fillData = () => {
     setFormData((prev) => {
@@ -118,19 +111,19 @@ const QuizUpdateForm = (props) => {
         ...prev,
         title: quizData.title,
         description: quizData.description,
-        questions: quizData.questions,
+        questionData: quizData.questionData,
         examDate: quizData.examDate,
         duration: quizData.duration,
         totalMark: quizData.totalMark,
         passMark: quizData.passMark,
         creditMark: quizData.creditMark,
-        distinctionMark: quizData.distinctionMark,
+        // distinctionMark: quizData.distinctionMark,
         numOfQuestions: quizData.numOfQuestions,
         status: quizData.status,
       };
     });
 
-    setQuestions(quizData.questions);
+    setQuestionData(quizData.questionData);
   };
 
   useEffect(() => {
@@ -259,7 +252,7 @@ const QuizUpdateForm = (props) => {
                 labelPlacement="outside"
               />
             </div>
-            <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
+            {/* <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
               <Input
                 type="number"
                 label="Distinction Mark"
@@ -274,7 +267,7 @@ const QuizUpdateForm = (props) => {
                 }
                 labelPlacement="outside"
               />
-            </div>
+            </div> */}
             <div className="flex w-full flex-wrap md:flex-nowrap mb-6 gap-4 mt-3">
               <Select
                 items={status}
@@ -293,7 +286,7 @@ const QuizUpdateForm = (props) => {
               </Select>
             </div>
 
-            <div className="mb-3">
+            {/* <div className="mb-3">
               <div className="flex w-full items-center justify-between">
                 <h3 className="text-lg font-bold">Questions</h3>
                 <QuestionCreateModal addQuestion={addQuestion} />
@@ -310,7 +303,22 @@ const QuizUpdateForm = (props) => {
                   setQuestions={setQuestions}
                 />
               </div>
+            </div> */}
+
+            <div className="mb-3">
+              <QuizQuestionHandler
+                successCallback={successCallback}
+                srcId={quizData._id}
+                imageUploadApi={quizzesApi.updateQuestionImage}
+                questionData={questionData}
+                setQuestionData={setQuestionData}
+                deletedQuestions={formData.deletedQuestions}
+                setDeletedQuestions={(data) => setFormData((prev) => ({ ...prev, deletedQuestions: data }))}
+                deletedQuestionData={formData.deletedQuestionData}
+                setDeletedQuestionData={(data) => setFormData((prev) => ({ ...prev, deletedQuestionData: data }))}
+              />
             </div>
+
             <div className="flex justify-center gap-5 mt-8">
               <CustomButton
                 color="primary"

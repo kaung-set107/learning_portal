@@ -9,6 +9,9 @@ import ListInfo from "../../../components/general/typography/ListInfo";
 import ListDetail from "../../../components/general/typography/ListDetail";
 import { useNavigate } from "react-router";
 import CustomButton from "../../../components/general/CustomButton";
+import { useState } from "react";
+import { examsApi } from "../api";
+import { showError, showSuccess } from "../../../../util/noti";
 
 const ExamCard = (props) => {
   const {
@@ -22,11 +25,26 @@ const ExamCard = (props) => {
   } = props;
 
   const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const quizCreate = (data) => {
     navigate(`/by-instructor/quizzes/create`, {
       state: { type: "exam", exam: data },
     });
+  };
+
+  const handleExamDelete = async (examId) => {
+    try {
+      setIsSubmitting(true);
+      const res = await examsApi.remove({_id: examId});
+      successCallback();
+      showSuccess({ text: res.message, type: "noti-box" });
+    } catch (error) {
+      console.log(error);
+      showError({ axiosResponse: error });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const quizUpdate = (data) => {
@@ -88,14 +106,13 @@ const ExamCard = (props) => {
           examData={examData}
           successCallback={successCallback}
         />
-        {/* <CustomButton
+        <CustomButton
           iconOnly
           type="delete"
-          size="sm"
           onClick={() => handleExamDelete(examData._id)}
           isLoading={isSubmitting}
           title="Delete"
-        /> */}
+        />
       </div>
       <h3 className="font-bold text-lg capitalize mb-3">{examData.title}</h3>
       <div className="flex gap-3">

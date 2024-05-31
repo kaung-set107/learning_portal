@@ -9,7 +9,7 @@ import { showConfirmWithInput } from "../../../util";
 
 /* eslint-disable react/prop-types */
 const CustomButton = (props) => {
-    const { isLoading, iconOnly, textOnly, title, type, onClick, isDisabled, ...args } = props
+    const { isLoading, iconOnly, confirmBox, textOnly, title, type, onClick, isDisabled, className, ...args } = props
 
     const navigate = useNavigate()
 
@@ -56,22 +56,22 @@ const CustomButton = (props) => {
         return title
     }
 
-    const handleOnClick = async () => {
-        if(type === 'delete') {
+    const handleOnClick = async (e) => {
+        if(type === 'delete' && confirmBox) {
             const res = await showConfirmWithInput({title: 'Are you sure to delete?'})
             console.log(res)
             if(!res) return
         }
 
         if(onClick) {
-            onClick()
+            onClick(e)
         } else if(type === 'back') {
             navigate(-1)
         }
     }
 
     return (
-        <Button onClick={handleOnClick} color={getColor()} isDisabled={isLoading || isDisabled} {...args} className={`border px-2 border-transparent hover:border-gray-700 h-[40px] hover:shadow-sm ${isLoading ? 'cursor-not-allowed' : ''} ${isDisabled ? 'bg-gray-300' : ''}`}>
+        <Button onClick={handleOnClick} isIconOnly={iconOnly} color={getColor()} isDisabled={isLoading || isDisabled} {...args} className={`border px-2 border-transparent hover:border-gray-700 h-[40px] hover:shadow-sm hover:bg-opacity-100 ${className} ${isLoading ? 'cursor-not-allowed' : ''} ${isDisabled ? 'bg-gray-300' : ''}`}>
             {
                 isLoading ? <Loading color="default" size={"sm"} /> : <span className="flex items-center justify-center">{getContent()}</span>
             }

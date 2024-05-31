@@ -1,8 +1,7 @@
-import { getFormData } from "../../../util";
 import apiInstance from "../../../util/api";
 
-const baseUrl = "/quizzes";
-const baseName = "quizzes";
+const baseUrl = "/instructors";
+const baseName = "instructors";
 
 const getAll = async (payload) => {
   const res = await apiInstance.get(baseUrl, { params: payload });
@@ -41,20 +40,10 @@ const remove = async (payload) => {
   return res.data;
 };
 
-const updateQuestionImage = async (payload) => {
-  const res = await apiInstance.put(
-    baseUrl + `/${payload._id}/question-data/${payload.sectionIndex}/questions/${payload.questionIndex}`,
-    getFormData(payload)
-  );
-
-  return res.data
-};
-
-export const quizzesApi = {
+export const instructorsApi = {
   getAll,
   get,
   create,
   update,
   remove,
-  updateQuestionImage
 };

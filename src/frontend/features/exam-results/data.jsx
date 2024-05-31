@@ -1,7 +1,7 @@
 import { dateForDisplay } from "../../../util/Util";
 import FileLoader from "../../components/general/FileLoader";
 
-export const getTableData = ({ getCheckButton }) => {
+export const getTableData = ({ getCheckButton, getViewButton }) => {
   return {
     headers: [
       {
@@ -80,9 +80,9 @@ export const getTableData = ({ getCheckButton }) => {
         key: "action",
         getComponent: (data) => {
           if (data.status === "submitted") {
-            return <>{getCheckButton(data._id)}</>;
+            return <div className="flex gap-3">{getCheckButton(data._id)}</div>;
           } else {
-            return "No Action!";
+            return <>{getViewButton(data._id)}</>;
           }
         },
       },
