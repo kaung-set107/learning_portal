@@ -63,13 +63,27 @@ const ExamResults = () => {
 
   console.log(state);
 
-  const getCheckButton = (id) => {
-    return (
-      <ExamResultCheckModal
-        examResultId={id}
-        successCallback={getExamResults}
-      />
-    );
+  const goToExamResultCheckPage = (examResultId) => {
+    navigate(`/by-instructor/exam-results/${examResultId}/check`);
+  };
+
+  const getCheckButton = (id, examType) => {
+    if (examType === "inapp") {
+      return (
+        <CustomButton
+          color="success"
+          title="Check"
+          onClick={() => goToExamResultCheckPage(id)}
+        />
+      );
+    } else {
+      return (
+        <ExamResultCheckModal
+          examResultId={id}
+          successCallback={getExamResults}
+        />
+      );
+    }
   };
 
   const getViewButton = (id) => {
@@ -81,8 +95,7 @@ const ExamResults = () => {
     );
   };
 
-
-  const tableData = getTableData({getCheckButton, getViewButton});
+  const tableData = getTableData({ getCheckButton, getViewButton });
 
   const getExamResults = async (defaultPayload) => {
     let payload = {
@@ -122,9 +135,9 @@ const ExamResults = () => {
       defaultPayload.exam = state.exam._id;
     }
 
-    if(state && state.subject) {
+    if (state && state.subject) {
       // data.batch = {_id: state.subject.course?._id ?? state.subject.course}
-      data.subject = state.subject
+      data.subject = state.subject;
     }
 
     let newFilters = { ...filters, ...data };
