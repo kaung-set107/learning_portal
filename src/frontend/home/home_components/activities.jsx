@@ -51,7 +51,7 @@ export default function Activities() {
                     <span className='text-[26px] lg:text-[30px] 2xl:text-[36px] font-semibold font-[Poppins] flex justify-center items-center text-[#0B2743]' data-aos={'fade-up'}>News & Activities</span>
                     <span className='text-[18px] lg:text-[20px] 2xl:text-[24px] font-medium font-[Poppins] text-[#0B2743' data-aos={'fade-right'}>Latest Post</span>
                 </div>
-                <div className='grid grid-cols-1 gap-2 md:grid-cols-3 lg:grid-cols-4 md:gap-5 lg:gap-5 2xl:gap-10 sm:gap-0 items-center justify-center md:flex-row sm:py-10 2xl:py-20' data-aos={'fade-left'}>
+                <div className='grid grid-cols-1 gap-2 md:grid-cols-3 lg:grid-cols-4 md:gap-5 lg:gap-5 2xl:gap-10 sm:gap-0 items-center justify-center md:flex-row sm:py-10 2xl:py-20' >
 
                     {newsList.slice(0, 4).map((e) => (
                         <Link to={'/activities-detail/' + e._id}

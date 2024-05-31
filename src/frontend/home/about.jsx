@@ -169,7 +169,7 @@ const About = () => {
           >
             <Image
 
-              className='w-[273px] h-[292px]'
+              className='md:w-[273px] w-[100px] h-[110px] md:h-[292px]'
               style={{ borderRadius: '0px 157.68px' }}
 
               src={Team2}

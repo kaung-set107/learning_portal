@@ -18,7 +18,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect } from "react";
 // Also possible:
 // import { videoPlayer } from 'cloudinary-video-player';
-
+import { Button } from "@nextui-org/react";
 const fields = loginFields;
 let fieldsState = {};
 fields.forEach((field) => (fieldsState[field.id] = ""));
@@ -228,7 +228,7 @@ export default function Login() {
             id="player"
             muted
             autoPlay="autoplay"
-            className={showRegisterPage ? ' object-fill h-[500px] md:h-[550px] lg:h-[730px] 2xl:h-[800px]' : ' object-fill   h-screen'}
+            className=' object-fill h-screen'
             loop
             src={LoginVideo}
 
@@ -368,13 +368,13 @@ export default function Login() {
         {showRegisterPage && (
           <div className='pl-10 pr-10  flex flex-col'>
 
-            <div className=' flex flex-col pl-9 sm:pl-18 items-center gap-4 pt-4 sm:pt-6'>
-              <span className=' text-[#262626] text-[18px] sm:text-[32px] font-semibold font-inter text-center'>Registration</span>
+            <div className=' flex flex-col pl-9 sm:pl-18 items-center gap-4 pt-4 sm:pt-4'>
+              <span className=' text-[#262626] text-[18px] sm:text-[32px] lg:text-[20px] xl:text-[23px] 2xl:text-[25px] font-semibold font-inter text-center'>Student Registration</span>
 
             </div>
-            <div className='w-[350px] sm:w-[400px] md:w-[522px] h-[120px] pt-8 sm:pt-12'>
+            <div className='w-[350px] sm:w-[400px] md:w-[522px] lg:w-[450px]  pt-4 '>
               <form onSubmit={handleRegisterCreate}>
-                <div className='flex flex-col w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+                <div className='flex flex-col w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 lg:gap-2'>
                   <div>
                     {/* <label className='flex justify-start text-[#5A5A5D] text-[14px] font-semibold'>Email</label> */}
                     <Input
@@ -499,15 +499,20 @@ export default function Login() {
 
                 </div>
 
-                <div className='mt-1'>
-                  <FormAction handleSubmit={() => handleRegisterCreate()} text='Register' />
-                </div>
-                <div className='pt-2 flex justify-center '>
-                  <span className='font-medium text-[#5A5A5D] text-[16px]' onClick={handleBack}>
-                    <FontAwesomeIcon icon={faArrowLeft} size='xl' /> &nbsp;Back To Login
-                  </span>
+                <div className='flex gap-2 justify-center'>
+                  <div className="w-[100px] h-[20px] pt-10">
+                    <Button className='font-medium text-[#5A5A5D] text-[16px] ' onClick={handleBack}>
+                      Cancel
+                    </Button>
+                  </div>
+                  <div className='w-[100px] h-[20px]'>
+                    <FormAction handleSubmit={() => handleRegisterCreate()} text='Register' />
+                  </div>
+
+
 
                 </div>
+
               </form>
             </div>
 

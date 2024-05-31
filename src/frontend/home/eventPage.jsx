@@ -26,9 +26,9 @@ export default function EventPage() {
             < div style={{ background: "var(--blue-pale, #F4FAFF)", }} className='flex flex-col gap-10 sm:gap-24' >
                 <div className='flex flex-col justify-center items-center gap-4 pt-[44px]'>
                     <span className='text-[#1F4164] text-[30px] sm:text-[48px] font-semibold w-full  sm:w-[679px] h-[55px] text-center'>Our Events</span>
-                    <p className='text-[#1F4164] text-[16px] sm:text-[18px] font-normal w-full  sm:w-[639px] h-[54px] text-center'>
+                    {/* <p className='text-[#1F4164] text-[16px] sm:text-[18px] font-normal w-full  sm:w-[639px] h-[54px] text-center'>
                         Clarity gives you the blocks & components you need to create a truly professional website, landing page or admin panel for your SaaS.
-                    </p>
+                    </p> */}
                 </div>
                 {!eventList[0] ? (
                     <div className='flex justify-center pt-[40px]'>
