@@ -148,7 +148,7 @@ export default function QuestionUpdateModal(props) {
         newData.options = modifiedOptions;
         newData.correctAnswer = modifiedCorrectAnswer;
       } else {
-        newData.inputCorrectAnswer = questionData.inputCorrectAnswer;
+        newData.inputCorrectAnswer = questionData.inputCorrectAnswer[0];
         newData.inputCount = questionData.inputCount ?? 1;
       }
 

@@ -2,11 +2,11 @@
 import QuizResultDetailCard from "../../quiz-results/components/QuizResultDetailCard";
 
 const ExamResultDetailCard = (props) => {
-  const { examResultData } = props;
+  const { quizResult, setQuizResult } = props;
 
   return (
     <div>
-      <QuizResultDetailCard quizResult={examResultData.quizResult} />
+      <QuizResultDetailCard checkActions quizResult={quizResult} setQuizResult={setQuizResult} />
     </div>
   );
 };

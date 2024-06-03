@@ -90,7 +90,7 @@ export default function QuestionCreateModal(props) {
       payload.options = modifiedOptions;
       payload.correctAnswer = modifiedCorrectAnswers;
     } else {
-      payload.inputCorrectAnswer = formData.inputCorrectAnswer;
+      payload.inputCorrectAnswer = [formData.inputCorrectAnswer];
       payload.inputCount = formData.inputCount;
     }
 
