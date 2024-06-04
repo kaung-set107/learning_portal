@@ -654,10 +654,10 @@ export default function CourseDetail(props) {
       )}
       <div>
         <Modal
-          size={size}
+          size='5xl'
           isOpen={isOpen}
           onClose={onClose}
-          scrollBehavior='outside'
+          scrollBehavior='inside'
         >
           <ModalContent>
             {(onClose) => (

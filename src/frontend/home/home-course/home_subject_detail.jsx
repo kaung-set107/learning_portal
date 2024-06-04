@@ -384,7 +384,7 @@ const SubjectDetail = (props) => {
                           </span> : tlist?.introduction.substring(0, 400)}
                         </p>
                         {/* Email & Phone */}
-                        <div className='lg:pt-[50px]'>
+                        {/* <div className='lg:pt-[50px]'>
                           <span
                             style={{
                               color: "#FFF",
@@ -402,7 +402,7 @@ const SubjectDetail = (props) => {
                           >
                             Phone : {tlist?.phone}
                           </span>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   </div>

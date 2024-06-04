@@ -124,7 +124,7 @@ const ExamPage = ({ ViewData }) => {
                             <div className='border-1 border-slate-500 rounded-lg lg:p-4 xl:p-5 2xl:7'>
                                 <span className='text-[16px] text-[#000] font-semibold '>{item?.instruction}</span>
                                 <div className='flex justify-between'>
-                                    <ScrollShadow orientation="horizontal" className="max-w-[800px] max-h-[500px] py-5">
+                                    <ScrollShadow orientation="horizontal" className="max-w-[600px] max-h-[500px] py-5">
                                         <div className='flex flex-col gap-5 '>
                                             {item?.paragraph.map((i) => (
                                                 <div key={i} className='flex flex-col '>{i}</div>

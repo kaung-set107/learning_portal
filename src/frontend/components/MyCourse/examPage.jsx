@@ -39,10 +39,11 @@ const ExamPage = () => {
     const ExamData = location.state.examData
     const QuizID = ExamData._id //._id
     const exam = ExamData.exam //._id
+    const AllData = ExamData
     const batchID = location.state.batchID //.data.course.batch.id
     const enrollID = location.state.enroll //.enroll_id
     const student = location.state.student //student
-    console.log(ExamData.questionData, 'Hello')
+    console.log(ExamData, 'Hello')
     const [isLoading, setIsLoading] = useState(true);
     const [optionIndex, setOptionIndex] = useState(5); // Timer set for 5 seconds
     const [counter, setCounter] = useState(0);
@@ -60,6 +61,7 @@ const ExamPage = () => {
     const [multiAns, setMultiAns] = useState([])
     const [nextAnswer, setNextAnswer] = useState(false);
     const [arr, setArr] = useState([]);
+
     const [timer, setTimer] = useState(0);
     const ti = timer / 30
     // const [showResult, setShowResult] = useState(false);
@@ -77,22 +79,20 @@ const ExamPage = () => {
     const [count, setCount] = useState('')
     const [inputList, setInputList] = useState([])
 
-    // const FillBlankInput = 3; // Default count is 3
-
     // Generate an array of length equal to the count
     // const inputArray = Array.from({ length: FillBlankInput }, (_, index) => index);
-    console.log(inputList, 'opp')
+    // console.log(inputList, 'opp')
 
-    console.log(trueAnswerList, 'dis')
+    // console.log(trueAnswerList, 'dis')
     const TotalMark = trueAnswerList.map((i) => i.markTotal)
         .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-    console.log(TotalMark, "time");
+    // console.log(TotalMark, "time");
     const handleBack = () => {
         navigate('/student')
     };
-
-    const MulTotalMark = multiTrueAnswerList.filter(el => el.id).map((i) => i.markTotal).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-    // console.log(quizList, "body");
+    // console.log(multiTrueAnswerList, 'multiTrueAnswerList')
+    const MulTotalMark = multiTrueAnswerList.reduce((accumulator, currentValue) => accumulator + currentValue.markTotal, 0);
+    // console.log(MulTotalMark, "body");
     const handleShowFail = () => {
         // alert('Fail')
         setShowOrigin(true)
@@ -135,80 +135,18 @@ const ExamPage = () => {
         // Clear interval when the component unmounts or when moving to the next question
         // return () => clearInterval(interval);
     };
-    const nextQuestion = (studentAnswer, cas, ind) => {
-        // console.log(quizList.questions[counter].correctAnswer === cas, 'cas')
-
-
-        // console.log(caList, 'caList')
-        setClicked("");
-        setNextAnswer(true);
-        setAnsIndex(""); //to check incorrect or correct answer
-        if (cas === null) {
-            alert("Must select an answer before proceeding to the next question");
-            return;
-        }
-        if (quizList.questions[counter].type === 'multipleChoice') {
-
-
-            const correctList = cas?.map((i) => (parseInt(i))) //To change Int in array's items
-
-            let answerObj = correctList.every(item => studentAnswerList.filter((el) => el.id === quizList.questions[counter]._id)[1].studentAnswer.slice(-2).includes(item))  // To know two arrays's items same?
-            // console.log(correctList.every(item => studentAnswerList.filter((el) => el.id === quizList.questions[counter]._id)[1].studentAnswer.slice(-2).includes(item)), 'slice in next')
-
-
-            let updated_points = answerObj ? points + 1 : points;       // If we true,we increase mark
-            // console.log(updated_points, 'point');
-
-            setPoints(updated_points);
-            let nextQuestion = counter + 1;
-
-            if (nextQuestion < quizList.questions.length) {
-                setCounter(nextQuestion);
-            } else {
-                setCounter(0);
-                handleResult();
-                // console.log(TotalMark, "in next");
-            }
-
-            // handleAns()
-            // displayCorrect(answerObj);
-        } else {
-            let answerObj = quizList.questions[counter].correctAnswer === cas
-            // console.log(answerObj, 'answerobj')
-            let updated_points = answerObj ? points + 1 : points;
-            // console.log(updated_points, 'point');
-            setPoints(updated_points);
-            let nextQuestion = counter + 1;
-
-            if (nextQuestion < quizList.questions.length) {
-                setCounter(nextQuestion);
-            } else {
-                setCounter(0);
-                handleResult();
-                // console.log(TotalMark, "in next");
-            }
-
-            // handleAns()
-            // displayCorrect(answerObj);
-
-        }
-
-    };
 
     const handleResult = () => {
 
-        console.log(studentAnswerList, 'studentAnswerList');
+        // console.log(studentAnswerList, 'studentAnswerList');
+        const totalMark = TotalMark + MulTotalMark
 
-        // console.log(studentAnswerList.filter(el => quizList.questions.find(i => i._id === el.id)), 'studentAnswerList')
-        //Quiz-Result Create
         const data = {
             enrollment: enrollID,
             quiz: QuizID,
-            // type: ResData.examType,
             student: studentID,
             batch: batchID,
             subject: subjectID,
-            // exam: exam,
             answerDate: Date.now(),
             updatedQuestionData: quizList.map((first) => {
                 return {
@@ -218,7 +156,8 @@ const ExamPage = () => {
                         return {
                             question: i.question,
                             type: i.type,
-                            mark: i.mark,
+                            mark: i.type === 'fillInTheBlank' ? 0 : i.mark,
+                            inputCount: i.inputCount ? i.inputCount : 0,
                             correctAnswerDescription: i.correctAnswerDescription,
                             options: i.options,
                             answerType: i.answerType,
@@ -233,8 +172,8 @@ const ExamPage = () => {
                 }
 
             }),
-            totalMark: TotalMark + MulTotalMark,
-            status: 'pass'
+            totalMark: totalMark,
+            status: totalMark > AllData?.passMark ? 'pass' : totalMark >= AllData?.creditMark ? 'credit' : 'fail'
 
 
         }
@@ -250,7 +189,7 @@ const ExamPage = () => {
 
         apiInstance
             .post("quiz-results", data)
-            .then(function () {
+            .then(function (res) {
                 Swal.fire({
                     icon: "success",
                     title: "Exam File is Uploaded!",
@@ -259,6 +198,7 @@ const ExamPage = () => {
                     timer: 2000,
                 });
                 navigate('/student')
+                console.log(res.data.data, 'create')
                 // setShowTimer(false)
                 // setShowOrigin(true)
                 // setIsLoading(true)
@@ -273,10 +213,7 @@ const ExamPage = () => {
         // setShowExamResult(true);
     };
 
-    const handleCheckboxSelect = (event, index, data, correct, counter, mark, counterId, SecItemData) => {
-        // setNextAnswer(false);
-        // setIndex(index + 1);
-        // console.log(counter, 'll')
+    const handleCheckboxSelect = (event, index, correct, mark, counterId, SecItemData) => {
 
         if (event.target.checked) {
 
@@ -319,7 +256,7 @@ const ExamPage = () => {
                 // console.log(uniqueObjects, 'mul real');
                 setMultiTrueAnswerList(uniqueObjects);
 
-                console.log(uniqueObjects, 'setMulTrueAnswerList')
+                // console.log(uniqueObjects, 'setMulTrueAnswerList')
                 // console.log(quiz.questions.filter(el=>el.correctAnswer === val+1))
 
             }
@@ -349,7 +286,7 @@ const ExamPage = () => {
 
     }
 
-    const handleAns = (secInd, val, studentChoose, ca, index, mark, secItems, counterid, SecItemData) => {
+    const handleAns = (val, studentChoose, ca, mark, counterid, SecItemData) => {
         setNextAnswer(false);
         setClicked(true);
         setShowAlert(true);
@@ -425,30 +362,48 @@ const ExamPage = () => {
 
     };
 
-    const handleFillBlank = (event, val, studentChoose, ca, index, mark, counterid, SecItemData) => {
+    const handleFillBlank = (event, val, counterid, SecItemData) => {
 
         const { value } = event.target;
         const newItems = [...inputList];
         newItems[val] = value;
         setInputList(newItems);
 
+        // Create the main array and push the sub-arrays into it
+        const mainArray = [...studentAnswerList, ...[{ studentAnswer: newItems, id: counterid, type: SecItemData.type }]];
+
+        const getUniqueById = (arr) => {
+            return Object.values(arr.reduce((acc, obj) => {
+                acc[obj.id] = obj;
+                return acc;
+            }, {}));
+        }; //to get same ID object data as one obj data
+
+        // Usage
+        const stuList = getUniqueById(mainArray);
+        // console.log(stuList, 'final blank')
+        setStudentAnswerList(stuList);
 
 
-        const newFormSubmissionsforStudentAnswer = [...studentAnswerList, { studentAnswer: newItems, id: counterid, type: SecItemData.type }];
-        // newFormSubmissionsforStudentAnswer.push({ studentAnswer: inputList, id: counterid });
-        localStorage.setItem(
-            "studentformSubmission",
-            JSON.stringify(newFormSubmissionsforStudentAnswer)
-        );
-        console.log(newFormSubmissionsforStudentAnswer, 'final else radio')
-        const lastInputValue = newFormSubmissionsforStudentAnswer[newFormSubmissionsforStudentAnswer.length - 1]
-        const otherValue = newFormSubmissionsforStudentAnswer.filter(el => el.type !== 'fillInTheBlank')
-        console.log([...otherValue, lastInputValue], 'lastInputValue')
-        setStudentAnswerList([...otherValue, lastInputValue]);
+
+
+        // console.log(inputList, 'newItems')
+
+        // const newFormSubmissionsforStudentAnswer = [...studentAnswerList, { studentAnswer: inputList, id: counterid, type: SecItemData.type }];
+        // // newFormSubmissionsforStudentAnswer.push({ studentAnswer: inputList, id: counterid });
+        // localStorage.setItem(
+        //     "studentformSubmission",
+        //     JSON.stringify(newFormSubmissionsforStudentAnswer)
+        // );
+        // console.log(newFormSubmissionsforStudentAnswer, 'final else radio')
+        // const lastInputValue = newFormSubmissionsforStudentAnswer[newFormSubmissionsforStudentAnswer.length - 1]
+        // const otherValue = newFormSubmissionsforStudentAnswer
+        // console.log([...otherValue, lastInputValue], 'lastInputValue')
+        // setStudentAnswerList(newFormSubmissionsforStudentAnswer);
         // setStudentAnswerList(newItems);
         // Get the index of the last element
         const lastIndex = newItems.length - 1;
-        console.log('Last Index:', newItems);
+        console.log('Last Index:', newItems[lastIndex]);
 
         // const hee = [...inputList, secInd]
         // console.log(hee, 'val')
@@ -541,12 +496,7 @@ const ExamPage = () => {
         // return () => clearTimeout(timer);
 
     }, [count, isLoading, showTimer]);
-    // console.log(alreadyExamRes, 'exam main')
-    const SubData = location.state;
-    // console.log(ResData, "dat");
-    const displayMinutes = Math.floor(timeLeft / 60);
-    const displaySeconds = timeLeft % 60;
-    // console.log(disabledValues.every(item => oriIndexList.includes(item)), 'same?')
+
 
     return (
         <div>
@@ -645,7 +595,7 @@ const ExamPage = () => {
                                                 <div className='rounded-[12px] flex flex-col gap-10'>
                                                     <div className='flex flex-col justify-start items-start py-2'>
                                                         <span className='text-[20px] font-semibold '>
-                                                            PART {ExamData.questionData?.length}
+                                                            PART
                                                         </span>
                                                         <span className='text-[16px] text-[#000] font-semibold '>
                                                             {quizList[0].questions?.length} total questions
@@ -711,13 +661,13 @@ const ExamPage = () => {
                                                                                                                     <Radio value={e.answer}
                                                                                                                         onChange={() =>
                                                                                                                             handleAns(
-                                                                                                                                secIndex,
+
                                                                                                                                 i,
                                                                                                                                 e,
                                                                                                                                 secItem.correctAnswer,
-                                                                                                                                secIndex,
+
                                                                                                                                 secItem.mark,
-                                                                                                                                item.questions,
+
                                                                                                                                 secItem?._id,
                                                                                                                                 secItem
 
@@ -767,9 +717,9 @@ const ExamPage = () => {
                                                                                                                         onClick={(event) =>
                                                                                                                             handleCheckboxSelect(event,
                                                                                                                                 i,
-                                                                                                                                e,
+
                                                                                                                                 secItem.correctAnswer,
-                                                                                                                                secIndex,
+
                                                                                                                                 secItem.mark,
                                                                                                                                 secItem?._id,
                                                                                                                                 secItem
@@ -806,10 +756,7 @@ const ExamPage = () => {
                                                                                                                             <Input key={item} type="text" placeholder='Answer' variant="underlined" className="rounded-md p-2 mb-2" onChange={(event) =>
                                                                                                                                 handleFillBlank(event,
                                                                                                                                     ind,
-                                                                                                                                    item,
-                                                                                                                                    secItem.correctAnswer,
-                                                                                                                                    secIndex,
-                                                                                                                                    secItem.mark,
+
                                                                                                                                     secItem?._id,
                                                                                                                                     secItem
 
