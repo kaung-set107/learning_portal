@@ -33,6 +33,8 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import MSI from "../../assets/img/MSI.svg";
 import Student from '../../assets/img/student.jpg'
+
+
 export default function App() {
   const menuItems = [
     "Profile",
@@ -111,7 +113,21 @@ export default function App() {
       // console.log(res.data.data, 'res')
     })
   };
+  const logout = () => {
+    localStorage.removeItem("token");
+    Swal.fire({
+      icon: "success",
+      title: "Logout Successful",
+      text: "Welcome Home!",
+      showCancelButton: false,
+      showConfirmButton: false,
+      timer: 2000,
+    });
 
+    // navigate('/')
+    window.location.href = '/';
+
+  };
   useEffect(() => {
     const getAssign = async () => {
       await apiInstance.get(`subjects`).then((res) => {
@@ -158,23 +174,30 @@ export default function App() {
     getNoti();
     getUser();
     getAssign();
+    const handleBeforeUnload = (e) => {
+      // Call logoutUser() function when the tab is being closed
+      logout();
+      // Cancel the default action to show a confirmation dialog
+      e.preventDefault();
+      // Chrome requires returnValue to be set
+      e.returnValue = '';
+    };
+
+    // Add event listener for window beforeunload
+    // window.addEventListener("beforeunload", handleBeforeUnload);
+
+    // Cleanup function
+    // return () => {
+    //   // Remove event listener when component unmounts
+    //   // window.removeEventListener("beforeunload", handleBeforeUnload);
+    // };
   }, [StudentID]);
 
   const handleSeeAll = () => {
     setSeeAll(!seeAll)
   }
-  const logout = () => {
-    localStorage.removeItem("token");
-    Swal.fire({
-      icon: "success",
-      title: "Logout Successful",
-      text: "Welcome Home!",
-      showCancelButton: false,
-      showConfirmButton: false,
-      timer: 2000,
-    });
-    navigate("/");
-  };
+
+
 
   return (
     <>
@@ -272,7 +295,7 @@ export default function App() {
                   <DropdownItem key='profile' className=' gap-2'>
                     {GetLoginData ? (
                       <>
-                        <div className='hidden sm:flex' onClick={logout}>
+                        <div className='hidden sm:flex' id='logoutButton' onClick={logout} >
                           Logout
                         </div>
                       </>

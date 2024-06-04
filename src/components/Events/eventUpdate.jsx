@@ -228,25 +228,27 @@ export default function Eventupdate() {
                 </div>
 
                 <div className='flex gap-5'>
-                    <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+                    <div className='flex flex-col w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
                         <label className='text-sm font-semibold'>Event Banner Photo</label>
-                        <Input
+                        <input
                             accept="image/*"
                             type='file'
                             onChange={handleThuminalImage}
                             variant='bordered'
                             placeholder='Enter your venue'
+                            className='border-1 border-slate-300 h-10 rounded-md'
                         // onChange={(e) => setThumbnail(e.target.value)}
                         />
                         {/* <img src={thumbnail} /> */}
                         <Image src={showBannerImg ? showBannerImg : bannerOldImage} className='w-[150px] h-[70px]' />
                     </div>
-                    <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+                    <div className='flex flex-col w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
                         <label className='text-sm font-semibold'>Speaker Photo</label>
-                        <Input
+                        <input
                             type='file'
                             accept="image/*"
                             variant='bordered'
+                            className='border-1 border-slate-300 h-10 rounded-md'
                             onChange={handleSpeakerImage}
                         // onChange={(e) => setSpeakerImage(e.target.value)}
                         />

@@ -9,7 +9,9 @@ import {
     Textarea,
     ScrollShadow,
     Progress,
-    RadioGroup, Radio
+    RadioGroup, Radio,
+    input,
+    Input
 } from "@nextui-org/react";
 import apiInstance from "../../../util/api";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -33,13 +35,14 @@ import EHalf from '../../../assets/img/EllipseHalf.png'
 import Swal from "sweetalert2";
 const ExamPage = () => {
     const location = useLocation();
-    const subjectID = location.state //.data._id
+    const subjectID = location.state.subID //.data._id
     const ExamData = location.state.examData
-    const QuizID = ExamData.quiz //._id
-    const exam = ExamData //._id
-    const batchID = location.state //.data.course.batch.id
-    const enrollID = location.state //.enroll_id
-    // console.log(ExamData.questionData, 'Hello')
+    const QuizID = ExamData._id //._id
+    const exam = ExamData.exam //._id
+    const batchID = location.state.batchID //.data.course.batch.id
+    const enrollID = location.state.enroll //.enroll_id
+    const student = location.state.student //student
+    console.log(ExamData.questionData, 'Hello')
     const [isLoading, setIsLoading] = useState(true);
     const [optionIndex, setOptionIndex] = useState(5); // Timer set for 5 seconds
     const [counter, setCounter] = useState(0);
@@ -72,10 +75,18 @@ const ExamPage = () => {
     const [alreadyQuizRes, setAlreadyQuizRes] = useState('')
 
     const [count, setCount] = useState('')
-    // console.log(trueAnswerList.slice(0, trueAnswerList.length - 1)., 'dis')
+    const [inputList, setInputList] = useState([])
+
+    // const FillBlankInput = 3; // Default count is 3
+
+    // Generate an array of length equal to the count
+    // const inputArray = Array.from({ length: FillBlankInput }, (_, index) => index);
+    console.log(inputList, 'opp')
+
+    console.log(trueAnswerList, 'dis')
     const TotalMark = trueAnswerList.map((i) => i.markTotal)
         .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-    // console.log(TotalMark, "time");
+    console.log(TotalMark, "time");
     const handleBack = () => {
         navigate('/student')
     };
@@ -186,20 +197,20 @@ const ExamPage = () => {
 
     const handleResult = () => {
 
-        console.log('hello', 'studentAnswerList');
+        console.log(studentAnswerList, 'studentAnswerList');
 
         // console.log(studentAnswerList.filter(el => quizList.questions.find(i => i._id === el.id)), 'studentAnswerList')
         //Quiz-Result Create
         const data = {
-            enrollment: '6606457adcff8f51e221874c',
-            quiz: '662cb830d0b9c59af73036ea',
+            enrollment: enrollID,
+            quiz: QuizID,
             // type: ResData.examType,
-            student: '659cf0d7aa53ed4939c56542',
-            batch: '661626364b091b37492de8e0',
-            subject: '65a8fb6a33174d205c13e668',
-            exam: '661766a0b2e144c764351155',
+            student: studentID,
+            batch: batchID,
+            subject: subjectID,
+            // exam: exam,
             answerDate: Date.now(),
-            updatedQuestions: quizList.map((first) => {
+            updatedQuestionData: quizList.map((first) => {
                 return {
                     instruction: first.instruction,
                     paragraph: first.paragraph.map((i) => (i)),
@@ -212,8 +223,8 @@ const ExamPage = () => {
                             options: i.options,
                             answerType: i.answerType,
                             correctAnswer: i.correctAnswer,
-                            studentAnswer: i.type === 'trueFalse' ? studentAnswerList.filter((el) => el.id === i.id)[0]
-                                ?.studentAnswer : studentAnswerList.filter((el) => el.id === i.id)[0]?.studentAnswer.slice(-(i.correctAnswer.length)),
+                            studentAnswer: i.type === 'trueFalse' ? studentAnswerList.filter((el) => el.id === i._id)[0]
+                                ?.studentAnswer : studentAnswerList.filter((el) => el.id === i._id)[0]?.studentAnswer.slice(-(i.correctAnswer.length)),
                         };
                     }),
 
@@ -222,45 +233,44 @@ const ExamPage = () => {
                 }
 
             }),
-            totalMark: TotalMark,
-
+            totalMark: TotalMark + MulTotalMark,
+            status: 'pass'
 
 
         }
-        console.log(data, 'res');
-        Swal.fire({
-            icon: "success",
-            title: "Exam File is Uploaded!",
-            text: "Successful",
-            showConfirmButton: false,
-            timer: 2000,
-        });
-        navigate('/student')
-        setShowTimer(false)
-        setShowOrigin(true)
-        // setIsLoading(true)
-        // apiInstance
-        //     .post("quiz-results", data)
-        //     .then(function () {
-        //         Swal.fire({
-        //             icon: "success",
-        //             title: "Exam File is Uploaded!",
-        //             text: "Successful",
-        //             showConfirmButton: false,
-        //             timer: 2000,
-        //         });
-        //         setShowTimer(false)
-        //         setShowOrigin(true)
-        //         setIsLoading(true)
-        //     })
-        //     .catch((error) => {
-        //         console.log(error);
-        //     });
+        // console.log(data, 'res');
+        // Swal.fire({
+        //     icon: "success",
+        //     title: "Exam File is Uploaded!",
+        //     text: "Successful",
+        //     showConfirmButton: false,
+        //     timer: 2000,
+        // });
+        // navigate('/student')
+
+        apiInstance
+            .post("quiz-results", data)
+            .then(function () {
+                Swal.fire({
+                    icon: "success",
+                    title: "Exam File is Uploaded!",
+                    text: "Successful",
+                    showConfirmButton: false,
+                    timer: 2000,
+                });
+                navigate('/student')
+                // setShowTimer(false)
+                // setShowOrigin(true)
+                // setIsLoading(true)
+            })
+            .catch((error) => {
+                console.log(error);
+            });
 
         localStorage.removeItem("formSubmission");
 
-        setShowOrigin(false);
-        setShowExamResult(true);
+        // setShowOrigin(false);
+        // setShowExamResult(true);
     };
 
     const handleCheckboxSelect = (event, index, data, correct, counter, mark, counterId) => {
@@ -408,12 +418,22 @@ const ExamPage = () => {
             "studentformSubmission",
             JSON.stringify(newFormSubmissionsforStudentAnswer)
         );
-        // console.log(newFormSubmissionsforStudentAnswer, 'final else radio')
+        console.log(newFormSubmissionsforStudentAnswer, 'final else radio')
         setStudentAnswerList(newFormSubmissionsforStudentAnswer);
 
 
 
     };
+
+    const handleFillBlank = (secInd, val, studentChoose, ca, index, mark, secItems, counterid) => {
+
+        const hee = [...inputList, {
+            answer: secInd
+        }]
+        console.log(hee[hee.length - 1].answer, 'val')
+        setInputList([...inputList, hee[hee.length - 1]])
+
+    }
     useEffect(() => {
         if (!isLoading) return;
         window.scroll(0, 0)
@@ -421,7 +441,7 @@ const ExamPage = () => {
         const getExamRes = async () => {
             await apiInstance.get('exam-results').then((res) => {
                 console.log(res.data.data.filter(el => el.exam?._id === exam), 'exam res')
-                setAlreadyExamRes(res.data.data.filter(el => el.exam?._id))
+                setAlreadyExamRes(res.data.data.filter(el => el.exam?._id === exam))
             })
         }
         const getQuizRes = async () => {
@@ -530,26 +550,26 @@ const ExamPage = () => {
 
                                                     </Button>
                                                     {
-                                                        //     alreadyExamRes && alreadyQuizRes ? (
-                                                        //     isLoading ?
-                                                        //         <Button color='light'>
-                                                        //             Start Quiz <Spinner size='sm' />
-                                                        //         </Button> :
-                                                        //         <div>
-                                                        //             <Button color='default' className='cursor-not-allowed'>
-                                                        //                 Start Quiz
-                                                        //             </Button>
-                                                        //         </div>
-                                                        // ) : (
-                                                        isLoading ?
-                                                            <Button color='light'>
-                                                                Start Exam <Spinner size='sm' />
-                                                            </Button> :
-                                                            <Button color='primary' checked={showTimer} onClick={handleStart}>
-                                                                Start Exam
-                                                            </Button>
+                                                        alreadyExamRes[0] && alreadyQuizRes[0] ? (
+                                                            isLoading ?
+                                                                <Button color='light'>
+                                                                    Start Quiz <Spinner size='sm' />
+                                                                </Button> :
+                                                                <div>
+                                                                    <Button color='default' className='cursor-not-allowed'>
+                                                                        Start Quiz
+                                                                    </Button>
+                                                                </div>
+                                                        ) : (
+                                                            isLoading ?
+                                                                <Button color='light'>
+                                                                    Start Exam <Spinner size='sm' />
+                                                                </Button> :
+                                                                <Button color='primary' checked={showTimer} onClick={handleStart}>
+                                                                    Start Exam
+                                                                </Button>
 
-                                                        // )
+                                                        )
                                                     }
                                                 </div>
 
@@ -587,7 +607,7 @@ const ExamPage = () => {
                                                         <div className='border-1 border-slate-500 rounded-lg lg:p-4 xl:p-5 2xl:7'>
                                                             <span className='text-[16px] text-[#000] font-semibold '>{item?.instruction}</span>
                                                             <div className='flex justify-between'>
-                                                                <ScrollShadow orientation="horizontal" className="max-w-[700px] max-h-[500px] py-5">
+                                                                <ScrollShadow orientation="horizontal" className="max-w-[800px] max-h-[500px] py-5">
                                                                     <div className='flex flex-col gap-5 '>
                                                                         {item?.paragraph.map((i) => (
                                                                             <div key={i} className='flex flex-col '>{i}</div>
@@ -641,7 +661,7 @@ const ExamPage = () => {
                                                                                                                                 secIndex,
                                                                                                                                 secItem.mark,
                                                                                                                                 item.questions,
-                                                                                                                                secItem?.id
+                                                                                                                                secItem?._id
 
                                                                                                                             )}>{e.answer}</Radio>
                                                                                                                 ))}
@@ -671,12 +691,9 @@ const ExamPage = () => {
                                                                                                         </div>
                                                                                                     )}
                                                                                                 </div >
-                                                                                            ) : (
-                                                                                                < div
+                                                                                            ) : (secItem.type === 'multipleChoice' ?
 
-                                                                                                    className='text-lg font-semibold ml-10'
-
-
+                                                                                                < div className='text-lg font-semibold ml-10'
                                                                                                 >
                                                                                                     {showTimer && (
                                                                                                         <div>
@@ -696,7 +713,7 @@ const ExamPage = () => {
                                                                                                                                 secItem.correctAnswer,
                                                                                                                                 secIndex,
                                                                                                                                 secItem.mark,
-                                                                                                                                secItem?.id
+                                                                                                                                secItem?._id
                                                                                                                             )
                                                                                                                         }
                                                                                                                     />
@@ -710,7 +727,45 @@ const ExamPage = () => {
 
                                                                                                         </div>
                                                                                                     )}
-                                                                                                </div>)}
+                                                                                                </div> : (
+                                                                                                    < div className='text-lg font-semibold ml-10'
+                                                                                                    >
+                                                                                                        {showTimer && (
+                                                                                                            <div>
+
+                                                                                                                {/*Fill in the blank */}
+
+                                                                                                                <div className='flex flex-col gap-1'>
+
+
+
+
+                                                                                                                    {/* Map over the inputArray and render input boxes */}
+                                                                                                                    {Array.from({ length: secItem?.inputCount }, (_, index) => index).map((item, ind) => (
+                                                                                                                        <div className='flex gap-1 '>
+                                                                                                                            <span>({ind + 1})</span>
+                                                                                                                            <Input key={item} type="text" placeholder='Answer' variant="underlined" className="rounded-md p-2 mb-2" onChange={(event) =>
+                                                                                                                                handleFillBlank(event.target.value,
+                                                                                                                                    ind,
+                                                                                                                                    item,
+                                                                                                                                    secItem.correctAnswer,
+                                                                                                                                    secIndex,
+                                                                                                                                    secItem.mark,
+                                                                                                                                    secItem?._id
+                                                                                                                                )
+                                                                                                                            } />
+                                                                                                                        </div>
+
+                                                                                                                    ))}
+
+
+                                                                                                                </div>
+
+
+
+                                                                                                            </div>
+                                                                                                        )}
+                                                                                                    </div>))}
 
 
                                                                                         </>

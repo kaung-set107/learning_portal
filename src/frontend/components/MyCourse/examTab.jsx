@@ -55,7 +55,7 @@ export default function CourseDetail(props) {
   // const exam = ResData._id
 
   const subjectData = location.state.data;
-  console.log(subjectData, "sub data");
+  console.log(location.state.enroll_id, "sub data");
   const courseData = location.state.courseData;
   // console.log(props.id, "id");
   const [showMid, setShowMid] = useState(false);
@@ -75,8 +75,8 @@ export default function CourseDetail(props) {
   const [examValue, setExamValue] = useState('')
   console.log(examValue, 'examValue')
   const handleExamPage = (val) => {
-    console.log(ExamTestData.quiz, 'hfjsakdsnjkj')
-    navigate(`/exam-page/${val._id}`, { state: { examData: ExamTestData.quiz } })
+    console.log(val.quiz, 'hfjsakdsnjkj')
+    navigate(`/exam-page/${val._id}`, { state: { examData: val.quiz, student: studentID, subID: subjectData._id, batchID: subjectData.course?.batch._id, enroll: location.state.enroll_id } })
     // setShowExamPage(true)
     // setShowResult(false)
     // setExamPageData(val)
