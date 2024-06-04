@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input, Textarea } from "@nextui-org/react";
 import { useState } from "react";
 import {
   Modal,
@@ -102,7 +102,7 @@ export default function SectionDataCreateModal(props) {
                   {(isInstruction(formData.sectionDataType) ||
                     isParagraph(formData.sectionDataType)) && (
                     <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
-                      <Input
+                      <Textarea
                         type="text"
                         label="Title"
                         placeholder="title"

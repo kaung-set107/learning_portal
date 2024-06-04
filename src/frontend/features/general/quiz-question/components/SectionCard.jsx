@@ -100,21 +100,24 @@ const SectionCard = (props) => {
                 title="Remove"
               />
             </div>
-            <QuestionList
-              successCallback={successCallback}
-              srcId={srcId}
-              imageUploadApi={imageUploadApi}
-              questions={sectionData.questions}
-              updateQuestions={(questionIndex, payload) =>
-                updateQuestions(sectionIndex, questionIndex, payload)
-              }
-              removeQuestion={(questionIndex) =>
-                removeQuestion(sectionIndex, questionIndex)
-              }
-            />
+            <div className="max-h-[500px] overflow-y-scroll">
+              <QuestionList
+                successCallback={successCallback}
+                srcId={srcId}
+                imageUploadApi={imageUploadApi}
+                questions={sectionData.questions}
+                updateQuestions={(questionIndex, payload) =>
+                  updateQuestions(sectionIndex, questionIndex, payload)
+                }
+                removeQuestion={(questionIndex) =>
+                  removeQuestion(sectionIndex, questionIndex)
+                }
+              />
+            </div>  
           </CustomCard>
         </>
       )}
+
       {!(sectionData.questions?.length > 0) && (
         <div className="h-[400px] flex justify-center items-center">
           No Data!

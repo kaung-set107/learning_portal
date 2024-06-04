@@ -4,6 +4,7 @@ import _ from "lodash";
 import { v4 as uuidv4 } from "uuid";
 import CustomButton from "../../../../components/general/CustomButton";
 import { useDisclosure } from "@nextui-org/react";
+import { Accordion, AccordionItem } from "@nextui-org/react";
 import SectionDataCreateModal from "./SectionDataCreateModal";
 import { useState } from "react";
 import SectionCard from "./SectionCard";
@@ -104,61 +105,70 @@ const SectionList = (props) => {
 
   return (
     <>
-      <div className="space-y-3">
-        {data.map((section, index) => {
-          return (
-            <div key={uuidv4()}>
-              <div className="mb-2 border bg-gray-100 p-2 rounded-md relative flex justify-between items-center">
-                <Heading
-                  className="text-xl font-bold"
-                  title={`Section ${index + 1}`}
-                />
-                <div className="flex items-center gap-3">
-                  <QuestionCreateModal
-                    addQuestion={(payload) => addQuestion(payload)(index)}
-                  />
-                  <CustomButton
-                    onClick={() => handleSectionDataCreateModalOpenClick(index)}
-                    color="primary"
-                    title="Add Section Data +"
-                  />
-                  <CustomButton
-                    confirmBox
-                    iconOnly
-                    type="delete"
-                    className="bg-opacity-50"
-                    onClick={() => removeSection(index)}
-                    title="Remove"
-                  />
-                </div>
-              </div>
-              <div className="border bg-gray-100 p-3 rounded-md relative">
-                {_.isEmpty(section) ? (
-                  <div className="flex justify-center items-center min-h-[300px]">
-                    <NotiInfo />
+      <div>
+        <Accordion isCompact variant="splitted" selectionMode="multiple">
+          {data.map((section, index) => {
+            return (
+              <AccordionItem
+                subtitle="Press to expand"  
+                key={index + 1}
+                aria-label={`Section ${index + 1}`}
+                title={`Section ${index + 1}`}
+              >
+                <div className="rounded-md relative">
+                  <div className="mb-2 border bg-white p-2 rounded-md relative flex justify-between items-center">
+                    <Heading
+                      className="text-xl font-bold"
+                      title={`Actions`}
+                    />
+                    <div className="flex items-center gap-3">
+                      <QuestionCreateModal
+                        addQuestion={(payload) => addQuestion(payload)(index)}
+                      />
+                      <CustomButton
+                        onClick={() =>
+                          handleSectionDataCreateModalOpenClick(index)
+                        }
+                        color="primary"
+                        title="Add Section Data +"
+                      />
+                      <CustomButton
+                        confirmBox
+                        iconOnly
+                        type="delete"
+                        className="bg-opacity-50"
+                        onClick={() => removeSection(index)}
+                        title="Remove"
+                      />
+                    </div>
                   </div>
-                ) : (
-                  <SectionCard
-                    sectionData={section}
-                    removeParagraph={removeParagraph}
-                    updateSectionData={updateSectionData}
-                    sectionIndex={index}
-                    removeSectionData={removeSectionData}
-                    getSectionDataUpdateButton={getSectionDataUpdateButton}
-                    getParagraphUpdateButton={getParagraphUpdateButton}
-                    removeQuestion={removeQuestion}
-                    updateQuestions={updateQuestions}
-                    successCallback={successCallback}
-                    srcId={srcId}
-                    imageUploadApi={(payload) =>
-                      imageUploadApi({ ...payload, sectionIndex: index })
-                    }
-                  />
-                )}
-              </div>
-            </div>
-          );
-        })}
+                  {_.isEmpty(section) ? (
+                    <div className="flex justify-center items-center min-h-[300px]">
+                      <NotiInfo />
+                    </div>
+                  ) : (
+                    <SectionCard
+                      sectionData={section}
+                      removeParagraph={removeParagraph}
+                      updateSectionData={updateSectionData}
+                      sectionIndex={index}
+                      removeSectionData={removeSectionData}
+                      getSectionDataUpdateButton={getSectionDataUpdateButton}
+                      getParagraphUpdateButton={getParagraphUpdateButton}
+                      removeQuestion={removeQuestion}
+                      updateQuestions={updateQuestions}
+                      successCallback={successCallback}
+                      srcId={srcId}
+                      imageUploadApi={(payload) =>
+                        imageUploadApi({ ...payload, sectionIndex: index })
+                      }
+                    />
+                  )}
+                </div>
+              </AccordionItem>
+            );
+          })}
+        </Accordion>
       </div>
       <SectionDataCreateModal
         sectionIndex={currentSelectedSectionIndex}

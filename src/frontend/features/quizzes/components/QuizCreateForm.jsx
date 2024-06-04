@@ -56,6 +56,10 @@ const QuizCreateForm = (props) => {
     payload.questionData = questionData;
     payload.type = type;
     payload[type] = props[type]._id;
+    payload.totalMark = calculateTotalMark();
+    payload.numOfQuestions = calculateTotalQuestion();
+
+    console.log(payload);
 
     return payload;
   };
@@ -69,14 +73,49 @@ const QuizCreateForm = (props) => {
       setIsSubmitting(true);
       let res = await quizzesApi.create(payload);
       if (successCallback) await successCallback();
-      
+
       showSuccess({ text: res.message, type: "noti-box" });
-      navigate(`/by-instructor/quizzes/${res.data._id}/edit`)
+      let queryState = {
+        type: type,
+      };
+
+      queryState[type] = props[type];
+
+      navigate(-1);
+      // navigate(`/by-instructor/quizzes/${res.data._id}/edit`);
     } catch (error) {
       console.log(error);
       showError({ axiosResponse: error });
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const calculateTotalMark = () => {
+    if (questionData && questionData.length > 0) {
+      return questionData.reduce((totalMark, section) => {
+        const sectionTotalMark = section.questions ? section.questions.reduce((questionAcc, question) => {
+          return questionAcc + +question.mark;
+        }, 0) : 0
+
+        const reMark = 
+          totalMark + sectionTotalMark
+          
+
+        return reMark;
+      }, 0)
+    } else {
+      return 0;
+    }
+  };
+
+  const calculateTotalQuestion = () => {
+    if (questionData && questionData.length > 0) {
+      return questionData.reduce((totalLength, section) => {
+        return totalLength + section.questions?.length ? section.questions.length : 0;
+      }, 0);
+    } else {
+      return 0;
     }
   };
 
