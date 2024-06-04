@@ -175,7 +175,7 @@ const QuizResultDetailCard = (props) => {
                           } ${
                             isInputQuestion(each.type) &&
                             !isQuestionAlreadyChecked(each)
-                              ? "bg-gray-400"
+                              ? "!bg-gray-400"
                               : ""
                           }`}
                         >

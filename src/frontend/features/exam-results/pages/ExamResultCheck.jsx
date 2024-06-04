@@ -5,13 +5,15 @@ import Loading from "../../../components/general/Loading";
 import ExamDetailCard from "../../exams/component/ExamDetailCard";
 import ExamResultDetailCard from "../components/ExamResultDetailCard";
 import { Card, CardBody, Input } from "@nextui-org/react";
+import { showError, showSuccess } from "../../../../util/noti";
 import CustomButton from "../../../components/general/CustomButton";
 
 const ExamResultCheck = (props) => {
   const { id } = useParams();
   const [examResult, setExamResult] = useState({});
-  const [quizResult, setQuizResult] = useState({})
+  const [quizResult, setQuizResult] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
     remark: "",
@@ -25,7 +27,13 @@ const ExamResultCheck = (props) => {
       const res = await examResultsApi.get({ _id: id });
       console.log(res);
       setExamResult(res.data);
-      setQuizResult(res.data.quizResult)
+      setFormData(prev => {
+        return {
+          remark: res.data.remark,
+          grade: res.data.grade
+        }
+      })
+      setQuizResult(res.data.quizResult);
     } catch (error) {
       console.log(error);
     } finally {
@@ -37,13 +45,42 @@ const ExamResultCheck = (props) => {
     getExamResult();
   }, []);
 
-  const handleSubmit = () => {
+  // const handleSubmit = async (onClose) => {
+  //   try {
+  //     setIsSubmitting(true);
+  //     let payload = { ...formData, _id: examResultId };
+
+  //     console.log(payload);
+  //     // return
+  //     await examResultsApi.check(payload);
+  //     successCallback();
+  //     onClose();
+  //   } catch (error) {
+  //     console.log(error);
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // };
+
+  const handleSubmit = async () => {
     const payload = {
       ...formData,
-      updatedQuestionData: quizResult.updatedQuestionData
-    }
+      _id: id,
+      updatedQuestionData: quizResult.updatedQuestionData,
+    };
 
-    console.log(payload)
+    try {
+      setIsSubmitting(true);
+      const res = await examResultsApi.checkInApp(payload)
+      console.log(res)
+      await getExamResult()
+      showSuccess({text: res.message, type: 'noti-box'})
+    } catch (error) {
+      console.log(error);
+      showError({ axiosResponse: error });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   let content;
@@ -61,7 +98,10 @@ const ExamResultCheck = (props) => {
           Exam Result Of {examResult.exam.title}
         </h3>
         <ExamDetailCard examData={examResult.exam} />
-        <ExamResultDetailCard quizResult={quizResult} setQuizResult={setQuizResult} />
+        <ExamResultDetailCard
+          quizResult={quizResult}
+          setQuizResult={setQuizResult}
+        />
         <Card>
           <CardBody>
             <h4 className="font-bold text-lg">Others</h4>
@@ -104,7 +144,7 @@ const ExamResultCheck = (props) => {
         <Card>
           <CardBody>
             <div className="flex justify-center">
-              <CustomButton title="Submit" onClick={() => handleSubmit()} />
+              <CustomButton isLoading={isSubmitting} title="Submit" onClick={() => handleSubmit()} />
             </div>
           </CardBody>
         </Card>

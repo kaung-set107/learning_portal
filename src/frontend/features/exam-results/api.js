@@ -48,6 +48,13 @@ const check = async (payload) => {
   return res.data;
 };
 
+const checkInApp = async (payload) => {
+  console.log(payload)
+  const res = await apiInstance.put(baseUrl + `/${payload._id}/check-in-app`, payload);
+  console.log(baseName, res);
+  return res.data;
+};
+
 export const examResultsApi = {
   getAll,
   get,
@@ -55,4 +62,5 @@ export const examResultsApi = {
   update,
   remove,
   check,
+  checkInApp
 };
