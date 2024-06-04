@@ -223,8 +223,8 @@ const ExamPage = () => {
                             options: i.options,
                             answerType: i.answerType,
                             correctAnswer: i.correctAnswer,
-                            studentAnswer: i.type === 'trueFalse' ? studentAnswerList.filter((el) => el.id === i._id)[0]
-                                ?.studentAnswer : studentAnswerList.filter((el) => el.id === i._id)[0]?.studentAnswer.slice(-(i.correctAnswer.length)),
+                            studentAnswer: i.type === 'trueFalse' && studentAnswerList.filter((el) => el.id === i._id)[0]
+                                ?.studentAnswer || i.type === 'multipleChoice' && studentAnswerList.filter((el) => el.id === i._id)[0]?.studentAnswer.slice(-(i.correctAnswer.length)) || i.type === "fillInTheBlank" && studentAnswerList.filter((el) => el.id === i._id)[0].studentAnswer,
                         };
                     }),
 
@@ -273,7 +273,7 @@ const ExamPage = () => {
         // setShowExamResult(true);
     };
 
-    const handleCheckboxSelect = (event, index, data, correct, counter, mark, counterId) => {
+    const handleCheckboxSelect = (event, index, data, correct, counter, mark, counterId, SecItemData) => {
         // setNextAnswer(false);
         // setIndex(index + 1);
         // console.log(counter, 'll')
@@ -325,7 +325,7 @@ const ExamPage = () => {
             }
 
             // Create the main array and push the sub-arrays into it
-            const mainArray = [...studentAnswerList, ...[{ studentAnswer: II, id: counterId }]];
+            const mainArray = [...studentAnswerList, ...[{ studentAnswer: II, id: counterId, type: SecItemData.type }]];
 
             const getUniqueById = (arr) => {
                 return Object.values(arr.reduce((acc, obj) => {
@@ -349,7 +349,7 @@ const ExamPage = () => {
 
     }
 
-    const handleAns = (secInd, val, studentChoose, ca, index, mark, secItems, counterid) => {
+    const handleAns = (secInd, val, studentChoose, ca, index, mark, secItems, counterid, SecItemData) => {
         setNextAnswer(false);
         setClicked(true);
         setShowAlert(true);
@@ -412,7 +412,7 @@ const ExamPage = () => {
             // setIsCorrect("incorrect");
         }
         const newFormSubmissionsforStudentAnswer = [...studentAnswerList];
-        newFormSubmissionsforStudentAnswer.push({ studentAnswer: TrueFalseAns, id: counterid });
+        newFormSubmissionsforStudentAnswer.push({ studentAnswer: TrueFalseAns, id: counterid, type: SecItemData.type });
 
         localStorage.setItem(
             "studentformSubmission",
@@ -425,14 +425,71 @@ const ExamPage = () => {
 
     };
 
-    const handleFillBlank = (secInd, val, studentChoose, ca, index, mark, secItems, counterid) => {
+    const handleFillBlank = (event, val, studentChoose, ca, index, mark, counterid, SecItemData) => {
 
-        const hee = [...inputList, {
-            answer: secInd
-        }]
-        console.log(hee[hee.length - 1].answer, 'val')
-        setInputList([...inputList, hee[hee.length - 1]])
+        const { value } = event.target;
+        const newItems = [...inputList];
+        newItems[val] = value;
+        setInputList(newItems);
 
+
+
+        const newFormSubmissionsforStudentAnswer = [...studentAnswerList, { studentAnswer: newItems, id: counterid, type: SecItemData.type }];
+        // newFormSubmissionsforStudentAnswer.push({ studentAnswer: inputList, id: counterid });
+        localStorage.setItem(
+            "studentformSubmission",
+            JSON.stringify(newFormSubmissionsforStudentAnswer)
+        );
+        console.log(newFormSubmissionsforStudentAnswer, 'final else radio')
+        const lastInputValue = newFormSubmissionsforStudentAnswer[newFormSubmissionsforStudentAnswer.length - 1]
+        const otherValue = newFormSubmissionsforStudentAnswer.filter(el => el.type !== 'fillInTheBlank')
+        console.log([...otherValue, lastInputValue], 'lastInputValue')
+        setStudentAnswerList([...otherValue, lastInputValue]);
+        // setStudentAnswerList(newItems);
+        // Get the index of the last element
+        const lastIndex = newItems.length - 1;
+        console.log('Last Index:', newItems);
+
+        // const hee = [...inputList, secInd]
+        // console.log(hee, 'val')
+        // setInputList([...inputList, hee[hee.length - 1]])
+
+
+        // const getUniqueById = (arr) => {
+        //     return Object.values(arr.reduce((acc, obj) => {
+        //         acc[obj.id] = obj;
+        //         return acc;
+        //     }, {}));
+        // }; //to get same ID object data as one obj data
+
+        // // Usage
+        // const uniqueObjects = getUniqueById(hee);
+        // // console.log(uniqueObjects, 'mul real');
+        // // setMultiTrueAnswerList(uniqueObjects);
+
+        // console.log(uniqueObjects, 'setMulTrueAnswerList')
+        // // console.log(quiz.questions.filter(el=>el.correctAnswer === val+1))
+
+        // // const newFormSubmissionsforStudentAnswer = [...studentAnswerList];
+        // // newFormSubmissionsforStudentAnswer.push({ studentAnswer: uniqueObjects[0], id: counterid });
+        // const mainArray = [...studentAnswerList, ...[{ studentAnswer: uniqueObjects, id: counterid }]];
+        // const getFinalUniqueById = (arr) => {
+        //     return Object.values(arr.reduce((acc, obj) => {
+        //         acc[obj.id] = obj;
+        //         return acc;
+        //     }, {}));
+        // }; //to get same ID object data as one obj data
+
+        // // Usage
+        // const stuList = getFinalUniqueById(mainArray);
+        // console.log(stuList, 'final final')
+        // setStudentAnswerList(stuList);
+        // localStorage.setItem(
+        //     "studentformSubmission",
+        //     JSON.stringify(newFormSubmissionsforStudentAnswer)
+        // );
+        // console.log(newFormSubmissionsforStudentAnswer, 'fill')
+        // setStudentAnswerList(newFormSubmissionsforStudentAnswer);
     }
     useEffect(() => {
         if (!isLoading) return;
@@ -588,7 +645,7 @@ const ExamPage = () => {
                                                 <div className='rounded-[12px] flex flex-col gap-10'>
                                                     <div className='flex flex-col justify-start items-start py-2'>
                                                         <span className='text-[20px] font-semibold '>
-                                                            PART {ExamData.questionData?.length - 1}
+                                                            PART {ExamData.questionData?.length}
                                                         </span>
                                                         <span className='text-[16px] text-[#000] font-semibold '>
                                                             {quizList[0].questions?.length} total questions
@@ -661,7 +718,8 @@ const ExamPage = () => {
                                                                                                                                 secIndex,
                                                                                                                                 secItem.mark,
                                                                                                                                 item.questions,
-                                                                                                                                secItem?._id
+                                                                                                                                secItem?._id,
+                                                                                                                                secItem
 
                                                                                                                             )}>{e.answer}</Radio>
                                                                                                                 ))}
@@ -713,7 +771,8 @@ const ExamPage = () => {
                                                                                                                                 secItem.correctAnswer,
                                                                                                                                 secIndex,
                                                                                                                                 secItem.mark,
-                                                                                                                                secItem?._id
+                                                                                                                                secItem?._id,
+                                                                                                                                secItem
                                                                                                                             )
                                                                                                                         }
                                                                                                                     />
@@ -745,13 +804,15 @@ const ExamPage = () => {
                                                                                                                         <div className='flex gap-1 '>
                                                                                                                             <span>({ind + 1})</span>
                                                                                                                             <Input key={item} type="text" placeholder='Answer' variant="underlined" className="rounded-md p-2 mb-2" onChange={(event) =>
-                                                                                                                                handleFillBlank(event.target.value,
+                                                                                                                                handleFillBlank(event,
                                                                                                                                     ind,
                                                                                                                                     item,
                                                                                                                                     secItem.correctAnswer,
                                                                                                                                     secIndex,
                                                                                                                                     secItem.mark,
-                                                                                                                                    secItem?._id
+                                                                                                                                    secItem?._id,
+                                                                                                                                    secItem
+
                                                                                                                                 )
                                                                                                                             } />
                                                                                                                         </div>

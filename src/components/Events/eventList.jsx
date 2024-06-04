@@ -123,7 +123,7 @@ export default function BatchList() {
                 </div>
                 <div className='flex gap-2 mb-3 flex-row'>
                     <Link to='/event-create'>
-                        <Button endContent={<PlusIcon />} color='primary'>
+                        <Button endContent={<PlusIcon />} color='primary' className='w-[20px] h-[35px]'>
                             Add
                         </Button>
                     </Link>

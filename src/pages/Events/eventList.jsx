@@ -18,8 +18,8 @@ export default function Event() {
             <div className='flex-grow'>
                 <div className='body'>
                     <Card className='rounded-sm shadow-md py-3 min-h-[700px]'>
-                        <div className='flex justify-between'>
-                            <div className='font-semibold font-nunito text-2xl mt-10 px-2'>
+                        <div className='flex justify-items-center'>
+                            <div className=' font-nunito font-semibold text-[16px] lg:text-[18px] 2xl:text-[20px] mt-10 px-2'>
                                 Event List
                             </div>
                             <div>

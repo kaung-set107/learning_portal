@@ -14,10 +14,11 @@ import {
   Link,
   Input,
   Radio,
-
   RadioGroup,
+  useDisclosure, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter
 } from "@nextui-org/react";
-import QuizPage from "../../ByUser/Quiz/quizpage";
+
+import ViewAnswer from "../MyCourse/examViewAnswer";
 import PP from '../../../assets/img/student.jpg'
 import { getFile } from "../../../util";
 import ExamRes from './examResultPage'
@@ -43,7 +44,10 @@ export default function CourseDetail(props) {
     image: PP,
     name: "Mya Saw Lon",
     studentID: "12345",
+
   }
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoading, setIsLoading] = useState(true);
   const [timer, setTimer] = useState(5); // Timer set for 5 seconds
   const tabRef = useRef();
@@ -55,9 +59,11 @@ export default function CourseDetail(props) {
   // const exam = ResData._id
 
   const subjectData = location.state.data;
+  const [size, setSize] = useState('')
   console.log(location.state.enroll_id, "sub data");
-  const courseData = location.state.courseData;
-  // console.log(props.id, "id");
+  const batchID = location.state.data.course.batch?._id;
+  // const batchID = location.state.data.course.batch?._id;
+  // console.log(location.state.data.exams.filter(el=>el.quiz), "cou id");
   const [showMid, setShowMid] = useState(false);
   const [showFinal, setShowFinal] = useState(false);
   const [showOrigin, setShowOrigin] = useState(true);
@@ -65,21 +71,28 @@ export default function CourseDetail(props) {
   const [nestedExamVal, setNestedExamVal] = useState('');
   const [showNestedOrigin, setShowNestedOrigin] = useState(true)
   const [showResult, setShowResult] = useState(false)
-  const [showExamPage, setShowExamPage] = useState(false)
+  const [quizID, setQuizID] = useState('')
   const [value, setValue] = useState([])
   const [inAppExamList, setInAppExamList] = useState([])
   const [outsideExamList, setOutsideExamList] = useState([])
-  const [examPageData, setExamPageData] = useState('')
+  const [disabledQuiz, setDisabledQuiz] = useState([])
   const [examList, setExamList] = useState([])
   const [examResult, setExamResult] = useState([])
   const [examValue, setExamValue] = useState('')
-  console.log(examValue, 'examValue')
+
+  // console.log(examValue, 'examValue')
+
   const handleExamPage = (val) => {
     console.log(val.quiz, 'hfjsakdsnjkj')
     navigate(`/exam-page/${val._id}`, { state: { examData: val.quiz, student: studentID, subID: subjectData._id, batchID: subjectData.course?.batch._id, enroll: location.state.enroll_id } })
-    // setShowExamPage(true)
-    // setShowResult(false)
-    // setExamPageData(val)
+
+  }
+
+  const handleViewAnswer = (val, quizId) => {
+    // console.log(val)
+    setQuizID(quizId)
+    setSize(val)
+    onOpen()
   }
   const handleExam = (val) => {
     if (val.term === 'mid') {
@@ -114,9 +127,6 @@ export default function CourseDetail(props) {
       })
     }
 
-
-
-
     const getSubjects = async () => {
       await apiInstance.get("subjects").then((res) => {
 
@@ -125,6 +135,7 @@ export default function CourseDetail(props) {
 
       });
     };
+
     const getExam = async () => {
       await apiInstance.get("exams").then((res) => {
 
@@ -134,6 +145,14 @@ export default function CourseDetail(props) {
 
       });
     };
+    const getQuizRes = async () => {
+      await apiInstance.get(`quiz-results?student=${studentID}&batch=${batchID}&quiz=${quizID}`).then((res) => {
+        console.log(res.data.data, 'quiz res List')
+        setDisabledQuiz(res.data.data)
+
+      });
+    };
+    getQuizRes();
     getExamRes()
     getExam()
     getSubjects();
@@ -342,57 +361,57 @@ export default function CourseDetail(props) {
                     >
                       <div className='flex flex-col justify-start pt-10 w-[768px] lg:w-[1200px] xl:w-[1280px] 2xl:w-[1440px] h-[204px] pl-10 pb-8 pr-10' >
 
+                        {examList.filter(el => el.type === 'inapp' && el.status === 'submitted').map((res) => (
+                          <div className='grid grid-cols-2 bg-[#215887] p-12  border-4 border-l-red-500 '>
+                            <div className='w-[742px] flex gap-52'>
+                              <div className='flex justify-start text-[24px] text-[#fff] font-semibold items-center'>Exam</div>
+                              <div className='flex flex-col gap-5 justify-start'>
+                                <span className='text-[32px] text-[#fff] font-semibold flex flex-col'>Introduction to IELTS</span>
 
-                        <div className='grid grid-cols-2 bg-[#215887] p-12  border-4 border-l-red-500 '>
-                          <div className='w-[742px] flex gap-52'>
-                            <div className='flex justify-start text-[24px] text-[#fff] font-semibold items-center'>Exam</div>
-                            <div className='flex flex-col gap-5 justify-start'>
-                              <span className='text-[32px] text-[#fff] font-semibold flex flex-col'>Introduction to IELTS</span>
+                                <div className='flex gap-20 lg:gap-5'>
+                                  <div className='font-medium flex gap-2 w-[300px] lg:w-[250px] text-[#fff]'>
+                                    <span className='text-[16px] font-semibold'>Start Date </span>
+                                    <span>:</span>
+                                    <span className='text-[16px] font-medium'>April 11, 2024</span>
+                                  </div>
+                                  <div className=' font-medium flex gap-2 text-[#fff]  w-[300px] lg:w-[250px]'>
+                                    <span className='text-[16px]  font-semibold'>Completed Time </span>
+                                    <span>:</span>
+                                    <span className='text-[16px] font-medium'>12:00 AM</span>
+                                  </div>
+                                </div>
 
-                              <div className='flex gap-20 lg:gap-5'>
-                                <div className='font-medium flex gap-2 w-[300px] lg:w-[250px] text-[#fff]'>
-                                  <span className='text-[16px] font-semibold'>Start Date </span>
-                                  <span>:</span>
-                                  <span className='text-[16px] font-medium'>April 11, 2024</span>
+                                <div className='flex gap-20 lg:gap-5'>
+                                  <div className='font-medium flex gap-2 w-[300px] lg:w-[250px] text-[#fff]'>
+                                    <span className='text-[16px] font-semibold'>Start Time </span>
+                                    <span>:</span>
+                                    <span className='text-[16px] font-medium'>12:00 AM</span>
+                                  </div>
+                                  <div className=' font-medium flex gap-2 text-[#fff] lg:w-[250px]  w-[300px]'>
+                                    <span className='text-[16px]  font-semibold'>Completed Date </span>
+                                    <span>:</span>
+                                    <span className='text-[16px] font-medium'>April 11, 2024</span>
+                                  </div>
                                 </div>
-                                <div className=' font-medium flex gap-2 text-[#fff]  w-[300px] lg:w-[250px]'>
-                                  <span className='text-[16px]  font-semibold'>Completed Time </span>
-                                  <span>:</span>
-                                  <span className='text-[16px] font-medium'>12:00 AM</span>
-                                </div>
-                              </div>
-
-                              <div className='flex gap-20 lg:gap-5'>
-                                <div className='font-medium flex gap-2 w-[300px] lg:w-[250px] text-[#fff]'>
-                                  <span className='text-[16px] font-semibold'>Start Time </span>
-                                  <span>:</span>
-                                  <span className='text-[16px] font-medium'>12:00 AM</span>
-                                </div>
-                                <div className=' font-medium flex gap-2 text-[#fff] lg:w-[250px]  w-[300px]'>
-                                  <span className='text-[16px]  font-semibold'>Completed Date </span>
-                                  <span>:</span>
-                                  <span className='text-[16px] font-medium'>April 11, 2024</span>
-                                </div>
-                              </div>
-                              {/* <div className='flex flex-col'>
+                                {/* <div className='flex flex-col'>
                               <span className='text-[16px] text-[#fff] font-semibold'>Document File link </span>
 
                             </div> */}
 
+                              </div>
+                            </div>
+
+                            <div className='flex flex-col items-end gap-2 justify-end'>
+                              <Button color='primary' className='w-[163px] lg:w-[120px] h-[44px] lg:text-[16px] text-[15px]' onPress={() => handleViewAnswer('5xl', res._id)}>View Answer</Button>
+                              <div className="text-[16px] text-[#fff]  font-semibold px-3 ">
+                                <span>Refference Link : </span>
+                                <a href='https:// www.google.com' className='underline' >
+                                  www.google.com
+                                </a>
+                              </div>
                             </div>
                           </div>
-
-                          <div className='flex flex-col items-end gap-2 justify-end'>
-                            <Button color='primary' className='w-[163px] lg:w-[120px] h-[44px] lg:text-[16px] text-[15px]'>View Answer</Button>
-                            <div className="text-[16px] text-[#fff]  font-semibold px-3 ">
-                              <span>Refference Link : </span>
-                              <a href='https:// www.google.com' className='underline' >
-                                www.google.com
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-
+                        ))}
                       </div>
                     </Tab>
                     <Tab
@@ -409,7 +428,7 @@ export default function CourseDetail(props) {
                         {subjectData.exams.filter(el => el.examType === 'inapp').map((item, index) => (
                           <>
                             {/* {console.log(examList.filter(el => el.quizResult), 'result')} */}
-                            {examList.filter(el => el.type === 'inApp' && el.status === 'checked').map((res) => (
+                            {examList.filter(el => el.type === 'inapp' && el.status === 'published').map((res) => (
                               <div className='grid grid-cols-2 bg-[#215887] p-12  border-4 border-l-red-500 '>
                                 <div className='w-[742px] h-[135px] flex gap-52'>
                                   <div className='flex justify-start text-[24px] text-[#fff] font-semibold items-center'>Exam</div>
@@ -633,7 +652,33 @@ export default function CourseDetail(props) {
 
         </>
       )}
+      <div>
+        <Modal
+          size={size}
+          isOpen={isOpen}
+          onClose={onClose}
+          scrollBehavior='outside'
+        >
+          <ModalContent>
+            {(onClose) => (
+              <>
+                <ModalHeader className="flex flex-col gap-1 text-[30px] font-bold">Your Quiz Result</ModalHeader>
+                <Divider></Divider>
+                <ModalBody>
+                  <ViewAnswer ViewData={disabledQuiz[0]} />
+                  {/* {console.log(disabledQuiz[0], 'data')} */}
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="danger" variant="bordered" onPress={onClose}>
+                    Close
+                  </Button>
 
+                </ModalFooter>
+              </>
+            )}
+          </ModalContent>
+        </Modal>
+      </div>
     </>
   );
 }

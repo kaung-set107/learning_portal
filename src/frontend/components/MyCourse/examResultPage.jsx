@@ -67,10 +67,10 @@ const ExamResult = ({ ResData, showResult, subjectData, examFile }) => {
     };
     const location = useLocation();
     console.log(ResData, "body");
-    const marks = ResData.quizResult.updatedQuestions
-
-    const originMark = marks.reduce((acc, val) => acc + val.mark, 0)
-    console.log(originMark, 'asf')
+    const originMark = ResData.quizResult.updatedQuestionData.map((e) => (e.questions.reduce((acc, val) => acc + val.mark, 0)))
+    console.log(originMark, 'arr')
+    // const originMark = marks.reduce((acc, val) => acc + val.mark, 0)
+    // console.log(originMark, 'asf')
     useEffect(() => {
         const getExamRes = async () => {
             await apiInstance.get('exam-results').then((res) => {
@@ -227,8 +227,8 @@ const ExamResult = ({ ResData, showResult, subjectData, examFile }) => {
                             <div className='flex flex-col gap-5'>
                                 <span className='text-[16px] font-semibold'>Your Score</span>
                                 <div className='flex flex-col gap-4 '>
-                                    <span className='border-1 rounded-lg border-green-500 w-[80px] text-center p-2 text-[green]'>{ResData.quizResult.totalMark}/{ResData?.exam?.quiz?.totalMark}</span>
-                                    <span className='text-[16px] font-normal'>Your Percentage: <b className='text-[green]'>{ResData.quizResult.totalMark / ResData?.exam?.quiz?.totalMark * 100}%</b></span>
+                                    <span className='border-1 rounded-lg border-green-500 w-[80px] text-center p-2 text-[green]'>{ResData.quizResult.totalMark}/{originMark}</span>
+                                    <span className='text-[16px] font-normal'>Your Percentage: <b className='text-[green]'>{ResData.quizResult.totalMark / originMark * 100}%</b></span>
                                 </div>
                             </div>
                         </div>

@@ -58,14 +58,14 @@ export default function Sidebar(props) {
   // }
   return (
     <>
-      <div className="sidebar w-full px-1">
+      <div className="sidebar w-full ">
         <div className="nav-bar flex-grow">
-          <Card className="w-[270px] rounded-sm ">
+          <Card className="w-[260px] rounded-sm ">
             <CardHeader>
-              <Image src={MSI} width={200} height={60} />
+              <Image src={MSI} className='lg:w-[180px] lg:h-[90px]' />
             </CardHeader>
             <CardBody
-              className="px-5 py-1 m-0 min-h-[200px] text-md"
+              className=" py-1 m-0 min-h-[200px] text-md"
               style={{ height: "800px", overflowY: "scroll" }}
             >
               {getCurrentUser().roles.includes("admin") && (
