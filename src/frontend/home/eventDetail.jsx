@@ -35,8 +35,8 @@ export default function EventDetail() {
         <div className=''>
             <MSINav />
 
-            <div className='container flex flex-col gap-10 my-10 '>
-                <div className='flex gap-32 ' style={{ backgroundImage: `url(${imgFile})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover', height: '70vh' }}>
+            <div className=' flex flex-col gap-10 my-10 '>
+                <div className='flex gap-32 lg:h-[55vh] xl:h-[60vh] 2xl:h-[70vh] ' style={{ backgroundImage: `url(${imgFile})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }}>
                     {/* <Image
                         src={`data:image/jpeg;base64,${eventList?.image}`}
                         className=' w-[420px] h-[411px]  rounded-[24px]'
@@ -45,7 +45,7 @@ export default function EventDetail() {
 
 
                 </div>
-                <div className='flex flex-col gap-4 '>
+                <div className='flex flex-col gap-4 container'>
                     <span className='text-[32px] font-semibold text-[#003BB3]'>{eventList?.title} ( {eventList?.subTitle} )</span>
                     <span className='xl:text-[16px] 2xl:text-[18px] font-semibold text-[#003BB3]'></span>
                     <div className='flex flex-col gap-8'>
@@ -68,7 +68,7 @@ export default function EventDetail() {
                     </div>
                 </div>
                 {/* About */}
-                <div>
+                <div className='container'>
                     <span className='text-[32px] font-semibold text-[#003BB3]'>About Event</span>
                     <p className='text-[20px] font-normal pt-10'>
                         {eventList?.description}
@@ -79,7 +79,8 @@ export default function EventDetail() {
                 </div>
 
                 {/* Speaker */}
-                <div className='bg-[#0B2743] h-[667px] pl-[242px] pt-[98px] pr-[673px] pb-[86px] relative overflow-hidden'>
+
+                <div className='bg-[#0B2743]  h-[667px] pl-[242px] pt-[98px] pr-[673px] pb-[86px] relative overflow-hidden'>
                     <div className='bg-[#fff] w-[100px] h-[100px] opacity-[0.1] rounded-[100%] left-[39px] -top-9 absolute '></div>
                     <div className=' w-[525px] xl:w-[530px] h-[482px] flex flex-col gap-10'>
                         <span className='text-[28px] font-light uppercase text-[#fff]'>Speaker</span>
@@ -92,9 +93,9 @@ export default function EventDetail() {
                             <FontAwesomeIcon icon={faStar} size='2xl' />
                             <FontAwesomeIcon icon={faStar} size='2xl' />
                             <FontAwesomeIcon icon={faStar} size='2xl' />
-                            <div className='text-[#fff] flex flex-col gap-1 pl-[640px] xl:pl-[370px]'>
+                            <div className='text-[#fff] flex flex-col gap-1 pl-[640px] xl:pl-[370px] 2xl:pl-[550px]'>
                                 <span className='text-[40px] font-extrabold flex justify-end items-end'>{eventList.speaker ? eventList.speaker.name : ''}</span>
-                                <span className='pl-20 w-[300px] text-[20px] font-bold flex justify-end items-end'>{eventList.speaker ? eventList.speaker.specialty : ''}</span>
+                                <span className='pl-20 w-[300px] xl:w-[400px] 2xl:w-[450px] text-[20px] font-bold flex justify-end items-end'>{eventList.speaker ? eventList.speaker.specialty : ''}</span>
                             </div>
                         </div>
 
@@ -115,6 +116,8 @@ export default function EventDetail() {
                     </div>
 
                 </div>
+
+
                 {/* Register */}
                 <div className='xl:h-[515px] mx-20 flex flex-col gap-10'>
                     {/* About Reg */}

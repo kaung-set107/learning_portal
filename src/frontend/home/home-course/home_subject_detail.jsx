@@ -122,7 +122,7 @@ const SubjectDetail = (props) => {
                           }
                           //   title={assignList.name}
                           allowFullScreen
-                          className='border w-[375px] h-[136px] md:w-[711px] md:h-[306px]'
+                          className='border w-[375px] h-[136px] md:w-[711px] md:h-[306px] lg:w-[680px] xl:w-[850px]'
                           allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
                         // style={{ width:'1400px',height:'500px' }}
                         ></iframe>
@@ -325,9 +325,9 @@ const SubjectDetail = (props) => {
             </div>
           </div>
           {/* Meet Teacher */}
-          <div className='container'>
+          <div className='container lg:pt-[100px]'>
             <div className='flex flex-col gap-10 p-0 w-[355px] h-[600px] sm:h-[550px] md:w-[693px] md:p-[24px] mx-4 md:mx-0 '>
-              {" "}
+
               <span
                 //   style={{ fontSize: "40px", fontWeight: "700" }}
                 className='text-[20px] md:text-[40px] font-bold'
@@ -381,7 +381,7 @@ const SubjectDetail = (props) => {
 
                           {showMore ? <span>
                             {tlist?.introduction}
-                          </span> : tlist?.introduction.substring(0, 400)}
+                          </span> : <span>{tlist?.introduction.substring(0, 400)}</span>}
                         </p>
                         {/* Email & Phone */}
                         {/* <div className='lg:pt-[50px]'>

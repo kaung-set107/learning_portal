@@ -83,16 +83,16 @@ const ExamPage = () => {
     // const inputArray = Array.from({ length: FillBlankInput }, (_, index) => index);
     // console.log(inputList, 'opp')
 
-    // console.log(trueAnswerList, 'dis')
+    console.log(trueAnswerList, 'dis')
     const TotalMark = trueAnswerList.map((i) => i.markTotal)
         .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
     // console.log(TotalMark, "time");
     const handleBack = () => {
         navigate('/student')
     };
-    // console.log(multiTrueAnswerList, 'multiTrueAnswerList')
-    const MulTotalMark = multiTrueAnswerList.reduce((accumulator, currentValue) => accumulator + currentValue.markTotal, 0);
-    // console.log(MulTotalMark, "body");
+    console.log(multiTrueAnswerList, 'multiTrueAnswerList')
+    const MulTotalMark = multiTrueAnswerList.map((i) => i.markTotal).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    console.log(MulTotalMark, "body");
     const handleShowFail = () => {
         // alert('Fail')
         setShowOrigin(true)
@@ -154,14 +154,8 @@ const ExamPage = () => {
                     paragraph: first.paragraph.map((i) => (i)),
                     questions: first.questions.map((i) => {
                         return {
-                            question: i.question,
-                            type: i.type,
-                            mark: i.type === 'fillInTheBlank' ? 0 : i.mark,
-                            inputCount: i.inputCount ? i.inputCount : 0,
-                            correctAnswerDescription: i.correctAnswerDescription,
-                            options: i.options,
-                            answerType: i.answerType,
-                            correctAnswer: i.correctAnswer,
+                            ...i,
+
                             studentAnswer: i.type === 'trueFalse' && studentAnswerList.filter((el) => el.id === i._id)[0]
                                 ?.studentAnswer || i.type === 'multipleChoice' && studentAnswerList.filter((el) => el.id === i._id)[0]?.studentAnswer.slice(-(i.correctAnswer.length)) || i.type === "fillInTheBlank" && studentAnswerList.filter((el) => el.id === i._id)[0].studentAnswer,
                         };
@@ -220,18 +214,18 @@ const ExamPage = () => {
             // setNumber(prevCount => prevCount + 1)
             const multi = [...multiAns, index + 1]
             setMultiAns(multi);
-
+            console.log(multi, 'multi')
             const II = multi.slice(-(correct.length)) //to get last studentAnswer's length
-
+            console.log(II, 'to get last studentAnswer length')
             setCount(II) //to show that we choose answer count
 
             const correctList = correct.map((i) => (parseInt(i))) //to get not include single code in correctAnswer
-            // console.log(correctList, 'corr ans list')
+            console.log(correctList, 'corr ans list')
 
             if (correctList.every(item => II.includes(item)) && correctList.length === II.length) {
                 // setStudentAnswer(val + 1)
 
-                const newFormSubmissions = [...trueAnswerList];
+                const newFormSubmissions = [...multiTrueAnswerList];
                 newFormSubmissions.push({
                     id: counterId,
                     correct: correctList,
@@ -239,11 +233,12 @@ const ExamPage = () => {
                     studentAnswer: II
                 }); // to get trueAnswer list
 
+                // const arrTemp = newFormSubmissions[newFormSubmissions.length - 1]
+                // console.log([arrTemp, 'arrTemp')
                 localStorage.setItem(
                     "formSubmission",
                     JSON.stringify(newFormSubmissions)
                 ); //stored data in localStorage because we need remember student's every questions answer
-
                 const getUniqueById = (arr) => {
                     return Object.values(arr.reduce((acc, obj) => {
                         acc[obj.id] = obj;
@@ -253,7 +248,8 @@ const ExamPage = () => {
 
                 // Usage
                 const uniqueObjects = getUniqueById(newFormSubmissions);
-                // console.log(uniqueObjects, 'mul real');
+
+                console.log(uniqueObjects, 'mul real');
                 setMultiTrueAnswerList(uniqueObjects);
 
                 // console.log(uniqueObjects, 'setMulTrueAnswerList')
@@ -717,9 +713,7 @@ const ExamPage = () => {
                                                                                                                         onClick={(event) =>
                                                                                                                             handleCheckboxSelect(event,
                                                                                                                                 i,
-
                                                                                                                                 secItem.correctAnswer,
-
                                                                                                                                 secItem.mark,
                                                                                                                                 secItem?._id,
                                                                                                                                 secItem

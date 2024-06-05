@@ -69,9 +69,9 @@ export default function CourseDetail(props) {
       <div className=' sm:pt-[24px] sm:pr-[20px] sm:pb-[100px] sm:pl-[40px] '>
         <>
           {/* <Head /> */}
-          <div className='flex flex-col gap-5 sm:gap-10 md:gap-10 duration-100'>
+          <div className='flex flex-col gap-5 sm:gap-10 md:gap-10 lg:gap-16 xl:gap-20 2xl:gap-28 duration-100'>
             {/* Video Section */}
-            <div className='flex flex-col gap-10 md:gap-32 pt-5 md:pt-20 md:flex-row'>
+            <div className='flex flex-col gap-10 lg:gap-20 pt-5 md:pt-20 md:flex-row'>
               {!showVideoList[0] ? (
                 <div className='flex justify-center pt-[40px] w-full gap-2 md:w-[900px]'>
                   <Image src={Loading} className='transform-x-[-1] w-[350px] h-[250px]' />
@@ -81,7 +81,7 @@ export default function CourseDetail(props) {
 
                 showVideoList ?
                   (showVideoList.map((video) => (
-                    <div className='flex w-full gap-2 md:w-[900px] ' key={video}>
+                    <div className='flex w-full gap-2 md:w-[900px]' key={video}>
                       <iframe
                         src={
                           "https://www.youtube.com/embed/" +
@@ -89,7 +89,7 @@ export default function CourseDetail(props) {
                         }
                         //   title={assignList.name}
                         allowFullScreen
-                        className='border w-[375px] h-[136px] md:w-[711px] md:h-[306px]'
+                        className='border w-[375px] h-[136px] md:w-[711px] md:h-[306px] lg:w-[680px] xl:w-[850px]'
                         allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
                       // style={{ width:'1400px',height:'500px' }}
                       ></iframe>
@@ -255,7 +255,7 @@ export default function CourseDetail(props) {
                         </p>
                         <div
                           // style={{ padding: "70px 28px 0px 120px" }}
-                          className='lg:pt-[95px] pl-unit-20 sm:pt-unit-18 sm:pl-unit-28 lg:pl-unit-20'
+                          className='xl:pt-[50px] 2xl:pt-[75px] pl-unit-20 sm:pt-unit-18 sm:pl-unit-28 lg:pl-unit-20 xl:pl-[80px] 2xl:pl-[125px]'
                         >
                           <Button
                             className='bg-red-500 hover:bg-red-700 text-[#fff] text-[12px] sm:text-[16px] font-normal sm:font-medium rounded-[6px] sm:rounded-[12px] w-[167px] h-[36px] sm:w-[227px] sm:h-[48px] lg:w-[200px] lg:h-[40px]'

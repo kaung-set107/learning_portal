@@ -93,7 +93,7 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
           undefined
         ) {
           setQuizList(
-            res.data.data
+            res.data.data.questionData[0]
           );
           // console.log(res.data.data.filter((el) => el.learningMaterial === LMID)[0], 'quizList')
           setTimeLeft(
@@ -107,7 +107,7 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
 
     const getQuizRes = async () => {
       await apiInstance.get(`quiz-results?student=${studentID}&batch=${batchID}&quiz=${QuizID}`).then((res) => {
-        // console.log(res.data.data, 'quiz res List')
+        console.log(res.data.data, 'quiz res List')
         setDisabledQuiz(res.data.data)
 
       });
@@ -127,7 +127,7 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
             if (((TotalMark + MulTotalMark) === quizList.passMark && "pass") || ((TotalMark + MulTotalMark) > quizList.passMark && "credit")) {
               handleResult();
             } else {
-              handleShowFail()
+              handleResult()
 
             } // Stop the timer when it reaches 30 seconds
             return prevTimer; // Return current timer value
@@ -490,7 +490,7 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
                               </Button>
                             </div>
                           ) : (
-                            quizList.questions ? (
+                            quizList ? (
                               <Button color='primary' checked={showTimer} onClick={handleStart}>
                                 Start Quiz
                               </Button>
