@@ -143,7 +143,7 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
     return () => clearInterval(interval);
 
 
-  }, [count, showTimer, disabledQuiz]);
+  }, [count, showTimer]);
 
 
   const handleStart = () => {
