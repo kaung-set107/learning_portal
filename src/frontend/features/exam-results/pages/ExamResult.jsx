@@ -144,7 +144,7 @@ const ExamResult = () => {
               {examResult.exam?.examType === "inapp" && (
                 <div>
                   <span className="text-[20px] font-normal">
-                    Total Questions : {examResult.exam.ExamResult}
+                    Total Questions : {examResult.exam.quiz.numOfQuestions}
                   </span>
                 </div>
               )}
