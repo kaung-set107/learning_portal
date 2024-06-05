@@ -13,11 +13,19 @@ import NotiInfo from "../../../../components/general/typography/NotiInfo";
 import SectionDataUpdateModal from "./SectionDataUpdateModal";
 import QuestionCreateModal from "../../../questions/components/QuestionCreateModal";
 import ParagraphUpdateModal from "./ParagraphUpdateModal";
+import { closestCorners, DndContext, DragOverlay } from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import SectionCardWrapper from "./SectionCardWrapper";
 
 const SectionList = (props) => {
   const {
     data,
     removeSection,
+    setQuestionData,
     addSectionData,
     removeSectionData,
     removeQuestion,
@@ -51,6 +59,8 @@ const SectionList = (props) => {
     useState(null);
   const [currentSelectedSection, setCurrentSelectedSection] = useState({});
   const [currentSelectedParagraph, setCurrentSelectedParagraph] = useState({});
+
+  const [draggingSectionId, setDraggingSectionId] = useState(null);
 
   const handleSectionDataCreateModalOpenClick = (sectionIndex) => {
     setCurrentSelectedSectionIndex(sectionIndex);
@@ -103,72 +113,108 @@ const SectionList = (props) => {
     addSectionData(sectionIndex, { ...payload, sectionDataType: "questions" });
   };
 
+  const getActionHandlers = (index, setExpand) => {
+    return (
+      <div className="mb-2 border bg-white p-2 rounded-md relative flex justify-between items-center">
+        <Heading className="text-xl font-bold" title={`Actions`} />
+        <div className="flex items-center gap-3">
+          <CustomButton
+            onClick={() => setExpand((prev) => !prev)}
+            color="primary"
+            title="Expand / Minimize"
+          />
+          <QuestionCreateModal
+            addQuestion={(payload) => addQuestion(payload)(index)}
+          />
+          <CustomButton
+            onClick={() => handleSectionDataCreateModalOpenClick(index)}
+            color="primary"
+            title="Add Section Data +"
+          />
+          <CustomButton
+            confirmBox
+            iconOnly
+            type="delete"
+            className="bg-opacity-50"
+            onClick={() => removeSection(index)}
+            title="Remove"
+          />
+        </div>
+      </div>
+    );
+  };
+
+  const getDataPos = (id) => data.findIndex((each) => each._id === id);
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+
+    console.log(active, over, "active and over");
+
+    setQuestionData((prev) => {
+      const originalPos = getDataPos(active.id);
+      const newPos = getDataPos(over.id);
+
+      return arrayMove(prev, originalPos, newPos);
+    });
+    setDraggingSectionId(null);
+  };
+
+  const handleDragStart = (event) => {
+    setDraggingSectionId(event.active.id);
+  };
+
   return (
     <>
       <div>
-        <Accordion isCompact variant="splitted" selectionMode="multiple">
-          {data.map((section, index) => {
-            return (
-              <AccordionItem
-                subtitle="Press to expand"  
-                key={index + 1}
-                aria-label={`Section ${index + 1}`}
-                title={`Section ${index + 1}`}
-              >
-                <div className="rounded-md relative">
-                  <div className="mb-2 border bg-white p-2 rounded-md relative flex justify-between items-center">
-                    <Heading
-                      className="text-xl font-bold"
-                      title={`Actions`}
-                    />
-                    <div className="flex items-center gap-3">
-                      <QuestionCreateModal
-                        addQuestion={(payload) => addQuestion(payload)(index)}
-                      />
-                      <CustomButton
-                        onClick={() =>
-                          handleSectionDataCreateModalOpenClick(index)
+        <DndContext
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+          collisionDetection={closestCorners}
+        >
+          <SortableContext items={data} strategy={verticalListSortingStrategy}>
+            {data.map((section, index) => {
+              return (
+                <SectionCardWrapper key={uuidv4()} section={section}>
+                  <div className="rounded-md relative">
+                    {/* {getActionHandlers(index)} */}
+                    {_.isEmpty(section) ? (
+                      <div className="flex justify-center items-center min-h-[300px]">
+                        <NotiInfo />
+                      </div>
+                    ) : (
+                      <SectionCard
+                        index={index}
+                        getActionHandlers={getActionHandlers}
+                        sectionData={section}
+                        removeParagraph={removeParagraph}
+                        updateSectionData={updateSectionData}
+                        sectionIndex={index}
+                        removeSectionData={removeSectionData}
+                        getSectionDataUpdateButton={getSectionDataUpdateButton}
+                        getParagraphUpdateButton={getParagraphUpdateButton}
+                        removeQuestion={removeQuestion}
+                        updateQuestions={updateQuestions}
+                        successCallback={successCallback}
+                        srcId={srcId}
+                        imageUploadApi={(payload) =>
+                          imageUploadApi({
+                            ...payload,
+                            sectionIndex: index,
+                          })
                         }
-                        color="primary"
-                        title="Add Section Data +"
                       />
-                      <CustomButton
-                        confirmBox
-                        iconOnly
-                        type="delete"
-                        className="bg-opacity-50"
-                        onClick={() => removeSection(index)}
-                        title="Remove"
-                      />
-                    </div>
+                    )}
                   </div>
-                  {_.isEmpty(section) ? (
-                    <div className="flex justify-center items-center min-h-[300px]">
-                      <NotiInfo />
-                    </div>
-                  ) : (
-                    <SectionCard
-                      sectionData={section}
-                      removeParagraph={removeParagraph}
-                      updateSectionData={updateSectionData}
-                      sectionIndex={index}
-                      removeSectionData={removeSectionData}
-                      getSectionDataUpdateButton={getSectionDataUpdateButton}
-                      getParagraphUpdateButton={getParagraphUpdateButton}
-                      removeQuestion={removeQuestion}
-                      updateQuestions={updateQuestions}
-                      successCallback={successCallback}
-                      srcId={srcId}
-                      imageUploadApi={(payload) =>
-                        imageUploadApi({ ...payload, sectionIndex: index })
-                      }
-                    />
-                  )}
-                </div>
-              </AccordionItem>
-            );
-          })}
-        </Accordion>
+                </SectionCardWrapper>
+              );
+            })}
+          </SortableContext>
+
+          <DragOverlay>
+            <div>DraggingSectionId {draggingSectionId}</div>
+          </DragOverlay>
+        </DndContext>
       </div>
       <SectionDataCreateModal
         sectionIndex={currentSelectedSectionIndex}
