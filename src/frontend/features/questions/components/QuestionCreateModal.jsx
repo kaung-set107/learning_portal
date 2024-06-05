@@ -22,12 +22,18 @@ export default function QuestionCreateModal(props) {
   const [option, setOption] = useState("");
   const variant = "bordered";
 
-  const questionTypes = [
-    { value: "trueFalse", label: "trueFalse" },
-    { value: "fillInTheBlank", label: "fillInTheBlank" },
-    { value: "openQuestion", label: "openQuestion" },
-    { value: "multipleChoice", label: "multipleChoice" },
-  ];
+  let questionTypes = []
+
+  if(!props.fixQuestionTypes) {
+    questionTypes = [
+      { value: "trueFalse", label: "trueFalse" },
+      { value: "fillInTheBlank", label: "fillInTheBlank" },
+      { value: "openQuestion", label: "openQuestion" },
+      { value: "multipleChoice", label: "multipleChoice" },
+    ];
+  } else {
+    questionTypes = [...props.fixQuestionTypes]
+  }
 
   const answerTypes = [
     { value: "text", label: "text" },

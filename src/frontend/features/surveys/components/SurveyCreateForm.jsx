@@ -32,6 +32,11 @@ const SurveyCreateForm = (props) => {
     },
   ];
 
+  const fixQuestionTypes = [
+    { value: "trueFalse", label: "trueFalse" },
+    { value: "multipleChoice", label: "multipleChoice" },
+  ];
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -79,6 +84,25 @@ const SurveyCreateForm = (props) => {
       setIsSubmitting(false);
     }
   };
+
+  const updateQuestions = (questionIndex, payload) => {
+    setQuestions(prev => {
+      let newQuestions = [...prev]
+
+      newQuestions[questionIndex] = {...payload}
+
+      return newQuestions
+    })
+  }
+
+  const removeQuestion=  (questionIndex) => {
+    setQuestions(prev => {
+      let newQuestions = [...prev]
+
+      newQuestions =  newQuestions.filter((question, qIndex) => qIndex !== questionIndex)
+      return newQuestions
+    })
+  }
 
   return (
     <div>
@@ -150,13 +174,22 @@ const SurveyCreateForm = (props) => {
             <div className="mb-3">
               <div className="flex w-full items-center justify-between">
                 <h3 className="text-lg font-bold">Questions</h3>
-                <QuestionCreateModal addQuestion={addQuestion} />
+                <QuestionCreateModal fixQuestionTypes={fixQuestionTypes} addQuestion={addQuestion} />
               </div>
               <div className="mt-3">
                 <QuestionList
                   questions={questions}
-                  setQuestions={setQuestions}
+                  updateQuestions={updateQuestions}
+                  removeQuestion={removeQuestion}
                 />
+                {/* 
+                questions={sectionData.questions}
+                updateQuestions={(questionIndex, payload) =>
+                  updateQuestions(sectionIndex, questionIndex, payload)
+                }
+                removeQuestion={(questionIndex) =>
+                  removeQuestion(sectionIndex, questionIndex)
+                } */}
               </div>
             </div>
             <div className="flex justify-center gap-5 mt-8">
