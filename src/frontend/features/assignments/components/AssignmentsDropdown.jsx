@@ -48,17 +48,18 @@ const AssignmentsDropdown = (props) => {
         items={assignments.data}
         color="primary"
         label="Assignment"
-        selectedKeys={
-          filters.assignment?._id && assignments.data.length > 0
-            ? [filters.assignment?._id]
-            : []
-        }
+        // selectedKeys={
+        //   filters.assignment?._id && assignments.data.length > 0
+        //     ? [filters.assignment?._id]
+        //     : []
+        // }
+        selectedKeys={[filters?.assignment?._id]}
         placeholder={assignments?.data?.length > 0 ? `Select an assignment` : 'No Assignment!'}
         className="max-w-xs"
         onSelectionChange={e => handleAssignmentSelect(e.currentKey)}
       >
         {(assignment) => (
-          <SelectItem key={assignment._id} textValue={assignment.title}>
+          <SelectItem key={assignment._id} textValue={assignment.title}>  
             {/* {`Subject: ${assignment?.subject?.title ?? 'Not Set!'}, Assignment: ${assignment.code ?? 'Not Set!'}`} */}
             {`Assignment: ${assignment.code ?? 'Not Set!'}`}
           </SelectItem>
