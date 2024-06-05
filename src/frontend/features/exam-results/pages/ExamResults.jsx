@@ -13,6 +13,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import SubjectsDropdown from "../../subjects/components/SubjectDropdown";
 import ExamsDropdown from "../../exams/component/ExamsDropdown";
 import ExamResultCheckModal from "../components/ExamResultCheckModal";
+import { showError, showSuccess } from "../../../../util/noti";
 
 const StatusDropdown = (props) => {
   const { setStatus, className } = props;
@@ -63,13 +64,27 @@ const ExamResults = () => {
 
   console.log(state);
 
-  const getCheckButton = (id) => {
-    return (
-      <ExamResultCheckModal
-        examResultId={id}
-        successCallback={getExamResults}
-      />
-    );
+  const goToExamResultCheckPage = (examResultId) => {
+    navigate(`/by-instructor/exam-results/${examResultId}/check`);
+  };
+
+  const getCheckButton = (id, examType) => {
+    if (examType === "inapp") {
+      return (
+        <CustomButton
+          color="success"
+          title="Check"
+          onClick={() => goToExamResultCheckPage(id)}
+        />
+      );
+    } else {
+      return (
+        <ExamResultCheckModal
+          examResultId={id}
+          successCallback={getExamResults}
+        />
+      );
+    }
   };
 
   const getViewButton = (id) => {
@@ -81,8 +96,7 @@ const ExamResults = () => {
     );
   };
 
-
-  const tableData = getTableData({getCheckButton, getViewButton});
+  const tableData = getTableData({ getCheckButton, getViewButton });
 
   const getExamResults = async (defaultPayload) => {
     let payload = {
@@ -106,6 +120,21 @@ const ExamResults = () => {
     }
   };
 
+  const publishCheckedResults = async () => {
+    setIsSubmitting(true);
+    console.log("published");
+
+    try {
+      let res = await examResultsApi.publishAll({ batch: filters.batch._id });
+      console.log(res);
+      showSuccess({ text: res.message, type: "noti-box" });
+    } catch (error) {
+      showError({ axiosResponse: error });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const handleClearAllFilter = () => {
     setFilters((prev) => ({ ...prev, exam: {} }));
   };
@@ -117,14 +146,18 @@ const ExamResults = () => {
   useEffect(() => {
     let data = {};
     let defaultPayload = {};
+
+    console.log(state);
     if (state && state.exam) {
       data.exam = state.exam;
       defaultPayload.exam = state.exam._id;
     }
 
-    if(state && state.subject) {
-      // data.batch = {_id: state.subject.course?._id ?? state.subject.course}
-      data.subject = state.subject
+    if (state && state.subject) {
+      data.batch = {
+        _id: state.subject.course?.batch?._id ?? state.subject.course.batch,
+      };
+      data.subject = state.subject;
     }
 
     let newFilters = { ...filters, ...data };
@@ -147,6 +180,9 @@ const ExamResults = () => {
   if (!isLoading) {
     content = (
       <div className="relative">
+        <div className="flex items-center justify-between mb-12">
+          <CustomButton type="back" title={`Back`} />
+        </div>
         {isFetching && (
           <div className="absolute -top-10 right-0">
             <Loading />
@@ -154,6 +190,11 @@ const ExamResults = () => {
         )}
         <div className="flex items-center justify-between mb-12">
           <TableHeading title="Exam Results" />
+          <CustomButton
+            onClick={() => publishCheckedResults()}
+            isLoading={isSubmitting}
+            title="Publish"
+          />
         </div>
         <div className="my-3 flex items-center gap-3">
           <StatusDropdown

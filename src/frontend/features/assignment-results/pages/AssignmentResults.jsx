@@ -125,11 +125,16 @@ const AssignmentResults = () => {
       defaultPayload.assignment = state.assignment._id;
     }
 
-    if(state && state.subject) {
-      data.batch = {_id: state.subject.course?._id ?? state.subject.course}
+    if (state && state.subject) {
+      data.batch = {
+        _id: state.subject.course?.batch?._id ?? state.subject.course.batch,
+      };
+      data.subject = state.subject;
     }
 
     let newFilters = { ...filters, ...data };
+
+    console.log(newFilters, 'newfilters')
 
     setFilters(newFilters);
 

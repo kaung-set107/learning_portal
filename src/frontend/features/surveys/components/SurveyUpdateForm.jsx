@@ -34,6 +34,11 @@ const SurveyUpdateForm = (props) => {
     },
   ];
 
+  const fixQuestionTypes = [
+    { value: "trueFalse", label: "trueFalse" },
+    { value: "multipleChoice", label: "multipleChoice" },
+  ];
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -111,6 +116,25 @@ const SurveyUpdateForm = (props) => {
       };
     });
   };
+
+  const updateQuestions = (questionIndex, payload) => {
+    setQuestions(prev => {
+      let newQuestions = [...prev]
+
+      newQuestions[questionIndex] = {...payload}
+
+      return newQuestions
+    })
+  }
+
+  const removeQuestion=  (questionIndex) => {
+    setQuestions(prev => {
+      let newQuestions = [...prev]
+
+      newQuestions =  newQuestions.filter((question, qIndex) => qIndex !== questionIndex)
+      return newQuestions
+    })
+  }
 
   useEffect(() => {
     fillData();
@@ -198,12 +222,13 @@ const SurveyUpdateForm = (props) => {
             <div className="mb-3">
               <div className="flex w-full items-center justify-between">
                 <h3 className="text-lg font-bold">Questions</h3>
-                <QuestionCreateModal addQuestion={addQuestion} />
+                <QuestionCreateModal fixQuestionTypes={fixQuestionTypes} addQuestion={addQuestion} />
               </div>
               <div className="mt-3">
-                <QuestionList
+              <QuestionList
                   questions={questions}
-                  setQuestions={setQuestions}
+                  updateQuestions={updateQuestions}
+                  removeQuestion={removeQuestion}
                 />
               </div>
             </div>

@@ -164,6 +164,7 @@ const QuizQuestionHandler = (props) => {
           <SectionList
             data={questionData}
             removeSection={removeSection}
+            setQuestionData={setQuestionData}
             addSectionData={addSectionData}
             removeParagraph={removeParagraph}
             updateParagraph={updateParagraph}

@@ -47,7 +47,7 @@ const QuizUpdateForm = (props) => {
     creditMark: 0,
     // distinctionMark: 0,
     deletedQuestions: [],
-    deletedQuestionData: []
+    deletedQuestionData: [],
   });
 
   const preparePayload = () => {
@@ -55,7 +55,7 @@ const QuizUpdateForm = (props) => {
       ...formData,
     };
 
-    console.log(payload.deletedQuestions)
+    console.log(payload.deletedQuestions);
 
     if (!(payload.deletedQuestions && payload.deletedQuestions.length > 0))
       delete payload.deletedQuestions;
@@ -67,6 +67,8 @@ const QuizUpdateForm = (props) => {
     payload.questionData = questionData;
     payload.type = type;
     payload[type] = props[type]._id;
+    payload.totalMark = calculateTotalMark();
+    payload.numOfQuestions = calculateTotalQuestion();
 
     return payload;
   };
@@ -96,6 +98,39 @@ const QuizUpdateForm = (props) => {
     } finally {
       setIsSubmitting(false);
       resetPayload();
+    }
+  };
+
+  const calculateTotalMark = () => {
+    if (questionData && questionData.length > 0) {
+      return questionData.reduce((totalMark, section) => {
+        const sectionTotalMark = section.questions
+          ? section.questions.reduce((questionAcc, question) => {
+              return questionAcc + +question.mark;
+            }, 0)
+          : 0;
+
+        const reMark = totalMark + sectionTotalMark;
+
+        return reMark;
+      }, 0);
+    } else {
+      return 0;
+    }
+  };
+
+  const calculateTotalQuestion = () => {
+    let totalLength = 0;
+    if (questionData && questionData.length > 0) {
+      questionData.map((section) => {
+        if (section.questions && section.questions.length > 0) {
+          totalLength += section.questions.length;
+        }
+      });
+
+      return totalLength
+    } else {
+      return 0;
     }
   };
 
@@ -313,9 +348,16 @@ const QuizUpdateForm = (props) => {
                 questionData={questionData}
                 setQuestionData={setQuestionData}
                 deletedQuestions={formData.deletedQuestions}
-                setDeletedQuestions={(data) => setFormData((prev) => ({ ...prev, deletedQuestions: data }))}
+                setDeletedQuestions={(data) =>
+                  setFormData((prev) => ({ ...prev, deletedQuestions: data }))
+                }
                 deletedQuestionData={formData.deletedQuestionData}
-                setDeletedQuestionData={(data) => setFormData((prev) => ({ ...prev, deletedQuestionData: data }))}
+                setDeletedQuestionData={(data) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    deletedQuestionData: data,
+                  }))
+                }
               />
             </div>
 

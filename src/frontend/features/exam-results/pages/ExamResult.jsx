@@ -144,7 +144,7 @@ const ExamResult = () => {
               {examResult.exam?.examType === "inapp" && (
                 <div>
                   <span className="text-[20px] font-normal">
-                    Total Questions : {examResult.exam.ExamResult}
+                    Total Questions : {examResult.exam.quiz.numOfQuestions}
                   </span>
                 </div>
               )}
@@ -227,8 +227,8 @@ const ExamResult = () => {
                 <span className="text-[16px] font-semibold">Checked Files</span>
                 <div className="flex gap-4 items-center">
                   <div className="bg-gray-100 flex flex-wrap gap-3 p-3 rounded-xl border">
-                    {examResult.files && examResult.files?.length > 0 ? (
-                      examResult.files.map((asset) => {
+                    {examResult.checkedFiles && examResult.checkedFiles?.length > 0 ? (
+                      examResult.checkedFiles.map((asset) => {
                         return (
                           <div
                             key={uuidv4()}

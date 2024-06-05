@@ -1,11 +1,11 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Login from "./pages/Login/login";
 // Home Web Page
-import NewsAndActivities from './frontend/home/home-course/activitiesAll.jsx'
-import Contact from './frontend/home/contactUs.jsx'
-import EventPage from './frontend/home/eventPage.jsx'
-import TestimonialPage from './frontend/home/testimonial.jsx'
-import EventDetailPage from './frontend/home/eventDetail.jsx'
+import NewsAndActivities from "./frontend/home/home-course/activitiesAll.jsx";
+import Contact from "./frontend/home/contactUs.jsx";
+import EventPage from "./frontend/home/eventPage.jsx";
+import TestimonialPage from "./frontend/home/testimonial.jsx";
+import EventDetailPage from "./frontend/home/eventDetail.jsx";
 import FHome from "./frontend/home/body";
 import About from "./frontend/home/about.jsx";
 import Booking from "./frontend/home/booking.jsx";
@@ -75,9 +75,9 @@ import Testimonial from "./pages/Testimonial/testimonialList.jsx";
 import TestimonialCreate from "./pages/Testimonial/testimonialInput.jsx";
 import TestimonialUpdate from "./pages/Testimonial/testimonialUpdate.jsx";
 
-import BannerList from './pages/Banner/bannerList.jsx'
-import BannerCreate from './pages/Banner/bannerInput.jsx'
-import BannerUpdate from './pages/Banner/bannerUpdate.jsx'
+import BannerList from "./pages/Banner/bannerList.jsx";
+import BannerCreate from "./pages/Banner/bannerInput.jsx";
+import BannerUpdate from "./pages/Banner/bannerUpdate.jsx";
 
 //assign update
 import AssignmentUpdate from "./frontend/pages/Assignment/AssignmentUpdate";
@@ -114,15 +114,16 @@ import ExamResults from "./frontend/features/exam-results/pages/ExamResults.jsx"
 import InstructorExamResult from "./frontend/features/exam-results/pages/ExamResult.jsx";
 
 //Activities
-import ActivitiesInput from './pages/Activities/activitiesInput.jsx'
-import ActivitiesList from './pages/Activities/activitiesList.jsx'
-import ActivitiesDetail from './frontend/home/news_activities_detail.jsx'
-import ActivitiesUpdate from './pages/Activities/activitiesUpdate.jsx'
+import ActivitiesInput from "./pages/Activities/activitiesInput.jsx";
+import ActivitiesList from "./pages/Activities/activitiesList.jsx";
+import ActivitiesDetail from "./frontend/home/news_activities_detail.jsx";
+import ActivitiesUpdate from "./pages/Activities/activitiesUpdate.jsx";
 
 //AchievementList
-import AchievementList from './pages/Achievements/achievementList.jsx'
-import AchievementInput from './pages/Achievements/achievementInput.jsx'
-import AchievementUpdate from './pages/Achievements/achievementUpdate.jsx'
+import AchievementList from "./pages/Achievements/achievementList.jsx";
+import AchievementInput from "./pages/Achievements/achievementInput.jsx";
+import AchievementUpdate from "./pages/Achievements/achievementUpdate.jsx";
+import InstructorExamResultCheck from "./frontend/features/exam-results/pages/ExamResultCheck.jsx";
 
 export default function RouteFile() {
   console.log(localStorage.getItem("user"), "local use");
@@ -141,10 +142,16 @@ export default function RouteFile() {
           <Route path="/login" element={<Login />}></Route>
           <Route path="/" element={<FHome />}></Route>
           <Route path="/test" element={<Test />}></Route>
-          <Route path="/activities-detail/:id" element={<ActivitiesDetail />}></Route>
+          <Route
+            path="/activities-detail/:id"
+            element={<ActivitiesDetail />}
+          ></Route>
           <Route path="/about" element={<About />}></Route>
           <Route path="/contact" element={<Contact />}></Route>
-          <Route path="/news-activities" element={<NewsAndActivities />}></Route>
+          <Route
+            path="/news-activities"
+            element={<NewsAndActivities />}
+          ></Route>
           <Route path="/events" element={<EventPage />}></Route>
           <Route path="/events/:id" element={<EventDetailPage />}></Route>
           <Route path="/booking" element={<Booking />}></Route>
@@ -185,14 +192,29 @@ export default function RouteFile() {
             {/*End Student Register and Detail */}
 
             {/* News & Activities */}
-            <Route path="/activities-input" element={<ActivitiesInput />}></Route>
-            <Route path="/activities-update/:id" element={<ActivitiesUpdate />}></Route>
+            <Route
+              path="/activities-input"
+              element={<ActivitiesInput />}
+            ></Route>
+            <Route
+              path="/activities-update/:id"
+              element={<ActivitiesUpdate />}
+            ></Route>
             <Route path="/activities-list" element={<ActivitiesList />}></Route>
 
             {/* Achievements */}
-            <Route path="/achievement-list" element={<AchievementList />}></Route>
-            <Route path="/achievement-update/:id" element={<AchievementUpdate />}></Route>
-            <Route path="/achievement-input" element={<AchievementInput />}></Route>
+            <Route
+              path="/achievement-list"
+              element={<AchievementList />}
+            ></Route>
+            <Route
+              path="/achievement-update/:id"
+              element={<AchievementUpdate />}
+            ></Route>
+            <Route
+              path="/achievement-input"
+              element={<AchievementInput />}
+            ></Route>
 
             {/*Start Student Enroll */}
             <Route path="/enroll-list" element={<Enrollment />}></Route>
@@ -218,8 +240,6 @@ export default function RouteFile() {
             <Route path="/course" element={<Course />}></Route>
             <Route path="/course-add" element={<CourseAdd />}></Route>
             <Route path="/course-update/:id" element={<CourseUpdate />}></Route>
-
-
 
             {/* Batch */}
             <Route path="/batch" element={<Batch />}></Route>
@@ -274,7 +294,11 @@ export default function RouteFile() {
               </Route>
               <Route path="exam-results">
                 <Route index element={<ExamResults />} />
-                <Route path=":id" element={<InstructorExamResult/>} />
+                <Route path=":id" element={<InstructorExamResult />} />
+                <Route
+                  path=":id/check"
+                  element={<InstructorExamResultCheck />}
+                />
               </Route>
               <Route path="surveys">
                 {/* <Route path=":id/survey-results" element={<SurveyResults />} /> */}

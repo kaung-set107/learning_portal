@@ -56,12 +56,12 @@ const SubjectBrief = () => {
 
   const goToAssignmentResults = (data) => {
     navigate("/by-instructor/assignment-results", {
-      state: { assignment: data, subject: subject.data },
+      state: { assignment: data, subject: {...subject.data} },
     });
   };
 
   const goToExamResults = (examData) => {
-    navigate(`/by-instructor/exam-results` ,{state: { exam: examData, subject: subject.data }});
+    navigate(`/by-instructor/exam-results` ,{state: { exam: examData, subject: {...subject.data} }});
   };
 
   const goToLearningMaterials = (data) => {
@@ -180,7 +180,6 @@ const SubjectBrief = () => {
                           >
                             <div className="flex gap-3 absolute right-2 top-2">
                               <CustomButton
-                                size="sm"
                                 onClick={() => goToAssignmentResults(assignment)}
                                 isLoading={isSubmitting}
                                 title="Results"
@@ -193,7 +192,6 @@ const SubjectBrief = () => {
                               <CustomButton
                                 iconOnly
                                 type="delete"
-                                size="sm"
                                 onClick={() =>
                                   handleAssignmentDelete(assignment._id)
                                 }

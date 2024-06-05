@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useLocation, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import QuizUpdateForm from "../components/QuizUpdateForm";
 import { useEffect, useState } from "react";
 import CustomButton from "../../../components/general/CustomButton";
@@ -12,6 +12,7 @@ const QuizUpdate = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const {id} = useParams()
+  const navigate = useNavigate()
 
   const getQuiz = async () => {
     try {
@@ -27,6 +28,12 @@ const QuizUpdate = () => {
 
   useEffect(() => {
     console.log(state);
+
+    if (!(state.type && state[state.type] && state.quizData)) {
+      navigate(-1);
+    }
+
+    
     // if (!(state.type && state[state.type] && state.quizData)) {
     //   navigate(-1);
     // } else {
