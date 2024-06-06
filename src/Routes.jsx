@@ -163,7 +163,7 @@ export default function RouteFile() {
             element={<HomeCourseDetail />}
           ></Route>
           <Route
-            path="/home-sub-detail"
+            path="/home-sub-detail/:id"
             element={<HomeSubjectDetail />}
           ></Route>
 

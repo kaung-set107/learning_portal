@@ -36,7 +36,7 @@ import Swal from "sweetalert2";
 const ExamPage = ({ ViewData }) => {
     const location = useLocation();
 
-    console.log(ViewData, 'Hello')
+    console.log(ViewData.updatedQuestionData.map((i) => (i.questions.map((e) => (e.type === 'fillInTheBlank' ? e.studentAnswer.map((f) => (f)) : parseInt(e.studentAnswer) - 1)))), 'Hello')
     const [isLoading, setIsLoading] = useState(true);
     const [optionIndex, setOptionIndex] = useState(5); // Timer set for 5 seconds
     const [counter, setCounter] = useState(0);
@@ -48,7 +48,8 @@ const ExamPage = ({ ViewData }) => {
     const [timeLeft, setTimeLeft] = useState("");
     const [showTimer, setShowTimer] = useState(false);
     // const [quizList, setQuizList] = useState(ResData.quiz);
-    const [quizList, setQuizList] = useState(ViewData.updatedQuestionData);
+    const quizList = ViewData.updatedQuestionData
+    console.log(quizList)
     const [studentID, setStudentID] = useState("");
     const [clicked, setClicked] = useState(false);
     const [multiAns, setMultiAns] = useState([])
@@ -160,40 +161,28 @@ const ExamPage = ({ ViewData }) => {
 
                                                                         <div className='flex justify-between'>
                                                                             {/* True False Exam */}
-
+                                                                            {/* {console.log(secItem.options[secItem.type !== 'fillInTheBlank' && parseInt(secItem.studentAnswer) - 1].answer, 'ans')} */}
                                                                             <RadioGroup
 
                                                                                 className='flex flex-col gap-2'
                                                                                 orientation="horizontal"
-
-
+                                                                                isReadOnly
+                                                                                // isDisabled={secIndex + 1 === parseInt(secItem?.studentAnswer)}
+                                                                                defaultValue={secItem.options[secItem.type !== 'fillInTheBlank' && parseInt(secItem.studentAnswer) - 1].answer}
                                                                             >
                                                                                 {secItem.options.map((e, i) => (
                                                                                     <Radio value={e.answer}
+
                                                                                     >{e.answer}</Radio>
                                                                                 ))}
 
                                                                             </RadioGroup>
-                                                                            {/* <input
-                                                                                                                    type='radio'
-                                                                                                                    className='w-[20px] h-[20px] mt-1'
-                                                                                                                    name={secIndex !== i}
-                                                                                                                    value={e.answer}
-                                                                                                                    disabled={
 
-                                                                                                                        clicked
-                                                                                                                            ? secIndex !== i ? true : ''
-                                                                                                                            : ""
-                                                                                                                    }
-                                                                                                                // onChange={(event) =>
-                                                                                                                //   handleOptionSelect(event, e, i)
-                                                                                                                // }
-                                                                                                                /> */}
 
 
                                                                             &nbsp;
 
-                                                                            {/* <span className='ml-2 text-[20px] lg:text-[16px]'>{e.answer}</span> */}
+
 
                                                                         </div>
 
@@ -206,13 +195,15 @@ const ExamPage = ({ ViewData }) => {
                                                                         <div>
 
                                                                             {/* Multiple Choice Quiz */}
+                                                                            {/* {console.log(secItem.type === 'multipleChoice' && secItem?.studentAnswer.map((mul) => (parseInt(mul) - 1)), 'mul')} */}
                                                                             {secItem.options.map((e, i) => (
                                                                                 <div className='flex gap-1'>
                                                                                     <input
                                                                                         type='checkbox'
                                                                                         name='answer_group'
+                                                                                        readOnly
                                                                                         value={e.answer}
-
+                                                                                        checked={secItem.type === 'multipleChoice' && secItem?.studentAnswer.map((mul) => (parseInt(mul) - 1)).includes(i)}
                                                                                         onClick={(event) =>
                                                                                             handleCheckboxSelect(event,
                                                                                                 i,
@@ -249,10 +240,12 @@ const ExamPage = ({ ViewData }) => {
 
 
                                                                                     {/* Map over the inputArray and render input boxes */}
+
                                                                                     {Array.from({ length: secItem?.inputCount }, (_, index) => index).map((item, ind) => (
                                                                                         <div className='flex gap-1 '>
                                                                                             <span>({ind + 1})</span>
-                                                                                            <Input key={item} type="text" placeholder='Answer' variant="underlined" className="rounded-md p-2 mb-2" />
+                                                                                            {/* {console.log(secItem.studentAnswer, 'blan')} */}
+                                                                                            <Input key={item} readOnly type="text" placeholder='Answer' variant="underlined" value={secItem.type === 'fillInTheBlank' && secItem.studentAnswer[secItem.studentAnswer.map((b, ib) => (ib)).indexOf(ind)]} className="rounded-md p-2 mb-2" />
                                                                                         </div>
 
                                                                                     ))}
@@ -303,10 +296,7 @@ const ExamPage = ({ ViewData }) => {
 
 
                         ))}
-                        {/* <div className='py-2 flex justify-end lg:gap-2 xl:gap-3 2xl:gap-4'>
-                            <Button color='light' className='text-rose-600 font-medium' size='xl' onClick={() => navigate('/student')}>Cancel</Button>
-                            <Button color='primary' size='xl' onClick={handleResult}>Submit</Button>
-                        </div> */}
+
                     </div>
 
                 </div>

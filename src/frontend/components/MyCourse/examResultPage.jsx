@@ -183,7 +183,7 @@ const ExamResult = ({ ResData, showResult, subjectData, examFile }) => {
                         <div className='flex flex-col gap-10'>
                             <div className='flex flex-col gap-5'>
                                 <span className='text-[16px] font-semibold'>Question Paper</span>
-                                {ResData.exam && ResData.exam.assets.map((i, index) => (
+                                {ResData.exam.assets && ResData.exam?.assets.map((i, index) => (
                                     <div className="sm:flex justify-start gap-5" key={i._id}>
                                         <a
                                             href={getFile({ payload: i })}

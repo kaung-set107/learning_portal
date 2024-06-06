@@ -62,7 +62,7 @@ const CourseDetail = (props) => {
   // console.log(enrollID, "enrollID");
   // console.log(examData, "sub ii");
   const courseData = location.state.courseData;
-  console.log(location.state.data, "sub ii");
+  // console.log(location.state.data, "sub ii");
   const [showVideo, setShowVideo] = useState(false);
   const [teacherName, setTeacherName] = useState([]);
   const [surveyData, setSurveyData] = useState([]);

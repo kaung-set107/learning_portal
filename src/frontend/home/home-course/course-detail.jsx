@@ -8,6 +8,7 @@ import {
   Input,
   Progress,
 } from "@nextui-org/react";
+import { Link } from "react-router-dom";
 import Footer from '../footer'
 import { getFile } from "../../../util";
 import Module from "../../../assets/img/modules.svg";
@@ -30,19 +31,20 @@ export default function CourseDetail(props) {
   const [course, setCourse] = useState([]);
   const [value, setValue] = useState("");
   const [showVideoList, setShowVideoList] = useState([])
-  const handleSubjectDetail = (data, value) => {
-    setValue(value);
-    navigate("/home-sub-detail", {
-      state: { data: data, courseData: courseData },
-    });
-    console.log(data, "sub");
-  };
+  // const handleSubjectDetail = (data, value) => {
+  //   setValue(value);
+  //   navigate("/home-sub-detail", {
+  //     state: { data: data, courseData: courseData },
+  //   });
+  //   console.log(data, "sub");
+  // };
   const [subjectList, setSubjectList] = useState([]);
   const [subjectAndTeacherList, setSubjectAndTeacherList] = useState([]);
   useEffect(() => {
+    window.scroll(0, 0)
     const getCourseDetail = async () => {
       await apiInstance.get("courses/" + courseData._id).then((res) => {
-        // console.log(res.data.data.subjects, "c detail");
+        console.log(res.data.data, "c detail");
         setCourse(res.data.data);
         setSubjectList(res.data.data.subjects);
         setShowVideoList(res.data.data.previewVideo ? JSON.parse(res.data.data.previewVideo) : '');
@@ -184,7 +186,7 @@ export default function CourseDetail(props) {
               }}
               className='hidden sm:flex flex-col mt-0 sm:mt-20 md:bg-right md:bg-contain'
             >
-              <div className='w-[375px] h-full sm:w-full sm:h-[272px]'>
+              {/* <div className='w-[375px] h-full sm:w-full sm:h-[272px]'>
                 <div className=''>
                   <span className='text-[20px] font-semibold sm:text-[40px]'>
                     Not sure where to start?
@@ -202,7 +204,7 @@ export default function CourseDetail(props) {
                   </div>
 
                 </div>
-              </div>
+              </div> */}
 
               {/* Subjects Section Start */}
               <div className='sm:pt-0 pt-10'>
@@ -255,14 +257,14 @@ export default function CourseDetail(props) {
                         </p>
                         <div
                           // style={{ padding: "70px 28px 0px 120px" }}
-                          className='xl:pt-[50px] 2xl:pt-[75px] pl-unit-20 sm:pt-unit-18 sm:pl-unit-28 lg:pl-unit-20 xl:pl-[80px] 2xl:pl-[125px]'
+                          className='flex justify-center'
                         >
-                          <Button
-                            className='bg-red-500 hover:bg-red-700 text-[#fff] text-[12px] sm:text-[16px] font-normal sm:font-medium rounded-[6px] sm:rounded-[12px] w-[167px] h-[36px] sm:w-[227px] sm:h-[48px] lg:w-[200px] lg:h-[40px]'
-                            onClick={() => { handleSubjectDetail(e, "sub-detail"), window.scroll(0, 0) }}
+                          <Link to={'/home-sub-detail/' + e._id}
+                            className='bg-red-500 hover:bg-red-700 p-3 w-full flex justify-center items-center text-[#fff] text-[12px] sm:text-[16px] font-normal sm:font-medium rounded-[6px] sm:rounded-[12px]  lg:h-[40px]'
+                          // onClick={() => { handleSubjectDetail(e, "sub-detail"), window.scroll(0, 0) }}
                           >
                             See More
-                          </Button>
+                          </Link>
                         </div>
                       </div>
                     </>
@@ -459,14 +461,14 @@ export default function CourseDetail(props) {
                         </p>
                         <div
                           // style={{ padding: "70px 28px 0px 120px" }}
-                          className='pt-8  left-[98px] b-[-13px] pl-unit-20 sm:pt-unit-18 sm:pl-unit-28'
+                          className='flex justify-center'
                         >
-                          <Button
-                            className='bg-red-500 hover:bg-red-700 text-[#fff] text-[12px] sm:text-[16px] font-normal sm:font-medium rounded-[6px] sm:rounded-[12px] w-[167px] h-[36px] sm:w-[227px] sm:h-[48px]'
-                            onClick={() => handleSubjectDetail(e, "sub-detail")}
+                          <Link to={'/home-sub-detail/' + e._id}
+                            className='bg-red-500 hover:bg-red-700 p-3 w-full flex justify-center items-center text-[#fff] text-[12px] sm:text-[16px] font-normal sm:font-medium rounded-[6px] sm:rounded-[12px]  lg:h-[40px]'
+                          // onClick={() => { handleSubjectDetail(e, "sub-detail"), window.scroll(0, 0) }}
                           >
                             See More
-                          </Button>
+                          </Link>
                         </div>
                       </div>
                     </>

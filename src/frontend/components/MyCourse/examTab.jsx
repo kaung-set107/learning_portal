@@ -54,13 +54,13 @@ export default function CourseDetail(props) {
   const location = useLocation();
   const navigate = useNavigate()
   const studentID = localStorage.getItem('id')
-  console.log(studentID, "sub data");
+  // console.log(studentID, "sub data");
 
   // const exam = ResData._id
 
   const subjectData = location.state.data;
   const [size, setSize] = useState('')
-  console.log(location.state.enroll_id, "sub data");
+  // console.log(subjectData.exams, "sub data");
   const batchID = location.state.data.course.batch?._id;
   // const batchID = location.state.data.course.batch?._id;
   // console.log(location.state.data.exams.filter(el=>el.quiz), "cou id");
@@ -83,7 +83,7 @@ export default function CourseDetail(props) {
   // console.log(examValue, 'examValue')
 
   const handleExamPage = (val) => {
-    console.log(val.quiz, 'hfjsakdsnjkj')
+    // console.log(val.quiz, 'hfjsakdsnjkj')
     navigate(`/exam-page/${val._id}`, { state: { examData: val.quiz, student: studentID, subID: subjectData._id, batchID: subjectData.course?.batch._id, enroll: location.state.enroll_id } })
 
   }
@@ -117,13 +117,13 @@ export default function CourseDetail(props) {
   }
 
   useEffect(() => {
-    console.log(examValue, 'ex va')
+    // console.log(examValue, 'ex va')
     const getExamRes = async () => {
       await apiInstance.get(`exam-results`).then((res) => {
-        console.log(res.data.data, 'res exam for')
+        // console.log(res.data.data, 'res exam for')
         setExamList(res.data.data)
         // setExamResult(res.data.data.filter(el => el.exam._id === examValue._id && el.student === studentID && el.status === 'submitted'))
-        console.log(res.data.data.filter(el => el.exam._id === examValue._id && el.student === studentID && el.status === 'submitted'), 'res check')
+        // console.log(res.data.data.filter(el => el.exam._id === examValue._id && el.student === studentID && el.status === 'submitted'), 'res check')
       })
     }
 
@@ -147,7 +147,7 @@ export default function CourseDetail(props) {
     };
     const getQuizRes = async () => {
       await apiInstance.get(`quiz-results?student=${studentID}&batch=${batchID}&quiz=${quizID}`).then((res) => {
-        console.log(res.data.data, 'quiz res List')
+        // console.log(res.data.data, 'quiz res List')
         setDisabledQuiz(res.data.data)
 
       });
@@ -279,7 +279,7 @@ export default function CourseDetail(props) {
             showResult ? (
 
               <div className='mx-10' >
-                {console.log(examResult, 'examResult')}
+                {/* {console.log(examResult, 'examResult')} */}
                 <ExamRes ResData={examResult} showResult={showResult} subjectData={subjectData} examFile={examValue} />
               </div>
             ) : (
@@ -334,7 +334,12 @@ export default function CourseDetail(props) {
 
                             <div className='flex flex-col items-end gap-2 justify-end'>
 
-                              <Button color='primary' className='w-[163px] h-[44px]' onClick={() => handleExamPage(item)} >Take Exam</Button>
+                              {examList.filter(el => el.exam?._id === item._id)[0] ? (
+                                <Button color='default' disabled className='w-[163px] h-[44px] cursor-not-allowed'  >Take Exam</Button>
+                              ) : (
+                                <Button color='primary' className='w-[163px] h-[44px]' onClick={() => handleExamPage(item)} >Take Exam</Button>
+                              )}
+
 
 
                               <div className="text-[16px] text-[#fff]  font-semibold px-3 ">
@@ -425,46 +430,43 @@ export default function CourseDetail(props) {
                     >
                       <div className='flex flex-col justify-start pt-10 w-[768px] lg:w-[1200px] xl:w-[1280px] 2xl:w-[1440px] h-[204px] pl-10 pb-8 pr-10' >
 
-                        {subjectData.exams.filter(el => el.examType === 'inapp').map((item, index) => (
-                          <>
-                            {/* {console.log(examList.filter(el => el.quizResult), 'result')} */}
-                            {examList.filter(el => el.type === 'inapp' && el.status === 'published').map((res) => (
-                              <div className='grid grid-cols-2 bg-[#215887] p-12  border-4 border-l-red-500 '>
-                                <div className='w-[742px] h-[135px] flex gap-52'>
-                                  <div className='flex justify-start text-[24px] text-[#fff] font-semibold items-center'>Exam</div>
-                                  <div className='flex flex-col gap-5 justify-start'>
-                                    <span className='text-[32px] text-[#fff] font-semibold flex flex-col'>Introduction to IELTS</span>
 
-                                    <div className="text-[16px] text-[#fff]  font-semibold px-3 ">
-                                      <span>Refference Link : </span>
-                                      <a href='https:// www.google.com' className='underline' >
-                                        www.google.com
-                                      </a>
-                                    </div>
+                        {/* {console.log(examList.filter(el => el.quizResult), 'result')} */}
+                        {examList.filter(el => el.type === 'inapp' && el.status === 'published').map((res) => (
+                          <div className='grid grid-cols-2 bg-[#215887] p-12  border-4 border-l-red-500 '>
+                            <div className='w-[742px] h-[135px] flex gap-52'>
+                              <div className='flex justify-start text-[24px] text-[#fff] font-semibold items-center'>Exam</div>
+                              <div className='flex flex-col gap-5 justify-start'>
+                                <span className='text-[32px] text-[#fff] font-semibold flex flex-col'>Introduction to IELTS</span>
 
-
-
-
-                                  </div>
+                                <div className="text-[16px] text-[#fff]  font-semibold px-3 ">
+                                  <span>Refference Link : </span>
+                                  <a href='https:// www.google.com' className='underline' >
+                                    www.google.com
+                                  </a>
                                 </div>
 
-                                <div className='flex flex-col items-end gap-2 justify-center'>
-                                  <Button className='bg-[#ED1D25] text-[#fff] text-[16px] font-semibold' onClick={() => { setShowResult(true), handleResPage(res), setExamValue(item) }}>See Result</Button>
-                                  {/* <div className="text-[16px] text-[#fff]  font-semibold px-3 ">
+
+
+
+                              </div>
+                            </div>
+
+                            <div className='flex flex-col items-end gap-2 justify-center'>
+                              <Button className='bg-[#ED1D25] text-[#fff] text-[16px] font-semibold' onClick={() => { setShowResult(true), handleResPage(res), setExamValue(item) }}>See Result</Button>
+                              {/* <div className="text-[16px] text-[#fff]  font-semibold px-3 ">
                                     <span>Refference Link : </span>
                                     <a href='https:// www.google.com' className='underline' >
                                       www.google.com
                                     </a>
                                   </div> */}
-                                </div>
-                              </div>
-                            ))}
-
-
-
-                          </>
-
+                            </div>
+                          </div>
                         ))}
+
+
+
+
 
 
                       </div>
@@ -662,7 +664,7 @@ export default function CourseDetail(props) {
           <ModalContent>
             {(onClose) => (
               <>
-                <ModalHeader className="flex flex-col gap-1 text-[30px] font-bold">Your Quiz Result</ModalHeader>
+                <ModalHeader className="flex flex-col gap-1 text-[30px] font-bold">View Your Answers</ModalHeader>
                 <Divider></Divider>
                 <ModalBody>
                   <ViewAnswer ViewData={disabledQuiz[0]} />

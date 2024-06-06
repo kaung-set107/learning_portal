@@ -31,7 +31,7 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
   const [selectedOption, setSelectedOption] = useState("");
   const [disabledQuiz, setDisabledQuiz] = useState([]);
   const [showResult, setShowResult] = useState(false);
-  const [oneHour, setOneHour] = useState("");
+  const [quizData, setQuizData] = useState([]);
   const [showTimer, setShowTimer] = useState(false);
   const [isCorrect, setIsCorrect] = useState("");
   const [showAlert, setShowAlert] = useState(false);
@@ -92,6 +92,7 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
           res.data.data !==
           undefined
         ) {
+          setQuizData(res.data.data)
           setQuizList(
             res.data.data.questionData[0]
           );
@@ -123,8 +124,8 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
     if (showTimer) {
       interval = setInterval(() => {
         setTimer(prevTimer => {
-          if (prevTimer >= 30) {
-            if (((TotalMark + MulTotalMark) === quizList.passMark && "pass") || ((TotalMark + MulTotalMark) > quizList.passMark && "credit")) {
+          if (prevTimer >= timeLeft) {
+            if (((TotalMark + MulTotalMark) === quizData.passMark && "pass") || ((TotalMark + MulTotalMark) > quizData.passMark && "credit")) {
               handleResult();
             } else {
               handleResult()
@@ -182,7 +183,7 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
         setCounter(nextQuestion);
       } else {
         setCounter(0);
-        if (((TotalMark + MulTotalMark) === quizList.passMark && "pass") || ((TotalMark + MulTotalMark) > quizList.passMark && "credit")) {
+        if (((TotalMark + MulTotalMark) === quizData.passMark && "pass") || ((TotalMark + MulTotalMark) > quizData.passMark && "credit")) {
           handleResult();
         } else {
           handleShowFail()
@@ -226,25 +227,31 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
 
     const data = {
       enrollment: enrollID,
-      quiz: quizList._id,
+      quiz: quizData._id,
       student: studentID,
       batch: batchID,
       answerDate: Date.now(),
-      updatedQuestions: quizList.questions.map((i) => {
+      updatedQuestionData: quizData.questionData.map((first) => {
         return {
-          question: i.question,
-          type: i.type,
-          mark: i.mark,
-          images: i.images,
-          options: i.options,
-          answerType: i.answerType,
-          correctAnswer: i.correctAnswer,
-          studentAnswer: i.type === 'trueFalse' ? studentAnswerList.filter((el) => el.id === i._id)[0]
-            ?.studentAnswer : studentAnswerList.filter((el) => el.id === i._id)[0]?.studentAnswer.slice(-(i.correctAnswer.length)),
+          instruction: first.instruction,
+          paragraph: first.paragraph.map((i) => (i)),
+          questions: first.questions.map((i) => {
+            return {
+              question: i.question,
+              type: i.type,
+              mark: i.mark,
+              images: i.images,
+              options: i.options,
+              answerType: i.answerType,
+              correctAnswer: i.correctAnswer,
+              studentAnswer: i.type === 'trueFalse' ? studentAnswerList.filter((el) => el.id === i._id)[0]
+                ?.studentAnswer : studentAnswerList.filter((el) => el.id === i._id)[0]?.studentAnswer.slice(-(i.correctAnswer.length)),
+            };
+          }),
         };
       }),
       totalMark: TotalMark + MulTotalMark,
-      status: ((TotalMark + MulTotalMark) === quizList.passMark && "pass") || ((TotalMark + MulTotalMark) > quizList.passMark && "credit") || ((TotalMark + MulTotalMark) < quizList.creditMark && "fail"),
+      status: ((TotalMark + MulTotalMark) === quizData.passMark && "pass") || ((TotalMark + MulTotalMark) > quizData.passMark && "credit") || ((TotalMark + MulTotalMark) < quizData.creditMark && "fail"),
     };
     // alert(JSON.stringify(data));
     apiInstance

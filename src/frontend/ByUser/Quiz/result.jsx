@@ -117,14 +117,14 @@ export default function Result() {
           res.data.data.filter((el) => el?.student?._id === dataFromLocalStorage)[
             res.data.data.filter((el) => el?.student?._id === dataFromLocalStorage)
               .length - 1
-          ].updatedQuestions
+          ].updatedQuestionData
         );
         const marks = res.data.data.filter((el) => el?.student?._id === dataFromLocalStorage)[
           res.data.data.filter((el) => el?.student?._id === dataFromLocalStorage)
             .length - 1
-        ].updatedQuestions
+        ].updatedQuestionData
 
-        setOriginMark(marks.reduce((acc, val) => acc + val.mark, 0))
+        setOriginMark(marks[0].questions.reduce((acc, val) => acc + val.mark, 0))
         return () => clearTimeout(timer);
         //   setPages(res.data._metadata.page_count)
       });
@@ -254,7 +254,7 @@ export default function Result() {
                   Feedback
                 </span>
                 <span className='text-[20px] text-[#000] font-bold'>
-                  {quizResult.status}ed
+                  {quizResult.status}
                 </span>
               </div>
             </div>
@@ -282,7 +282,7 @@ export default function Result() {
                 </div>
                 {/* {console.log(updatedQuestionList, "up in bod")} */}
                 <div className='grid grid-cols-5 gap-3'>
-                  {updatedQuestionList.map((e, index) => (
+                  {updatedQuestionList[0].questions.map((e, index) => (
                     <>
                       {/* correctList.every(item => caList.includes(item)) */}
                       {e.correctAnswer.map((i) => (parseInt(i))).every(item => e.studentAnswer.map((i) => (parseInt(i))).includes(item))
@@ -335,7 +335,7 @@ export default function Result() {
               </div>
             </div>
           </div>
-          {updatedQuestionList.map((i, ind) =>
+          {updatedQuestionList[0].questions.map((i, ind) =>
             i.correctAnswer.map((i) => (parseInt(i))).every(item => i.studentAnswer.map((i) => (parseInt(i))).includes(item)) ? (
               <div
                 className='py-5 px-5 '

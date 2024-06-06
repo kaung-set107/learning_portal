@@ -75,20 +75,20 @@ const Result = ({ data }) => {
 
         const getResult = async () => {
             await apiInstance.get(`quiz-results`).then((res) => {
-                console.log(res.data.data, 'res quiz mul')
+                // console.log(res.data.data, 'res quiz mul')
                 setQuizID(
                     res.data.data.filter((el) => el.student?._id === dataFromLocalStorage)[
                         res.data.data.filter((el) => el?.student?.id === dataFromLocalStorage)
                             .length - 1
                     ]?.quiz
                 );
-                console.log(
-                    res.data.data.filter((el) => el.student?._id === dataFromLocalStorage)[
-                        res.data.data.filter((el) => el?.student?._id === dataFromLocalStorage)
-                            .length - 1
-                    ]?.quiz,
-                    "result"
-                );
+                // console.log(
+                //     res.data.data.filter((el) => el.student?._id === dataFromLocalStorage)[
+                //         res.data.data.filter((el) => el?.student?._id === dataFromLocalStorage)
+                //             .length - 1
+                //     ]?.quiz,
+                //     "result"
+                // );
                 const timer = setTimeout(() => {
                     setQuizResult(
                         res.data.data.filter((el) => el?.student?._id === dataFromLocalStorage)[
@@ -102,14 +102,14 @@ const Result = ({ data }) => {
                     res.data.data.filter((el) => el?.student?._id === dataFromLocalStorage)[
                         res.data.data.filter((el) => el?.student?._id === dataFromLocalStorage)
                             .length - 1
-                    ].updatedQuestions
+                    ].updatedQuestionData
                 );
                 const marks = res.data.data.filter((el) => el?.student?._id === dataFromLocalStorage)[
                     res.data.data.filter((el) => el?.student?._id === dataFromLocalStorage)
                         .length - 1
-                ].updatedQuestions
+                ].updatedQuestionData
 
-                setOriginMark(marks.reduce((acc, val) => acc + val.mark, 0))
+                setOriginMark(marks[0].questions.reduce((acc, val) => acc + val.mark, 0))
                 return () => clearTimeout(timer);
                 //   setPages(res.data._metadata.page_count)
             });
@@ -118,23 +118,9 @@ const Result = ({ data }) => {
         // return () => clearTimeout(timer);
     }, [setQuizResult, setQuizID, setUpdatedQuestionList]);
 
-    const handleQuizNavigation = (data) => {
-        // console.log(data, "navi");
-        // console.log(
-        //   updatedQuestionList
-        //     .filter((el) => el._id === data._id)[0]
-        //     ._id.slice(22, 2),
-        //   "up qu"
-        // );
-        setQuizNavigationID(
-            updatedQuestionList.filter((el) => el._id === data._id)[0]._id?.slice(-2)
-        );
-    };
-    const handleBack = (quizId) => {
 
-        navigate("/student");
-    };
-    console.log(quizResult, "q res");
+
+    // console.log(quizResult, "q res");
 
     const dateTime = moment(quizResult?.answerDate).locale("en").tz("Asia/Yangon");
     const formattedDateTime = dateTime.format("LLLL");
@@ -158,7 +144,7 @@ const Result = ({ data }) => {
                         </Tooltip> */}
                         <div className='pl-10'>
                             <span className='text-[20px] font-semibold text-[#131313] text-center'>
-                                Batch - 6, Module 1: Introduction to IELTS
+                                {data.batch?.name}, Module 1: {data.quiz?.title}
                             </span>
                         </div>
                     </div>
@@ -239,7 +225,7 @@ const Result = ({ data }) => {
                                     Feedback
                                 </span>
                                 <span className='text-[20px] text-[#000] font-bold'>
-                                    {quizResult.status}ed
+                                    {quizResult.status}
                                 </span>
                             </div>
                         </div>
@@ -315,7 +301,7 @@ const Result = ({ data }) => {
 
                         </div>
                     </div>
-                    {updatedQuestionList.map((i, ind) =>
+                    {updatedQuestionList[0].questions.map((i, ind) =>
                         i.correctAnswer.map((i) => (parseInt(i))).every(item => i.studentAnswer.map((i) => (parseInt(i))).includes(item)) ? (
                             <div
                                 className='py-5 px-5 '

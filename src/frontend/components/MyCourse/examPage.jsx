@@ -55,7 +55,7 @@ const ExamPage = () => {
     const [timeLeft, setTimeLeft] = useState("");
     const [showTimer, setShowTimer] = useState(false);
     // const [quizList, setQuizList] = useState(ResData.quiz);
-    const [quizList, setQuizList] = useState(ExamData.questionData);
+    const [quizList, setQuizList] = useState(ExamData.updatedQuestionData);
     const [studentID, setStudentID] = useState("");
     const [clicked, setClicked] = useState(false);
     const [multiAns, setMultiAns] = useState([])
@@ -81,7 +81,7 @@ const ExamPage = () => {
 
     // Generate an array of length equal to the count
     // const inputArray = Array.from({ length: FillBlankInput }, (_, index) => index);
-    // console.log(inputList, 'opp')
+    console.log(quizList, 'opp')
 
     console.log(trueAnswerList, 'dis')
     const TotalMark = trueAnswerList.map((i) => i.markTotal)
@@ -137,7 +137,7 @@ const ExamPage = () => {
     };
 
     const handleResult = () => {
-
+        setIsLoading(true)
         // console.log(studentAnswerList, 'studentAnswerList');
         const totalMark = TotalMark + MulTotalMark
 
@@ -454,8 +454,8 @@ const ExamPage = () => {
         }
         const getQuizRes = async () => {
             await apiInstance.get('quiz-results').then((res) => {
-                console.log(res.data.data.filter(el => el.quiz === QuizID), 'res')
-                setAlreadyQuizRes(res.data.data.filter(el => el.quiz === QuizID))
+                console.log(res.data.data, 'quiz res')
+                setAlreadyQuizRes(res.data.data.filter(el => el.quiz?._id === QuizID))
             })
         }
         getQuizRes()
@@ -471,16 +471,9 @@ const ExamPage = () => {
 
         setStudentID(dataFromLocalStorage);
         //   setPages(res.data._metadata.page_count)
-        let interval = null;
-        // let timeLeft = (ExamData.duration * 1000)
-        // interval = setInterval(() => {
-        //     setValue((v) => (v >= 100 ? 0 : v + 10));
-        // }, 500);
-
+        let interval = null
         interval = setInterval(() => {
-
             setIsLoading(false);
-
         }, 3000);
 
         // const timer = setTimeout(() => {
@@ -554,15 +547,12 @@ const ExamPage = () => {
                                                     </Button>
                                                     {
                                                         alreadyExamRes[0] && alreadyQuizRes[0] ? (
-                                                            isLoading ?
-                                                                <Button color='light'>
-                                                                    Start Quiz <Spinner size='sm' />
-                                                                </Button> :
-                                                                <div>
-                                                                    <Button color='default' className='cursor-not-allowed'>
-                                                                        Start Quiz
-                                                                    </Button>
-                                                                </div>
+
+                                                            <div>
+                                                                <Button color='default' className='cursor-not-allowed'>
+                                                                    Start Quiz
+                                                                </Button>
+                                                            </div>
                                                         ) : (
                                                             isLoading ?
                                                                 <Button color='light'>
@@ -643,35 +633,35 @@ const ExamPage = () => {
                                                                                                 < div
                                                                                                     className='text-lg font-semibold ml-10'
                                                                                                 >
-                                                                                                    {showTimer && (
-                                                                                                        <div className='flex justify-between'>
-                                                                                                            {/* True False Exam */}
 
-                                                                                                            <RadioGroup
+                                                                                                    <div className='flex justify-between'>
+                                                                                                        {/* True False Exam{console.lo} */}
+                                                                                                        {console.log(secItem.studentAnswer, 'disable')}
+                                                                                                        <RadioGroup
+                                                                                                            // isDisabled={secItem?.studentAnswer.length - 1 === secIndex}
+                                                                                                            className='flex flex-col gap-2'
+                                                                                                            orientation="horizontal"
 
-                                                                                                                className='flex flex-col gap-2'
-                                                                                                                orientation="horizontal"
+                                                                                                        >
+                                                                                                            {secItem.options.map((e, i) => (
+                                                                                                                <Radio value={e.answer}
+                                                                                                                    onChange={() =>
+                                                                                                                        handleAns(
 
-                                                                                                            >
-                                                                                                                {secItem.options.map((e, i) => (
-                                                                                                                    <Radio value={e.answer}
-                                                                                                                        onChange={() =>
-                                                                                                                            handleAns(
+                                                                                                                            i,
+                                                                                                                            e,
+                                                                                                                            secItem.correctAnswer,
 
-                                                                                                                                i,
-                                                                                                                                e,
-                                                                                                                                secItem.correctAnswer,
+                                                                                                                            secItem.mark,
 
-                                                                                                                                secItem.mark,
+                                                                                                                            secItem?._id,
+                                                                                                                            secItem
 
-                                                                                                                                secItem?._id,
-                                                                                                                                secItem
+                                                                                                                        )}>{e.answer}</Radio>
+                                                                                                            ))}
 
-                                                                                                                            )}>{e.answer}</Radio>
-                                                                                                                ))}
-
-                                                                                                            </RadioGroup>
-                                                                                                            {/* <input
+                                                                                                        </RadioGroup>
+                                                                                                        {/* <input
                                                                                                                     type='radio'
                                                                                                                     className='w-[20px] h-[20px] mt-1'
                                                                                                                     name={secIndex !== i}
@@ -688,85 +678,85 @@ const ExamPage = () => {
                                                                                                                 /> */}
 
 
-                                                                                                            &nbsp;
+                                                                                                        &nbsp;
 
-                                                                                                            {/* <span className='ml-2 text-[20px] lg:text-[16px]'>{e.answer}</span> */}
+                                                                                                        {/* <span className='ml-2 text-[20px] lg:text-[16px]'>{e.answer}</span> */}
 
-                                                                                                        </div>
-                                                                                                    )}
+                                                                                                    </div>
+
                                                                                                 </div >
                                                                                             ) : (secItem.type === 'multipleChoice' ?
 
                                                                                                 < div className='text-lg font-semibold ml-10'
                                                                                                 >
-                                                                                                    {showTimer && (
-                                                                                                        <div>
 
-                                                                                                            {/* Multiple Choice Quiz */}
-                                                                                                            {secItem.options.map((e, i) => (
-                                                                                                                <div className='flex gap-1'>
-                                                                                                                    <input
-                                                                                                                        type='checkbox'
-                                                                                                                        name='answer_group'
-                                                                                                                        value={e.answer}
+                                                                                                    <div>
 
-                                                                                                                        onClick={(event) =>
-                                                                                                                            handleCheckboxSelect(event,
-                                                                                                                                i,
-                                                                                                                                secItem.correctAnswer,
-                                                                                                                                secItem.mark,
-                                                                                                                                secItem?._id,
-                                                                                                                                secItem
-                                                                                                                            )
-                                                                                                                        }
-                                                                                                                    />
+                                                                                                        {/* Multiple Choice Quiz */}
+                                                                                                        {secItem.options.map((e, i) => (
+                                                                                                            <div className='flex gap-1'>
+                                                                                                                <input
+                                                                                                                    type='checkbox'
+                                                                                                                    name='answer_group'
+                                                                                                                    value={e.answer}
 
-
-                                                                                                                    <span>{e.answer}</span>
-
-                                                                                                                </div>
-                                                                                                            ))}
+                                                                                                                    onClick={(event) =>
+                                                                                                                        handleCheckboxSelect(event,
+                                                                                                                            i,
+                                                                                                                            secItem.correctAnswer,
+                                                                                                                            secItem.mark,
+                                                                                                                            secItem?._id,
+                                                                                                                            secItem
+                                                                                                                        )
+                                                                                                                    }
+                                                                                                                />
 
 
-                                                                                                        </div>
-                                                                                                    )}
+                                                                                                                <span>{e.answer}</span>
+
+                                                                                                            </div>
+                                                                                                        ))}
+
+
+                                                                                                    </div>
+
                                                                                                 </div> : (
                                                                                                     < div className='text-lg font-semibold ml-10'
                                                                                                     >
-                                                                                                        {showTimer && (
-                                                                                                            <div>
 
-                                                                                                                {/*Fill in the blank */}
+                                                                                                        <div>
 
-                                                                                                                <div className='flex flex-col gap-1'>
+                                                                                                            {/*Fill in the blank */}
 
-
+                                                                                                            <div className='flex flex-col gap-1'>
 
 
-                                                                                                                    {/* Map over the inputArray and render input boxes */}
-                                                                                                                    {Array.from({ length: secItem?.inputCount }, (_, index) => index).map((item, ind) => (
-                                                                                                                        <div className='flex gap-1 '>
-                                                                                                                            <span>({ind + 1})</span>
-                                                                                                                            <Input key={item} type="text" placeholder='Answer' variant="underlined" className="rounded-md p-2 mb-2" onChange={(event) =>
-                                                                                                                                handleFillBlank(event,
-                                                                                                                                    ind,
-
-                                                                                                                                    secItem?._id,
-                                                                                                                                    secItem
-
-                                                                                                                                )
-                                                                                                                            } />
-                                                                                                                        </div>
-
-                                                                                                                    ))}
 
 
-                                                                                                                </div>
+                                                                                                                {/* Map over the inputArray and render input boxes */}
+                                                                                                                {Array.from({ length: secItem?.inputCount }, (_, index) => index).map((item, ind) => (
+                                                                                                                    <div className='flex gap-1 '>
+                                                                                                                        <span>({ind + 1})</span>
+                                                                                                                        <Input key={item} type="text" value={secItem?.type === "fillInTheBlank" && secItem?.studentAnswer.map((i) => (i))} placeholder='Answer' variant="underlined" className="rounded-md p-2 mb-2" onChange={(event) =>
+                                                                                                                            handleFillBlank(event,
+                                                                                                                                ind,
 
+                                                                                                                                secItem?._id,
+                                                                                                                                secItem
+
+                                                                                                                            )
+                                                                                                                        } />
+                                                                                                                    </div>
+
+                                                                                                                ))}
 
 
                                                                                                             </div>
-                                                                                                        )}
+
+
+
+                                                                                                        </div>
+
                                                                                                     </div>))}
 
 
@@ -837,7 +827,14 @@ const ExamPage = () => {
                                                     ))}
                                                     <div className='py-2 flex justify-end lg:gap-2 xl:gap-3 2xl:gap-4'>
                                                         <Button color='light' className='text-rose-600 font-medium' size='xl' onClick={() => navigate('/student')}>Cancel</Button>
-                                                        <Button color='primary' size='xl' onClick={handleResult}>Submit</Button>
+                                                        {isLoading ? (
+                                                            <Button color='light'>
+                                                                Start Exam <Spinner size='sm' />
+                                                            </Button>
+                                                        ) : (
+                                                            <Button color='primary' size='xl' onClick={handleResult}>Submit</Button>
+                                                        )}
+
                                                     </div>
                                                 </div>
 

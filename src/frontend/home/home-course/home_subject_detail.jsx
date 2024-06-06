@@ -23,6 +23,7 @@ import WhiteTime from "../../../assets/img/whitetime.svg";
 import Certi from "../../../assets/img/certi.svg";
 import MSINav from "../msinav";
 import Loading from '../../../assets/img/finalloading.gif'
+import Roadmap from '../../../assets/img/roadmap.jpg'
 
 import apiInstance from "../../../util/api";
 import { useLocation, useNavigate, Link } from "react-router-dom";
@@ -30,10 +31,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 const SubjectDetail = (props) => {
   const location = useLocation();
+  const SubidfromCourse = location.pathname.split('/')[2]
   const navigate = useNavigate();
-  const SubData = location.state.data;
+  // const SubData = location.state.data;
   // console.log(location.state.data, "sub ii");
-  const courseData = location.state.courseData;
+  // const courseData = location.state.courseData;
   // console.log(props.id, "id");
   const [subjectList, setSubjectList] = useState([]);
   const [teacherName, setTeacherName] = useState([]);
@@ -55,10 +57,10 @@ const SubjectDetail = (props) => {
     const getSubjects = async () => {
       await apiInstance.get("subjects").then((res) => {
         console.log(
-          res.data.data.filter((el) => el._id === SubData._id)[0],
+          res.data.data.filter((el) => el._id === SubidfromCourse)[0],
           "c subject"
         );
-        const Filter = res.data.data.filter((el) => el._id === SubData._id)[0];
+        const Filter = res.data.data.filter((el) => el._id === SubidfromCourse)[0];
         // console.log(Filter.previewVideo, 'vide')
         setShowVideoList(JSON.parse(Filter.previewVideo));
 
@@ -88,7 +90,7 @@ const SubjectDetail = (props) => {
         <div className='flex flex-col gap-10 duration-100'>
           {/* Video Section */}
           <div className='flex flex-col gap-10 md:gap-32 pt-5 md:pt-20 md:flex-row'>
-            <div className='flex w-full gap-2 md:w-[900px] '>
+            <div className='flex w-full gap-2 md:w-[700px] lg:w-[780px] xl:w-[800px] 2xl:w-[900px] '>
               <div className='hidden md:flex'>
                 <Button
                   color='primary'
@@ -122,7 +124,7 @@ const SubjectDetail = (props) => {
                           }
                           //   title={assignList.name}
                           allowFullScreen
-                          className='border w-[375px] h-[136px] md:w-[711px] md:h-[306px] lg:w-[680px] xl:w-[850px]'
+                          className='border w-[375px] h-[136px] md:w-[711px] md:h-[306px] lg:w-[670px] xl:w-[700px]'
                           allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
                         // style={{ width:'1400px',height:'500px' }}
                         ></iframe>
@@ -148,7 +150,7 @@ const SubjectDetail = (props) => {
                   border: "1px solid red",
                   borderRadius: "12px",
                 }}
-                className='flex items-center mx-4 md:mx-0 md:pr-[24] w-[345px] h-[134px] md:w-[275px] md:h-[306px]'
+                className='flex items-center mx-4 md:mx-0 md:pr-[24] w-[200px] h-[134px] md:w-[200px] md:h-[306px] lg:w-[260px] xl:w-[300px]'
               >
                 <div className='flex flex-col gap-5 p-5'>
                   <h1 style={{ fontSize: "20px", fontWeight: "700" }}>
@@ -201,7 +203,7 @@ const SubjectDetail = (props) => {
           </div>
           {/* Detail Section */}
           <div style={{ height: "241px" }}>
-            <div className='grid grid-cols-2 md:grid-cols-4 gap-10 mx-4 '>
+            <div className='grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 xl:gap-5 gap-10 mx-4 '>
               <div
                 style={{
                   //   width: "305px",
@@ -212,7 +214,7 @@ const SubjectDetail = (props) => {
                   backgroundColor: "#FFF",
                   boxShadow: "0px 2px 12px 0px rgba(0, 0, 0, 0.10)",
                 }}
-                className='flex flex-col w-[160px] h-[119px] md:w-[205px] md:h-[177px] md:p-[24px 120px 50px 120px]'
+                className='flex flex-col w-[160px] h-[119px] md:w-[305px] md:h-[177px] md:p-[24px 120px 50px 120px] justify-center'
               >
                 <Image
                   src={Time}
@@ -245,7 +247,7 @@ const SubjectDetail = (props) => {
                   backgroundColor: "#FFF",
                   boxShadow: "0px 2px 12px 0px rgba(0, 0, 0, 0.10)",
                 }}
-                className='flex flex-col w-[160px] h-[119px] md:w-[305px] md:h-[177px] md:p-[24px 120px 50px 120px]'
+                className='flex flex-col w-[160px] h-[119px] md:w-[305px] md:h-[177px] md:p-[24px 120px 50px 120px] justify-center'
               >
                 <Image
                   src={Person}
@@ -270,7 +272,7 @@ const SubjectDetail = (props) => {
                   backgroundColor: "#FFF",
                   boxShadow: "0px 2px 12px 0px rgba(0, 0, 0, 0.10)",
                 }}
-                className='flex flex-col w-[160px] h-[119px] md:w-[305px] md:h-[177px] md:p-[24px 120px 50px 120px]'
+                className='flex flex-col w-[160px] h-[119px] md:w-[305px] md:h-[177px] md:p-[24px 120px 50px 120px] justify-center'
               >
                 <Image
                   src={Book}
@@ -293,7 +295,7 @@ const SubjectDetail = (props) => {
                   backgroundColor: "#FFF",
                   boxShadow: "0px 2px 12px 0px rgba(0, 0, 0, 0.10)",
                 }}
-                className='flex flex-col w-[160px] h-[119px] md:w-[305px] md:h-[177px] md:p-[24px 120px 50px 120px]'
+                className='flex flex-col w-[160px] h-[119px] md:w-[305px] md:h-[177px] md:p-[24px 120px 50px 120px] justify-center'
               >
                 <Image
                   src={Date}
@@ -306,6 +308,28 @@ const SubjectDetail = (props) => {
                   Mid + Final
                 </span>
               </div>
+            </div>
+          </div>
+          <div className='flex xl:gap-10 justify-between w-[375px] h-full sm:w-full container sm:h-[272px]'>
+            <div>
+              <Image src={Roadmap} className='transform-x-[-1] w-[370px] h-[250px]' />
+            </div>
+            <div className=''>
+              <span className='text-[20px] font-semibold sm:text-[40px]'>
+                Not sure where to start?
+              </span>
+
+              <div className='flex flex-col gap-5'>
+                <p className='text-[12px] font-medium w-[330px] h-[36px] sm:w-[466px] sm:h-[72px] sm:text-[16px]'>
+                  No problem, we are here to help! Just answer a couple of
+                  questions related to your interests and goals, and we will
+                  help set you on the right path on your learning journey.{" "}
+                </p>
+                <Button className='text-[#fff] bg-[#215887] text-[12px] sm:text-[16px] rounded-[4px] sm:rounded-[8px] mt-5 sm:mt-10 sm:hover:-translate-x-1 sm:hover:scale-110 duration-700 w-[67px] h-[26px] sm:w-[227px] sm:h-[48px] lg:w-[200px] lg:h-[40px]'>
+                  <span className='p-2'>Take Quiz</span>
+                </Button>
+              </div>
+
             </div>
           </div>
           {/* About Section */}
@@ -413,7 +437,7 @@ const SubjectDetail = (props) => {
           </div>
 
           {/* Course Curriculum Section */}
-          <div className='container pt-[200px] md:pt-[230px] lg:pt-[250px] xl:pt-[260px] 2xl:pt-[270px]'>
+          <div className='w-full pt-[200px] md:pt-[230px] lg:pt-[250px] xl:pt-[260px] 2xl:pt-[270px]'>
             <div className=' flex flex-col w-[345px] pt-[64px] pb-[24px]  gap-5 md:w-[100%] md:p-[24px] md:pt-[150px] mx-4 md:mx-0'>
               <span className='text-[20px] md:text-[40px] font-bold'>
                 Course Curriculum
@@ -430,7 +454,7 @@ const SubjectDetail = (props) => {
                   }}
                   className='w-[335px] h-[110px] p-[16px] md:w-[auto] md:h-[auto] md:p-[40px]'
                 >
-                  <div className='flex gap-5 md:gap-52 justify-between'>
+                  <div className='flex gap-5 md:gap-32 justify-center'>
                     {/* Left */}
                     <div
                       className='flex flex-col gap-0 md:gap-6 w-[57px] h-[56px] md:w-[86px] md:h-[96px]'
@@ -490,7 +514,7 @@ const SubjectDetail = (props) => {
                       className='hidden md:flex gap-0 text-white md:gap-1 mt-1'
                     >
                       <Image src={WhiteTime} className='w-[54px]  h-[20px]' />
-                      <span className=''>15 mins</span>
+                      <span className='w-[50px]'>15 mins</span>
                     </div>
                   </div>
                 </div>
@@ -505,7 +529,7 @@ const SubjectDetail = (props) => {
                   }}
                   className='w-[335px] h-[110px] p-[16px] md:w-[auto] md:h-[auto] md:p-[40px]'
                 >
-                  <div className='flex gap-5 md:gap-52 justify-between'>
+                  <div className='flex gap-5 md:gap-32 justify-center'>
                     {/* Left */}
                     <div
                       className='flex flex-col gap-0 md:gap-6 w-[57px] h-[56px] md:w-[86px] md:h-[96px]'
