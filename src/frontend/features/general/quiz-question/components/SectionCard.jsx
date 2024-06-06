@@ -9,7 +9,6 @@ import { v4 as uuidv4 } from "uuid";
 
 const SectionCard = (props) => {
   const {
-    index,
     getActionHandlers,
     sectionData,
     removeSectionData,
@@ -28,7 +27,7 @@ const SectionCard = (props) => {
 
   return (
     <>
-      {getActionHandlers(index, setExpand)}
+      {getActionHandlers(sectionIndex, setExpand)}
       <div className="space-y-3">
         {sectionData.instruction && (
           <CustomCard className="bg-white relative">

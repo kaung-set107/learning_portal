@@ -3,8 +3,8 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-const SectionCardWrapper = (props) => {
-  const { children, section } = props;
+const Droppable = (props) => {
+  const { children, section, className } = props;
 
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: section._id });
@@ -16,7 +16,7 @@ const SectionCardWrapper = (props) => {
 
   return (
     <div
-    className="border p-3"
+      className={`border p-3 ${className ?? ''}`}
       ref={setNodeRef}
       style={style}
       {...attributes}
@@ -27,4 +27,4 @@ const SectionCardWrapper = (props) => {
   );
 };
 
-export default SectionCardWrapper;
+export default Droppable;

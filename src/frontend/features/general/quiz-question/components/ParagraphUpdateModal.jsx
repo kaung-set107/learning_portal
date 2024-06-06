@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input, Textarea } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import {
   Modal,
@@ -12,16 +12,16 @@ import CustomButton from "../../../../components/general/CustomButton";
 import Loading from "../../../../components/general/Loading";
 
 export default function ParagraphUpdateModal(props) {
-  const { updateParagraph, isOpen, onOpenChange, paragraph } =
-    props;
+  const { updateParagraph, isOpen, onOpenChange, paragraph } = props;
 
   const variant = "bordered";
 
   const initialForm = {
     value: "",
+    isLoading: false,
   };
 
-  const [formData, setFormData] = useState(initialForm);
+  const [formData, setFormData] = useState({ ...initialForm });
 
   const resetForm = () => {
     setFormData(() => {
@@ -38,7 +38,7 @@ export default function ParagraphUpdateModal(props) {
   const fillData = () => {
     setFormData(() => {
       return {
-        value: paragraph.value,
+        value: paragraph.value ?? "",
         isLoading: false,
       };
     });
@@ -65,7 +65,7 @@ export default function ParagraphUpdateModal(props) {
                 {formData.isLoading && <Loading />}
                 {!formData.isLoading && (
                   <form>
-                    <Input
+                    <Textarea
                       type="text"
                       label="Paragraph"
                       placeholder="paragraph"
