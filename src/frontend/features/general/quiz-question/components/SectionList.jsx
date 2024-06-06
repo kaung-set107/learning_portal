@@ -1,26 +1,24 @@
 /* eslint-disable react/prop-types */
 
-import _ from "lodash";
-import { v4 as uuidv4 } from "uuid";
-import CustomButton from "../../../../components/general/CustomButton";
-import { useDisclosure } from "@nextui-org/react";
+import { v4 as uuidv4 } from 'uuid';
+import CustomButton from '../../../../components/general/CustomButton';
+import { useDisclosure } from '@nextui-org/react';
 // import { Accordion, AccordionItem } from "@nextui-org/react";
-import SectionDataCreateModal from "./SectionDataCreateModal";
-import { useState } from "react";
-import SectionCard from "./SectionCard";
-import Heading from "../../../../components/general/typography/Heading";
-import NotiInfo from "../../../../components/general/typography/NotiInfo";
-import SectionDataUpdateModal from "./SectionDataUpdateModal";
-import QuestionCreateModal from "../../../questions/components/QuestionCreateModal";
-import ParagraphUpdateModal from "./ParagraphUpdateModal";
-import { closestCorners, DragOverlay } from "@dnd-kit/core";
+import SectionDataCreateModal from './SectionDataCreateModal';
+import { useState } from 'react';
+import SectionCard from './SectionCard';
+import Heading from '../../../../components/general/typography/Heading';
+import SectionDataUpdateModal from './SectionDataUpdateModal';
+import QuestionCreateModal from '../../../questions/components/QuestionCreateModal';
+import ParagraphUpdateModal from './ParagraphUpdateModal';
+import { closestCorners, DragOverlay } from '@dnd-kit/core';
 import {
   arrayMove,
   SortableContext,
   verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import Droppable from "../../../../../lib/dnd-kit/components/Droppable";
-import Draggable from "../../../../../lib/dnd-kit/components/Draggable";
+} from '@dnd-kit/sortable';
+import Sortable from '../../../../../lib/dnd-kit/components/Sortable';
+import Draggable from '../../../../../lib/dnd-kit/components/Draggable';
 
 const SectionList = (props) => {
   const {
@@ -45,6 +43,12 @@ const SectionList = (props) => {
   } = useDisclosure();
 
   const {
+    isOpen: isQuestionCreateOpen,
+    onOpen: onQuestionCreateOpen,
+    onOpenChange: onQuestionCreateOpenChange,
+  } = useDisclosure();
+
+  const {
     isOpen: isSectionDataUpdateOpen,
     onOpen: onSectionDataUpdateOpen,
     onOpenChange: onSectionDataUpdateOpenChange,
@@ -60,6 +64,7 @@ const SectionList = (props) => {
     useState(null);
   const [currentSelectedSection, setCurrentSelectedSection] = useState({});
   const [currentSelectedParagraph, setCurrentSelectedParagraph] = useState({});
+  const [sortable, setSortable] = useState(false);
 
   const [draggingSectionId, setDraggingSectionId] = useState(null);
 
@@ -72,8 +77,14 @@ const SectionList = (props) => {
     sectionIndex,
     sectionDataType
   ) => {
+    setCurrentSelectedSectionIndex(sectionIndex);
     setCurrentSelectedSection({ ...data[sectionIndex], sectionDataType });
     onSectionDataUpdateOpen();
+  };
+
+  const handleQuestionCreateModalOpenClick = (sectionIndex) => {
+    setCurrentSelectedSectionIndex(sectionIndex);
+    onQuestionCreateOpen();
   };
 
   const handleParagraphUpdateModalOpenClick = (sectionIndex, paragraph) => {
@@ -111,25 +122,43 @@ const SectionList = (props) => {
   };
 
   const addQuestion = (payload) => (sectionIndex) => {
-    addSectionData(sectionIndex, { ...payload, sectionDataType: "questions" });
+    addSectionData(sectionIndex, { ...payload, sectionDataType: 'questions' });
   };
 
   const getCurrentSectionData = (id) => {
     return data.filter((each) => each._id === id)[0];
   };
 
-  const getActionHandlers = (index, setExpand) => {
+  const getActionHandlers = (index) => {
     return (
       <div className="mb-2 border bg-white p-2 rounded-md relative flex justify-between items-center">
         <Heading className="text-xl font-bold" title={`Actions`} />
         <div className="flex items-center gap-3">
           <CustomButton
-            onClick={() => setExpand((prev) => !prev)}
+            onClick={() =>
+              setQuestionData((prev) => {
+                let newQuestionData = [...prev];
+
+                if (newQuestionData[index]['expanded']) {
+                  newQuestionData[index]['expanded'] =
+                    !newQuestionData[index]['expanded'];
+                } else {
+                  newQuestionData[index]['expanded'] = true;
+                }
+
+                return newQuestionData;
+              })
+            }
             color="primary"
             title="Expand / Minimize"
           />
-          <QuestionCreateModal
+          {/* <QuestionCreateModal
             addQuestion={(payload) => addQuestion(payload)(index)}
+          /> */}
+          <CustomButton
+            onClick={() => handleQuestionCreateModalOpenClick(index)}
+            color="primary"
+            title="Add Question +"
           />
           <CustomButton
             onClick={() => handleSectionDataCreateModalOpenClick(index)}
@@ -154,7 +183,7 @@ const SectionList = (props) => {
   const handleDragEnd = (event) => {
     const { active, over } = event;
 
-    console.log(active, over, "active and over");
+    console.log(active, over, 'active and over');
 
     setQuestionData((prev) => {
       const originalPos = getDataPos(active.id);
@@ -171,7 +200,14 @@ const SectionList = (props) => {
 
   return (
     <>
-      <div className="space-y-3">
+      <div className="mb-3">
+        <CustomButton
+          className={sortable ? '' : 'bg-opacity-50'}
+          onClick={() => setSortable((prev) => !prev)}
+          title={`Sortable : ${sortable ? 'on' : 'off'}`}
+        />
+      </div>
+      <div className="space-y-4">
         <Draggable
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
@@ -180,37 +216,42 @@ const SectionList = (props) => {
           <SortableContext items={data} strategy={verticalListSortingStrategy}>
             {data.map((section, index) => {
               return (
-                <Droppable className="rounded-xl border border-gray-500" key={uuidv4()} section={section}>
+                <Sortable
+                  disabled={!sortable}
+                  className="rounded-xl border border-gray-500 shadow"
+                  key={uuidv4()}
+                  section={section}
+                >
                   <div className="rounded-md relative">
                     {/* {getActionHandlers(index)} */}
-                    {_.isEmpty(section) ? (
+                    {/* {_.isEmpty(section) ? (
                       <div className="flex justify-center items-center min-h-[300px]">
                         <NotiInfo />
                       </div>
-                    ) : (
-                      <SectionCard
-                        getActionHandlers={getActionHandlers}
-                        sectionData={section}
-                        removeParagraph={removeParagraph}
-                        updateSectionData={updateSectionData}
-                        sectionIndex={index}
-                        removeSectionData={removeSectionData}
-                        getSectionDataUpdateButton={getSectionDataUpdateButton}
-                        getParagraphUpdateButton={getParagraphUpdateButton}
-                        removeQuestion={removeQuestion}
-                        updateQuestions={updateQuestions}
-                        successCallback={successCallback}
-                        srcId={srcId}
-                        imageUploadApi={(payload) =>
-                          imageUploadApi({
-                            ...payload,
-                            sectionIndex: index,
-                          })
-                        }
-                      />
-                    )}
+                    ) : ( */}
+                    <SectionCard
+                      getActionHandlers={getActionHandlers}
+                      sectionData={section}
+                      removeParagraph={removeParagraph}
+                      updateSectionData={updateSectionData}
+                      sectionIndex={index}
+                      removeSectionData={removeSectionData}
+                      getSectionDataUpdateButton={getSectionDataUpdateButton}
+                      getParagraphUpdateButton={getParagraphUpdateButton}
+                      removeQuestion={removeQuestion}
+                      updateQuestions={updateQuestions}
+                      successCallback={successCallback}
+                      srcId={srcId}
+                      imageUploadApi={(payload) =>
+                        imageUploadApi({
+                          ...payload,
+                          sectionIndex: index,
+                        })
+                      }
+                    />
+                    {/* )} */}
                   </div>
-                </Droppable>
+                </Sortable>
               );
             })}
           </SortableContext>
@@ -243,6 +284,14 @@ const SectionList = (props) => {
           </DragOverlay>
         </Draggable>
       </div>
+      <QuestionCreateModal
+        isOpen={isQuestionCreateOpen}
+        onOpen={onQuestionCreateOpen}
+        onOpenChange={onQuestionCreateOpenChange}
+        addQuestion={(payload) =>
+          addQuestion(payload)(currentSelectedSectionIndex)
+        }
+      />
       <SectionDataCreateModal
         sectionIndex={currentSelectedSectionIndex}
         isOpen={isSectionDataCreateOpen}

@@ -1,57 +1,54 @@
 /* eslint-disable react/prop-types */
-import { Button, Input, Textarea } from "@nextui-org/react";
-import { useState } from "react";
-import CustomButton from "../../../components/general/CustomButton";
-import { v4 as uuidv4 } from "uuid";
-import { Select, SelectItem } from "@nextui-org/select";
+import { Button, Input, Textarea } from '@nextui-org/react';
+import { useState } from 'react';
+import CustomButton from '../../../components/general/CustomButton';
+import { v4 as uuidv4 } from 'uuid';
+import { Select, SelectItem } from '@nextui-org/select';
 import {
   Modal,
   ModalContent,
   ModalHeader,
   ModalBody,
   ModalFooter,
-  useDisclosure,
-} from "@nextui-org/react";
-import CustomMultiSelect from "../../../components/general/CustomMultiSelect";
+} from '@nextui-org/react';
+import CustomMultiSelect from '../../../components/general/CustomMultiSelect';
 
 export default function QuestionCreateModal(props) {
-  const { addQuestion } = props;
+  const { addQuestion, isOpen, onOpenChange } = props;
 
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [option, setOption] = useState('');
+  const variant = 'bordered';
 
-  const [option, setOption] = useState("");
-  const variant = "bordered";
+  let questionTypes = [];
 
-  let questionTypes = []
-
-  if(!props.fixQuestionTypes) {
+  if (!props.fixQuestionTypes) {
     questionTypes = [
-      { value: "trueFalse", label: "trueFalse" },
-      { value: "fillInTheBlank", label: "fillInTheBlank" },
-      { value: "openQuestion", label: "openQuestion" },
-      { value: "multipleChoice", label: "multipleChoice" },
+      { value: 'trueFalse', label: 'trueFalse' },
+      { value: 'fillInTheBlank', label: 'fillInTheBlank' },
+      { value: 'openQuestion', label: 'openQuestion' },
+      { value: 'multipleChoice', label: 'multipleChoice' },
     ];
   } else {
-    questionTypes = [...props.fixQuestionTypes]
+    questionTypes = [...props.fixQuestionTypes];
   }
 
   const answerTypes = [
-    { value: "text", label: "text" },
-    { value: "radio", label: "radio" },
-    { value: "checkbox", label: "checkbox" },
+    { value: 'text', label: 'text' },
+    { value: 'radio', label: 'radio' },
+    { value: 'checkbox', label: 'checkbox' },
   ];
 
   const [formData, setFormData] = useState({
-    question: "",
-    type: "",
+    question: '',
+    type: '',
     options: [],
-    answerType: "text",
+    answerType: 'text',
     correctAnswer: [],
-    inputCorrectAnswer: "",
+    inputCorrectAnswer: '',
     inputCount: 1,
     mark: 1,
-    status: "new",
-    correctAnswerDescription: "",
+    status: 'new',
+    correctAnswerDescription: '',
   });
 
   const optionRemoveHandler = (index) => {
@@ -114,31 +111,31 @@ export default function QuestionCreateModal(props) {
   };
 
   const onQuestionTypeChange = (e) => {
-    if (e.currentKey == "trueFalse") {
+    if (e.currentKey == 'trueFalse') {
       setFormData((prev) => ({
         ...prev,
         type: e.currentKey,
-        answerType: "radio",
+        answerType: 'radio',
       }));
-    } else if (e.currentKey == "multipleChoice") {
+    } else if (e.currentKey == 'multipleChoice') {
       setFormData((prev) => ({
         ...prev,
         type: e.currentKey,
-        answerType: "checkbox",
+        answerType: 'checkbox',
       }));
     } else {
       setFormData((prev) => ({
         ...prev,
         type: e.currentKey,
-        answerType: "text",
+        answerType: 'text',
       }));
     }
   };
 
   const isQuestionTypeInput = () => {
     if (
-      formData.type === "fillInTheBlank" ||
-      formData.type === "openQuestion"
+      formData.type === 'fillInTheBlank' ||
+      formData.type === 'openQuestion'
     ) {
       return true;
     } else {
@@ -148,9 +145,10 @@ export default function QuestionCreateModal(props) {
 
   return (
     <>
-      <Button onPress={onOpen} color="primary">
+      {/* <Button onPress={onOpen} color="primary">
         Add Question
-      </Button>
+      </Button> */}
+
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}

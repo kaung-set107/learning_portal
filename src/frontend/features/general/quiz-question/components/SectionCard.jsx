@@ -1,11 +1,10 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
-import CustomButton from "../../../../components/general/CustomButton";
-import CustomCard from "../../../../components/general/CustomCard";
-import ListDetail from "../../../../components/general/typography/ListDetail";
-import ListInfo from "../../../../components/general/typography/ListInfo";
-import QuestionList from "../../../questions/components/QuestionList";
-import { v4 as uuidv4 } from "uuid";
+import CustomButton from '../../../../components/general/CustomButton';
+import CustomCard from '../../../../components/general/CustomCard';
+import ListDetail from '../../../../components/general/typography/ListDetail';
+import ListInfo from '../../../../components/general/typography/ListInfo';
+import QuestionList from '../../../questions/components/QuestionList';
+import { v4 as uuidv4 } from 'uuid';
 
 const SectionCard = (props) => {
   const {
@@ -23,33 +22,31 @@ const SectionCard = (props) => {
     imageUploadApi,
   } = props;
 
-  const [expand, setExpand] = useState(false);
-
   return (
     <>
-      {getActionHandlers(sectionIndex, setExpand)}
+      {getActionHandlers(sectionIndex)}
       <div className="space-y-3">
         {sectionData.instruction && (
-          <CustomCard className="bg-white relative">
+          <CustomCard className="bg-white relative border-yellow-400">
             <ListInfo title="Instruction" />
             <ListDetail title={sectionData.instruction} />
             <div className="absolute right-2 top-2 flex gap-3">
-              {getSectionDataUpdateButton(sectionIndex, "instruction")}
+              {getSectionDataUpdateButton(sectionIndex, 'instruction')}
               <CustomButton
                 iconOnly
                 confirmBox
                 type="delete"
                 className="bg-opacity-50"
-                onClick={() => removeSectionData(sectionIndex, "instruction")}
+                onClick={() => removeSectionData(sectionIndex, 'instruction')}
                 title="Remove"
               />
             </div>
           </CustomCard>
         )}
-        {expand && (
+        {sectionData.expanded && (
           <>
             {sectionData.paragraph && sectionData.paragraph.length > 0 && (
-              <CustomCard className="bg-white relative">
+              <CustomCard className="bg-white relative border-green-500">
                 <div className="flex justify-between items-center mb-3">
                   <ListInfo title="Paragraph" />
                   <div>
@@ -59,7 +56,7 @@ const SectionCard = (props) => {
                       type="delete"
                       className="bg-opacity-50"
                       onClick={() =>
-                        removeSectionData(sectionIndex, "paragraph")
+                        removeSectionData(sectionIndex, 'paragraph')
                       }
                       title="Remove"
                     />
@@ -72,8 +69,7 @@ const SectionCard = (props) => {
                     return (
                       <div key={uuidv4()} className="relative">
                         <CustomCard className="min-h-[100px]">
-                          <p>{each}</p>
-                          <div className="absolute right-2 top-2 flex gap-3">
+                          <div className="flex justify-end gap-3 mb-3">
                             {getParagraphUpdateButton(sectionIndex, {
                               key: paragraphIndex,
                               value: each,
@@ -89,6 +85,7 @@ const SectionCard = (props) => {
                               title="Remove"
                             />
                           </div>
+                          <p>{each}</p>
                         </CustomCard>
                       </div>
                     );
@@ -98,7 +95,7 @@ const SectionCard = (props) => {
             )}
             {sectionData.questions && (
               <>
-                <CustomCard className="bg-white relative">
+                <CustomCard className="bg-white relative border-blue-500">
                   <div className="flex justify-between items-center mb-3">
                     <ListInfo title="Questions" />
                     <CustomButton
@@ -107,7 +104,7 @@ const SectionCard = (props) => {
                       type="delete"
                       className="bg-opacity-50"
                       onClick={() =>
-                        removeSectionData(sectionIndex, "questions")
+                        removeSectionData(sectionIndex, 'questions')
                       }
                       title="Remove"
                     />

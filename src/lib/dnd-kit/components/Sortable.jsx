@@ -4,10 +4,10 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
 const Droppable = (props) => {
-  const { children, section, className } = props;
+  const { children, section, className, disabled } = props;
 
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: section._id });
+    useSortable({ id: section._id, disabled });
 
   const style = {
     transition,
