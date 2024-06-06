@@ -29,6 +29,7 @@ const QuestionList = (props) => {
     updateQuestions,
     imageUploadApi,
     successCallback,
+    fixedQuestionTypes,
   } = props;
 
   const handleEditButtonClick = (e, index) => {
@@ -162,6 +163,7 @@ const QuestionList = (props) => {
       )}
 
       <QuestionUpdateModal
+        fixedQuestionTypes={fixedQuestionTypes}
         isOpen={isQuestionEditOpen}
         onOpen={onQuestionEditOpen}
         onOpenChange={onQuestionEditOpenChange}

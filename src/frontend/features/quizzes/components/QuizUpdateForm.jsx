@@ -1,13 +1,13 @@
 /* eslint-disable react/prop-types */
-import { Input, Card, CardBody } from "@nextui-org/react";
-import { useEffect, useState } from "react";
-import CustomButton from "../../../components/general/CustomButton";
-import SubHeading from "../../../components/general/typography/SubHeading";
-import { Select, SelectItem } from "@nextui-org/select";
-import { quizzesApi } from "../api";
-import { showError, showSuccess } from "../../../../util/noti";
-import { useNavigate } from "react-router-dom";
-import QuizQuestionHandler from "../../general/quiz-question/components/QuizQuestionHandler";
+import { Input, Card, CardBody } from '@nextui-org/react';
+import { useEffect, useState } from 'react';
+import CustomButton from '../../../components/general/CustomButton';
+import SubHeading from '../../../components/general/typography/SubHeading';
+import { Select, SelectItem } from '@nextui-org/select';
+import { quizzesApi } from '../api';
+import { showError, showSuccess } from '../../../../util/noti';
+import { useNavigate } from 'react-router-dom';
+import QuizQuestionHandler from '../../general/quiz-question/components/QuizQuestionHandler';
 
 const QuizUpdateForm = (props) => {
   const { type, successCallback, quizData } = props;
@@ -17,17 +17,22 @@ const QuizUpdateForm = (props) => {
 
   const navigate = useNavigate();
 
-  const variant = "bordered";
+  const variant = 'bordered';
 
   const status = [
     {
-      value: "expired",
-      label: "expired",
+      value: 'expired',
+      label: 'expired',
     },
     {
-      value: "unfinished",
-      label: "unfinished",
+      value: 'unfinished',
+      label: 'unfinished',
     },
+  ];
+
+  const fixedQuestionTypes = [
+    { value: 'trueFalse', label: 'trueFalse' },
+    { value: 'multipleChoice', label: 'multipleChoice' },
   ];
 
   const goToResult = (quizId) => {
@@ -35,13 +40,13 @@ const QuizUpdateForm = (props) => {
   };
 
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
+    title: '',
+    description: '',
     questionData: [],
     numOfQuestions: 0,
-    examDate: "",
+    examDate: '',
     duration: 1,
-    status: "unfinished",
+    status: 'unfinished',
     totalMark: 0,
     passMark: 0,
     creditMark: 0,
@@ -91,7 +96,7 @@ const QuizUpdateForm = (props) => {
       setIsSubmitting(true);
       let res = await quizzesApi.update(payload);
       if (successCallback) await successCallback();
-      showSuccess({ text: res.message, type: "noti-box" });
+      showSuccess({ text: res.message, type: 'noti-box' });
     } catch (error) {
       console.log(error);
       showError({ axiosResponse: error });
@@ -128,7 +133,7 @@ const QuizUpdateForm = (props) => {
         }
       });
 
-      return totalLength
+      return totalLength;
     } else {
       return 0;
     }
@@ -342,6 +347,7 @@ const QuizUpdateForm = (props) => {
 
             <div className="mb-3">
               <QuizQuestionHandler
+                fixedQuestionTypes={fixedQuestionTypes}
                 successCallback={successCallback}
                 srcId={quizData._id}
                 imageUploadApi={quizzesApi.updateQuestionImage}

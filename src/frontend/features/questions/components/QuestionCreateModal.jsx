@@ -21,7 +21,7 @@ export default function QuestionCreateModal(props) {
 
   let questionTypes = [];
 
-  if (!props.fixQuestionTypes) {
+  if (!props.fixedQuestionTypes) {
     questionTypes = [
       { value: 'trueFalse', label: 'trueFalse' },
       { value: 'fillInTheBlank', label: 'fillInTheBlank' },
@@ -29,7 +29,7 @@ export default function QuestionCreateModal(props) {
       { value: 'multipleChoice', label: 'multipleChoice' },
     ];
   } else {
-    questionTypes = [...props.fixQuestionTypes];
+    questionTypes = [...props.fixedQuestionTypes];
   }
 
   const answerTypes = [

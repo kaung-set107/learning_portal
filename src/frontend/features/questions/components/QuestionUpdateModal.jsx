@@ -19,12 +19,18 @@ export default function QuestionUpdateModal(props) {
   const [option, setOption] = useState("");
   const variant = "bordered";
 
-  const questionTypes = [
-    { value: "trueFalse", label: "trueFalse" },
-    { value: "fillInTheBlank", label: "fillInTheBlank" },
-    { value: "openQuestion", label: "openQuestion" },
-    { value: "multipleChoice", label: "multipleChoice" },
-  ];
+  let questionTypes = [];
+
+  if (!props.fixedQuestionTypes) {
+    questionTypes = [
+      { value: 'trueFalse', label: 'trueFalse' },
+      { value: 'fillInTheBlank', label: 'fillInTheBlank' },
+      { value: 'openQuestion', label: 'openQuestion' },
+      { value: 'multipleChoice', label: 'multipleChoice' },
+    ];
+  } else {
+    questionTypes = [...props.fixedQuestionTypes];
+  }
 
   const answerTypes = [
     { value: "radio", label: "radio" },

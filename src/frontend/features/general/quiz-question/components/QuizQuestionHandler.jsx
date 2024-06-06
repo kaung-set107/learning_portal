@@ -15,6 +15,7 @@ const QuizQuestionHandler = (props) => {
     imageUploadApi,
     deletedQuestionData,
     setDeletedQuestionData,
+    fixedQuestionTypes
   } = props;
   // const [deletedQuestions, setDeletedQuestions] = useState([]) // need to save according to image deletion
 
@@ -162,6 +163,7 @@ const QuizQuestionHandler = (props) => {
       <div className="mt-3">
         {questionData.length > 0 ? (
           <SectionList
+          fixedQuestionTypes={fixedQuestionTypes}
             data={questionData}
             removeSection={removeSection}
             setQuestionData={setQuestionData}

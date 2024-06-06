@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const SectionCard = (props) => {
   const {
+    fixedQuestionTypes,
     getActionHandlers,
     sectionData,
     removeSectionData,
@@ -111,6 +112,7 @@ const SectionCard = (props) => {
                   </div>
                   <div className="max-h-[500px] overflow-y-scroll">
                     <QuestionList
+                      fixedQuestionTypes={fixedQuestionTypes}
                       successCallback={successCallback}
                       srcId={srcId}
                       imageUploadApi={imageUploadApi}

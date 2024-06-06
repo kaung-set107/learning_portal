@@ -16,6 +16,11 @@ const QuizCreateForm = (props) => {
   // const [questions, setQuestions] = useState([]);
   const [questionData, setQuestionData] = useState([]);
 
+  const fixedQuestionTypes = [
+    { value: "trueFalse", label: "trueFalse" },
+    { value: "multipleChoice", label: "multipleChoice" },
+  ];
+
   const navigate = useNavigate();
 
   const variant = "bordered";
@@ -286,6 +291,7 @@ const QuizCreateForm = (props) => {
 
             <div className="mb-3">
               <QuizQuestionHandler
+                fixedQuestionTypes={[...fixedQuestionTypes]}
                 questionData={questionData}
                 setQuestionData={setQuestionData}
               />

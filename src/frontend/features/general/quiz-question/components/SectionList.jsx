@@ -22,6 +22,7 @@ import Draggable from '../../../../../lib/dnd-kit/components/Draggable';
 
 const SectionList = (props) => {
   const {
+    fixedQuestionTypes,
     data,
     removeSection,
     setQuestionData,
@@ -230,6 +231,7 @@ const SectionList = (props) => {
                       </div>
                     ) : ( */}
                     <SectionCard
+                      fixedQuestionTypes={fixedQuestionTypes}
                       getActionHandlers={getActionHandlers}
                       sectionData={section}
                       removeParagraph={removeParagraph}
@@ -288,6 +290,7 @@ const SectionList = (props) => {
         isOpen={isQuestionCreateOpen}
         onOpen={onQuestionCreateOpen}
         onOpenChange={onQuestionCreateOpenChange}
+        fixedQuestionTypes={fixedQuestionTypes}
         addQuestion={(payload) =>
           addQuestion(payload)(currentSelectedSectionIndex)
         }

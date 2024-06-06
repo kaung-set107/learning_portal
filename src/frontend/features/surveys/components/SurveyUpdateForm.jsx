@@ -34,7 +34,7 @@ const SurveyUpdateForm = (props) => {
     },
   ];
 
-  const fixQuestionTypes = [
+  const fixedQuestionTypes = [
     { value: "trueFalse", label: "trueFalse" },
     { value: "multipleChoice", label: "multipleChoice" },
   ];
@@ -222,7 +222,7 @@ const SurveyUpdateForm = (props) => {
             <div className="mb-3">
               <div className="flex w-full items-center justify-between">
                 <h3 className="text-lg font-bold">Questions</h3>
-                <QuestionCreateModal fixQuestionTypes={fixQuestionTypes} addQuestion={addQuestion} />
+                <QuestionCreateModal fixedQuestionTypes={fixedQuestionTypes} addQuestion={addQuestion} />
               </div>
               <div className="mt-3">
               <QuestionList
