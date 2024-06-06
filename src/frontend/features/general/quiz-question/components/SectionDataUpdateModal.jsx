@@ -18,14 +18,14 @@ const sectionDataTypes = [
     value: "instruction",
     label: "Instruction",
   },
-  {
-    value: "paragraph",
-    label: "Paragraph",
-  },
-  {
-    value: "questions",
-    label: "Questions",
-  },
+  // {
+  //   value: "paragraph",
+  //   label: "Paragraph",
+  // },
+  // {
+  //   value: "questions",
+  //   label: "Questions",
+  // },
 ];
 
 export default function SectionDataUpdateModal(props) {
