@@ -1,10 +1,12 @@
 /* eslint-disable react/prop-types */
-import CustomButton from '../../../../components/general/CustomButton';
-import CustomCard from '../../../../components/general/CustomCard';
-import ListDetail from '../../../../components/general/typography/ListDetail';
-import ListInfo from '../../../../components/general/typography/ListInfo';
-import QuestionList from '../../../questions/components/QuestionList';
-import { v4 as uuidv4 } from 'uuid';
+import _ from "lodash";
+import CustomButton from "../../../../components/general/CustomButton";
+import CustomCard from "../../../../components/general/CustomCard";
+import ListDetail from "../../../../components/general/typography/ListDetail";
+import ListInfo from "../../../../components/general/typography/ListInfo";
+import QuestionList from "../../../questions/components/QuestionList";
+import { v4 as uuidv4 } from "uuid";
+import ImageLoader from "../../../../components/general/ImageLoader";
 
 const SectionCard = (props) => {
   const {
@@ -32,13 +34,13 @@ const SectionCard = (props) => {
             <ListInfo title="Instruction" />
             <ListDetail title={sectionData.instruction} />
             <div className="absolute right-2 top-2 flex gap-3">
-              {getSectionDataUpdateButton(sectionIndex, 'instruction')}
+              {getSectionDataUpdateButton(sectionIndex, "instruction")}
               <CustomButton
                 iconOnly
                 confirmBox
                 type="delete"
                 className="bg-opacity-50"
-                onClick={() => removeSectionData(sectionIndex, 'instruction')}
+                onClick={() => removeSectionData(sectionIndex, "instruction")}
                 title="Remove"
               />
             </div>
@@ -57,7 +59,7 @@ const SectionCard = (props) => {
                       type="delete"
                       className="bg-opacity-50"
                       onClick={() =>
-                        removeSectionData(sectionIndex, 'paragraph')
+                        removeSectionData(sectionIndex, "paragraph")
                       }
                       title="Remove"
                     />
@@ -94,6 +96,27 @@ const SectionCard = (props) => {
                 </div>
               </CustomCard>
             )}
+            {sectionData.images && !_.isEmpty(sectionData.images) && (
+              <div className="mb-3">
+                <h3 className="text-lg font-semibold mb-3">Images</h3>
+                <div className="bg-gray-100 flex flex-wrap gap-3 p-3 rounded-xl border">
+                  {sectionData.images ? (
+                    sectionData.images.map((image) => {
+                      return (
+                        <div
+                          key={uuidv4()}
+                          className="inline-block bg-white p-3 rounded-xl border"
+                        >
+                          <ImageLoader className="w-[200px] space-y-3" file={image} />
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <span>No File!</span>
+                  )}
+                </div>
+              </div>
+            )}
             {sectionData.questions && (
               <>
                 <CustomCard className="bg-white relative border-blue-500">
@@ -105,7 +128,7 @@ const SectionCard = (props) => {
                       type="delete"
                       className="bg-opacity-50"
                       onClick={() =>
-                        removeSectionData(sectionIndex, 'questions')
+                        removeSectionData(sectionIndex, "questions")
                       }
                       title="Remove"
                     />

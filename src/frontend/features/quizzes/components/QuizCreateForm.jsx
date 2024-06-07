@@ -286,7 +286,7 @@ const QuizCreateForm = (props) => {
 
             <div className="mb-3">
               <QuizQuestionHandler
-                fixedQuestionTypes={[...fixedQuestionTypes]}
+                fixedQuestionTypes={fixedQuestionTypes}
                 questionData={questionData}
                 setQuestionData={setQuestionData}
               />

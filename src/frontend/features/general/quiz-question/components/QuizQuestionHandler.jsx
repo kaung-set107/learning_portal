@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import CustomButton from "../../../../components/general/CustomButton";
 import NotiInfo from "../../../../components/general/typography/NotiInfo";
+import { quizzesApi } from "../../../quizzes/api";
 import { isInstruction, isParagraph, isQuestions } from "../helper";
 import SectionList from "./SectionList";
 
@@ -15,12 +16,12 @@ const QuizQuestionHandler = (props) => {
     imageUploadApi,
     deletedQuestionData,
     setDeletedQuestionData,
-    fixedQuestionTypes
+    fixedQuestionTypes,
   } = props;
   // const [deletedQuestions, setDeletedQuestions] = useState([]) // need to save according to image deletion
 
   const createSection = () => {
-    setQuestionData((prev) => [...prev, {}]);
+    setQuestionData((prev) => [...prev, { status: "new" }]);
   };
 
   const removeSection = (sectionIndex) => {
@@ -149,6 +150,10 @@ const QuizQuestionHandler = (props) => {
     });
   };
 
+  const uploadSectionImage = async (payload) => {
+    return await quizzesApi.updateSectionImage(payload);
+  };
+
   return (
     <>
       <div className="flex w-full items-center justify-between">
@@ -163,7 +168,7 @@ const QuizQuestionHandler = (props) => {
       <div className="mt-3">
         {questionData.length > 0 ? (
           <SectionList
-          fixedQuestionTypes={fixedQuestionTypes}
+            fixedQuestionTypes={fixedQuestionTypes}
             data={questionData}
             removeSection={removeSection}
             setQuestionData={setQuestionData}
@@ -177,6 +182,7 @@ const QuizQuestionHandler = (props) => {
             successCallback={successCallback}
             srcId={srcId}
             imageUploadApi={imageUploadApi}
+            uploadSectionImage={uploadSectionImage}
           />
         ) : (
           <div className="h-[300px] border bg-gray-100 p-3 flex items-center justify-center rounded-md">

@@ -1,24 +1,37 @@
 /* eslint-disable react/prop-types */
 
-import { v4 as uuidv4 } from 'uuid';
-import CustomButton from '../../../../components/general/CustomButton';
-import { useDisclosure } from '@nextui-org/react';
+import { v4 as uuidv4 } from "uuid";
+import CustomButton from "../../../../components/general/CustomButton";
+import { useDisclosure } from "@nextui-org/react";
 // import { Accordion, AccordionItem } from "@nextui-org/react";
-import SectionDataCreateModal from './SectionDataCreateModal';
-import { useState } from 'react';
-import SectionCard from './SectionCard';
-import Heading from '../../../../components/general/typography/Heading';
-import SectionDataUpdateModal from './SectionDataUpdateModal';
-import QuestionCreateModal from '../../../questions/components/QuestionCreateModal';
-import ParagraphUpdateModal from './ParagraphUpdateModal';
-import { closestCorners, DragOverlay } from '@dnd-kit/core';
+import SectionDataCreateModal from "./SectionDataCreateModal";
+import { useState } from "react";
+import SectionCard from "./SectionCard";
+import Heading from "../../../../components/general/typography/Heading";
+import SectionDataUpdateModal from "./SectionDataUpdateModal";
+import QuestionCreateModal from "../../../questions/components/QuestionCreateModal";
+import ParagraphUpdateModal from "./ParagraphUpdateModal";
+import { closestCorners, DragOverlay } from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
   verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
-import Sortable from '../../../../../lib/dnd-kit/components/Sortable';
-import Draggable from '../../../../../lib/dnd-kit/components/Draggable';
+} from "@dnd-kit/sortable";
+import Sortable from "../../../../../lib/dnd-kit/components/Sortable";
+import Draggable from "../../../../../lib/dnd-kit/components/Draggable";
+import SectionImageUploadModal from "./SectionImageUploadModal";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  Button,
+} from "@nextui-org/react";
+import { FiMinimize2 } from "react-icons/fi";
+import { FiMaximize2 } from "react-icons/fi";
+import { FaFile } from "react-icons/fa";
+import { FaImages } from "react-icons/fa";
+import { FaList } from "react-icons/fa";
 
 const SectionList = (props) => {
   const {
@@ -36,11 +49,18 @@ const SectionList = (props) => {
     successCallback,
     srcId,
     imageUploadApi,
+    uploadSectionImage,
   } = props;
   const {
     isOpen: isSectionDataCreateOpen,
     onOpen: onSectionDataCreateOpen,
     onOpenChange: onSectionDataCreateOpenChange,
+  } = useDisclosure();
+
+  const {
+    isOpen: isSectionImageCreateOpen,
+    onOpen: onSectionImageCreateOpen,
+    onOpenChange: onSectionImageCreateOpenChange,
   } = useDisclosure();
 
   const {
@@ -94,6 +114,11 @@ const SectionList = (props) => {
     onParagraphUpdateOpen();
   };
 
+  const handleSectionImageCreateModalOpenClick = (sectionIndex) => {
+    setCurrentSelectedSectionIndex(sectionIndex);
+    onSectionImageCreateOpen();
+  };
+
   const getSectionDataUpdateButton = (sectionIndex, sectionDataType) => {
     return (
       <CustomButton
@@ -123,7 +148,7 @@ const SectionList = (props) => {
   };
 
   const addQuestion = (payload) => (sectionIndex) => {
-    addSectionData(sectionIndex, { ...payload, sectionDataType: 'questions' });
+    addSectionData(sectionIndex, { ...payload, sectionDataType: "questions" });
   };
 
   const getCurrentSectionData = (id) => {
@@ -135,16 +160,16 @@ const SectionList = (props) => {
       <div className="mb-2 border bg-white p-2 rounded-md relative flex justify-between items-center">
         <Heading className="text-xl font-bold" title={`Actions`} />
         <div className="flex items-center gap-3">
-          <CustomButton
+          {/* <CustomButton
             onClick={() =>
               setQuestionData((prev) => {
                 let newQuestionData = [...prev];
 
-                if (newQuestionData[index]['expanded']) {
-                  newQuestionData[index]['expanded'] =
-                    !newQuestionData[index]['expanded'];
+                if (newQuestionData[index]["expanded"]) {
+                  newQuestionData[index]["expanded"] =
+                    !newQuestionData[index]["expanded"];
                 } else {
-                  newQuestionData[index]['expanded'] = true;
+                  newQuestionData[index]["expanded"] = true;
                 }
 
                 return newQuestionData;
@@ -152,20 +177,58 @@ const SectionList = (props) => {
             }
             color="primary"
             title="Expand / Minimize"
+          /> */}
+          <CustomButton
+            type="icon"
+            onClick={() =>
+              setQuestionData((prev) => {
+                let newQuestionData = [...prev];
+
+                if (newQuestionData[index]["expanded"]) {
+                  newQuestionData[index]["expanded"] =
+                    !newQuestionData[index]["expanded"];
+                } else {
+                  newQuestionData[index]["expanded"] = true;
+                }
+
+                return newQuestionData;
+              })
+            }
+            icon={data[index].expanded ? <FiMinimize2 /> : <FiMaximize2 />}
           />
           {/* <QuestionCreateModal
             addQuestion={(payload) => addQuestion(payload)(index)}
           /> */}
-          <CustomButton
-            onClick={() => handleQuestionCreateModalOpenClick(index)}
-            color="primary"
-            title="Add Question +"
-          />
-          <CustomButton
-            onClick={() => handleSectionDataCreateModalOpenClick(index)}
-            color="primary"
-            title="Add Section Data +"
-          />
+          <Dropdown>
+            <DropdownTrigger>
+              <Button variant="bordered">Add +</Button>
+            </DropdownTrigger>
+            <DropdownMenu aria-label="Static Actions">
+              <DropdownItem
+                key="question"
+                onClick={() => handleQuestionCreateModalOpenClick(index)}
+                startContent={<FaFile />}
+              >
+                Question
+              </DropdownItem>
+              {data[index].status !== "new" && (
+                <DropdownItem
+                  key="images"
+                  onClick={() => handleSectionImageCreateModalOpenClick(index)}
+                  startContent={<FaImages />}
+                >
+                  Image
+                </DropdownItem>
+              )}
+              <DropdownItem
+                key="sectionData"
+                onClick={() => handleSectionDataCreateModalOpenClick(index)}
+                startContent={<FaList />}
+              >
+                Section Data
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
           <CustomButton
             confirmBox
             iconOnly
@@ -184,7 +247,7 @@ const SectionList = (props) => {
   const handleDragEnd = (event) => {
     const { active, over } = event;
 
-    console.log(active, over, 'active and over');
+    console.log(active, over, "active and over");
 
     setQuestionData((prev) => {
       const originalPos = getDataPos(active.id);
@@ -203,9 +266,9 @@ const SectionList = (props) => {
     <>
       <div className="mb-3">
         <CustomButton
-          className={sortable ? '' : 'bg-opacity-50'}
+          className={sortable ? "" : "bg-opacity-50"}
           onClick={() => setSortable((prev) => !prev)}
-          title={`Sortable : ${sortable ? 'on' : 'off'}`}
+          title={`Sortable : ${sortable ? "on" : "off"}`}
         />
       </div>
       <div className="space-y-4">
@@ -294,6 +357,15 @@ const SectionList = (props) => {
         addQuestion={(payload) =>
           addQuestion(payload)(currentSelectedSectionIndex)
         }
+      />
+      <SectionImageUploadModal
+        srcId={srcId}
+        sectionIndex={currentSelectedSectionIndex}
+        isOpen={isSectionImageCreateOpen}
+        onOpen={onSectionImageCreateOpen}
+        onOpenChange={onSectionImageCreateOpenChange}
+        uploadApi={uploadSectionImage}
+        successCallback={successCallback}
       />
       <SectionDataCreateModal
         sectionIndex={currentSelectedSectionIndex}
