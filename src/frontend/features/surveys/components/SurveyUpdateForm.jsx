@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Input, Card, CardBody } from "@nextui-org/react";
+import { Input, Card, CardBody, useDisclosure } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import CustomButton from "../../../components/general/CustomButton";
 import SubHeading from "../../../components/general/typography/SubHeading";
@@ -16,6 +16,12 @@ const SurveyUpdateForm = (props) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [questions, setQuestions] = useState([]);
   const {id, subjectSectionId, learningMaterialId} = useParams()
+
+  const {
+    isOpen: isQuestionCreateOpen,
+    onOpen: onQuestionCreateOpen,
+    onOpenChange: onQuestionCreateOpenChange,
+  } = useDisclosure();
 
   const variant = "bordered";
 
@@ -34,7 +40,7 @@ const SurveyUpdateForm = (props) => {
     },
   ];
 
-  const fixQuestionTypes = [
+  const fixedQuestionTypes = [
     { value: "trueFalse", label: "trueFalse" },
     { value: "multipleChoice", label: "multipleChoice" },
   ];
@@ -60,6 +66,10 @@ const SurveyUpdateForm = (props) => {
 
     setQuestions(newQuestions);
     // setFormData((prev) => ({ ...prev, questions: newQuestions }));
+  };
+
+  const handleQuestionCreateModalOpenClick = () => {
+    onQuestionCreateOpen()
   };
 
   const preparePayload = () => {
@@ -222,7 +232,11 @@ const SurveyUpdateForm = (props) => {
             <div className="mb-3">
               <div className="flex w-full items-center justify-between">
                 <h3 className="text-lg font-bold">Questions</h3>
-                <QuestionCreateModal fixQuestionTypes={fixQuestionTypes} addQuestion={addQuestion} />
+                <CustomButton
+                  onClick={() => handleQuestionCreateModalOpenClick()}
+                  color="primary"
+                  title="Add Question +"
+                />
               </div>
               <div className="mt-3">
               <QuestionList
@@ -243,6 +257,14 @@ const SurveyUpdateForm = (props) => {
           </form>
         </CardBody>
       </Card>
+
+      <QuestionCreateModal
+        isOpen={isQuestionCreateOpen}
+        onOpen={onQuestionCreateOpen}
+        onOpenChange={onQuestionCreateOpenChange}
+        fixedQuestionTypes={fixedQuestionTypes}
+        addQuestion={addQuestion}
+      />
     </div>
   );
 

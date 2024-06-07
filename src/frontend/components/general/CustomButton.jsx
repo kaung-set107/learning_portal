@@ -9,7 +9,7 @@ import { showConfirmWithInput } from "../../../util";
 
 /* eslint-disable react/prop-types */
 const CustomButton = (props) => {
-    const { isLoading, iconOnly, confirmBox, textOnly, title, type, onClick, isDisabled, className, ...args } = props
+    const { isLoading, iconOnly, confirmBox, textOnly, title, type, onClick, isDisabled, className, icon, ...args } = props
 
     const navigate = useNavigate()
 
@@ -51,6 +51,8 @@ const CustomButton = (props) => {
             } else {
                 return (<><IoChevronBack className="mr-2 text-xl"/>{title}</>)
             }
+        } else if (type === 'icon') {
+            return (<>{icon}</>)
         }
 
         return title
@@ -71,7 +73,7 @@ const CustomButton = (props) => {
     }
 
     return (
-        <Button onClick={handleOnClick} isIconOnly={iconOnly} color={getColor()} isDisabled={isLoading || isDisabled} {...args} className={`border px-2 border-transparent hover:border-gray-700 h-[40px] hover:shadow-sm hover:bg-opacity-100 ${className} ${isLoading ? 'cursor-not-allowed' : ''} ${isDisabled ? 'bg-gray-300' : ''}`}>
+        <Button onClick={handleOnClick} isIconOnly={iconOnly || type === 'icon'} color={getColor()} isDisabled={isLoading || isDisabled} {...args} className={`border px-2 border-transparent hover:border-gray-700 h-[40px] hover:shadow-sm hover:bg-opacity-100 ${className} ${isLoading ? 'cursor-not-allowed' : ''} ${isDisabled ? 'bg-gray-300' : ''}`}>
             {
                 isLoading ? <Loading color="default" size={"sm"} /> : <span className="flex items-center justify-center">{getContent()}</span>
             }

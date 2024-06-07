@@ -1,22 +1,21 @@
 /* eslint-disable react/prop-types */
-import { useDisclosure } from "@nextui-org/react";
-import { v4 as uuidv4 } from "uuid";
-import ListInfo from "../../../components/general/typography/ListInfo";
-import ListDetail from "../../../components/general/typography/ListDetail";
-import CustomButton from "../../../components/general/CustomButton";
-import QuestionUpdateModal from "./QuestionUpdateModal";
-import { useState } from "react";
-import QuestionImageUploadModal from "./QuestionImageUploadModal";
-import { getFile } from "../../../../util";
-import QuestionInstructionCreateModal from "./QuestionInstructionCreateModal";
+import { useDisclosure } from '@nextui-org/react';
+import { v4 as uuidv4 } from 'uuid';
+import ListInfo from '../../../components/general/typography/ListInfo';
+import ListDetail from '../../../components/general/typography/ListDetail';
+import CustomButton from '../../../components/general/CustomButton';
+import QuestionUpdateModal from './QuestionUpdateModal';
+import { useState } from 'react';
+import QuestionImageUploadModal from './QuestionImageUploadModal';
+import { getFile } from '../../../../util';
 
 const QuestionList = (props) => {
   const [currentQuestionData, setCurrentQuestionData] = useState({});
-  const {
-    isOpen: isInstructionCreateOpen,
-    onOpen: onInstructionCreateOpen,
-    onOpenChange: onInstructionCreateOpenChange,
-  } = useDisclosure();
+  // const {
+  //   isOpen: isInstructionCreateOpen,
+  //   onOpen: onInstructionCreateOpen,
+  //   onOpenChange: onInstructionCreateOpenChange,
+  // } = useDisclosure();
   const {
     isOpen: isQuestionEditOpen,
     onOpen: onQuestionEditOpen,
@@ -30,6 +29,7 @@ const QuestionList = (props) => {
     updateQuestions,
     imageUploadApi,
     successCallback,
+    fixedQuestionTypes,
   } = props;
 
   const handleEditButtonClick = (e, index) => {
@@ -50,14 +50,14 @@ const QuestionList = (props) => {
               className="group p-3 border rounded-xl relative"
             >
               <div className="absolute right-1 top-1 gap-3 flex">
-                {srcId && imageUploadApi && question?.status !== "new" && (
-                      <QuestionImageUploadModal
-                        successCallback={successCallback}
-                        srcId={srcId}
-                        questionIndex={index}
-                        uploadApi={imageUploadApi}
-                      />
-                    )}
+                {srcId && imageUploadApi && question?.status !== 'new' && (
+                  <QuestionImageUploadModal
+                    successCallback={successCallback}
+                    srcId={srcId}
+                    questionIndex={index}
+                    uploadApi={imageUploadApi}
+                  />
+                )}
                 <CustomButton
                   iconOnly
                   type="edit"
@@ -163,15 +163,10 @@ const QuestionList = (props) => {
       )}
 
       <QuestionUpdateModal
+        fixedQuestionTypes={fixedQuestionTypes}
         isOpen={isQuestionEditOpen}
         onOpen={onQuestionEditOpen}
         onOpenChange={onQuestionEditOpenChange}
-        questionData={currentQuestionData}
-      />
-      <QuestionInstructionCreateModal
-        isOpen={isInstructionCreateOpen}
-        onOpen={onInstructionCreateOpen}
-        onOpenChange={onInstructionCreateOpenChange}
         questionData={currentQuestionData}
       />
     </div>

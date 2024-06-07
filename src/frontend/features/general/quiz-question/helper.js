@@ -12,4 +12,3 @@ export const isQuestions = (data) => {
   if (data === "questions") return true;
   return false;
 };
-

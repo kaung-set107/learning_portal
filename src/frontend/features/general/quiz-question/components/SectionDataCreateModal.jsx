@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Button, Input, Textarea } from "@nextui-org/react";
+import { Button, Textarea } from "@nextui-org/react";
 import { useState } from "react";
 import {
   Modal,

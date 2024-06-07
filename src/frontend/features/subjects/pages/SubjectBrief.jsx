@@ -27,6 +27,11 @@ import ExamCard from "../../exams/component/ExamCard";
 import FunQuizCreateForm from "../../fun-quizzes/components/FunQuizCreateForm";
 import FunQuizUpdateForm from "../../fun-quizzes/components/FunQuizUpdateForm";
 
+const fixedQuestionTypes = [
+  { value: "trueFalse", label: "trueFalse" },
+  { value: "multipleChoice", label: "multipleChoice" },
+];
+
 const SubjectBrief = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -56,12 +61,14 @@ const SubjectBrief = () => {
 
   const goToAssignmentResults = (data) => {
     navigate("/by-instructor/assignment-results", {
-      state: { assignment: data, subject: {...subject.data} },
+      state: { assignment: data, subject: { ...subject.data } },
     });
   };
 
   const goToExamResults = (examData) => {
-    navigate(`/by-instructor/exam-results` ,{state: { exam: examData, subject: {...subject.data} }});
+    navigate(`/by-instructor/exam-results`, {
+      state: { exam: examData, subject: { ...subject.data } },
+    });
   };
 
   const goToLearningMaterials = (data) => {
@@ -134,7 +141,7 @@ const SubjectBrief = () => {
       showSuccess({ text: res.message, type: "noti-box" });
       setIsSubmitting(false);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       showError({ axiosResponse: error });
     } finally {
       setIsSubmitting(false);
@@ -180,7 +187,9 @@ const SubjectBrief = () => {
                           >
                             <div className="flex gap-3 absolute right-2 top-2">
                               <CustomButton
-                                onClick={() => goToAssignmentResults(assignment)}
+                                onClick={() =>
+                                  goToAssignmentResults(assignment)
+                                }
                                 isLoading={isSubmitting}
                                 title="Results"
                               />
@@ -407,12 +416,14 @@ const SubjectBrief = () => {
                             /> */}
                           {!subject.data.funQuizzes[0].quiz ? (
                             <QuizCreateForm
+                              fixedQuestionTypes={fixedQuestionTypes}
                               type="funQuiz"
                               funQuiz={subject.data.funQuizzes[0]}
                               successCallback={getSubject}
                             />
                           ) : (
                             <QuizUpdateForm
+                              fixedQuestionTypes={fixedQuestionTypes}
                               quizData={subject.data.funQuizzes[0].quiz}
                               type="funQuiz"
                               funQuiz={subject.data.funQuizzes[0]}
