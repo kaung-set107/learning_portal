@@ -12,6 +12,11 @@ import QuizCreateForm from "../../quizzes/components/QuizCreateForm";
 import QuizUpdateForm from "../../quizzes/components/QuizUpdateForm";
 import LearningMaterialDetailCard from "../components/LearningMaterialDetailCard";
 
+const fixedQuestionTypes = [
+  { value: "trueFalse", label: "trueFalse" },
+  { value: "multipleChoice", label: "multipleChoice" },
+];
+
 const LearningMaterialBrief = () => {
   const { learningMaterialId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
@@ -90,12 +95,14 @@ const LearningMaterialBrief = () => {
             <Tab key={TabOptions[3].key} title={TabOptions[3].title}>
               {!learningMaterial.quiz ? (
                 <QuizCreateForm
+                  fixedQuestionTypes={fixedQuestionTypes}
                   type="learningMaterial"
                   learningMaterial={learningMaterial}
                   successCallback={getLearningMaterial}
                 />
               ) : (
                 <QuizUpdateForm
+                  fixedQuestionTypes={fixedQuestionTypes}
                   quizData={learningMaterial.quiz}
                   type="learningMaterial"
                   learningMaterial={learningMaterial}

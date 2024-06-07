@@ -50,11 +50,21 @@ const updateQuestionImage = async (payload) => {
   return res.data
 };
 
+const updateSectionImage = async (payload) => {
+  const res = await apiInstance.put(
+    baseUrl + `/${payload._id}/question-data/${payload.sectionIndex}`,
+    getFormData(payload)
+  );
+
+  return res.data
+};
+
 export const quizzesApi = {
   getAll,
   get,
   create,
   update,
   remove,
-  updateQuestionImage
+  updateQuestionImage,
+  updateSectionImage
 };

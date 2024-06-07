@@ -19,12 +19,18 @@ export default function QuestionUpdateModal(props) {
   const [option, setOption] = useState("");
   const variant = "bordered";
 
-  const questionTypes = [
-    { value: "trueFalse", label: "trueFalse" },
-    { value: "fillInTheBlank", label: "fillInTheBlank" },
-    { value: "openQuestion", label: "openQuestion" },
-    { value: "multipleChoice", label: "multipleChoice" },
-  ];
+  let questionTypes = [];
+
+  if (!props.fixedQuestionTypes) {
+    questionTypes = [
+      { value: "trueFalse", label: "trueFalse" },
+      { value: "fillInTheBlank", label: "fillInTheBlank" },
+      { value: "openQuestion", label: "openQuestion" },
+      { value: "multipleChoice", label: "multipleChoice" },
+    ];
+  } else {
+    questionTypes = [...props.fixedQuestionTypes];
+  }
 
   const answerTypes = [
     { value: "radio", label: "radio" },
@@ -138,7 +144,7 @@ export default function QuestionUpdateModal(props) {
           value: option.answer,
         }));
 
-        let modifiedCorrectAnswer = questionData.correctAnswer.map((ans) => {
+        let modifiedCorrectAnswer = questionData.correctAnswer?.map((ans) => {
           // let item = modifiedOptions.filter((each) => each.value === ans)[0];
           // console.log(item);
           // return item.key;
@@ -146,7 +152,7 @@ export default function QuestionUpdateModal(props) {
         });
 
         newData.options = modifiedOptions;
-        newData.correctAnswer = modifiedCorrectAnswer;
+        newData.correctAnswer = modifiedCorrectAnswer ?? [];
       } else {
         newData.inputCorrectAnswer = questionData.inputCorrectAnswer[0];
         newData.inputCount = questionData.inputCount ?? 1;
@@ -210,196 +216,204 @@ export default function QuestionUpdateModal(props) {
                 </ModalHeader>
                 <ModalBody>
                   <form>
-                    <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
-                      <Input
-                        type="text"
-                        label="Question"
-                        placeholder="question"
-                        variant={variant}
-                        value={formData.question}
-                        onChange={(e) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            question: e.target.value,
-                          }))
-                        }
-                        labelPlacement="outside"
-                      />
-                    </div>
-
-                    <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-9 gap-4 mt-3">
-                      <Input
-                        type="text"
-                        label="Mark"
-                        placeholder="mark"
-                        variant={variant}
-                        value={formData.mark}
-                        onChange={(e) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            mark: e.target.value,
-                          }))
-                        }
-                        labelPlacement="outside"
-                      />
-                    </div>
-
-                    <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
-                      <Select
-                        items={questionTypes}
-                        label="Question Type"
-                        placeholder="Select an question type"
-                        className="max-w-xs"
-                        labelPlacement="outside"
-                        selectedKeys={[formData.type]}
-                        onSelectionChange={(e) => onQuestionTypeChange(e)}
-                      >
-                        {(type) => (
-                          <SelectItem key={type.value}>{type.label}</SelectItem>
-                        )}
-                      </Select>
-                    </div>
-
-                    <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3">
-                      <Select
-                        isDisabled
-                        items={answerTypes}
-                        selectedKeys={[formData.answerType]}
-                        label="Answer Type"
-                        placeholder="Select an answer type"
-                        className="max-w-xs"
-                        labelPlacement="outside"
-                        onSelectionChange={(e) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            answerType: e.currentKey,
-                          }))
-                        }
-                      >
-                        {(type) => (
-                          <SelectItem key={type.value}>{type.label}</SelectItem>
-                        )}
-                      </Select>
-                    </div>
-
-                    {isQuestionTypeInput() && (
-                      <>
-                        <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
-                          <Textarea
-                            label="Correct Answer"
-                            placeholder="Input Correct Answer"
-                            variant={variant}
-                            value={formData.inputCorrectAnswer}
-                            onChange={(e) =>
-                              setFormData((prev) => ({
-                                ...prev,
-                                inputCorrectAnswer: e.target.value,
-                              }))
-                            }
-                            labelPlacement="outside"
-                          />
-                        </div>
-                        <div className="flex w-full flex-wrap md:flex-nowrap gap-4 mt-3">
-                          <Input
-                            type="number"
-                            label="Input Count"
-                            placeholder="Input Count"
-                            variant={variant}
-                            value={formData.inputCount}
-                            onChange={(e) =>
-                              setFormData((prev) => ({
-                                ...prev,
-                                inputCount: e.target.value,
-                              }))
-                            }
-                            labelPlacement="outside"
-                          />
-                        </div>
-                      </>
-                    )}
-
-                    {!isQuestionTypeInput() && (
-                      <CustomMultiSelect
-                        label="Correct Answer"
-                        placeholder="Select correct answer"
-                        labelPlacement="outside"
-                        selectedKeys={formData.correctAnswer}
-                        data={formData.options}
-                        setValues={handleMultipleSelect}
-                      />
-                    )}
-
-                    {!isQuestionTypeInput() && (
-                      <div className="flex w-full flex-wrap md:flex-nowrap gap-4 mt-3">
+                    <div className="space-y-3">
+                      <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4">
                         <Input
                           type="text"
-                          label="Correct Answer Description"
-                          placeholder="correctAnswerDescription"
+                          label="Question"
+                          placeholder="question"
                           variant={variant}
-                          value={formData.correctAnswerDescription}
+                          value={formData.question}
                           onChange={(e) =>
                             setFormData((prev) => ({
                               ...prev,
-                              correctAnswerDescription: e.target.value,
+                              question: e.target.value,
                             }))
                           }
                           labelPlacement="outside"
                         />
                       </div>
-                    )}
 
-                    {!isQuestionTypeInput() && (
-                      <>
-                        <div className="flex items-end w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
-                          <Input
-                            type="text"
-                            label="Option"
-                            placeholder="option"
-                            variant={variant}
-                            value={option}
-                            onChange={(e) => setOption(e.target.value)}
+                      <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
+                        <Input
+                          type="text"
+                          label="Mark"
+                          placeholder="mark"
+                          variant={variant}
+                          value={formData.mark}
+                          onChange={(e) =>
+                            setFormData((prev) => ({
+                              ...prev,
+                              mark: e.target.value,
+                            }))
+                          }
+                          labelPlacement="outside"
+                        />
+                      </div>
+
+                      <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
+                        <Select
+                          items={questionTypes}
+                          label="Question Type"
+                          placeholder="Select an question type"
+                          className="max-w-xs"
+                          labelPlacement="outside"
+                          selectedKeys={[formData.type]}
+                          onSelectionChange={(e) => onQuestionTypeChange(e)}
+                        >
+                          {(type) => (
+                            <SelectItem key={type.value}>
+                              {type.label}
+                            </SelectItem>
+                          )}
+                        </Select>
+                      </div>
+
+                      <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
+                        <Select
+                          isDisabled
+                          items={answerTypes}
+                          selectedKeys={[formData.answerType]}
+                          label="Answer Type"
+                          placeholder="Select an answer type"
+                          className="max-w-xs"
+                          labelPlacement="outside"
+                          onSelectionChange={(e) =>
+                            setFormData((prev) => ({
+                              ...prev,
+                              answerType: e.currentKey,
+                            }))
+                          }
+                        >
+                          {(type) => (
+                            <SelectItem key={type.value}>
+                              {type.label}
+                            </SelectItem>
+                          )}
+                        </Select>
+                      </div>
+
+                      {isQuestionTypeInput() && (
+                        <>
+                          <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
+                            <Textarea
+                              label="Correct Answer"
+                              placeholder="Input Correct Answer"
+                              variant={variant}
+                              value={formData.inputCorrectAnswer}
+                              onChange={(e) =>
+                                setFormData((prev) => ({
+                                  ...prev,
+                                  inputCorrectAnswer: e.target.value,
+                                }))
+                              }
+                              labelPlacement="outside"
+                            />
+                          </div>
+                          <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
+                            <Input
+                              type="number"
+                              label="Input Count"
+                              placeholder="Input Count"
+                              variant={variant}
+                              value={formData.inputCount}
+                              onChange={(e) =>
+                                setFormData((prev) => ({
+                                  ...prev,
+                                  inputCount: e.target.value,
+                                }))
+                              }
+                              labelPlacement="outside"
+                            />
+                          </div>
+                        </>
+                      )}
+
+                      {!isQuestionTypeInput() && (
+                        <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
+                          <CustomMultiSelect
+                            label="Correct Answer"
+                            placeholder="Select correct answer"
                             labelPlacement="outside"
-                          />
-                          <CustomButton
-                            onClick={() =>
-                              setFormData((prev) => {
-                                let newOptions = [...prev.options];
-                                newOptions.push({
-                                  key: uuidv4(),
-                                  value: option,
-                                });
-
-                                return { ...prev, options: newOptions };
-                              })
-                            }
-                            title="Add"
+                            selectedKeys={formData.correctAnswer}
+                            data={formData.options}
+                            setValues={handleMultipleSelect}
                           />
                         </div>
+                      )}
 
-                        {formData.options.length > 0 && (
-                          <div className="p-3 border rounded-xl mb-3 space-y-3">
-                            <h4 className="mb-3">Option List</h4>
-                            {formData.options.map((option, index) => {
-                              return (
-                                <div
-                                  key={option.key}
-                                  className="p-2 border rounded-xl flex justify-between items-center"
-                                >
-                                  <span>{option.value}</span>
-                                  <CustomButton
-                                    onClick={() => optionRemoveHandler(index)}
-                                    type="delete"
-                                    size="sm"
-                                    iconOnly
-                                    className="p-1"
-                                  />
-                                </div>
-                              );
-                            })}
+                      {!isQuestionTypeInput() && (
+                        <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
+                          <Input
+                            type="text"
+                            label="Correct Answer Description"
+                            placeholder="correctAnswerDescription"
+                            variant={variant}
+                            value={formData.correctAnswerDescription}
+                            onChange={(e) =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                correctAnswerDescription: e.target.value,
+                              }))
+                            }
+                            labelPlacement="outside"
+                          />
+                        </div>
+                      )}
+
+                      {!isQuestionTypeInput() && (
+                        <>
+                          <div className="flex items-end w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4">
+                            <Input
+                              type="text"
+                              label="Option"
+                              placeholder="option"
+                              variant={variant}
+                              value={option}
+                              onChange={(e) => setOption(e.target.value)}
+                              labelPlacement="outside"
+                            />
+                            <CustomButton
+                              onClick={() =>
+                                setFormData((prev) => {
+                                  let newOptions = [...prev.options];
+                                  newOptions.push({
+                                    key: uuidv4(),
+                                    value: option,
+                                  });
+
+                                  return { ...prev, options: newOptions };
+                                })
+                              }
+                              title="Add"
+                            />
                           </div>
-                        )}
-                      </>
-                    )}
+
+                          {formData.options.length > 0 && (
+                            <div className="p-3 border rounded-xl mb-3 space-y-3">
+                              <h4 className="mb-3">Option List</h4>
+                              {formData.options.map((option, index) => {
+                                return (
+                                  <div
+                                    key={option.key}
+                                    className="p-2 border rounded-xl flex justify-between items-center"
+                                  >
+                                    <span>{option.value}</span>
+                                    <CustomButton
+                                      onClick={() => optionRemoveHandler(index)}
+                                      type="delete"
+                                      size="sm"
+                                      iconOnly
+                                      className="p-1"
+                                    />
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </div>
                   </form>
                 </ModalBody>
                 <ModalFooter>

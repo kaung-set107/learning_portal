@@ -1,49 +1,59 @@
 /* eslint-disable react/prop-types */
-import { Input, Card, CardBody } from "@nextui-org/react";
-import { useState } from "react";
-import CustomButton from "../../../components/general/CustomButton";
-import SubHeading from "../../../components/general/typography/SubHeading";
-import { Select, SelectItem } from "@nextui-org/select";
-import { surveysApi } from "../data";
-import QuestionCreateModal from "../../questions/components/QuestionCreateModal";
-import QuestionList from "../../questions/components/QuestionList";
-import { showError, showSuccess } from "../../../../util/noti";
+import { Input, Card, CardBody, useDisclosure } from '@nextui-org/react';
+import { useState } from 'react';
+import CustomButton from '../../../components/general/CustomButton';
+import SubHeading from '../../../components/general/typography/SubHeading';
+import { Select, SelectItem } from '@nextui-org/select';
+import { surveysApi } from '../data';
+import QuestionCreateModal from '../../questions/components/QuestionCreateModal';
+import QuestionList from '../../questions/components/QuestionList';
+import { showError, showSuccess } from '../../../../util/noti';
 
 const SurveyCreateForm = (props) => {
   const { type, successCallback } = props;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [questions, setQuestions] = useState([]);
+  const {
+    isOpen: isQuestionCreateOpen,
+    onOpen: onQuestionCreateOpen,
+    onOpenChange: onQuestionCreateOpenChange,
+  } = useDisclosure();
 
-  const variant = "bordered";
+
+  const variant = 'bordered';
 
   const status = [
     {
-      value: "finished",
-      label: "finished",
+      value: 'finished',
+      label: 'finished',
     },
     {
-      value: "unfinished",
-      label: "unfinished",
+      value: 'unfinished',
+      label: 'unfinished',
     },
     {
-      value: "expired",
-      label: "expired",
+      value: 'expired',
+      label: 'expired',
     },
   ];
 
-  const fixQuestionTypes = [
-    { value: "trueFalse", label: "trueFalse" },
-    { value: "multipleChoice", label: "multipleChoice" },
+  const fixedQuestionTypes = [
+    { value: 'trueFalse', label: 'trueFalse' },
+    { value: 'multipleChoice', label: 'multipleChoice' },
   ];
 
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
+    title: '',
+    description: '',
     questions: [],
     numOfQuestions: 0,
-    status: "unfinished",
+    status: 'unfinished',
   });
+
+  const handleQuestionCreateModalOpenClick = () => {
+    onQuestionCreateOpen()
+  };
 
   const addQuestion = (data) => {
     let newQuestions = [...questions];
@@ -76,7 +86,7 @@ const SurveyCreateForm = (props) => {
       setIsSubmitting(true);
       let res = await surveysApi.create(payload);
       await successCallback();
-      showSuccess({ text: res.message, type: "noti-box" });
+      showSuccess({ text: res.message, type: 'noti-box' });
     } catch (error) {
       console.log(error);
       showError({ axiosResponse: error });
@@ -86,23 +96,25 @@ const SurveyCreateForm = (props) => {
   };
 
   const updateQuestions = (questionIndex, payload) => {
-    setQuestions(prev => {
-      let newQuestions = [...prev]
+    setQuestions((prev) => {
+      let newQuestions = [...prev];
 
-      newQuestions[questionIndex] = {...payload}
+      newQuestions[questionIndex] = { ...payload };
 
-      return newQuestions
-    })
-  }
+      return newQuestions;
+    });
+  };
 
-  const removeQuestion=  (questionIndex) => {
-    setQuestions(prev => {
-      let newQuestions = [...prev]
+  const removeQuestion = (questionIndex) => {
+    setQuestions((prev) => {
+      let newQuestions = [...prev];
 
-      newQuestions =  newQuestions.filter((question, qIndex) => qIndex !== questionIndex)
-      return newQuestions
-    })
-  }
+      newQuestions = newQuestions.filter(
+        (question, qIndex) => qIndex !== questionIndex
+      );
+      return newQuestions;
+    });
+  };
 
   return (
     <div>
@@ -174,7 +186,11 @@ const SurveyCreateForm = (props) => {
             <div className="mb-3">
               <div className="flex w-full items-center justify-between">
                 <h3 className="text-lg font-bold">Questions</h3>
-                <QuestionCreateModal fixQuestionTypes={fixQuestionTypes} addQuestion={addQuestion} />
+                <CustomButton
+                  onClick={() => handleQuestionCreateModalOpenClick()}
+                  color="primary"
+                  title="Add Question +"
+                />
               </div>
               <div className="mt-3">
                 <QuestionList
@@ -203,6 +219,14 @@ const SurveyCreateForm = (props) => {
           </form>
         </CardBody>
       </Card>
+
+      <QuestionCreateModal
+        isOpen={isQuestionCreateOpen}
+        onOpen={onQuestionCreateOpen}
+        onOpenChange={onQuestionCreateOpenChange}
+        fixedQuestionTypes={fixedQuestionTypes}
+        addQuestion={addQuestion}
+      />
     </div>
   );
 };
