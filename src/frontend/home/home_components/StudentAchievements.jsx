@@ -24,7 +24,7 @@ export const StudentAchievements = () => {
     },
     tablet: {
       breakpoint: { max: 1024, min: 464 },
-      items: 2
+      items: 3
     },
     mobile: {
       breakpoint: { max: 464, min: 0 },
@@ -94,13 +94,13 @@ export const StudentAchievements = () => {
         {achievementList.map((st, index) => (
           <div
             key={index}
-            className='flex gap-2 justify-center '
+            className='flex lg:gap-2 xl:gap-4 2xl:gap-6 gap-2 justify-center items-center'
           >
-            <div className='flex flex-col lg:gap-2'>
+            <div className='flex flex-col lg:gap-2 xl:gap-4 2xl:gap-6 gap-2'>
               <Image
                 src={getFile({ payload: st.image })}
 
-                className=' w-[200px] h-[170px] sm:w-[177px] sm:h-[177px] md:w-[177px] md:h-[177px] lg:w-[250px] lg:h-[220px] xl:w-[310px] xl:h-[290px] 2xl:w-[400px] 2xl:h-[350px] mb-10 sm:mb-0 sm:mt-2'
+                className=' w-[200px] h-[170px] sm:w-[177px] sm:h-[177px] md:w-[177px] md:h-[177px] lg:w-[250px] lg:h-[220px] xl:w-[300px] xl:h-[290px] 2xl:w-[360px] 2xl:h-[370px] mb-10 sm:mb-0 sm:mt-2'
 
                 alt='testimonal participant'
               />

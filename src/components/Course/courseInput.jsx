@@ -135,15 +135,18 @@ export default function DepartmentInputForm() {
 
         </div>
         <div className='grid grid-cols-2 w-full mb-6 md:mb-0 gap-4'>
-          <div>
-            <Input
+          <div className='flex flex-col '>
+            <label>Image</label>
+            <input
               type='file'
               onChange={handleImage}
-              label='Image'
+
               placeholder=' '
               labelPlacement='outside'
               variant={variant}
+              className='border-1 border-slate-300 rounded-md h-10'
             />
+            {/* <Image src={courseList.image && getFile({ payload: courseList.image })} className='w-[60px] h-[60px]' /> */}
           </div>
           <div>
             <label className='text-sm '>Course Topic</label>

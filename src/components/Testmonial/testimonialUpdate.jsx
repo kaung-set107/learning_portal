@@ -71,7 +71,7 @@ export default function Eventupdate() {
                 </Link>
             </div>
 
-            <div className='flex flex-col mx-8 w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
+            <div className='flex flex-col mx-8 w-auto flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
                 <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
                     <label className='text-sm font-semibold'>Title</label>
                     <Input
@@ -85,13 +85,15 @@ export default function Eventupdate() {
 
                 <div className='flex flex-col w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-2'>
                     <label className='text-sm font-semibold'>Event Photo</label>
-                    <FileBase64 type="file" multiple={false} onDone={({ base64 }) => setListData({ ...listData, selectedFile: base64 })} />
+                    <div className='border-1 border-slate-300 rounded-md h-10'>
+                        <FileBase64 type="file" multiple={false} onDone={({ base64 }) => setListData({ ...listData, selectedFile: base64 })} />
+                    </div>
                     <Image src={`data:image/jpeg;base64,${listData.selectedFile ? listData.selectedFile?.split('base64,')[1] : oldImage}`} className='w-[60px] h-[60px]' />
                 </div>
 
             </div>
 
-            <div className='mx-8 flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
+            <div className='mx-8 flex w-auto flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
                 <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
                     <Textarea
                         variant='bordered'

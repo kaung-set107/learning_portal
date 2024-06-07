@@ -41,29 +41,33 @@ const SubjectDetail = (props) => {
   const [teacherName, setTeacherName] = useState([]);
   const [teacherImage, setTeacherImage] = useState([]);
   const [showVideoList, setShowVideoList] = useState([])
+  const [subjectDetailData, setSubjectDetailData] = useState([])
+  const [courseData, setCourseData] = useState({})
   const [showMore, setShowMore] = useState(false)
   const handleMore = (id) => {
-    console.log(id, 'id')
+    // console.log(id, 'id')
     setShowMore(true)
 
   }
   useEffect(() => {
+    window.scroll(0, 0)
     const getCourseDetail = async () => {
       await apiInstance.get("courses/" + props.id).then((res) => {
-        // console.log(res.data.data.subjects, "c detail");
+        // console.log(res.data.data.subjects.filter(el => el._id === SubidfromCourse), "c sub detail");
         setSubjectList(res.data.data.subjects);
       });
     };
     const getSubjects = async () => {
       await apiInstance.get("subjects").then((res) => {
-        console.log(
-          res.data.data.filter((el) => el._id === SubidfromCourse)[0],
-          "c subject"
-        );
+        // console.log(
+        //   res.data.data.filter((el) => el._id === SubidfromCourse)[0].course,
+        //   "c subject"
+        // );
+        setCourseData(res.data.data.filter((el) => el._id === SubidfromCourse)[0].course)
         const Filter = res.data.data.filter((el) => el._id === SubidfromCourse)[0];
-        // console.log(Filter.previewVideo, 'vide')
+        // console.log(Filter, 'sub detail')
         setShowVideoList(JSON.parse(Filter.previewVideo));
-
+        setSubjectDetailData(Filter.subjectSections)
         setTeacherName(Filter);
         const Img = getFile({
           payload: Filter.instructor.image,
@@ -443,156 +447,81 @@ const SubjectDetail = (props) => {
                 Course Curriculum
               </span>
               <div className='flex flex-col gap-10'>
-                <div
-                  style={{
-                    //   width: "auto",
-                    //   height: "220px",
-                    backgroundColor: "#215887",
-                    borderLeft: "5px solid #F00",
-                    //   padding: "40px",
-                    alignItems: "center",
-                  }}
-                  className='w-[335px] h-[110px] p-[16px] md:w-[auto] md:h-[auto] md:p-[40px]'
-                >
-                  <div className='flex gap-5 md:gap-32 justify-center'>
-                    {/* Left */}
-                    <div
-                      className='flex flex-col gap-0 md:gap-6 w-[57px] h-[56px] md:w-[86px] md:h-[96px]'
-                      style={{
-                        //   width: "86px",
-                        //   height: "96px",
-                        alignItems: "center",
-                      }}
-                    >
-                      <span
+                {subjectDetailData.map((item, index) => (
+                  <div
+                    style={{
+                      //   width: "auto",
+                      //   height: "220px",
+                      backgroundColor: "#215887",
+                      borderLeft: "5px solid #F00",
+                      //   padding: "40px",
+                      alignItems: "center",
+                    }}
+                    className='w-[335px] h-[110px] p-[16px] md:w-[auto] md:h-[auto] md:p-[40px] lg:h-[300px]'
+                  >
+                    <div className='flex gap-5 md:gap-32 justify-center'>
+                      {/* Left */}
+                      <div
+                        className='flex flex-col gap-0 md:gap-6 w-[57px] h-[56px] md:w-[86px] md:h-[96px]'
                         style={{
-                          paddingTop: "10px",
+                          //   width: "86px",
+                          //   height: "96px",
+                          alignItems: "center",
                         }}
-                        className='text-[16px] text-white md:text-[24px] font-semibold'
                       >
-                        Module
-                      </span>
-                      <span className='text-[24px] text-white md:text-[64px] font-semibold'>
-                        1
-                      </span>
-                    </div>
-                    {/* Center */}
-                    <div className='flex flex-col gap-0 md:gap-6'>
-                      <span className='hidden md:flex  text-white text-[32px] font-medium w-[158px]'>
-                        Introduction to IELTS
-                      </span>
-                      <div className='flex flex-row gap-1 md:hidden'>
-                        <span className='text-[16px] text-white md:text-[32px] font-medium w-[158px]'>
-                          Introduction to IELTS
-                        </span>
                         <span
-                          // style={{ color: "#FFF" }}
-                          className='flex flex-row justify-between text-white md:gap-2 mt-1'
+                          style={{
+                            paddingTop: "10px",
+                          }}
+                          className='text-[16px] text-white md:text-[24px] font-semibold'
                         >
-                          <Image src={WhiteTime} className='w-[27px]  h-[10px]' />
-                          <span className=' text-[8px] md:text-[16px] w-[40px]'>
-                            15 mins
-                          </span>
+                          Module
+                        </span>
+                        <span className='text-[24px] text-white md:text-[64px] font-semibold'>
+                          {index + 1}
                         </span>
                       </div>
-
-                      <p
-                        //   style={{
-                        //     width: "674px",
-                        //   }}
-                        className='w-[229px] md:w-[674px] text-[8px] text-white md:text-[16px] font-medium'
-                      >
-                        Get ready to enhance your listening skills! I'm [Your
-                        Name], your guide through the IELTS Listening module.
-                        Let's dive into interactive activities to sharpen your
-                        ability to understand spoken English
-                      </p>
-                    </div>
-                    {/* Mins */}
-                    <div
-                      // style={{ color: "#FFF" }}
-                      className='hidden md:flex gap-0 text-white md:gap-1 mt-1'
-                    >
-                      <Image src={WhiteTime} className='w-[54px]  h-[20px]' />
-                      <span className='w-[50px]'>15 mins</span>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  style={{
-                    //   width: "auto",
-                    //   height: "220px",
-                    backgroundColor: "#7ECDC6",
-                    borderLeft: "5px solid #0047FF",
-                    //   padding: "40px",
-                    alignItems: "center",
-                  }}
-                  className='w-[335px] h-[110px] p-[16px] md:w-[auto] md:h-[auto] md:p-[40px]'
-                >
-                  <div className='flex gap-5 md:gap-32 justify-center'>
-                    {/* Left */}
-                    <div
-                      className='flex flex-col gap-0 md:gap-6 w-[57px] h-[56px] md:w-[86px] md:h-[96px]'
-                      style={{
-                        //   width: "86px",
-                        //   height: "96px",
-                        alignItems: "center",
-                      }}
-                    >
-                      <span
-                        style={{
-                          paddingTop: "10px",
-                        }}
-                        className='text-[16px] text-white md:text-[24px] font-semibold'
-                      >
-                        Module
-                      </span>
-                      <span className='text-[24px] text-white md:text-[64px] font-semibold'>
-                        2
-                      </span>
-                    </div>
-                    {/* Center */}
-                    <div className='flex flex-col gap-0 md:gap-6'>
-                      <span className='hidden md:flex  text-white text-[32px] font-medium w-[258px]'>
-                        Introduction to IELTS
-                      </span>
-                      <div className='flex flex-row md:hidden'>
-                        <span className='text-[16px] text-white md:text-[32px] font-medium w-[158px]'>
-                          Introduction to IELTS
+                      {/* Center */}
+                      <div className='flex flex-col gap-0 md:gap-6'>
+                        <span className='hidden md:flex  text-white text-[32px] font-medium w-[158px]'>
+                          {teacherName?.title}
                         </span>
-                        <span
-                          // style={{ color: "#FFF" }}
-                          className='flex flex-row gap-0 justify-between text-white md:gap-2 mt-1'
-                        >
-                          <Image src={WhiteTime} className='w-[27px]  h-[10px]' />
-                          <span className=' text-[8px] md:text-[16px] w-[40px]'>
-                            15 mins
+                        <div className='flex flex-row gap-1 md:hidden'>
+                          <span className='text-[16px] text-white md:text-[32px] font-medium w-[158px]'>
+                            {teacherName?.title}
                           </span>
-                        </span>
-                      </div>
+                          <span
+                            // style={{ color: "#FFF" }}
+                            className='flex flex-row justify-between text-white md:gap-2 mt-1'
+                          >
+                            <Image src={WhiteTime} className='w-[27px]  h-[10px]' />
+                            <span className=' text-[8px] md:text-[16px] w-[40px]'>
+                              15 mins
+                            </span>
+                          </span>
+                        </div>
 
-                      <p
-                        //   style={{
-                        //     width: "674px",
-                        //   }}
-                        className='w-[229px] md:w-[674px] md:h-[auto] text-[8px] text-white md:text-[16px] font-medium'
-                      >
-                        Get ready to enhance your listening skills! I'm [Your
-                        Name], your guide through the IELTS Listening module.
-                        Let's dive into interactive activities to sharpen your
-                        ability to understand spoken English
-                      </p>
-                    </div>
-                    {/* Mins */}
-                    <div
-                      // style={{ color: "#FFF" }}
-                      className='hidden md:flex gap-0 text-white md:gap-1 mt-1'
-                    >
-                      <Image src={WhiteTime} className='w-[54px]  h-[20px]' />
-                      <span className=''>15 mins</span>
+                        <p
+                          //   style={{
+                          //     width: "674px",
+                          //   }}
+                          className='w-[229px] md:w-[674px] text-[8px] text-white md:text-[16px] font-medium'
+                        >
+                          {item?.description}
+                        </p>
+                        <div className='grid grid-cols-4 2xl:grid-cols-6 gap-4'>
+                          {item.learningMaterials.slice(0, 12).map((lm, ind) => (
+                            <span className=' w-full underline text-[#fff]'>{lm?.title.substring(0, 20)}...</span>
+                          ))}
+                        </div>
+                      </div>
+                      {/* Mins */}
+
                     </div>
                   </div>
-                </div>
+                ))}
+
+
               </div>
             </div>
           </div>

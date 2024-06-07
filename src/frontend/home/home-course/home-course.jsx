@@ -24,37 +24,18 @@ const Body = () => {
     navigate("/home-course-detail", { state: { data: data } });
   };
   const [courseList, setCourseList] = useState([]);
-  const [catList, setCatList] = useState([]);
 
-  const [events, setEvents] = useState([
-    {
-      _id: "1",
-      title: "MSI Academy Education Center - Graduration Ceremony",
-      createdAt: "November 12, 2022",
-      shortDescription: "GRADUATION CEREMONY",
-    },
-  ]);
 
   useEffect(() => {
     const getAssign = async () => {
       await apiInstance.get(`courses`).then((res) => {
-        console.log(res.data.data, "course res");
-        console.log(catList, "cat");
+        // console.log(res.data.data, "course res");
+        // console.log(catList, "cat");
         setCourseList(res.data.data);
         // const count = res.data.data.filter((el) => el.subjects.length);
         // console.log(count, "count");
       });
     };
-    const getCat = async () => {
-      await apiInstance.get(`categories`).then((res) => {
-        console.log(res.data.data, "cat res");
-        setCatList(res.data.data);
-        // const count = res.data.data.filter((el) => el.subjects.length);
-        // console.log(count, "count");
-      });
-    };
-
-    getCat();
 
     getAssign();
   }, []);

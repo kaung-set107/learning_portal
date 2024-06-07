@@ -19,7 +19,7 @@ export default function Registration() {
         <div className=''>
           <Card className='rounded-md shadow-md py-3 min-h-[700px]'>
             <div className='flex justify-between'>
-              <div className='font-semibold font-nunito text-2xl mt-10 px-2'>
+              <div className='flex w-[300px] font-semibold font-nunito text-[16px] xl:text-[18px] 2xl:text-[25px] mt-10 px-2'>
                 Registration List
               </div>
               <div>

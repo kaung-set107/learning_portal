@@ -33,6 +33,7 @@ const ExamResult = ({ ResData, showResult, subjectData, examFile }) => {
     const [activeTab, setActiveTab] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
 
+
     const download = () => {
         const file = getFile({ payload: i });
 
@@ -67,9 +68,9 @@ const ExamResult = ({ ResData, showResult, subjectData, examFile }) => {
     };
     const location = useLocation();
     console.log(ResData, "body");
-    const marks = ResData.quizResult.updatedQuestionData.map((e) => (e.questions.map((h) => h.mark).reduce((acc, val) => acc + val, 0)))
+    const marks = ResData.quizResult && ResData.quizResult.updatedQuestionData.map((e) => (e.questions.map((h) => h.mark).reduce((acc, val) => acc + val, 0)))
     // console.log(marks, 'arr')
-    const originMark = marks.reduce((acc, val) => acc + val, 0)
+    const originMark = ResData.quizResult && marks.reduce((acc, val) => acc + val, 0)
     // console.log(originMark, 'asf')
     useEffect(() => {
         const getExamRes = async () => {
@@ -151,7 +152,7 @@ const ExamResult = ({ ResData, showResult, subjectData, examFile }) => {
                                     <span className='text-[16px] lg:text-[15px] font-medium text-[#fff]'><FontAwesomeIcon icon={faCalendarDays} /> &nbsp;End Date : {ResData.submissionDate.split('T')[0]}</span>
                                 </div>
                                 <div className='bg-[#C1FFD6] rounded-lg p-4 w-[226px]'>
-                                    <span className='text-[16px] font-medium text-[#00825B]'>Status : {ResData.quizResult.status}</span>
+                                    <span className='text-[16px] font-medium text-[#00825B]'>Status : {ResData.quizResult && ResData.quizResult.status}</span>
                                 </div>
                             </div>
 
@@ -165,18 +166,21 @@ const ExamResult = ({ ResData, showResult, subjectData, examFile }) => {
                             }</span>
                             <span className='text-[20px] font-normal'>Distinction Marks : {ResData?.exam?.quiz?.creditMark}</span>
                             <span className='text-[20px] font-normal'>Total Marks :{ResData.quizResult?.totalMark}</span>
-                            <span className='text-[20px] font-normal'>Passing Persentage :    {(
-                                (((ResData.quizResult.totalMark /
-                                    originMark) *
-                                    100) /
-                                    100) *
-                                10
-                            )?.toFixed(2)}{" "}
-                                out of 10.00 (
-                                {Math.round((ResData.quizResult.totalMark /
-                                    originMark) *
-                                    100)}
-                                %)</span>
+                            {ResData.quizResult && (
+                                <span className='text-[20px] font-normal'>Passing Persentage :    {(
+                                    (((ResData.quizResult.totalMark /
+                                        originMark) *
+                                        100) /
+                                        100) *
+                                    10
+                                )?.toFixed(2)}{" "}
+                                    out of 10.00 (
+                                    {Math.round((ResData.quizResult.totalMark /
+                                        originMark) *
+                                        100)}
+                                    %)</span>
+                            )}
+                            <span className='text-[20px] font-normal'>Your Grade :{ResData.grade && ResData.grade}</span>
                         </div>
 
                         {/* Fifth Section */}
@@ -216,26 +220,52 @@ const ExamResult = ({ ResData, showResult, subjectData, examFile }) => {
                             </div>
                             <div className='flex flex-col gap-5'>
                                 <span className='text-[16px] font-semibold'>Answer Paper</span>
-                                {ResData.files.map((item) =>
-                                    <div className='flex gap-4 items-center'>
-                                        <span><Image src={getFile({ payload: item })} /></span>
-                                        <span className='text-[16px] font-normal'>{item.originalname}</span>
+                                {(ResData.checkedFiles && ResData.checkedFiles || ResData.files && ResData.files).map((i) =>
+                                    <div className="sm:flex justify-start gap-5" key={i._id}>
+                                        <a
+                                            href={getFile({ payload: i })}
+                                            onClick={
+                                                i.originalname?.split(".")[1] === "pdf"
+                                                    ? () => downloadPDF(i)
+                                                    : download
+                                            }>
+                                            <Image
+                                                radius="sm"
+                                                alt={i.title}
+                                                className="object-cover w-[40px] h-[40px]"
+                                                src={
+                                                    i.originalname?.split(".")[1] === "pdf"
+                                                    && PdfPhoto ||
+                                                    (i.originalname?.split(".")[1] === "xlsx")
+                                                    && ExcelPhoto || (i.originalname?.split(".")[1] === "csv")
+                                                    && CSV || (i.originalname?.split(".")[1] === "pptx")
+                                                    && PPTX || (i.originalname?.split(".")[1] === "docx")
+                                                    && DOCX ||
+                                                    (i.originalname?.split(".")[1] === "png" || "jpg" || "jpeg") && getFile({ payload: i })
+                                                }
+                                            />
+                                        </a>
+                                        {/* <b className="mt-3">{i.originalname?.split(".")[1] === "pdf" && "Download.pdf" || i.originalname?.split(".")[1] === "xlsx" && "Download.xlsx" || i.originalname?.split(".")[1] === "jpg" && "Download.jpg"}</b> */}
+                                        <b className="mt-3">{i?.originalname?.split('.')[0]}</b>
                                     </div>
                                 )}
 
                             </div>
-                            <div className='flex flex-col gap-5'>
-                                <span className='text-[16px] font-semibold'>Your Score</span>
-                                <div className='flex flex-col gap-4 '>
-                                    <span className='border-1 rounded-lg border-green-500 w-[80px] text-center p-2 text-[green]'>{ResData.quizResult.totalMark}/{originMark}</span>
-                                    <span className='text-[16px] font-normal'>Your Percentage: <b className='text-[green]'>{Math.round(ResData.quizResult.totalMark / originMark * 100)}%</b></span>
+                            {ResData.quizResult && (
+                                <div className='flex flex-col gap-5'>
+                                    <span className='text-[16px] font-semibold'>Your Score</span>
+                                    <div className='flex flex-col gap-4 '>
+                                        <span className='border-1 rounded-lg border-green-500 w-[80px] text-center p-2 text-[green]'>{ResData.quizResult.totalMark}/{originMark}</span>
+                                        <span className='text-[16px] font-normal'>Your Percentage: <b className='text-[green]'>{Math.round(ResData.quizResult.totalMark / originMark * 100)}%</b></span>
+                                    </div>
                                 </div>
-                            </div>
+                            )}
+
                         </div>
 
                         {/* Description */}
                         <div className='flex flex-col gap-3'>
-                            <span className='text-[16px] font-semibold'>Description</span>
+                            <span className='text-[16px] font-semibold'>Instructor's Remark</span>
                             <div className='text-[#0025A9] w-[1200px] h-[125px] rounded-lg p-10 bg-[#EBF0FF] text-[20px] font-semibold'>{ResData?.remark}</div>
                         </div>
                     </div>

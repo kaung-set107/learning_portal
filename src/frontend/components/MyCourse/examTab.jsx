@@ -473,7 +473,7 @@ export default function CourseDetail(props) {
                     </Tab>
                   </Tabs>
                 ) : (
-                  <Tabs aria-label="Options" color="primary" variant="bordered">
+                  <Tabs aria-label="Options" color="primary" variant="bordered" size='sm'>
                     <Tab
                       key="new"
                       title={
@@ -483,8 +483,8 @@ export default function CourseDetail(props) {
                         </div>
                       }
                     >
-                      <div className='flex flex-col justify-start pt-10 w-[1560px] h-[204px] pl-10 pb-8 pr-10' >
-                        {subjectData.exams.filter(el => el.examType !== 'inapp').map((item, index) => (
+                      <div className='flex flex-col justify-start pt-10 w-[768px] lg:w-[1200px] xl:w-[1280px] 2xl:w-[1440px] h-[204px] pl-10 pb-8 pr-10' >
+                        {subjectData.exams.filter(el => el.examType === 'outside').map((item, index) => (
                           <div className='grid grid-cols-2 bg-[#215887] p-12  border-4 border-l-red-500 '>
                             <div className='w-[742px] flex gap-52'>
                               <div className='flex justify-start text-[24px] text-[#fff] font-semibold items-center'>Exam</div>
@@ -517,10 +517,13 @@ export default function CourseDetail(props) {
                             </div>
 
                             <div className='flex flex-col items-end gap-2 justify-end'>
-                              <Link href={`/exam-page/${item._id}`}>
-                                <Button color='primary' className='w-[163px] h-[44px]'>Take Exam</Button>
 
-                              </Link>
+
+                              <Button color='primary' className='w-[163px] h-[44px]'  >About Questions</Button>
+
+
+
+
                               <div className="text-[16px] text-[#fff]  font-semibold px-3 ">
                                 <span>Refference Link : </span>
                                 <a href='https:// www.google.com' className='underline' >
@@ -534,70 +537,7 @@ export default function CourseDetail(props) {
 
                       </div>
                     </Tab>
-                    <Tab
-                      key="complete"
-                      title={
-                        <div className="flex items-center space-x-2">
-                          <FontAwesomeIcon icon={faStar} size='xl' />
-                          <span>Complete</span>
-                        </div>
-                      }
-                    >
-                      <div className='flex flex-col justify-start pt-10 w-[1560px] h-[204px] pl-10 pb-8 pr-10' >
 
-
-                        <div className='grid grid-cols-2 bg-[#215887] p-12  border-4 border-l-red-500 '>
-                          <div className='w-[742px] flex gap-52'>
-                            <div className='flex justify-start text-[24px] text-[#fff] font-semibold items-center'>Exam</div>
-                            <div className='flex flex-col gap-5 justify-start'>
-                              <span className='text-[32px] text-[#fff] font-semibold flex flex-col'>Introduction to IELTS</span>
-
-                              <div className='flex gap-20'>
-                                <div className='font-medium flex gap-2 w-[300px] text-[#fff]'>
-                                  <span className='text-[16px] font-semibold'>Start Date </span>
-                                  <span>:</span>
-                                  <span className='text-[16px] font-medium'>April 11, 2024</span>
-                                </div>
-                                <div className=' font-medium flex gap-2 text-[#fff]  w-[300px]'>
-                                  <span className='text-[16px]  font-semibold'>Completed Time </span>
-                                  <span>:</span>
-                                  <span className='text-[16px] font-medium'>12:00 AM</span>
-                                </div>
-                              </div>
-
-                              <div className='flex gap-20'>
-                                <div className='font-medium flex gap-2 w-[300px] text-[#fff]'>
-                                  <span className='text-[16px] font-semibold'>Start Time </span>
-                                  <span>:</span>
-                                  <span className='text-[16px] font-medium'>12:00 AM</span>
-                                </div>
-                                <div className=' font-medium flex gap-2 text-[#fff]  w-[300px]'>
-                                  <span className='text-[16px]  font-semibold'>Completed Date </span>
-                                  <span>:</span>
-                                  <span className='text-[16px] font-medium'>April 11, 2024</span>
-                                </div>
-                              </div>
-                              {/* <div className='flex flex-col'>
-                              <span className='text-[16px] text-[#fff] font-semibold'>Document File link </span>
-
-                            </div> */}
-
-                            </div>
-                          </div>
-
-                          <div className='flex flex-col items-end gap-2 justify-end'>
-                            <Button color='primary' className='w-[163px] h-[44px]'>View Answer</Button>
-                            <div className="text-[16px] text-[#fff]  font-semibold px-3 ">
-                              <span>Refference Link : </span>
-                              <a href='https:// www.google.com' className='underline' >
-                                www.google.com
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-
-                      </div>
-                    </Tab>
                     <Tab
                       key="result"
                       title={
@@ -607,38 +547,46 @@ export default function CourseDetail(props) {
                         </div>
                       }
                     >
-                      <div className='flex flex-col justify-start pt-10 w-[1560px] h-[204px] pl-10 pb-8 pr-10' >
+                      <div className='flex flex-col justify-start pt-10 w-[768px] lg:w-[1200px] xl:w-[1280px] 2xl:w-[1440px] h-[204px] pl-10 pb-8 pr-10' >
 
 
-                        <div className='grid grid-cols-2 bg-[#215887] p-12  border-4 border-l-red-500 '>
-                          <div className='w-[742px] h-[135px] flex gap-52'>
-                            <div className='flex justify-start text-[24px] text-[#fff] font-semibold items-center'>Exam</div>
-                            <div className='flex flex-col gap-5 justify-start'>
-                              <span className='text-[32px] text-[#fff] font-semibold flex flex-col'>Introduction to IELTS</span>
+                        {/* {console.log(examList.filter(el => el.quizResult), 'result')} */}
+                        {examList.filter(el => el.type === 'outside' && el.status === 'published').map((res) => (
+                          <div className='grid grid-cols-2 bg-[#215887] p-12  border-4 border-l-red-500 '>
+                            <div className='w-[742px] h-[135px] flex gap-52'>
+                              <div className='flex justify-start text-[24px] text-[#fff] font-semibold items-center'>Exam</div>
+                              <div className='flex flex-col gap-5 justify-start'>
+                                <span className='text-[32px] text-[#fff] font-semibold flex flex-col'>Introduction to IELTS</span>
 
-                              <div className="text-[16px] text-[#fff]  font-semibold px-3 ">
-                                <span>Refference Link : </span>
-                                <a href='https:// www.google.com' className='underline' >
-                                  www.google.com
-                                </a>
-                              </div>
-
-
-
-
-                            </div>
-                          </div>
-
-                          <div className='flex flex-col items-end gap-2 justify-end'>
-                            <Button className='bg-[#ED1D25] text-[#fff] text-[16px] font-semibold' onClick={() => setShowResult(true)}>See Result</Button>
-                            {/* <div className="text-[16px] text-[#fff]  font-semibold px-3 ">
+                                <div className="text-[16px] text-[#fff]  font-semibold px-3 ">
                                   <span>Refference Link : </span>
                                   <a href='https:// www.google.com' className='underline' >
                                     www.google.com
                                   </a>
-                                </div> */}
+                                </div>
+
+
+
+
+                              </div>
+                            </div>
+
+                            <div className='flex flex-col items-end gap-2 justify-center'>
+                              <Button className='bg-[#ED1D25] text-[#fff] text-[16px] font-semibold' onClick={() => { setShowResult(true), handleResPage(res), setExamValue(item) }}>See Result</Button>
+                              {/* <div className="text-[16px] text-[#fff]  font-semibold px-3 ">
+                                    <span>Refference Link : </span>
+                                    <a href='https:// www.google.com' className='underline' >
+                                      www.google.com
+                                    </a>
+                                  </div> */}
+                            </div>
                           </div>
-                        </div>
+                        ))}
+
+
+
+
+
 
                       </div>
                     </Tab>

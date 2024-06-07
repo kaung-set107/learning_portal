@@ -52,17 +52,17 @@ export default function App() {
   useEffect(() => {
     const getAssign = async () => {
       await apiInstance.get(`subjects`).then((res) => {
-        console.log(res.data.data, "sub");
+        // console.log(res.data.data, "sub");
         setList(res.data.data);
       });
     };
     const userID = localStorage.getItem("id");
     const getUser = async () => {
-      console.log(userID);
+      // console.log(userID);
       await apiInstance.get("user/" + userID).then((res) => {
         setUser(res.data.data);
         setEmail(res.data.data.email);
-        console.log(res.data.data, 'hi');
+        // console.log(res.data.data, 'hi');
         if (res.data.data.image) {
           setImgUrl(res.data.data);
         }

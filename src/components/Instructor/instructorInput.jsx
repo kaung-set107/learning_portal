@@ -160,11 +160,12 @@ export default function EmployeeInput() {
               variant={variant}
             />
           </div>
-          <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-            <Input
+          <div className="flex flex-col w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-1">
+            <label className='text-sm font-semibold'>Profile</label>
+            <input
               type="file"
               onChange={handleProfile}
-              label="Profile"
+              className='border-1 border-slate-300 rounded-md h-10'
               placeholder=" "
               labelPlacement="outside"
               variant={variant}

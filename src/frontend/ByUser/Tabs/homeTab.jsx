@@ -232,110 +232,64 @@ export default function Home() {
                   >
                     {item?.title} Courses
                   </div>
-                  <div
-                    className='grid grid-cols-2 gap-10 pt-10 md:grid-cols-3 w-full'
+                  <div className='flex flex-col sm:grid sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-3 xl:grid-cols-4 xl:gap-5 gap-2 sm:gap-4 md:gap-12 lg:gap-5 2xl:gap-10  items-center justify-center md:justify-start md:items-start sm:py-10 2xl:py-20'>
+                    {coursesList.filter(el => el.category?._id === item._id)?.map((e) => (
+                      <div
+                        onClick={() => handleRoute(e)}
 
-                  >
-                    {coursesList
-                      .filter((el) => el?.category?._id === item?._id)
-                      .map((e) => (
-                        <div
-                          onClick={() => handleRoute(e)}
+                        className='w-[310px] sm:w-[280px]  md:w-[260px] lg:w-[320px] xl:w-[300px] xl:h-[470px] 2xl:w-[400px] md:h-[480px] h-[470px]'
+                      >
+                        <div >
+                          <Image
+                            // style={{ width: "500px", height: "280px" }}
+                            alt={e.image?.originalname}
+                            src={getFile({ payload: e.image })}
+                            className='w-[310px] h-full md:w-[250px] md:h-[180px] lg:w-[320px] lg:h-[270px] xl:w-[320px] xl:h-[270px]  2xl:w-[370px] sm:hover:-translate-y-2 sm:hover:scale-105 duration-500'
+                          />
+                          <div className='flex p-5 flex-col justify-start flex-grow '>
+                            <span className='md:w-[230px] lg:w-[280px] text-[14px] font-semibold text-[#B72041] flex'>MSI Academy
+                            </span>
+                            <span
+                              style={{
+                                fontFamily: "Inter",
+                                fontWeight: "600px",
+                                fontSize: "20px",
+                                letterSpacing: "-0.96px",
+                              }}
+                              className='sm:w-full md:w-[240px] md:h-[50px] lg:w-[290px] lg:h-[60px]'
+                            >
+                              {e.title}
+                            </span>
+                            <div
+                              style={{
+                                fontSize: "15px",
+                                fontWeight: "400px",
+                                // width: "400px",
+                                // height: "auto",
+                              }}
+                              className='md:w-[230px] md:h-[35px] lg:w-[280px] lg:h-[40px]'
+                            >
+                              {e?.description.substring(0, 50)}...
+                            </div>
+                            {/* card footer */}
+                            <div
+                              className='py-5 flex sm:flex-col lg:flex-row justify-center gap-2 md:w-[240px] lg:w-[260px] w-[290px]'
 
-                          className='min-w:[490px] min-h:[463px] flex flex-col gap-3 '
-                        >
-                          <div>
-                            <Image
-                              style={{ width: "500px", height: "280px" }}
-                              alt={e.image?.originalname}
-                              src={getFile({ payload: e.image })}
-                              className='hover:-translate-y-2  hover:scale-105 duration-500'
-                            />
-                            <div className='flex p-5 flex-col justify-start flex-grow'>
-                              <span
-                                style={{
-                                  fontFamily: "Inter",
-                                  fontWeight: "600px",
-                                  fontSize: "24px",
-                                  letterSpacing: "-0.96px",
-                                }}
-                              >
-                                {e.title}
-                              </span>
-                              <div
-                                style={{
-                                  fontSize: "16px",
-                                  fontWeight: "400px",
-                                  width: "400px",
-                                  height: "auto",
-                                }}
-                              >
-                                {e?.description}
-                              </div>
-                              {/* card footer */}
-                              <div
-                                className='py-10'
-                                style={{
-                                  width: "388px",
-                                  height: "19px",
-                                  fontSize: "14px",
-                                  fontWeight: "400px",
-                                }}
-                              >
-                                Duration -{" "}
-                                <span style={{ color: "#262FD9" }}>
-                                  3 months
-                                </span>
-                                <br></br>
-                                Price -{" "}
-                                <span style={{ color: "#262FD9" }}>
-                                  50000 MMK
-                                </span>
+                            >
+                              <div className='h-[24px] w-full sm:w-[150px] md:w-[200px] lg:w-[250px]  text-start bg-[#ECEFFF] rounded-2xl md:text-[12px] text-[13px] font-medium'>
+                                <span>Duration -</span>
+                                <span style={{ color: "#262FD9" }}>{e.durationValue ? e.durationValue : 0} {e.durationType ? e.durationType : 'months'}</span>
                               </div>
 
-                              {/* rating state */}
-                              {/* <div
-                                style={{
-                                  width: "388px",
-                                  height: "19px",
-                                  fontSize: "14px",
-                                  fontWeight: "400px",
-                                }}
-                              >
-                                <ReactStars {...firstExample} />
-                              </div> */}
+                              <div className='h-[24px] w-full sm:w-[150px] md:w-[200px] lg:w-[250px]  text-start bg-[#FFF3F6] rounded-2xl md:text-[12px] text-[13px] font-medium'>
+                                Price - <span style={{ color: "#262FD9" }}>{e.fee ? e.fee : 0} MMK</span>
+                              </div>
+
                             </div>
                           </div>
                         </div>
-                      ))}
-
-                    {/* {item.subjects?.length > 3 && (
-                      <div className='py-10'>
-                        <button
-                          style={{
-                            padding: "16px",
-                            width: "125px",
-                            height: "43px",
-                            alignItems: "center",
-                            border: "1px solid #053CFF",
-                            borderRadius: "8px",
-                          }}
-                          className='flex justify-start'
-                        >
-                          <span
-                            style={{
-                              color: "#053CFF",
-                              fontFamily: "Inter",
-                              fontSize: "16px",
-                              fontWeight: "500px",
-                            }}
-                          >
-                            {console.log(item.subjects?.length - 3, "sub")}
-                            Show {item.subjects?.length - 3} More
-                          </span>
-                        </button>
                       </div>
-                    )} */}
+                    ))}
                   </div>
                 </div>
               </div>

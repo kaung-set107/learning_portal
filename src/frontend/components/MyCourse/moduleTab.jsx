@@ -52,6 +52,7 @@ const CourseDetail = (props) => {
   //   setTime(time)
   // }
   // setInterval(UpdateTime)
+  const [selected, setSelected] = useState("sum");
   const StudentId = localStorage.getItem("id")
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const tabRef = useRef();
@@ -63,12 +64,12 @@ const CourseDetail = (props) => {
   // console.log(examData, "sub ii");
   const courseData = location.state.courseData;
   // console.log(location.state.data, "sub ii");
-  const [showVideo, setShowVideo] = useState(false);
+  const [showVideo, setShowVideo] = useState(true);
   const [teacherName, setTeacherName] = useState([]);
   const [surveyData, setSurveyData] = useState([]);
-  const [showVideoList, setShowVideoList] = useState([]);
+  const [showVideoList, setShowVideoList] = useState(examData.subjectSections[0].learningMaterials[0].showToStudent === true && JSON.parse(examData.subjectSections[0].learningMaterials[0].video));
   const [showDocumentList, setShowDocumentList] = useState([])
-  const [LMDataList, setLMDataList] = useState([]);
+  const [LMDataList, setLMDataList] = useState(examData.subjectSections[0].learningMaterials[0].showToStudent === true && examData.subjectSections[0].learningMaterials[0]);
   const [QuizID, setQuizID] = useState("");
   const [arr, setArr] = useState([]);
   const [showModal, setShowModal] = useState(false)
@@ -144,15 +145,8 @@ const CourseDetail = (props) => {
     document.body.removeChild(link);
   };
   useEffect(() => {
-    // const getSurveyResult = async () => {
 
-    //   await apiInstance.get(`survey-results?student=${StudentId}&survey=${surveyData?._id}&batch=${batchID}`).then((res) => {
-    //     // console.log(res.data.data, "survey res detail");
-    //     setSurveyDisabled(res.data.data);
-    //   });
-
-    // };
-
+    window.scroll(0, 0)
     const getSubjects = async () => {
       await apiInstance.get("subjects").then((res) => {
         // console.log(
@@ -178,25 +172,18 @@ const CourseDetail = (props) => {
     };
     getEnrol();
     getSubjects();
-    window.scroll(0, 0)
+
 
     // getSurveyResult()
 
 
   }, [
-    surveyData, activeTab
+    surveyData, activeTab, selected
   ]);
-
-  const handleBack = () => {
-    navigate("/course-detail", { state: { data: courseData } });
-  };
-
-  // Handle Tabs
-
-
 
 
   const handleVideo = (data, index) => {
+    setSelected("sum")
     setActiveTab(1);
     console.log(data, "heee");
     setQuizID(data.quiz);
@@ -208,6 +195,7 @@ const CourseDetail = (props) => {
     setSurveyData(data.survey)
     // console.log(data, 'lm da')
     setShowVideo(true);
+
 
   };
 
@@ -440,6 +428,7 @@ const CourseDetail = (props) => {
                 <div key={video} className='text-blue-700 gap-5 '>
                   {console.log(video.links?.split("/")[3])}
                   <iframe
+
                     src={
                       "https://www.youtube.com/embed/" +
                       video.links?.split("/")[3]
@@ -467,12 +456,13 @@ const CourseDetail = (props) => {
                       variant='light'
                       color='primary'
                       radius='full'
-                      defaultSelectedKey='sum'
+                      aria-label="Options"
+                      defaultSelectedKey={selected}
 
 
                     >
 
-                      <Tab title='Summary' value={0} key='sum'>
+                      <Tab title='Summary' key="sum">
                         <div className='bg-[#EBF0FF] text-[#001769] rounded-lg w-full h-[auto] p-[20px] flex flex-col gap-2'>
 
                           <span className='w-[402px] h-[24px] text-[12px] sm:text-[16px] font-semibold'>
@@ -571,7 +561,7 @@ const CourseDetail = (props) => {
                         </div>
 
                       </Tab>
-                      <Tab title='Survey' value={1} key='suv'>
+                      <Tab title='Survey' key="suv">
 
                         <div className='flex flex-col gap-10'>
                           <div className='flex flex-col gap-2 pt-5'>
@@ -713,7 +703,7 @@ const CourseDetail = (props) => {
 
 
                       </Tab>
-                      <Tab title='Review and Feedback' value={2} key='r&f'>
+                      <Tab title='Review and Feedback' key='r&f'>
                         <div className='pt-[24px]'>
                           <label className='text-[24px] font-bold text-[#0025A9]'>
                             Title
@@ -731,12 +721,12 @@ const CourseDetail = (props) => {
                           </div>
                         </div>
                       </Tab>
-                      <Tab title='Quiz' value={3} key='quiz'>
+                      <Tab title='Quiz' key='quiz'>
                         {/* Quiz Page */}
 
                         <QuizPage QuizID={QuizID} enrollID={enrollID} batchID={batchID} />
                       </Tab>
-                      <Tab title='Class' value={4} key='class'>
+                      <Tab title='Class' key='class'>
 
                         <div className='flex flex-col gap-10'>
 

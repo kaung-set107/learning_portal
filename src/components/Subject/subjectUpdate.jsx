@@ -218,15 +218,16 @@ export default function SubjectInputForm() {
 
 
         <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-1'>
-          <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
+          <div className='flex flex-col w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-1'>
             <label className='text-sm font-semibold'>Subject Photo</label>
-            <Input
+            <input
               type='file'
 
               placeholder='$..'
               variant={variant}
               labelPlacement='outside'
               onChange={handleImage}
+              className='border-1 border-slate-300 rounded-md h-10'
             />
             <div className='flex flex-col gap-0'>
               <img src={subImage} className='w-[120px] h-[120px] rounded-md' />

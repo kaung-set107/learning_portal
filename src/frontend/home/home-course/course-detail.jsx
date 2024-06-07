@@ -36,7 +36,7 @@ export default function CourseDetail(props) {
   //   navigate("/home-sub-detail", {
   //     state: { data: data, courseData: courseData },
   //   });
-  //   console.log(data, "sub");
+  // console.log(location.state.data, "sub");
   // };
   const [subjectList, setSubjectList] = useState([]);
   const [subjectAndTeacherList, setSubjectAndTeacherList] = useState([]);
@@ -44,7 +44,7 @@ export default function CourseDetail(props) {
     window.scroll(0, 0)
     const getCourseDetail = async () => {
       await apiInstance.get("courses/" + courseData._id).then((res) => {
-        console.log(res.data.data, "c detail");
+        // console.log(res.data.data, "c detail");
         setCourse(res.data.data);
         setSubjectList(res.data.data.subjects);
         setShowVideoList(res.data.data.previewVideo ? JSON.parse(res.data.data.previewVideo) : '');
@@ -52,12 +52,12 @@ export default function CourseDetail(props) {
     };
     const getSubjects = async () => {
       await apiInstance.get("subjects").then((res) => {
-        console.log(
-          res.data.data.filter((el) => el.course._id),
-          "c subject"
-        );
+        // console.log(
+        //   res.data.data.filter((el) => el.course._id),
+        //   "c subject"
+        // );
         setSubjectAndTeacherList(
-          res.data.data.filter((el) => el.course._id === courseData._id)
+          res.data.data.filter((el) => el.course?._id === courseData?._id)
         );
       });
     };
@@ -238,10 +238,10 @@ export default function CourseDetail(props) {
                             fontSize: "20px",
                             fontWeight: "500",
                             color: "#FFF",
-                            width: "464px",
-                            height: "56px",
+
                             borderBottom: "1px dotted white",
                           }}
+                          className='w-full h-full lg:w-[350px] xl:w-[370px] 2xl:w-[380px]'
                         >
                           {e.title}
                         </span>
@@ -440,12 +440,11 @@ export default function CourseDetail(props) {
                             fontSize: "20px",
                             fontWeight: "500",
                             color: "#FFF",
-                            width: "464px",
-                            height: "56px",
+
 
                             borderBottom: "1px dotted white",
                           }}
-
+                          className='w-full h-full lg:w-[350px] xl:w-[370px] 2xl:w-[380px]'
                         >
                           {e.title}
                         </span>

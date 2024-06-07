@@ -157,8 +157,8 @@ const About = () => {
         <div className='hidden xl:flex w-[238px] h-[238px] bg-[#0B2743] rounded-[50%] -left-[150px] md:top-[1220px] lg:top-[1200px] xl:top-[1150px] 2xl:top-[1360px] absolute'></div>
       </div>
       {/* Founder */}
-      <div className='w-[946px] h-[420px] flex flex-col gap-10 justify-center pt-[290px] container'>
-        <h1 className='text-[40px] text-[#1C4064] font-[semibold] text-center '>
+      <div className='w-[946px] md:w-full h-[420px] flex flex-col gap-10 justify-center items-center pt-[290px] '>
+        <h1 className='flex justify-center items-center text-[40px] text-[#1C4064] font-[semibold] '>
           Founders of MSI Academy
         </h1>
         <div className='flex gap-2'>

@@ -49,7 +49,7 @@ export default function Testimonial() {
                 </Link>
             </div>
 
-            <div className='flex flex-col mx-8 w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
+            <div className='flex flex-col mx-8 w-auto flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
                 <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4'>
                     <label className='text-sm font-semibold'>Name</label>
                     <Input
@@ -62,14 +62,16 @@ export default function Testimonial() {
 
                 <div className='flex flex-col w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-2'>
                     <label className='text-sm font-semibold'>Photo</label>
+                    <div className='border-1 border-slate-300 rounded-md h-10'>
+                        <FileBase64 type="file" multiple={false} onDone={({ base64 }) => setListData({ ...listData, selectedFile: base64 })} />
+                    </div>
 
-                    <FileBase64 type="file" multiple={false} onDone={({ base64 }) => setListData({ ...listData, selectedFile: base64 })} />
 
                 </div>
 
             </div>
 
-            <div className='mx-8 flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
+            <div className='mx-8 flex w-auto flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-3'>
                 <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 '>
                     <Textarea
                         className='text-sm font-semibold'

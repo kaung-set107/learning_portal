@@ -186,7 +186,7 @@ export default function NavBar() {
             // maxWidth='full'
             isBordered
             isBlurred={false}
-            className='py-4 sticky-top w-full lg:w-[900px] xl:w-[1000px] 2xl:w-[1200px] '
+            className='py-4 sticky-top w-full lg:w-[400px] xl:w-[700px] 2xl:w-[1000px] '
           >
             {/* <h3>Hello</h3> */}
 

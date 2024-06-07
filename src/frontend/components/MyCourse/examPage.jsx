@@ -55,7 +55,7 @@ const ExamPage = () => {
     const [timeLeft, setTimeLeft] = useState("");
     const [showTimer, setShowTimer] = useState(false);
     // const [quizList, setQuizList] = useState(ResData.quiz);
-    const [quizList, setQuizList] = useState(ExamData.updatedQuestionData);
+    const [quizList, setQuizList] = useState(ExamData.questionData);
     const [studentID, setStudentID] = useState("");
     const [clicked, setClicked] = useState(false);
     const [multiAns, setMultiAns] = useState([])
@@ -737,7 +737,7 @@ const ExamPage = () => {
                                                                                                                 {Array.from({ length: secItem?.inputCount }, (_, index) => index).map((item, ind) => (
                                                                                                                     <div className='flex gap-1 '>
                                                                                                                         <span>({ind + 1})</span>
-                                                                                                                        <Input key={item} type="text" value={secItem?.type === "fillInTheBlank" && secItem?.studentAnswer.map((i) => (i))} placeholder='Answer' variant="underlined" className="rounded-md p-2 mb-2" onChange={(event) =>
+                                                                                                                        <Input key={item} type="text" placeholder='Answer' variant="underlined" className="rounded-md p-2 mb-2" onChange={(event) =>
                                                                                                                             handleFillBlank(event,
                                                                                                                                 ind,
 
