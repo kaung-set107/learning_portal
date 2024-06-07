@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import QuizQuestionHandler from '../../general/quiz-question/components/QuizQuestionHandler';
 
 const QuizUpdateForm = (props) => {
-  const { type, successCallback, quizData } = props;
+  const { type, successCallback, quizData, fixedQuestionTypes } = props;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [questionData, setQuestionData] = useState([]);
@@ -28,11 +28,6 @@ const QuizUpdateForm = (props) => {
       value: 'unfinished',
       label: 'unfinished',
     },
-  ];
-
-  const fixedQuestionTypes = [
-    { value: 'trueFalse', label: 'trueFalse' },
-    { value: 'multipleChoice', label: 'multipleChoice' },
   ];
 
   const goToResult = (quizId) => {

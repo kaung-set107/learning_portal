@@ -1,54 +1,54 @@
 /* eslint-disable react/prop-types */
-import { Button, Input, Textarea } from '@nextui-org/react';
-import { useState } from 'react';
-import CustomButton from '../../../components/general/CustomButton';
-import { v4 as uuidv4 } from 'uuid';
-import { Select, SelectItem } from '@nextui-org/select';
+import { Button, Input, Textarea } from "@nextui-org/react";
+import { useState } from "react";
+import CustomButton from "../../../components/general/CustomButton";
+import { v4 as uuidv4 } from "uuid";
+import { Select, SelectItem } from "@nextui-org/select";
 import {
   Modal,
   ModalContent,
   ModalHeader,
   ModalBody,
   ModalFooter,
-} from '@nextui-org/react';
-import CustomMultiSelect from '../../../components/general/CustomMultiSelect';
+} from "@nextui-org/react";
+import CustomMultiSelect from "../../../components/general/CustomMultiSelect";
 
 export default function QuestionCreateModal(props) {
   const { addQuestion, isOpen, onOpenChange } = props;
 
-  const [option, setOption] = useState('');
-  const variant = 'bordered';
+  const [option, setOption] = useState("");
+  const variant = "bordered";
 
   let questionTypes = [];
 
   if (!props.fixedQuestionTypes) {
     questionTypes = [
-      { value: 'trueFalse', label: 'trueFalse' },
-      { value: 'fillInTheBlank', label: 'fillInTheBlank' },
-      { value: 'openQuestion', label: 'openQuestion' },
-      { value: 'multipleChoice', label: 'multipleChoice' },
+      { value: "trueFalse", label: "trueFalse" },
+      { value: "fillInTheBlank", label: "fillInTheBlank" },
+      { value: "openQuestion", label: "openQuestion" },
+      { value: "multipleChoice", label: "multipleChoice" },
     ];
   } else {
     questionTypes = [...props.fixedQuestionTypes];
   }
 
   const answerTypes = [
-    { value: 'text', label: 'text' },
-    { value: 'radio', label: 'radio' },
-    { value: 'checkbox', label: 'checkbox' },
+    { value: "text", label: "text" },
+    { value: "radio", label: "radio" },
+    { value: "checkbox", label: "checkbox" },
   ];
 
   const [formData, setFormData] = useState({
-    question: '',
-    type: '',
+    question: "",
+    type: "",
     options: [],
-    answerType: 'text',
+    answerType: "text",
     correctAnswer: [],
-    inputCorrectAnswer: '',
+    inputCorrectAnswer: "",
     inputCount: 1,
     mark: 1,
-    status: 'new',
-    correctAnswerDescription: '',
+    status: "new",
+    correctAnswerDescription: "",
   });
 
   const optionRemoveHandler = (index) => {
@@ -91,7 +91,7 @@ export default function QuestionCreateModal(props) {
 
       payload.correctAnswerDescription = formData.correctAnswerDescription;
       payload.options = modifiedOptions;
-      payload.correctAnswer = modifiedCorrectAnswers;
+      payload.correctAnswer = modifiedCorrectAnswers ?? [];
     } else {
       payload.inputCorrectAnswer = [formData.inputCorrectAnswer];
       payload.inputCount = formData.inputCount;
@@ -111,31 +111,31 @@ export default function QuestionCreateModal(props) {
   };
 
   const onQuestionTypeChange = (e) => {
-    if (e.currentKey == 'trueFalse') {
+    if (e.currentKey == "trueFalse") {
       setFormData((prev) => ({
         ...prev,
         type: e.currentKey,
-        answerType: 'radio',
+        answerType: "radio",
       }));
-    } else if (e.currentKey == 'multipleChoice') {
+    } else if (e.currentKey == "multipleChoice") {
       setFormData((prev) => ({
         ...prev,
         type: e.currentKey,
-        answerType: 'checkbox',
+        answerType: "checkbox",
       }));
     } else {
       setFormData((prev) => ({
         ...prev,
         type: e.currentKey,
-        answerType: 'text',
+        answerType: "text",
       }));
     }
   };
 
   const isQuestionTypeInput = () => {
     if (
-      formData.type === 'fillInTheBlank' ||
-      formData.type === 'openQuestion'
+      formData.type === "fillInTheBlank" ||
+      formData.type === "openQuestion"
     ) {
       return true;
     } else {
@@ -163,24 +163,26 @@ export default function QuestionCreateModal(props) {
               <ModalBody>
                 <form>
                   {/* {`${isQuestionTypeInput()()}`} */}
-                  <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
-                    <Input
-                      type="text"
-                      label="Question"
-                      placeholder="question"
-                      variant={variant}
-                      value={formData.question}
-                      onChange={(e) =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          question: e.target.value,
-                        }))
-                      }
-                      labelPlacement="outside"
-                    />
-                  </div>
 
-                  <div className="flex w-full flex-wrap md:flex-nowrap gap-4 mt-3">
+                  <div className="space-y-3">
+                    <div className="flex">
+                      <Input
+                        type="text"
+                        label="Question"
+                        placeholder="question"
+                        variant={variant}
+                        value={formData.question}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            question: e.target.value,
+                          }))
+                        }
+                        labelPlacement="outside"
+                      />
+                    </div>
+
+                    <div className="flex">
                     <Input
                       type="text"
                       label="Mark"
@@ -195,9 +197,9 @@ export default function QuestionCreateModal(props) {
                       }
                       labelPlacement="outside"
                     />
-                  </div>
+                    </div>
 
-                  <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
+                    <div className="flex">
                     <Select
                       items={questionTypes}
                       label="Question Type"
@@ -210,9 +212,9 @@ export default function QuestionCreateModal(props) {
                         <SelectItem key={type.value}>{type.label}</SelectItem>
                       )}
                     </Select>
-                  </div>
+                    </div>
 
-                  <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-9 gap-4 mt-3">
+                    <div className="flex">
                     <Select
                       isDisabled
                       items={answerTypes}
@@ -232,11 +234,11 @@ export default function QuestionCreateModal(props) {
                         <SelectItem key={type.value}>{type.label}</SelectItem>
                       )}
                     </Select>
-                  </div>
+                    </div>
 
-                  {isQuestionTypeInput() && (
-                    <>
-                      <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
+                    {isQuestionTypeInput() && (
+                      <>
+                      <div className="flex">
                         <Textarea
                           label="Correct Answer"
                           placeholder="Input Correct Answer"
@@ -250,8 +252,8 @@ export default function QuestionCreateModal(props) {
                           }
                           labelPlacement="outside"
                         />
-                      </div>
-                      <div className="flex w-full flex-wrap md:flex-nowrap gap-4 mt-3">
+                        </div>
+                        <div className="flex">
                         <Input
                           type="number"
                           label="Input Count"
@@ -266,23 +268,25 @@ export default function QuestionCreateModal(props) {
                           }
                           labelPlacement="outside"
                         />
+                        </div>
+                      </>
+                    )}
+
+                    {!isQuestionTypeInput() && (
+                      <div className="flex">
+                      <CustomMultiSelect
+                        label="Correct Answer"
+                        placeholder="Select correct answer"
+                        labelPlacement="outside"
+                        selectedKeys={formData.correctAnswer}
+                        data={formData.options}
+                        setValues={handleMultipleSelect}
+                      />
                       </div>
-                    </>
-                  )}
+                    )}
 
-                  {!isQuestionTypeInput() && (
-                    <CustomMultiSelect
-                      label="Correct Answer"
-                      placeholder="Select correct answer"
-                      labelPlacement="outside"
-                      selectedKeys={formData.correctAnswer}
-                      data={formData.options}
-                      setValues={handleMultipleSelect}
-                    />
-                  )}
-
-                  {!isQuestionTypeInput() && (
-                    <div className="flex w-full flex-wrap md:flex-nowrap gap-4 mt-3">
+                    {!isQuestionTypeInput() && (
+                      <div className="flex">
                       <Input
                         type="text"
                         label="Correct Answer Description"
@@ -297,58 +301,62 @@ export default function QuestionCreateModal(props) {
                         }
                         labelPlacement="outside"
                       />
-                    </div>
-                  )}
-
-                  {!isQuestionTypeInput() && (
-                    <>
-                      <div className="flex items-end w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
-                        <Input
-                          type="text"
-                          label="Option"
-                          placeholder="option"
-                          variant={variant}
-                          value={option}
-                          onChange={(e) => setOption(e.target.value)}
-                          labelPlacement="outside"
-                        />
-                        <CustomButton
-                          onClick={() =>
-                            setFormData((prev) => {
-                              let newOptions = [...prev.options];
-                              newOptions.push({ key: uuidv4(), value: option });
-
-                              return { ...prev, options: newOptions };
-                            })
-                          }
-                          title="Add"
-                        />
                       </div>
+                    )}
 
-                      {formData.options.length > 0 && (
-                        <div className="p-3 border rounded-xl mb-3 space-y-3">
-                          <h4 className="mb-3">Option List</h4>
-                          {formData.options.map((option, index) => {
-                            return (
-                              <div
-                                key={option.key}
-                                className="p-2 border rounded-xl flex justify-between items-center"
-                              >
-                                <span>{option.value}</span>
-                                <CustomButton
-                                  onClick={() => optionRemoveHandler(index)}
-                                  type="delete"
-                                  size="sm"
-                                  iconOnly
-                                  className="p-1"
-                                />
-                              </div>
-                            );
-                          })}
+                    {!isQuestionTypeInput() && (
+                      <>
+                        <div className="flex justify-between items-end gap-4">
+                          <Input
+                            type="text"
+                            label="Option"
+                            placeholder="option"
+                            variant={variant}
+                            value={option}
+                            onChange={(e) => setOption(e.target.value)}
+                            labelPlacement="outside"
+                          />
+                          <CustomButton
+                            onClick={() =>
+                              setFormData((prev) => {
+                                let newOptions = [...prev.options];
+                                newOptions.push({
+                                  key: uuidv4(),
+                                  value: option,
+                                });
+
+                                return { ...prev, options: newOptions };
+                              })
+                            }
+                            title="Add"
+                          />
                         </div>
-                      )}
-                    </>
-                  )}
+
+                        {formData.options.length > 0 && (
+                          <div className="p-3 border rounded-xl mb-3 space-y-3">
+                            <h4 className="mb-3">Option List</h4>
+                            {formData.options.map((option, index) => {
+                              return (
+                                <div
+                                  key={option.key}
+                                  className="p-2 border rounded-xl flex justify-between items-center"
+                                >
+                                  <span>{option.value}</span>
+                                  <CustomButton
+                                    onClick={() => optionRemoveHandler(index)}
+                                    type="delete"
+                                    size="sm"
+                                    iconOnly
+                                    className="p-1"
+                                  />
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </div>
                 </form>
               </ModalBody>
               <ModalFooter>

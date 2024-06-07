@@ -10,16 +10,11 @@ import QuizQuestionHandler from "../../general/quiz-question/components/QuizQues
 import { useNavigate } from "react-router";
 
 const QuizCreateForm = (props) => {
-  const { type, successCallback } = props;
+  const { type, successCallback, fixedQuestionTypes } = props;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   // const [questions, setQuestions] = useState([]);
   const [questionData, setQuestionData] = useState([]);
-
-  const fixedQuestionTypes = [
-    { value: "trueFalse", label: "trueFalse" },
-    { value: "multipleChoice", label: "multipleChoice" },
-  ];
 
   const navigate = useNavigate();
 
