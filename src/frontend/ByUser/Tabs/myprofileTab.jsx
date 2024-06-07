@@ -86,7 +86,7 @@ export default function MyprofileTab() {
 
       await apiInstance.get('entrance-test-results', list).then((res) => {
         console.log(
-          res.data.data.filter(el => el.student._id === StudentId)[0],
+          res.data.data,
           "stu map1"
         );
         setEntranceTestResDataCheck(res.data.data.filter(el => el.student._id === StudentId))
@@ -432,11 +432,11 @@ export default function MyprofileTab() {
                         <div>
                           {entranceTestResDataCheck.length !== filterSubList[0]?.course?.subjects?.length ? (
                             filterSubList && (
-                              <div className='grid grid-cols-2 gap-20 rounded-md pt-16 w-full'>
+                              <div className='grid grid-cols-2 gap-20 xl:gap-32 rounded-md pt-16 w-full '>
                                 {filterSubList[0]?.course?.subjects.map((e, ind) => (
                                   <div
-                                    className='flex gap-1 bg-[#e1ddec] rounded-[12px]'
-                                    onClick={() => handleSubjectDetail(e, enrollId)}
+                                    className='flex gap-1 bg-[#e1ddec] rounded-[12px] p-5 w-full'
+
                                     key={e._id}
                                   >
 
@@ -444,12 +444,12 @@ export default function MyprofileTab() {
                                       <Image
                                         src={getFile({ payload: e.image })}
 
-                                        className='w-[350px] h-[300px] '
+                                        className='w-[350px] h-[300px] xl:w-[200px] xl:h-[150px]  '
                                       />
                                     </div>
 
                                     <div className='flex flex-col gap-5 '>
-                                      <div className='flex flex-col gap-10 p-7'>
+                                      <div className='flex flex-col gap-10 p-7 xl:p-2'>
                                         <div className='flex flex-col gap-4'>
                                           <h1
                                             style={{

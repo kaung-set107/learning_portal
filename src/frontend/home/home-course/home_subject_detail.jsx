@@ -33,10 +33,7 @@ const SubjectDetail = (props) => {
   const location = useLocation();
   const SubidfromCourse = location.pathname.split('/')[2]
   const navigate = useNavigate();
-  // const SubData = location.state.data;
-  // console.log(location.state.data, "sub ii");
-  // const courseData = location.state.courseData;
-  // console.log(props.id, "id");
+
   const [subjectList, setSubjectList] = useState([]);
   const [teacherName, setTeacherName] = useState([]);
   const [teacherImage, setTeacherImage] = useState([]);

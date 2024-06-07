@@ -16,7 +16,7 @@ export default function DepartmentUpdate() {
       <div className='sidebar'>
         <Sidebar />
       </div>
-      <div className=' flex-grow'>
+      <div className='flex-grow'>
         <div className=''>
           <Card className='rounded-md shadow-md py-3 min-h-[600px]'>
             <div className='flex justify-between'>

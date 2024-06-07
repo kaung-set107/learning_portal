@@ -26,6 +26,10 @@ function EntranceTestPage() {
 
     const [timeLeft, setTimeLeft] = useState("");
     const [clicked, setClicked] = useState("");
+    const [number, setNumber] = useState(0);
+    const [count, setCount] = useState('')
+    const [multiTrueAnswerList, setMultiTrueAnswerList] = useState([]);
+    const [showToast, setShowToast] = useState(true)
 
     const navigate = useNavigate();
     const [selectedOption, setSelectedOption] = useState("");
@@ -70,13 +74,16 @@ function EntranceTestPage() {
 
 
     // const arrList = [...arr, trueAnswerList.filter((el) => el.id === quizList.questions[counter]._id)[1]]
-    console.log([...arr, trueAnswerList.filter((el) => el.id === quizList.questions[counter]._id)[1]], 'true ori');
+    console.log([...arr, trueAnswerList.filter((el) => el.id === quizList.questionData[0].questions[counter]._id)[1]], 'true ori');
 
 
     // console.log(trueAns, 'fix true');
     const TotalMark = trueAnswerList.map((i) => i.markTotal)
         .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
     console.log(TotalMark, "time");
+
+    const MulTotalMark = multiTrueAnswerList.filter(el => el.id).map((i) => i.markTotal).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+
     const displayCorrect = (correct) => {
         let correct_msg = correct ? "correct" : "incorrect";
         // console.log("Answer was " + correct_msg);
@@ -160,9 +167,9 @@ function EntranceTestPage() {
     };
 
     const nextQuestion = (studentAnswer, cas, ind) => {
-        // console.log(quizList.questions[counter].correctAnswer === cas, 'cas')
+        //cas
 
-
+        setNumber(0)
         // console.log(caList, 'caList')
         setClicked("");
         setNextAnswer(true);
@@ -171,13 +178,13 @@ function EntranceTestPage() {
             alert("Must select an answer before proceeding to the next question");
             return;
         }
-        if (quizList.questions[counter].type === 'multipleChoice') {
+        if (quizList.questionData[0].questions[counter].type === 'multipleChoice') {
 
 
             const correctList = cas?.map((i) => (parseInt(i))) //To change Int in array's items
 
-            let answerObj = correctList.every(item => studentAnswerList.filter((el) => el.id === quizList.questions[counter]._id)[1].studentAnswer.slice(-2).includes(item))  // To know two arrays's items same?
-            // console.log(correctList.every(item => studentAnswerList.filter((el) => el.id === quizList.questions[counter]._id)[1].studentAnswer.slice(-2).includes(item)), 'slice in next')
+            let answerObj = correctList.every(item => studentAnswerList.filter((el) => el.id === quizList.questionData[0].questions[counter]._id)[quizList.questionData[0].questions[counter].correctAnswer.length]?.studentAnswer.slice(-(quizList.questionData[0].questions[counter].correctAnswer.length)).includes(item))  // To know two arrays's items same?
+            // console.log(answerObj, 'slice in next')
 
 
             let updated_points = answerObj ? points + 1 : points;       // If we true,we increase mark
@@ -186,25 +193,30 @@ function EntranceTestPage() {
             setPoints(updated_points);
             let nextQuestion = counter + 1;
 
-            if (nextQuestion < quizList.questions.length) {
+            if (nextQuestion < quizList.questionData[0].questions.length) {
                 setCounter(nextQuestion);
             } else {
                 setCounter(0);
-                handleResult();
+                if (((TotalMark + MulTotalMark) === quizList.passMark && "pass") || ((TotalMark + MulTotalMark) > quizList.passMark && "credit")) {
+                    handleResult();
+                } else {
+                    handleShowFail()
+                }
+
                 // console.log(TotalMark, "in next");
             }
 
             // handleAns()
             displayCorrect(answerObj);
         } else {
-            let answerObj = quizList.questions[counter].correctAnswer === cas
+            let answerObj = quizList.questionData[0].questions[counter].correctAnswer === cas
             // console.log(answerObj, 'answerobj')
             let updated_points = answerObj ? points + 1 : points;
             // console.log(updated_points, 'point');
             setPoints(updated_points);
             let nextQuestion = counter + 1;
 
-            if (nextQuestion < quizList.questions.length) {
+            if (nextQuestion < quizList.questionData[0].questions.length) {
                 setCounter(nextQuestion);
             } else {
                 setCounter(0);
@@ -218,7 +230,6 @@ function EntranceTestPage() {
         }
 
     };
-
     const handleResult = () => {
 
         // console.log(studentAnswerList, 'studentAnswerList');
@@ -233,21 +244,27 @@ function EntranceTestPage() {
             subject: subjectID,
             // entranceTest: entranceID,
             answerDate: Date.now(),
-            updatedQuestions: quizList.questions.map((i) => {
+            updatedQuestionData: quizList.questionData.map((first) => {
                 return {
-                    question: i.question,
-                    type: i.type,
-                    mark: i.mark,
-
-                    options: i.options,
-                    answerType: i.answerType,
-                    correctAnswer: i.correctAnswer,
-                    studentAnswer: i.type === 'trueFalse' ? studentAnswerList.filter((el) => el.id === i._id)[0]
-                        ?.studentAnswer : studentAnswerList.filter((el) => el.id === i._id)[1].studentAnswer.slice(-2),
+                    instruction: first.instruction,
+                    paragraph: first.paragraph.map((i) => (i)),
+                    questions: first.questions.map((i) => {
+                        return {
+                            question: i.question,
+                            type: i.type,
+                            mark: i.mark,
+                            images: i.images,
+                            options: i.options,
+                            answerType: i.answerType,
+                            correctAnswer: i.correctAnswer,
+                            studentAnswer: i.type === 'trueFalse' ? studentAnswerList.filter((el) => el.id === i._id)[0]
+                                ?.studentAnswer : studentAnswerList.filter((el) => el.id === i._id)[0]?.studentAnswer.slice(-(i.correctAnswer.length)),
+                        };
+                    }),
                 };
             }),
-            totalMark: quizList.questions[counter].type === 'trueFalse' ? TotalMark : points,
-            status: quizList.questions[counter].type === 'trueFalse' ? (TotalMark === quizList.passMark && "pass") || (TotalMark > quizList.passMark && "distinction") || ((TotalMark < quizList.passMark && TotalMark === quizList.creditMark) && "credit") || (TotalMark < quizList.creditMark && "fail") : (points >= quizList.passMark ? "pass" : "fail"),
+            totalMark: quizList.questionData[0].questions[counter].type === 'trueFalse' ? TotalMark : points,
+            status: quizList.questionData[0].questions[counter].type === 'trueFalse' ? (TotalMark === quizList.passMark && "pass") || (TotalMark > quizList.passMark && "distinction") || ((TotalMark < quizList.passMark && TotalMark === quizList.creditMark) && "credit") || (TotalMark < quizList.creditMark && "fail") : (points >= quizList.passMark ? "pass" : "fail"),
         };
         // alert(JSON.stringify(data));
         apiInstance
@@ -267,20 +284,24 @@ function EntranceTestPage() {
     };
 
     const handleCheckboxSelect = (event, index, data, correct, counter, mark, counterId) => {
-        setIndex(index);
-        // console.log(correct, 'll')
+        setNextAnswer(false);
+        setIndex(index + 1);
+        // console.log(counter, 'll')
 
         if (event.target.checked) {
+
+            setNumber(prevCount => prevCount + 1)
             const multi = [...multiAns, index + 1]
             setMultiAns(multi);
-            // We get answer with index no
-            // console.log(multi, 'multi ans list')
 
-            const correctList = correct.map((i) => (parseInt(i)))
+            const II = multi.slice(-(correct.length)) //to get last studentAnswer's length
+
+            setCount(II) //to show that we choose answer count
+
+            const correctList = correct.map((i) => (parseInt(i))) //to get not include single code in correctAnswer
             // console.log(correctList, 'corr ans list')
-            // console.log(correctList.every(item => multi.includes(item)), 'true?')
 
-            if (correctList.every(item => multi.includes(item))) {
+            if (correctList.every(item => II.includes(item)) && correctList.length === II.length) {
                 // setStudentAnswer(val + 1)
 
                 const newFormSubmissions = [...trueAnswerList];
@@ -288,17 +309,27 @@ function EntranceTestPage() {
                     id: counterId,
                     correct: correctList,
                     markTotal: mark,
-                    studentAnswer: multi
-                });
+                    studentAnswer: II
+                }); // to get trueAnswer list
 
                 localStorage.setItem(
                     "formSubmission",
                     JSON.stringify(newFormSubmissions)
-                );
+                ); //stored data in localStorage because we need remember student's every questions answer
 
-                setTrueAnswerList(newFormSubmissions);
+                const getUniqueById = (arr) => {
+                    return Object.values(arr.reduce((acc, obj) => {
+                        acc[obj.id] = obj;
+                        return acc;
+                    }, {}));
+                }; //to get same ID object data as one obj data
 
-                // console.log(newFormSubmissions, 'setTrueAnswerList')
+                // Usage
+                const uniqueObjects = getUniqueById(newFormSubmissions);
+                // console.log(uniqueObjects, 'mul real');
+                setMultiTrueAnswerList(uniqueObjects);
+
+                // console.log(uniqueObjects, 'setMulTrueAnswerList')
                 // console.log(quiz.questions.filter(el=>el.correctAnswer === val+1))
                 setIsCorrect("Correct");
             } else {
@@ -307,12 +338,21 @@ function EntranceTestPage() {
             }
 
             // Create the main array and push the sub-arrays into it
-            const mainArray = [...studentAnswerList, ...[{ studentAnswer: multi, id: counterId }]];
+            const mainArray = [...studentAnswerList, ...[{ studentAnswer: II, id: counterId }]];
 
+            const getUniqueById = (arr) => {
+                return Object.values(arr.reduce((acc, obj) => {
+                    acc[obj.id] = obj;
+                    return acc;
+                }, {}));
+            }; //to get same ID object data as one obj data
 
-            // console.log(mainArray, 'final final')
-            setStudentAnswerList(mainArray);
+            // Usage
+            const stuList = getUniqueById(mainArray);
+            // console.log(stuList, 'final final')
+            setStudentAnswerList(stuList);
         } else {
+            setNumber('')
             // setMultiAns(multiAns.filter((el, index) => (el.res === index + 1)))
             const multi = multiAns.filter(data => data !== counterId)
             setMultiAns(multi)
@@ -321,7 +361,6 @@ function EntranceTestPage() {
         }
 
     }
-
     const handleAns = (val, studentChoose, ca, index, mark, counterid) => {
         setNextAnswer(false);
         setClicked(true);
@@ -401,7 +440,7 @@ function EntranceTestPage() {
                                         <Link to='/student'>   Cancel</Link>
 
                                     </Button>
-                                    {quizList.questions ? (
+                                    {quizList.questionData ? (
                                         <Button color='primary' onClick={handleStart} size='md'>
                                             Start Quiz
                                         </Button>
@@ -434,8 +473,8 @@ function EntranceTestPage() {
                                             Question
                                         </span>
                                         <span className='flex justify-center text-[16px] text-[#BDFFE2] font-medium bg-[#10C278] rounded-[24px] p-[1px] w-[180px] items-center  text-center'>
-                                            Mark {quizList.questions[counter].mark} out of{" "}
-                                            {quizList.questions[counter].mark}{" "}
+                                            Mark {quizList.questionData[0].questions[counter].mark} out of{" "}
+                                            {quizList.questionData[0].questions[counter].mark}{" "}
                                         </span>
                                         <span className='p-[20px] text-[20px] font-light w-[200px]'>
                                             Time : {displayMinutes < 10 ? "0" : ""}
@@ -453,16 +492,16 @@ function EntranceTestPage() {
                                     <div>
                                         <div className='text-lg py-3 px-3'>
                                             <b>({counter + 1})</b> &nbsp;
-                                            {quizList.questions[counter].question}
+                                            {quizList.questionData[0].questions[counter].question}
                                         </div>
                                         <div>
-                                            <img src={quizList.questions[counter].questionPic} />
+                                            <img src={quizList.questionData[0].questions[counter].questionPic} />
                                         </div>
                                         <div className='mt-5'>
 
-                                            {quizList.questions[counter].options.map((e, i) => (
+                                            {quizList.questionData[0].questions[counter].options.map((e, i) => (
                                                 <>
-                                                    {quizList.questions[counter].type === 'trueFalse' ? (
+                                                    {quizList.questionData[0].questions[counter].type === 'trueFalse' ? (
                                                         < div
                                                             key={i}
                                                             className='text-lg font-semibold ml-10'
@@ -470,10 +509,10 @@ function EntranceTestPage() {
                                                                 handleAns(
                                                                     i,
                                                                     e,
-                                                                    quizList.questions[counter].correctAnswer,
+                                                                    quizList.questionData[0].questions[counter].correctAnswer,
                                                                     counter,
-                                                                    quizList.questions[counter].mark,
-                                                                    quizList.questions[counter]._id
+                                                                    quizList.questionData[0].questions[counter].mark,
+                                                                    quizList.questionData[0].questions[counter]._id
 
                                                                 )
                                                             }
@@ -543,10 +582,10 @@ function EntranceTestPage() {
                                                                             handleCheckboxSelect(event,
                                                                                 i,
                                                                                 e,
-                                                                                quizList.questions[counter].correctAnswer,
+                                                                                quizList.questionData[0].questions[counter].correctAnswer,
                                                                                 counter,
-                                                                                quizList.questions[counter].mark,
-                                                                                quizList.questions[counter]._id
+                                                                                quizList.questionData[0].questions[counter].mark,
+                                                                                quizList.questionData[0].questions[counter]._id
                                                                             )
                                                                         }
                                                                     />
@@ -574,7 +613,7 @@ function EntranceTestPage() {
                                             onClick={() =>
                                                 nextQuestion(
                                                     multiAns,
-                                                    quizList.questions[counter].correctAnswer,
+                                                    quizList.questionData[0].questions[counter].correctAnswer,
                                                     counter
                                                 )
                                             }
