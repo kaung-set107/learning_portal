@@ -5,7 +5,7 @@ import { EyeFilledIcon } from "./eyefilledicon";
 import { EyeSlashFilledIcon } from "./eyeslashicon";
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import apiInstance from "../../util/api.js";
+import apiInstance, { CrmAPI } from "../../util/api.js";
 import { MailFilledIcon } from "./mailicon";
 import Swal from "sweetalert2";
 import SideBar from "../Sidebar/index";
@@ -24,6 +24,7 @@ let fieldsState = {};
 fields.forEach((field) => (fieldsState[field.id] = ""));
 
 export default function Login() {
+
   const [loading, setLoading] = useState("");
   const [arr, setArr] = useState([]);
   const [courseList, setCourseList] = useState([])
@@ -46,8 +47,9 @@ export default function Login() {
   const [batchName, setBatchName] = useState('')
   const countryRef = useRef(null)
   const [birthDate, setBirthDate] = useState('')
-  console.log(birthDate, 'dateRef.current.value')
+  // console.log(birthDate, 'dateRef.current.value')
   const handleCourse = (id) => {
+
     setCourse(id)
     // console.log(courseList.filter(el => el._id === id)[0], 'c')
     setBatch(courseList.filter(el => el._id === id)[0].batch?._id)
@@ -58,84 +60,95 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const data = {
-      username: nameRef.current.value,
-      password: passRef.current.value,
-    };
-    apiInstance
-      .post("auth/login", data)
-      .then((res) => {
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("id", res.data?.data?.student?._id);
-        localStorage.setItem("user", JSON.stringify(res.data.data));
-        setLoading("login");
-        // Swal.fire({
-        //   icon: 'success',
-        //   title: 'Login Successful',
-        //   text: 'Welcome back!',
-        //   confirmButtonText: 'OK',
-        //   confirmButtonColor: '#3085d6'
-        // })
 
-        // console.log(res.data, "login res");
-        if (res.data.data.roles[0].includes("instructor")) {
-          Swal.fire({
-            icon: "success",
-            title: "Login Successful",
-            text: "Welcome Instructor!",
-            showCancelButton: false,
-            showConfirmButton: false,
-            timer: 3000,
+    const dealId = {
+      deal: '6641e653c281ba5613abaf34'
+    }
+    CrmAPI.post('verify-app-accessibility', dealId).then((res) => {
+      // console.log(res.data.data.isAccessible, 'crm')
+      if (res.data.data.isAccessible === true) {
+        const data = {
+          username: nameRef.current.value,
+          password: passRef.current.value,
+        };
+        apiInstance
+          .post("auth/login", data)
+          .then((res) => {
+            localStorage.setItem("token", res.data.token);
+            localStorage.setItem("id", res.data?.data?.student?._id);
+            localStorage.setItem("user", JSON.stringify(res.data.data));
+            setLoading("login");
+
+            if (res.data.data.roles[0].includes("instructor")) {
+              Swal.fire({
+                icon: "success",
+                title: "Login Successful",
+                text: "Welcome Instructor!",
+                showCancelButton: false,
+                showConfirmButton: false,
+                timer: 3000,
+              });
+              navigate("/by-instructor");
+              setLoading(false);
+            } else if (res.data.data.roles[0].includes("student")) {
+              const rol = res.data.data.roles[0];
+              setArr(res.data.data);
+
+              Swal.fire({
+                icon: "success",
+                title: "Login Successful",
+                text: "Welcome Student!",
+                showCancelButton: false,
+                showConfirmButton: false,
+                timer: 3000,
+              });
+              navigate("/student", { state: { rol } });
+
+              const timer = setTimeout(() => {
+                window.location.reload()
+              }, 2000); // 3000 milliseconds = 3 seconds
+
+              return () => clearTimeout(timer);
+
+              // window.location.reload()
+            } else if (res.data.data.roles[0].includes("admin")) {
+              Swal.fire({
+                icon: "success",
+                title: "Login Successful",
+                text: "Welcome Admin!",
+                showCancelButton: false,
+                showConfirmButton: false,
+                timer: 3000,
+              });
+              navigate("/instru");
+              window.location.reload()
+              setLoading(false);
+              return setArr(res.data.data);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            Swal.fire({
+              icon: "error",
+              title: "Login Failed",
+              text: error.response.data.message,
+              showCancelButton: false,
+              showConfirmButton: false,
+              timer: 3000,
+            });
           });
-          navigate("/by-instructor");
-          setLoading(false);
-        } else if (res.data.data.roles[0].includes("student")) {
-          const rol = res.data.data.roles[0];
-          setArr(res.data.data);
-
-          Swal.fire({
-            icon: "success",
-            title: "Login Successful",
-            text: "Welcome Student!",
-            showCancelButton: false,
-            showConfirmButton: false,
-            timer: 3000,
-          });
-          navigate("/student", { state: { rol } });
-
-          const timer = setTimeout(() => {
-            window.location.reload()
-          }, 2000); // 3000 milliseconds = 3 seconds
-
-          return () => clearTimeout(timer);
-
-          // window.location.reload()
-        } else if (res.data.data.roles[0].includes("admin")) {
-          Swal.fire({
-            icon: "success",
-            title: "Login Successful",
-            text: "Welcome Admin!",
-            showCancelButton: false,
-            showConfirmButton: false,
-            timer: 3000,
-          });
-          navigate("/instru");
-          window.location.reload()
-          setLoading(false);
-          return setArr(res.data.data);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
+      } else {
         Swal.fire({
           icon: "error",
-          title: "Login Failed",
-          text: error.response.data.message,
+          title: "Your subscription has been Expired.",
+          text: "Please, renew your payment!",
           showCancelButton: false,
           showConfirmButton: false,
           timer: 3000,
         });
-      });
+      }
+    })
+
   };
 
   const handleRegisterCreate = (e) => {

@@ -153,6 +153,7 @@ const About = () => {
         console.log("Phone input value:", value);
     };
     useEffect(() => {
+        window.scroll(0, 0)
         const hee = localStorage.getItem('data')
         console.log(hee, 'dddd')
 

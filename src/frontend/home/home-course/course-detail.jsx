@@ -388,7 +388,7 @@ export default function CourseDetail(props) {
               }}
               className='flex sm:hidden flex-col mt-0 sm:mt-20 md:bg-right md:bg-contain'
             >
-              <div className='w-[375px] h-full sm:w-full sm:h-[272px]'>
+              {/* <div className='w-[375px] h-full sm:w-full sm:h-[272px]'>
                 <div className='ml-2'>
                   <span className='text-[20px] font-semibold sm:text-[40px]'>
                     Not sure where to start?
@@ -406,7 +406,7 @@ export default function CourseDetail(props) {
                   </div>
 
                 </div>
-              </div>
+              </div> */}
 
               {/* Subjects Section Start */}
               <div className='sm:pt-0 pt-10 mx-2'>
@@ -456,11 +456,11 @@ export default function CourseDetail(props) {
                           }}
                           className='min-w:[464px] min-h:[auto]'
                         >
-                          {e.description}
+                          {e.description.substring(0, 150)}
                         </p>
                         <div
                           // style={{ padding: "70px 28px 0px 120px" }}
-                          className='flex justify-center'
+                          className='flex justify-center pt-10 sm:pt-0'
                         >
                           <Link to={'/home-sub-detail/' + e._id}
                             className='bg-red-500 hover:bg-red-700 p-3 w-full flex justify-center items-center text-[#fff] text-[12px] sm:text-[16px] font-normal sm:font-medium rounded-[6px] sm:rounded-[12px]  lg:h-[40px]'

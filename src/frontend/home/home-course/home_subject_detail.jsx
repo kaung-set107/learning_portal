@@ -145,15 +145,15 @@ const SubjectDetail = (props) => {
 
               </div>
             </div>
-            <div className='container'>
+            <div className=''>
               <div
                 style={{
                   border: "1px solid red",
                   borderRadius: "12px",
                 }}
-                className='flex items-center mx-4 md:mx-0 md:pr-[24] w-[200px] h-[134px] md:w-[200px] md:h-[306px] lg:w-[260px] xl:w-[300px]'
+                className='flex justify-center sm:justify-start sm:items-center mx-4 md:mx-0 pr-[20px] md:pr-[24px] w-[345px] h-[134px] md:w-[275px] md:h-[306px]'
               >
-                <div className='flex flex-col gap-5 p-5'>
+                <div className='flex flex-col gap-2 sm:gap-5 p-2 sm:p-5 justify-center'>
                   <h1 style={{ fontSize: "20px", fontWeight: "700" }}>
                     This Subject Include
                   </h1>
@@ -186,13 +186,19 @@ const SubjectDetail = (props) => {
                       </span>
                     </div>
                     <div className='flex gap-2'>
-                      <img src={TV} style={{ width: "16px", height: "16px" }} />{" "}
+                      <img
+                        src={TV}
+                        style={{ width: "16px", height: "16px" }}
+                      />{" "}
                       <span className='text-[8px] font-normal md:text-[14px]'>
                         Full lifetime access
                       </span>
                     </div>
                     <div className='flex gap-2'>
-                      <img src={TV} style={{ width: "16px", height: "16px" }} />{" "}
+                      <img
+                        src={TV}
+                        style={{ width: "16px", height: "16px" }}
+                      />{" "}
                       <span className='text-[8px] font-normal md:text-[14px]'>
                         Certificate of completion
                       </span>
@@ -313,7 +319,7 @@ const SubjectDetail = (props) => {
           </div>
           <div className='flex xl:gap-10 justify-between w-[375px] h-full sm:w-full container sm:h-[272px]'>
             <div>
-              <Image src={Roadmap} className='transform-x-[-1] w-[370px] h-[250px]' />
+              <Image src={Roadmap} className='transform-x-[-1] w-[370px] h-[250px] sm:flex hidden' />
             </div>
             <div className=''>
               <span className='text-[20px] font-semibold sm:text-[40px]'>
@@ -470,7 +476,7 @@ const SubjectDetail = (props) => {
                           style={{
                             paddingTop: "10px",
                           }}
-                          className='text-[16px] text-white md:text-[24px] font-semibold'
+                          className='text-[14px] text-white md:text-[24px] font-semibold'
                         >
                           Module
                         </span>
@@ -506,9 +512,14 @@ const SubjectDetail = (props) => {
                         >
                           {item?.description}
                         </p>
-                        <div className='grid grid-cols-4 2xl:grid-cols-6 gap-4'>
+                        <div className='hidden sm:grid grid-cols-4 2xl:grid-cols-6 gap-4'>
                           {item.learningMaterials.slice(0, 12).map((lm, ind) => (
                             <span className=' w-full underline text-[#fff]'>{lm?.title.substring(0, 20)}...</span>
+                          ))}
+                        </div>
+                        <div className='grid sm:hidden grid-cols-2 xl:grid-cols-4 2xl:grid-cols-6 gap-1'>
+                          {item.learningMaterials.slice(0, 4).map((lm, ind) => (
+                            <span className=' w-full underline text-[#fff] text-[10px] lg:text-[16px] xl:text-[18px] 2xl:text-[20px]'>{lm?.title.substring(0, 20)}...</span>
                           ))}
                         </div>
                       </div>

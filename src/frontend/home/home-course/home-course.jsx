@@ -27,6 +27,7 @@ const Body = () => {
 
 
   useEffect(() => {
+    window.scroll(0, 0)
     const getAssign = async () => {
       await apiInstance.get(`courses`).then((res) => {
         // console.log(res.data.data, "course res");

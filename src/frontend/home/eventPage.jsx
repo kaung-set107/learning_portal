@@ -9,6 +9,7 @@ export default function EventPage() {
     const [eventList, setEventList] = useState([]);
 
     useEffect(() => {
+        window.scroll(0, 0)
         const getEvent = async () => {
             await apiInstance.get(`events`).then((res) => {
                 setEventList(res.data.data);
@@ -71,9 +72,9 @@ export default function EventPage() {
                             )}
                         </div >
                         {/* Mobile */}
-                        < div className='grid sm:hidden grid-cols-1 items-center justify-around flex-wrap pl-[40px] pr-[33px]' >
+                        < div className='grid sm:hidden grid-cols-1 gap-10 items-center justify-around flex-wrap pl-[40px] pr-[33px]' >
                             {
-                                eventList?.slice(0, 1).map((b, index) => (
+                                eventList?.map((b, index) => (
                                     <Link href={`/events/${b._id}`} key={index}>
                                         <div className='relative cursor-pointer'>
                                             <Image

@@ -222,7 +222,7 @@ export default function App() {
                 />
               </NavbarContent>
 
-              <NavbarMenu className='bg-white top-[100px]'>
+              <NavbarMenu className='bg-white top-14'>
                 <NavbarItem>
                   <Link
                     to='/'

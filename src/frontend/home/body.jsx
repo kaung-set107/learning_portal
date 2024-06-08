@@ -196,7 +196,7 @@ const Body = () => {
               Join MSI Academy for your brighter future
             </h1>
           </ScrollAnimation>
-          <p className=' font-normal text-[16px] md:text-[18px]  lg:text-[20px] w-[330px] sm:w-full leading-[20px] sm:leading-[34px]'>
+          <p className=' font-normal w-auto text-[16px] md:text-[18px]  lg:text-[20px]  sm:w-full leading-[20px] sm:leading-[34px]'>
             MSI Academy, Myanmar Scholastic Innovation Academy, is fulfilling
             the educational and language requirements for Myanmar young leaners'
             dreams of international education in U.S.A,UK,Europe and Asia
@@ -225,7 +225,7 @@ const Body = () => {
 
         <img
           src={EHalf}
-          className="absolute  right-0 w-[80px]  lg:top-[600px]"
+          className="absolute hidden sm:flex right-0 w-[80px]  lg:top-[600px]"
           alt=""
         />
 

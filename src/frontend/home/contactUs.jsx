@@ -40,6 +40,7 @@ export default function Contact() {
     const [eventList, setEventList] = useState([])
 
     useEffect(() => {
+        window.scroll(0, 0)
         const getEvent = async () => {
             await apiInstance.get(`events/${EventID}`).then((res) => {
                 setEventList(res.data.data);

@@ -21,7 +21,7 @@ import { getFile } from "../../util";
 import { Fade } from "react-awesome-reveal";
 // import Footer from '../../frontend/home/footer';
 const About = () => {
-
+  window.scroll(0, 0)
   const [teams, setTeams] = useState([
     {
       pic: Team1,

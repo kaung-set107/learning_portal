@@ -24,6 +24,7 @@ export default function Activities() {
     ]
     const [newsList, setNewsList] = useState([])
     useEffect(() => {
+        window.scroll(0, 0)
         const getNews = async () => {
             await apiInstance
                 .get(`news-and-activities`)
