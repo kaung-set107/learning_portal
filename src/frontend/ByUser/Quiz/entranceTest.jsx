@@ -13,6 +13,7 @@ import EHalf from '../../../assets/img/EllipseHalf.png'
 import ResultPage from "./result";
 // import Swal from 'sweetalert2';
 // import Result from './result'
+import { Time } from "../../../util/secondtomin";
 function EntranceTestPage() {
     const location = useLocation();
     // const { state } = props.location;
@@ -29,7 +30,8 @@ function EntranceTestPage() {
     const [number, setNumber] = useState(0);
     const [count, setCount] = useState('')
     const [multiTrueAnswerList, setMultiTrueAnswerList] = useState([]);
-    const [showToast, setShowToast] = useState(true)
+    const [sameLength, setSameLength] = useState(true)
+    const [timer, setTimer] = useState(0);
 
     const navigate = useNavigate();
     const [selectedOption, setSelectedOption] = useState("");
@@ -59,17 +61,7 @@ function EntranceTestPage() {
     const [caList, setCaList] = useState([])
     const [multiAns, setMultiAns] = useState([])
 
-    // const multiAnswerList = multiAns.map((i, ind) => {
-    //   return {
-    //     ans: i.ans,
-    //     id: i.id
-    //   }
-    // })
 
-    // const sameList = [...arr, multiAnswerList]
-    // console.log(sameList, 'sameList')
-
-    // const [multiAnswerList, setMultiAnswerList] = useState([])
     const [final, setFinal] = useState('')
 
 
@@ -80,10 +72,10 @@ function EntranceTestPage() {
     // console.log(trueAns, 'fix true');
     const TotalMark = trueAnswerList.map((i) => i.markTotal)
         .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-    console.log(TotalMark, "time");
-
+    // console.log(TotalMark, "time");
+    // console.log(multiTrueAnswerList.filter(el => el.id), 'last mul')
     const MulTotalMark = multiTrueAnswerList.filter(el => el.id).map((i) => i.markTotal).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-
+    // console.log(MulTotalMark, "mul mark");
     const displayCorrect = (correct) => {
         let correct_msg = correct ? "correct" : "incorrect";
         // console.log("Answer was " + correct_msg);
@@ -92,7 +84,7 @@ function EntranceTestPage() {
         const item = localStorage.getItem('hello');
         // Update state with the retrieved item
         // setStoredItem(item);
-        console.log(item, 'under its array')
+        // console.log(item, 'under its array')
         // const final = caList.every(item => multiAns.includes(item))
         // setFinal(final)
         // console.log(final, 'hee hee')
@@ -107,7 +99,7 @@ function EntranceTestPage() {
                     setQuizList(
                         res.data.data.filter((el) => el._id === QuizID)[0]
                     );
-                    console.log(res.data.data.filter((el) => el._id === QuizID)[0], 'quizList')
+                    // console.log(res.data.data.filter((el) => el._id === QuizID)[0], 'quizList')
                     setTimeLeft(
                         res.data.data.filter((el) => el._id === QuizID)[0]
                             .duration * 60
@@ -125,45 +117,35 @@ function EntranceTestPage() {
 
 
         const dataFromLocalStorage = localStorage.getItem("id");
-        // console.log(dataFromLocalStorage,'local')
-
-        // setQuizList(res.data.data.filter(el=>el.instructor))
-        // console.log((dataFromLocalStorage),'hello')
         setStudentID(dataFromLocalStorage);
-        //   setPages(res.data._metadata.page_count)
 
-    }, []);
-    const handleOptionSelect = (option) => {
-        console.log(option, "option");
+        let interval = null;
+        if (showTimer) {
+            interval = setInterval(() => {
+                setTimer(prevTimer => {
 
-        setSelectedOption(option);
-    };
 
-    const handleCheckboxSelectAnswer = (option) => {
-        console.log(option, "option");
 
-        setSelectedCheckbox(option);
-    };
+                    return prevTimer + 1; // Increment timer value by 1 second
+
+
+                });
+            }, 1000);
+        } else {
+            clearInterval(interval);
+        }
+
+        return () => clearInterval(interval);
+
+
+
+    }, [count, showTimer]);
+
 
 
 
     const handleStart = () => {
-        setShowTimer(true);
-
-        const timerInterval = setInterval(() => {
-            setTimeLeft((prevTime) => {
-                if (prevTime === 0) {
-                    clearInterval(timerInterval);
-
-                    nextQuestion();
-                    return 10; // Reset timer for the next question
-                }
-                return prevTime - 1;
-            });
-        }, 1000);
-
-        // Clear interval when the component unmounts or when moving to the next question
-        return () => clearInterval(timerInterval);
+        setShowTimer(prev => !prev);
     };
 
     const nextQuestion = (studentAnswer, cas, ind) => {
@@ -243,6 +225,7 @@ function EntranceTestPage() {
             batch: batchID,
             subject: subjectID,
             // entranceTest: entranceID,
+            timeTaken: parseInt(timer),
             answerDate: Date.now(),
             updatedQuestionData: quizList.questionData.map((first) => {
                 return {
@@ -263,7 +246,7 @@ function EntranceTestPage() {
                     }),
                 };
             }),
-            totalMark: quizList.questionData[0].questions[counter].type === 'trueFalse' ? TotalMark : points,
+            totalMark: MulTotalMark + TotalMark,
             status: quizList.questionData[0].questions[counter].type === 'trueFalse' ? (TotalMark === quizList.passMark && "pass") || (TotalMark > quizList.passMark && "distinction") || ((TotalMark < quizList.passMark && TotalMark === quizList.creditMark) && "credit") || (TotalMark < quizList.creditMark && "fail") : (points >= quizList.passMark ? "pass" : "fail"),
         };
         // alert(JSON.stringify(data));
@@ -418,8 +401,8 @@ function EntranceTestPage() {
     };
 
 
-    const displayMinutes = Math.floor(timeLeft / 60);
-    const displaySeconds = timeLeft % 60;
+
+
     return (
         <div className='mx-20 py-10'>
             {showOrigin && (
@@ -477,9 +460,7 @@ function EntranceTestPage() {
                                             {quizList.questionData[0].questions[counter].mark}{" "}
                                         </span>
                                         <span className='p-[20px] text-[20px] font-light w-[200px]'>
-                                            Time : {displayMinutes < 10 ? "0" : ""}
-                                            {displayMinutes}:{displaySeconds < 10 ? "0" : ""}
-                                            {displaySeconds}
+                                            Time : {Time(timer)}
                                         </span>
                                     </div>
 
@@ -618,7 +599,8 @@ function EntranceTestPage() {
                                                 )
                                             }
                                         >
-                                            Next
+                                            {console.log(counter === quizList.questionData[0].questions.length - 1, 'fghjkl')}
+                                            {(counter === quizList.questionData[0].questions.length - 1) ? 'Submit' : 'Next'}
                                         </Button>
                                         {/* ) : (
                       <Button

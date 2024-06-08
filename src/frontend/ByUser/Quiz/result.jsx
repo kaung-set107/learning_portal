@@ -18,6 +18,8 @@ import Loading from "../../../assets/img/finalloading.gif";
 import { Stack } from "@mui/material";
 import moment from "moment-timezone";
 import Nav from "../../home/header";
+import { Time } from "../../../util/secondtomin";
+
 export default function Result() {
   const location = useLocation()
   const SubData = location.state
@@ -214,7 +216,7 @@ export default function Result() {
                   Time taken
                 </span>
                 <span className='text-[20px] text-[#000] font-bold'>
-                  25 mins 24 secs
+                  {Time(quizResult?.timeTaken)} Mins
                 </span>
               </div>
               {/* 5 */}

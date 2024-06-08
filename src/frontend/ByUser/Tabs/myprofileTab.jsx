@@ -418,8 +418,8 @@ export default function MyprofileTab() {
                               <div
                                 className={
                                   placeactiveTab === index
-                                    ? "  bg-blue-100 py-3  w-52 text-center  duration-500 border-b-2 border-indigo-500"
-                                    : "w-52 bg-blue-100 py-3 text-center"
+                                    ? "  bg-blue-100 py-3 w-80 text-center p-2 duration-500 border-b-2 border-indigo-500"
+                                    : "w-80 bg-blue-100 py-3 text-center p-2"
                                 }
 
                                 onClick={() => handlePlaceTabClick(index, item._id, item.course)}
@@ -572,7 +572,7 @@ export default function MyprofileTab() {
                                 You got :{" "}
                                 <span className='font-semibold'>IELTS Advance Level</span>
                               </div>
-                              {myCourseList[0]?.paymentImage ? (
+                              {myCourseList[0]?.paymentImage && hideBtn ? (
                                 <div className='flex gap-5 justify-end'>
                                   <Button className='bg-gray-300 cursor-not-allowed' variant='solid'>
                                     Enroll Now!

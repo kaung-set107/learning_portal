@@ -1,6 +1,6 @@
 import { loginFields } from "../../constant/formfield";
 import FormAction from "../../components/Login/formAction";
-import { Image, Input } from "@nextui-org/react";
+import { Image, Input, DateInput } from "@nextui-org/react";
 import { EyeFilledIcon } from "./eyefilledicon";
 import { EyeSlashFilledIcon } from "./eyeslashicon";
 import React, { useRef, useState } from "react";
@@ -45,7 +45,8 @@ export default function Login() {
   const [batch, setBatch] = useState('')
   const [batchName, setBatchName] = useState('')
   const countryRef = useRef(null)
-
+  const [birthDate, setBirthDate] = useState('')
+  console.log(birthDate, 'dateRef.current.value')
   const handleCourse = (id) => {
     setCourse(id)
     // console.log(courseList.filter(el => el._id === id)[0], 'c')
@@ -144,7 +145,7 @@ export default function Login() {
       phone: phoneRef.current.value,
       email: emailRef.current.value,
       address: addressRef.current.value,
-      birthDate: dateRef.current.value,
+      birthDate: birthDate,
       educationBackground: eduRef.current.value,
       attendedHighSchool: schoolRef.current.value,
       course: course,
@@ -427,14 +428,14 @@ export default function Login() {
                       type='date'
 
                       className="appearance-none border  border-gray-300 rounded-[12px] w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline custom-input"
-                      ref={dateRef}
+                      onChange={(e) => setBirthDate(e.target.value)}
 
                     />
-                    {dateRef.current === '' && (
-                      <span className="absolute inset-y-0 left-4  flex items-center pr-1 text-gray-500 pointer-events-none">
+                    {/* {birthDate === '' && (
+                      <span className="absolute mb-1 h-20 inset-y-0 left-4  flex items-start pr-1 text-gray-500 pointer-events-none">
                         Birth Date
                       </span>
-                    )}
+                    )} */}
                   </div>
                   <div>
                     {/* <label className='flex justify-start text-[#5A5A5D] text-[14px] font-semibold'>Email</label> */}
