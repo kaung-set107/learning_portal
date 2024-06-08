@@ -50,6 +50,7 @@ export default function MyprofileTab() {
   const [showError, setShowError] = useState(false)
   const [entranceTestResDataCheck, setEntranceTestResDataCheck] = useState([])
   const [enrollment, setEnrollment] = useState([])
+  const [hideBtn, setHideBtn] = useState('')
   const handleImage = (e) => {
     if (e.target.files) {
       setImage(e.target.files[0]);
@@ -209,7 +210,7 @@ export default function MyprofileTab() {
   //Payment
   const handlePayment = () => {
     const EnrWaitId = filterSubList[0]._id
-
+    setHideBtn(EnrWaitId)
     const formData = new FormData();
     formData.append("paymentImage", image);
     formData.append("course", myCourseList[0].course._id);
@@ -228,8 +229,8 @@ export default function MyprofileTab() {
           icon: "success",
           title: "Enroll Payment Successful",
           text: "",
-          confirmButtonText: "OK",
-          confirmButtonColor: "#3085d6",
+          showConfirmButton: false,
+          timer: 2000
         });
       })
       .catch((error) => {
@@ -642,7 +643,7 @@ export default function MyprofileTab() {
                                         <label>Transaction Number</label>
                                         <Input type='number' variant={variant} onChange={(e) => setTransactionNo(e.target.value)} />
                                       </div>
-                                      <div>  <Input type='file' onChange={handleImage} className={showError ? 'border-1 border-red-400 rounded-xl' : ''} label="" variant={variant} /></div>
+                                      <div className=''>  <input type='file' onChange={handleImage} className={showError ? 'border-1 border-red-400 rounded-xl' : ' border-1 border-slate-300 rounded-xl h-10 w-full lg:w-[600px] xl:w-[690px]'} label="" variant={variant} /></div>
 
 
 
@@ -653,7 +654,7 @@ export default function MyprofileTab() {
                                       Close
                                     </Button>
                                     {image ? (
-                                      <Button color="primary" onClick={handlePayment}>
+                                      <Button color={hideBtn ? 'default' : 'primary'} onClick={handlePayment}>
                                         Confirm
                                       </Button>
                                     ) : (
@@ -667,17 +668,17 @@ export default function MyprofileTab() {
                               )}
                             </ModalContent>
                           </Modal>
-                          {audioFile && (
+                          {/* {audioFile && (
                             <div>
-                              <p>Selected Audio: {audioFile.name}</p>
-                              {/* You can also add an audio player to preview the selected audio file */}
-                              <audio controls>
+                              <p>Selected Audio: {audioFile.name}</p> */}
+                          {/* You can also add an audio player to preview the selected audio file */}
+                          {/* <audio controls>
                                 <source src={URL.createObjectURL(audioFile)} type={audioFile.type} />
                                 Your browser does not support the audio element.
-                              </audio>
-                            </div>
+                              </audio> */}
+                          {/* </div>
                           )}
-                          <button onClick={handleDownload}>Download Audio</button>
+                          <button onClick={handleDownload}>Download Audio</button> */}
                         </>
                       )}
 
