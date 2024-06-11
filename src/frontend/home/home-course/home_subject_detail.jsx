@@ -7,6 +7,7 @@ import {
   Image,
   Input,
   Progress,
+  Spinner
 } from "@nextui-org/react";
 import Footer from '../footer'
 import { getFile } from "../../../util";
@@ -24,7 +25,7 @@ import Certi from "../../../assets/img/certi.svg";
 import MSINav from "../msinav";
 import Loading from '../../../assets/img/finalloading.gif'
 import Roadmap from '../../../assets/img/roadmap.jpg'
-
+import FunQuizPage from "./funQuiz/funQuizPage";
 import apiInstance from "../../../util/api";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -36,6 +37,7 @@ const SubjectDetail = (props) => {
 
   const [subjectList, setSubjectList] = useState([]);
   const [teacherName, setTeacherName] = useState([]);
+  const [funQuizData, setFunQuizData] = useState([])
   const [teacherImage, setTeacherImage] = useState([]);
   const [showVideoList, setShowVideoList] = useState([])
   const [subjectDetailData, setSubjectDetailData] = useState([])
@@ -56,13 +58,15 @@ const SubjectDetail = (props) => {
     };
     const getSubjects = async () => {
       await apiInstance.get("subjects").then((res) => {
+        setFunQuizData(res.data.data.filter((el) => el._id === SubidfromCourse)[0])
         // console.log(
         //   res.data.data.filter((el) => el._id === SubidfromCourse)[0].course,
         //   "c subject"
         // );
         setCourseData(res.data.data.filter((el) => el._id === SubidfromCourse)[0].course)
         const Filter = res.data.data.filter((el) => el._id === SubidfromCourse)[0];
-        // console.log(Filter, 'sub detail')
+        console.log(Filter?.funQuizzes[0].quiz, 'sub detail')
+
         setShowVideoList(JSON.parse(Filter.previewVideo));
         setSubjectDetailData(Filter.subjectSections)
         setTeacherName(Filter);
@@ -81,6 +85,11 @@ const SubjectDetail = (props) => {
     getCourseDetail();
   }, []);
 
+  const handleFunQuizPage = (val, stu) => {
+    console.log(stu, 'hfjsakdsnjkj')
+    navigate(`/fun-quiz/${val?._id}`, { state: { FunQuizData: val?.quiz, StudentID: val?.student } })
+
+  }
   const handleBack = () => {
     navigate("/home-course-detail", { state: { data: courseData } });
   };
@@ -332,8 +341,16 @@ const SubjectDetail = (props) => {
                   questions related to your interests and goals, and we will
                   help set you on the right path on your learning journey.{" "}
                 </p>
-                <Button className='text-[#fff] bg-[#215887] text-[12px] sm:text-[16px] rounded-[4px] sm:rounded-[8px] mt-5 sm:mt-10 sm:hover:-translate-x-1 sm:hover:scale-110 duration-700 w-[67px] h-[26px] sm:w-[227px] sm:h-[48px] lg:w-[200px] lg:h-[40px]'>
-                  <span className='p-2'>Take Quiz</span>
+                <Button className='text-[#fff] bg-[#215887] text-[12px] sm:text-[16px] rounded-[4px] sm:rounded-[8px] mt-5 sm:mt-10 sm:hover:-translate-x-1 sm:hover:scale-110 duration-700 w-[67px] h-[26px] sm:w-[227px] sm:h-[48px] lg:w-[200px] lg:h-[40px]' onClick={() => handleFunQuizPage(funQuizData?.funQuizzes[0], funQuizData)}>
+                  {funQuizData?.funQuizzes ? (
+                    <span className=''>Take Quiz</span>
+                  ) : (
+                    <Button color='light'>
+                      Take Quiz <Spinner size='sm' color="primary" />
+                    </Button>
+                  )}
+
+                  {/* <FunQuizPage FunQuizData={funQuizData?.funQuizzes[0]?.quiz} QuizID={funQuizData?.funQuizzes[0]?.quiz?._id} /> */}
                 </Button>
               </div>
 

@@ -125,6 +125,10 @@ import AchievementInput from "./pages/Achievements/achievementInput.jsx";
 import AchievementUpdate from "./pages/Achievements/achievementUpdate.jsx";
 import InstructorExamResultCheck from "./frontend/features/exam-results/pages/ExamResultCheck.jsx";
 
+
+//Fun quiz
+import FunQuiz from './frontend/home/home-course/funQuiz/funQuizPage.jsx'
+import FunQuizResult from './frontend/home/home-course/funQuiz/funQuizResult.jsx'
 export default function RouteFile() {
   console.log(localStorage.getItem("user"), "local use");
   return (
@@ -148,6 +152,8 @@ export default function RouteFile() {
           ></Route>
           <Route path="/about" element={<About />}></Route>
           <Route path="/contact" element={<Contact />}></Route>
+          <Route path="/fun-quiz/:id" element={<FunQuiz />}></Route>
+          <Route path="/fun-quiz-res" element={<FunQuizResult />}></Route>
           <Route
             path="/news-activities"
             element={<NewsAndActivities />}
