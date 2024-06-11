@@ -59,10 +59,10 @@ export default function PendingList() {
   const onRowsChange = (event) => {
     const newRowsPerPage = parseInt(event.target.value);
     setRowsPerPage(newRowsPerPage);
-    console.log(
-      res.data.counts.registerWaitingListCount / rowsPerPage,
-      "rrreer"
-    );
+    // console.log(
+    //   res.data.counts.registerWaitingListCount / rowsPerPage,
+    //   "rrreer"
+    // );
     setPages(
       dataCount.enrollmentWaitingListCount % rowsPerPage === 0
         ? dataCount.enrollmentWaitingListCount / rowsPerPage
@@ -79,7 +79,7 @@ export default function PendingList() {
           params: { status: "waiting" },
         })
         .then((res) => {
-          console.log(res.data, "stu wait");
+          // console.log(res.data, "stu wait");
           setPendingList(res.data.data);
 
           setDataCount(res.data.counts);
@@ -101,7 +101,7 @@ export default function PendingList() {
   }, [isOpen, rowsPerPage]);
 
   const handleRoute = (id) => {
-    console.log(id, "id");
+    // console.log(id, "id");
     navigate(`/enroll-detail/${id}`);
   };
   return (

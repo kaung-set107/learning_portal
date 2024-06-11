@@ -204,10 +204,10 @@ export default function App() {
       <div className=' sticky top-0 bg-white z-50 sm:w-[100%]'>
         <div className='flex gap-10 justify-around items-center'>
           <div className='align-left'>
-            <Image src={MSI} width={180} height={60} />
+            <Image src={MSI} width={120} height={60} />
           </div>
           <div
-            className='w-96 mt-5'
+            className='w-96 '
             style={{ borderRadius: "200px", width: "486px", padding: "12px" }}
           >
             {/* <Input
@@ -339,88 +339,7 @@ export default function App() {
           </div>
         </div>
 
-        <div className='sm:hidden'>
-          <Navbar onMenuOpenChange={setIsMenuOpen}>
-            <NavbarContent>
-              <NavbarMenuToggle
-                aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-                className='sm:hidden'
-              />
-              <NavbarBrand>
-                <AcmeLogo />
-                <p className='font-bold text-inherit'>ACME</p>
-              </NavbarBrand>
-            </NavbarContent>
 
-            <NavbarContent className='hidden sm:flex gap-4' justify='center'>
-              <NavbarItem>
-                <Link color='foreground' href='#'>
-                  Features
-                </Link>
-              </NavbarItem>
-              <NavbarItem isActive>
-                <Link href='#' aria-current='page'>
-                  Customers
-                </Link>
-              </NavbarItem>
-              <NavbarItem>
-                <Link color='foreground' href='#'>
-                  Integrations
-                </Link>
-              </NavbarItem>
-            </NavbarContent>
-            <NavbarContent justify='end'>
-              <NavbarItem className='hidden lg:flex'>
-                <Link href='#'>Login</Link>
-              </NavbarItem>
-              <NavbarItem>
-                <Button as={Link} color='primary' href='#' variant='flat'>
-                  Sign Up
-                </Button>
-              </NavbarItem>
-            </NavbarContent>
-            <NavbarMenu>
-              {menuItems.map((item, index) => (
-                <NavbarMenuItem key={`${item}-${index}`}>
-                  <Link
-                    color={
-                      index === 2
-                        ? "primary"
-                        : index === menuItems.length - 1
-                          ? "danger"
-                          : "foreground"
-                    }
-                    className='w-full'
-                    href='#'
-                    size='lg'
-                  >
-                    {item}
-                  </Link>
-                </NavbarMenuItem>
-              ))}
-            </NavbarMenu>
-          </Navbar>
-          {/* <Dropdown placement='bottom-end'>
-            <DropdownTrigger>
-              <FontAwesomeIcon icon={faBars} size='xl' />
-            </DropdownTrigger>
-            <DropdownMenu aria-label='Profile Actions' variant='flat'>
-              <DropdownItem key='profile' className='h-14 gap-2'>
-                <Link href='/login' className='font-semibold'>
-                  Login
-                </Link>
-              </DropdownItem>
-              <DropdownItem key='logout' color='danger'>
-                Home
-              </DropdownItem>
-              <DropdownItem key='settings'>Course</DropdownItem>
-              <DropdownItem key='team_settings'>Class</DropdownItem>
-              <DropdownItem key='analytics'>Subjects</DropdownItem>
-              <DropdownItem key='system'>Contact</DropdownItem>
-              <DropdownItem key='configurations'>About</DropdownItem>
-            </DropdownMenu>
-          </Dropdown> */}
-        </div>
       </div >
     </>
   );

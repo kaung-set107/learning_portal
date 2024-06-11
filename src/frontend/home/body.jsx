@@ -179,10 +179,10 @@ const Body = () => {
       </div>
 
 
-      < div data-aos={"fade-up"} className='flex justify-around pl-[26px]  sm:pl-[57px] pr-[26px] sm:pr-[57px] pt-[20px] sm:pt-[100px] relative  overflow-hidden' >
+      < div data-aos={"fade-up"} className='flex justify-around pl-[26px]  sm:pl-[57px] pr-[26px] sm:pr-[57px] pt-[20px] sm:pt-[100px] relative  overflow-hidden xl:container 2xl:container' >
 
         <div
-          className="absolute bg-[#0B2743] top-0 sm:top-2 lg:top-16 -left-[130px] sm:-left-48 lg:-left-[240px] w-[170px] h-[140px] rounded-full md:w-[300px] md:h-[300px] lg:w-[300px] lg:h-[200px]"
+          className="absolute bg-[#0B2743] top-0 sm:top-2 lg:top-16 2xl:top-[90px] -left-[130px] sm:-left-48 lg:-left-[240px] w-[170px] h-[140px] rounded-full md:w-[300px] md:h-[300px] lg:w-[300px] lg:h-[200px] 2xl:w-[300px]"
 
         ></div>
         <div className='w-[654px] flex flex-col gap-10  mt-14 lg:mt-16'>
@@ -225,7 +225,7 @@ const Body = () => {
 
         <img
           src={EHalf}
-          className="absolute hidden sm:flex right-0 w-[80px]  lg:top-[600px]"
+          className="absolute hidden sm:flex right-0 w-[80px]  lg:top-[600px] 2xl:top-[580px] 2xl:right-20"
           alt=""
         />
 
@@ -247,43 +247,43 @@ const Body = () => {
             Courses We Offer
           </h1>
 
-          <div data-aos={"fade-up"} className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-36 lg:gap-10 2xl:gap-10 sm:gap-0 items-center justify-center sm:py-10 2xl:py-20 container'>
+          <div data-aos={"fade-up"} className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-36 lg:gap-10 2xl:gap-48 sm:gap-0 items-center justify-center sm:py-10 2xl:py-20 container'>
             {courseList?.slice(0, 4).map((e) => (
               <div
                 onClick={() => handleRoute(e)}
 
-                className='w-[310px]  md:w-[320px] lg:w-[300px] xl:w-[310px] 2xl:w-[370px] md:h-[480px] h-[470px]'
+                className='w-[310px]  md:w-[320px] lg:w-[300px] xl:w-[310px] 2xl:w-[280px] md:h-[480px] h-[470px]'
               >
                 <div >
                   <Image
                     // style={{ width: "500px", height: "280px" }}
                     alt={e.image?.originalname}
                     src={getFile({ payload: e.image })}
-                    className='w-[310px] h-full md:w-[280px] md:h-[200px] lg:w-[280px] lg:h-[250px] xl:w-[300px] xl:h-[260px] 2xl:w-[370px] sm:hover:-translate-y-2 sm:hover:scale-105 duration-500'
+                    className='w-[310px] h-full md:w-[280px] md:h-[200px] lg:w-[280px] lg:h-[250px] xl:w-[300px] xl:h-[260px] 2xl:w-[350px] sm:hover:-translate-y-2 sm:hover:scale-105 duration-500'
                   />
-                  <div className='flex p-5 flex-col justify-start flex-grow 2xl:w-[350px]'>
-                    <span className='w-[280px]  text-[14px] font-semibold text-[#B72041] flex'>MSI Academy
+                  <div className='flex p-5 flex-col justify-start flex-grow xl:w-[280px]'>
+                    <span className='w-[280px]  text-[14px] 2xl:text-[20px] font-semibold text-[#B72041] flex'>MSI Academy
                     </span>
                     <span
                       style={{
                         fontFamily: "Inter",
                         fontWeight: "600px",
-                        fontSize: "20px",
+                        fontSize: "23px",
                         letterSpacing: "-0.96px",
                       }}
-                      className='w-[290px] h-auto py-2'
+                      className='w-[290px] xl:h-auto py-2'
                       data-aos={"fade-up"}
                     >
                       {e.title}
                     </span>
                     <div
                       style={{
-                        fontSize: "15px",
+                        fontSize: "18px",
                         fontWeight: "400px",
                         // width: "400px",
                         // height: "auto",
                       }}
-                      className='w-[280px] h-[40px]'
+                      className='w-[280px] xl:w-[260px] h-[40px]'
                       data-aos={"fade-up"}
                     >
                       {e?.description.substring(0, 50)}...
@@ -293,12 +293,12 @@ const Body = () => {
                       className='py-5 flex justify-center gap-2 md:w-[250px] w-[290px]'
                       data-aos={"fade-up"}
                     >
-                      <div className='h-[24px] w-full md:w-[200px]  text-start bg-[#ECEFFF] rounded-2xl md:text-[12px] text-[13px] font-medium'>
+                      <div className='h-[24px] w-full md:w-[200px]  text-start bg-[#ECEFFF] rounded-2xl md:text-[12px] text-[13px] 2xl:text-[16px] font-medium'>
                         <span>Duration -</span>
                         <span style={{ color: "#262FD9" }}>{e.durationValue ? e.durationValue : 0} {e.durationType ? e.durationType : 'months'}</span>
                       </div>
 
-                      <div className='h-[24px] w-full md:w-[200px]  text-start bg-[#FFF3F6] rounded-2xl md:text-[12px] text-[13px] font-medium'>
+                      <div className='h-[24px] w-full md:w-[200px]  text-start bg-[#FFF3F6] rounded-2xl md:text-[12px] text-[13px] 2xl:text-[16px] font-medium'>
                         Price - <span style={{ color: "#262FD9" }}>{e.fee ? e.fee : 0} MMK</span>
                       </div>
 

@@ -96,7 +96,7 @@ export default function App() {
             />
           </div>
           <div
-            className='hidden lg:flex justify-end 2xl:justify-end gap-10 items-center w-full lg:w-[1024px] xl:w-[1280px] 2xl:w-[1536px] '
+            className='hidden lg:flex justify-end 2xl:justify-end gap-3 xl:gap-5 2xl:gap-8 items-center w-full lg:w-[1024px] xl:w-[1280px] 2xl:w-[1536px] '
             style={{
               borderRadius: "200px",
 

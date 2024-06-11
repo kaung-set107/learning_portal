@@ -27,7 +27,8 @@ import {
 import { getFile } from "../../util";
 import StickyBox from "react-sticky-box";
 import { Image, Divider } from "@nextui-org/react";
-
+import 'react-photo-view/dist/react-photo-view.css';
+import { PhotoProvider, PhotoView } from 'react-photo-view';
 export default function DepartmentUpdateInput() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const {
@@ -48,7 +49,7 @@ export default function DepartmentUpdateInput() {
 
   useEffect(() => {
     const getOverAllStudentDetail = async () => {
-      console.log(Id);
+      // console.log(Id);
       await apiInstance
         .get(`overall-enrollments`, { params: { status: "waiting" } })
         .then((res) => {
@@ -213,7 +214,7 @@ export default function DepartmentUpdateInput() {
                   fontSize: "18px",
                 }}
               >
-                Desired Course:
+                Enroll Code:
               </span>
               <span
                 style={{
@@ -222,7 +223,7 @@ export default function DepartmentUpdateInput() {
                 }}
               // className='sm:ml-10 md:ml-5'
               >
-                {student.subject?.title}
+                {student.code}
               </span>
             </div>
             <div className='py-1 mt-10 grid grid-cols-2 gap-2'>
@@ -232,7 +233,7 @@ export default function DepartmentUpdateInput() {
                   fontSize: "18px",
                 }}
               >
-                Registeration Date:
+                Transaction No:
               </span>
               <span
                 style={{
@@ -241,11 +242,7 @@ export default function DepartmentUpdateInput() {
                 }}
               // className='sm:ml-10 md:ml-5'
               >
-                {new Date(student.student?.date).toLocaleDateString("en-US", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })}
+                {student?.paymentTransaction}
               </span>
             </div>
             <div className='py-1 mt-10 grid grid-cols-2 gap-2'>
@@ -255,7 +252,7 @@ export default function DepartmentUpdateInput() {
                   fontSize: "18px",
                 }}
               >
-                Why Choose MSI:
+                Course :
               </span>
               <span
                 style={{
@@ -264,9 +261,7 @@ export default function DepartmentUpdateInput() {
                 }}
               // className='sm:ml-10 md:ml-5'
               >
-                Lorem ipsum dolor sit amet consectetur. Lectus eros molestie id
-                eget nisl leo. Tempor cursus diam venenatis maecenas
-                scelerisque. Dui enim molestie accumsan et risus.
+                {student.course?.title}
               </span>
             </div>
             <div className='py-1 mt-10 grid grid-cols-2 gap-2'>
@@ -276,7 +271,7 @@ export default function DepartmentUpdateInput() {
                   fontSize: "18px",
                 }}
               >
-                Why choose this course :
+                Transaction Image :
               </span>
               <span
                 style={{
@@ -284,10 +279,20 @@ export default function DepartmentUpdateInput() {
                   fontSize: "18px",
                 }}
               // className='sm:ml-10 md:ml-5'
+
               >
-                Lorem ipsum dolor sit amet consectetur. Lectus eros molestie id
-                eget nisl leo. Tempor cursus diam venenatis maecenas
-                scelerisque. Dui enim molestie accumsan et risus.
+
+                <div className=''>
+                  {/* To view fullscreen for image */}
+                  <PhotoProvider>
+                    <PhotoView key={student._id} src={student.paymentImage && getFile({ payload: student.paymentImage })}>
+                      <abbr title='Click View' className={student.paymentImage ? 'text-blue' : ''}>
+                        <img src={student.paymentImage && getFile({ payload: student.paymentImage })} style={{ width: '100px', height: '100px' }} />
+                      </abbr>
+                    </PhotoView>
+                  </PhotoProvider >
+
+                </div>
               </span>
             </div>
           </div>

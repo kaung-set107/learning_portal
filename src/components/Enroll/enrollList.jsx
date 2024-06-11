@@ -34,7 +34,7 @@ export default function PendingTable() {
   const [waitListCount, setWaitListCount] = useState("");
   const [rejectCount, setRejectCount] = useState("");
   const [studentCounts, setStudentCounts] = useState("");
-  console.log(waitListCount, "prop coun");
+  // console.log(waitListCount, "prop coun");
   const [activeTab, setActiveTab] = useState(1);
   const handleTabClick = (tabNumber) => {
     setActiveTab(tabNumber);
@@ -49,7 +49,7 @@ export default function PendingTable() {
           setWaitListCount(res.data.counts.enrollmentWaitingListCount);
           setRejectCount(res.data.counts.enrollmentRejectListCount);
           setStudentCounts(res.data.counts.enrollmentCount);
-          console.log(res.data, "reg");
+          // console.log(res.data, "reg");
         });
     };
     getDepartments();

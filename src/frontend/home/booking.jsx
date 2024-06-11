@@ -1,5 +1,5 @@
 import { ReactElement, useState, useEffect } from "react";
-import { Image, Button, Card, Input, } from "@nextui-org/react";
+import { Image, Button, Card, Input, Textarea, } from "@nextui-org/react";
 import { Select, SelectItem } from '@nextui-org/select'
 import 'react-phone-number-input/style.css'
 import PhoneInputWithCountry from "react-phone-number-input/react-hook-form"
@@ -184,12 +184,13 @@ const About = () => {
                     </div>
                     <div className='w-full flex flex-col gap-2'>
                         <label>Phone Number</label>
-                        <PhoneInputWithCountry
+                        <Input
                             name="phone"
-                            control={control}
+                            placeholder="Enter phone"
+                            size='lg' variant={variant}
                             onChange={handlePhoneInputChange}
-                            className='border-1 border-gray-300 p-3 rounded-[10px]'
-                            rules={{ required: true }} />
+                            className=''
+                        />
                     </div>
                 </div>
                 <div className='flex flex-col sm:flex-row sm:flex gap-10 text-[14px] font-normal'>
@@ -198,7 +199,7 @@ const About = () => {
                         <Select
                             size={studyDesti ? "lg" : "sm"}
                             label={studyDesti ? '' : "Select an country"}
-                            className=''
+                            className='border-1 border-slate-300 rounded-lg'
                             onChange={(e) => setStudyDesti(e.target.value)}
                         >
                             {countryList.map((animal) => (
@@ -214,7 +215,7 @@ const About = () => {
                         <Select
                             size="sm"
                             label="Select an course"
-                            className=''
+                            className='border-1 border-slate-300 rounded-lg'
                             onChange={(e) => setDesiredCourse(e.target.value)}
                         >
                             {courseList.map((animal) => (
@@ -231,7 +232,7 @@ const About = () => {
                         <Select
                             size="sm"
                             label="Select an counselor"
-                            className=''
+                            className='border-1 border-slate-300 rounded-lg'
                             onChange={(e) => setCounselorName(e.target.value)}
                         >
                             {/* {courseList.map((animal) => ( */}
@@ -260,6 +261,10 @@ const About = () => {
                         </LocalizationProvider>
 
                     </div>
+
+                </div>
+                <div className='flex flex-col sm:flex-row sm:flex gap-10 text-[14px] font-normal'>
+                    <Textarea placeholder='Description' className='border-1 border-slate-300 rounded-lg' />
                 </div>
                 <div className='flex justify-center '>
                     <Button type="submit" className='w-[220px] bg-[#0B2743] text-[#fff]'  >Submit</Button>
