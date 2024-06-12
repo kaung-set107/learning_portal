@@ -179,10 +179,10 @@ const Body = () => {
       </div>
 
 
-      < div data-aos={"fade-up"} className='flex justify-around pl-[26px]  sm:pl-[57px] pr-[26px] sm:pr-[57px] pt-[20px] sm:pt-[100px] relative  overflow-hidden xl:container 2xl:container' >
+      < div data-aos={"fade-up"} className='flex justify-around pl-[26px]  sm:pl-[57px] pr-[26px] sm:pr-[57px] pt-[20px] sm:pt-[30px] md:pt-[100px] relative  overflow-hidden xl:container 2xl:container' >
 
         <div
-          className="absolute bg-[#0B2743] top-0 sm:top-2 lg:top-16 2xl:top-[90px] -left-[130px] sm:-left-48 lg:-left-[240px] w-[170px] h-[140px] rounded-full md:w-[300px] md:h-[300px] lg:w-[300px] lg:h-[200px] 2xl:w-[300px]"
+          className="absolute bg-[#0B2743] top-16 sm:top-2 lg:top-16 2xl:top-[90px] -left-[130px] sm:-left-48 lg:-left-[240px] w-[170px] h-[140px] rounded-full md:w-[300px] md:h-[300px] lg:w-[300px] lg:h-[200px] 2xl:w-[300px]"
 
         ></div>
         <div className='w-[654px] flex flex-col gap-10  mt-14 lg:mt-16'>
@@ -220,7 +220,7 @@ const Body = () => {
 
         </div>
         <div className='hidden sm:flex overflow-hidden lg:mt-16 mt-14'>
-          <Image src={MSIHead} className='md:w-[400px] md:h-[400px] lg:w[450px] lg:h-[450px] ' />
+          <Image src={MSIHead} className='w-[200px] sm:w-[300px] md:w-[400px] md:h-[400px] lg:w[450px] lg:h-[450px] ' />
         </div>
 
         <img
@@ -238,7 +238,7 @@ const Body = () => {
       <ScrollAnimation animateIn='fadeIn'
         animateOut='fadeOut'
         scrollableParentSelector='#cou' >
-        < div className='flex flex-col p-5 md:p-5  relative ' id='cou' data-aos={"fade-up"} >
+        < div className='flex flex-col p-5 md:p-5 container  relative ' id='cou' data-aos={"fade-up"} >
 
           <h1
             className=' p-10 md:p-20  flex justify-center text-[30px] sm:text-[40px] font-[semibold] py-5'
@@ -247,21 +247,21 @@ const Body = () => {
             Courses We Offer
           </h1>
 
-          <div data-aos={"fade-up"} className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-36 lg:gap-10 2xl:gap-48 sm:gap-0 items-center justify-center sm:py-10 2xl:py-20 container'>
+          <div data-aos={"fade-up"} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-32 md:gap-4 lg:gap-10 2xl:gap-48 items-center justify-center sm:py-10 2xl:py-20 container'>
             {courseList?.slice(0, 4).map((e) => (
               <div
                 onClick={() => handleRoute(e)}
 
-                className='w-[310px]  md:w-[320px] lg:w-[300px] xl:w-[310px] 2xl:w-[280px] md:h-[480px] h-[470px]'
+                className='flex justify-center w-[310px] sm:w-[600px] sm:h-[400px] md:w-full lg:w-[300px] xl:w-[310px] 2xl:w-[400px] md:h-[480px] h-[470px]'
               >
                 <div >
                   <Image
                     // style={{ width: "500px", height: "280px" }}
                     alt={e.image?.originalname}
                     src={getFile({ payload: e.image })}
-                    className='w-[310px] h-full md:w-[280px] md:h-[200px] lg:w-[280px] lg:h-[250px] xl:w-[300px] xl:h-[260px] 2xl:w-[350px] sm:hover:-translate-y-2 sm:hover:scale-105 duration-500'
+                    className='w-[310px] h-full sm:w-[400px]  sm:h-[300px] md:w-[280px] md:h-[200px] lg:w-[280px] lg:h-[250px] xl:w-[300px] xl:h-[260px] 2xl:w-[380px] sm:hover:-translate-y-2 sm:hover:scale-105 duration-500'
                   />
-                  <div className='flex p-5 flex-col justify-start flex-grow xl:w-[280px]'>
+                  <div className='flex p-5 flex-col justify-start flex-grow sm:w-[300px] xl:w-[280px]'>
                     <span className='w-[280px]  text-[14px] 2xl:text-[20px] font-semibold text-[#B72041] flex'>MSI Academy
                     </span>
                     <span
@@ -271,7 +271,7 @@ const Body = () => {
                         fontSize: "23px",
                         letterSpacing: "-0.96px",
                       }}
-                      className='w-[290px] xl:h-auto py-2'
+                      className='sm:w-[320px] md:w-[290px] xl:h-auto py-2'
                       data-aos={"fade-up"}
                     >
                       {e.title}
@@ -283,7 +283,7 @@ const Body = () => {
                         // width: "400px",
                         // height: "auto",
                       }}
-                      className='w-[280px] xl:w-[260px] h-[40px]'
+                      className='sm:w-[320px] md:w-[280px] xl:w-[260px] h-[40px]'
                       data-aos={"fade-up"}
                     >
                       {e?.description.substring(0, 50)}...
@@ -309,7 +309,7 @@ const Body = () => {
             ))}
           </div>
 
-          <Link href='/home-course' data-aos={"zoom-in"} className='flex justify-center py-5 pt-20 md:pt-[25px] lg:pt-[30px] 2xl:pt-[40px] sm:pt-0 '>
+          <Link href='/home-course' data-aos={"zoom-in"} className='flex justify-center py-5 pt-20 sm:pt-[100px] md:pt-[25px] lg:pt-[30px] 2xl:pt-[40px] '>
             <span className=' text-[16px] sm:text-[20px] py-2 text-[#1F4164] hover:text-danger font-semibold text-center cursor-pointer border-1 border-[#1F4164] w-[110px] sm:w-[130px] rounded-lg hover:border-danger-400'>
               See All
             </span>
@@ -330,13 +330,13 @@ const Body = () => {
         </div >
 
         {/* Web */}
-        < div className='hidden sm:grid grid-cols-4 lg:gap-5 items-center justify-around flex-wrap pl-[130px] pr-[33px]' data-aos={"fade-up"}>
-          {eventList?.slice(0, 4)?.map((b, index) => (
+        < div className='hidden md:grid md:grid-cols-3 lg:grid-cols-3 sm:gap-10 lg:gap-5 items-center justify-around flex-wrap container pr-[33px]' data-aos={"fade-up"}>
+          {eventList?.slice(0, 3)?.map((b, index) => (
             <Link href={`/events/${b._id}`} key={index}>
               <div className='relative cursor-pointer hover:translate-y-1 hover:scale-105 duration-500'>
                 <Image
                   src={`data:image/jpeg;base64,${b?.image}`}
-                  className=' md:w-[320px] md:h-[511px] lg:w-[390px] lg:h-[450px]  rounded-[24px]'
+                  className='sm:w-[300px] sm:h-[500px] md:w-[340px] md:h-[511px] lg:w-[420px] lg:h-[450px] 2xl:w-[430px] 2xl:h-[550px]  rounded-[24px]'
                 // width={620}
                 // height={354}
                 />
@@ -363,19 +363,19 @@ const Body = () => {
           )}
         </div >
         {/* Mobile */}
-        < div data-aos={"fade-up"} className='grid sm:hidden grid-cols-1 items-center justify-around flex-wrap pl-[40px] pr-[33px]' >
+        < div data-aos={"fade-up"} className='grid md:hidden sm:grid-cols-1 md:grid-cols-2 sm:gap-10 items-center justify-around flex-wrap pl-[40px] pr-[33px]' >
           {
-            eventList?.slice(0, 1).map((b, index) => (
+            eventList?.slice(0, 2).map((b, index) => (
               <Link href={`/events/${b._id}`} key={index}>
                 <div className='relative cursor-pointer'>
                   <Image
                     src={`data:image/jpeg;base64,${b?.image}`}
-                    className=' w-[300px] h-[411px]  rounded-[24px]'
+                    className='w-[300px] h-[350px] sm:w-[300px] sm:h-[411px]  rounded-[24px]'
                   // width={620}
                   // height={354}
                   />
                   <div
-                    className='h-[200px] flex flex-col items-start justify-start sm:items-center sm:justify-center absolute bottom-0 w-[200px] sm:w-[300px] p-2 z-50 rounded-[20px]'
+                    className='h-[200px] flex flex-col items-start justify-start sm:items-center sm:justify-center absolute bottom-0 w-[200px] sm:w-[260px] p-2 z-50 rounded-[20px]'
                     style={{
                       background:
                         "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 125.65%)",
@@ -404,8 +404,14 @@ const Body = () => {
         </div>
 
       </div >
-      <Activities />
-      <Testimonials />
+      <div className='pt-[200px] sm:pt-[200px] md:pt-[250px] lg:pt-[460px] 2xl:pt-[200px]'>
+        <Activities />
+      </div>
+
+      <div className='sm:pt-[200px] md:pt-0'>
+        <Testimonials />
+      </div>
+
 
       <div className='mt-4 mx-2'>
         <Footer />

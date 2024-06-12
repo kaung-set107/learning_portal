@@ -140,7 +140,7 @@ export const MsiAchievements = () => {
 
   return (
     <div className=" pb-10 lg:pb-36 before:w-[15%] before:aspect-square before:rounded-full before:content-[''] before:absolute before:top-0 before:left-0 before:-translate-x-2/4 before:-translate-y-2/4 " >
-      <h2 className='text-center text-[#0B2743] font-semibold text-[40px] font-[Poppins] mr-9 mb-9 mt-12'>
+      <h2 className='text-center text-[30px] sm:text-[40px]  text-[#0B2743] font-semibold  font-[Poppins] mr-9 mb-9 mt-12'>
         Our Achievements
       </h2>
 
@@ -178,17 +178,17 @@ export const MsiAchievements = () => {
         {achievementList.map((st, index) => (
           <div
             key={index}
-            className='flex gap-2 justify-center '
+            className='flex gap-2 justify-center container'
           >
             <div className='flex flex-col lg:gap-2 '>
               <Image
                 src={getFile({ payload: st.image })}
 
-                className=' w-[200px] h-[170px] sm:w-[177px] sm:h-[177px] md:w-[177px] md:h-[177px] lg:w-[250px] lg:h-[220px] xl:w-[310px] xl:h-[290px] 2xl:w-[400px] 2xl:h-[350px] mb-10 sm:mb-0 sm:mt-2'
+                className=' w-[250px] h-[180px] sm:w-[177px] sm:h-[177px] md:w-[177px] md:h-[177px] lg:w-[250px] lg:h-[220px] xl:w-[310px] xl:h-[290px] 2xl:w-[400px] 2xl:h-[350px] mb-10 sm:mb-0 sm:mt-2'
 
                 alt='testimonal participant'
               />
-              <span className='text-[13px] md:text-[14px] lg:text-[15px] xl-[16px] 2xl:text[18px] font-semibold'>{st.title}</span>
+              <span className='text-[13px] w-full sm:w-[200px] md:text-[14px] lg:text-[15px] xl-[16px] 2xl:text[18px] font-semibold'>{st.title}</span>
             </div>
 
 

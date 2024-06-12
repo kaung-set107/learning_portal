@@ -12,6 +12,7 @@ import apiInstance from '../../../util/api'
 import { getFile } from '../../../util'
 import AOS from 'aos';
 import "aos/dist/aos.css";
+import CarouselView from '../../../util/Carousel'
 export default function Activities() {
     const data = [
         { id: 1, title: 'MSI Students Discussion For Better Thinking', img: Act1 },
@@ -46,18 +47,16 @@ export default function Activities() {
     }, [])
     return (
         <div className='container'>
-            <div className='lg:h-[800px] 2xl:h-[800px] '>
+            <div className='sm:h-[400px] md:h-[700px] lg:h-[800px] 2xl:h-[800px] '>
                 <div className='flex flex-col gap-5 justify-center'>
                     <span className='text-[26px] lg:text-[30px] 2xl:text-[36px] font-semibold font-[Poppins] flex justify-center items-center text-[#0B2743]' data-aos={'fade-up'}>News & Activities</span>
-                    <span className='text-[18px] lg:text-[20px] 2xl:text-[24px] font-medium font-[Poppins] text-[#0B2743' data-aos={'fade-right'}>Latest Post</span>
+                    <span className='text-[18px] lg:text-[20px] 2xl:text-[24px] font-medium font-[Poppins] text-[#0B2743 sm:text-start text-center' data-aos={'fade-right'}>Latest Post</span>
                 </div>
-                <div className='grid grid-cols-1 gap-2 md:grid-cols-3 lg:grid-cols-4 md:gap-5 lg:gap-5 2xl:gap-10 sm:gap-0 items-center justify-center md:flex-row sm:py-10 2xl:py-20' >
+                <div className='hidden lg:grid gap-2 lg:grid-cols-4 md:gap-32 lg:gap-5 2xl:gap-10 sm:gap-0 items-center justify-center md:flex-row sm:py-10 2xl:py-20' >
 
                     {newsList.slice(0, 4).map((e) => (
                         <Link to={'/activities-detail/' + e._id}
-                            // onClick={() => handleRoute(e)}
 
-                            className=''
                         >
 
                             <Image
@@ -71,7 +70,7 @@ export default function Activities() {
 
                                 <Link to={'/activities-detail/' + e._id}
 
-                                    className='2xl:w-[344px] lg:h-[56px] w-[300px] text-[#0B2743] text-[18px] lg:text-[18px] 2xl:text-[24px] font-medium'
+                                    className='2xl:w-[344px] lg:w-[200px] lg:h-[56px] w-[300px] text-[#0B2743] text-[18px] lg:text-[18px] 2xl:text-[24px] font-medium'
                                 >
                                     {e.title.substring(0, 40)}...
                                 </Link>
@@ -92,6 +91,11 @@ export default function Activities() {
                     ))}
 
                 </div>
+                {/* For mobile and tablet */}
+                <div className='flex lg:hidden'>
+                    <CarouselView dataList={newsList} />
+                </div>
+
                 <div className='flex justify-center mt-5 py-3 sm:py-0 ' data-aos={'zoom-in'}>
                     <Link to='/news-activities' >
                         <button className='text-[#696A75] text-[16px] hover:text-primary font-semibold border-1 border-slate-700 p-2 rounded-lg sm:hover:-translate-y-1 sm:hover:scale:110 duration-500'>

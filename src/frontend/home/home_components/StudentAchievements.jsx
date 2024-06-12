@@ -20,7 +20,7 @@ export const StudentAchievements = () => {
     },
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
-      items: 4
+      items: 3
     },
     tablet: {
       breakpoint: { max: 1024, min: 464 },
@@ -46,13 +46,13 @@ export const StudentAchievements = () => {
 
   }, []);
   return (
-    <div >
+    <div className='' >
 
 
-      <h2 className='bg-[#BC1F40] text-[#fff] text-center font-semibold text-4xl p-16 mr-9 mb-9 mt-12 w-full overflow-hidden'>
+      <h2 className='bg-[#BC1F40] text-[25px] sm:text-[35px]  text-[#fff] text-center font-semibold text-4xl p-10 sm:p-16 mr-9 mb-9 mt-12 w-full overflow-hidden'>
         <img
           src={EHalf}
-          className="hidden absolute  right-0 w-[120px] md:flex  lg:top-[1980px] xl:top-[1800px] 2xl:top-[1980px]"
+          className="hidden 2xl:hidden absolute  right-0 w-[120px] lg:flex md:hidden  lg:top-[1980px] xl:top-[1800px] 2xl:top-[1980px]"
           alt=""
         />
         Students Achievements
@@ -94,13 +94,13 @@ export const StudentAchievements = () => {
         {achievementList.map((st, index) => (
           <div
             key={index}
-            className='flex lg:gap-2 xl:gap-4 2xl:gap-6 gap-2 justify-center items-center'
+            className='flex lg:gap-2 xl:gap-4 2xl:gap-4 gap-2 justify-center items-center '
           >
             <div className='flex flex-col lg:gap-2 xl:gap-4 2xl:gap-6 gap-2'>
               <Image
                 src={getFile({ payload: st.image })}
 
-                className=' w-[200px] h-[170px] sm:w-[177px] sm:h-[177px] md:w-[177px] md:h-[177px] lg:w-[250px] lg:h-[220px] xl:w-[300px] xl:h-[290px] 2xl:w-[360px] 2xl:h-[370px] mb-10 sm:mb-0 sm:mt-2'
+                className=' w-[200px] h-[170px] sm:w-[200px] sm:h-[177px] md:w-[250px] md:h-[200px] lg:w-[330px] lg:h-[330px] xl:w-[410px] xl:h-[370px] 2xl:w-[430px] 2xl:h-[370px] mb-10 sm:mb-0 sm:mt-2'
 
                 alt='testimonal participant'
               />

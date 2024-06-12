@@ -22,7 +22,7 @@ export const Testimonials = () => {
     },
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
-      items: 4
+      items: 3
     },
     tablet: {
       breakpoint: { max: 1024, min: 464 },
@@ -80,7 +80,7 @@ export const Testimonials = () => {
   return (
     <div className='md:text-[#26496a] text-white md:bg-[#0B2743] p-0 lg:p-10  bg-[#26496a] container'>
       <h2
-        className='flex text-[48px] font-semibold py-5 justify-center text-[#fff]'
+        className='flex text-[48px] font-semibold sm:pt-[100px] md:py-5 justify-center text-[#fff]'
 
       >
         Testimonials
@@ -120,7 +120,7 @@ export const Testimonials = () => {
             key={index}
             className='flex gap-2 justify-center sm:p-5'
           >
-            <div className=' w-[300px] h-[600px] sm:h-[500px] md:w-[330px] md:h-[537px] lg:w-[280px] p-10 rounded-md ' style={{ background: "rgba(255, 255, 255, 0.03)" }}>
+            <div className=' w-[300px] h-[600px] sm:h-[500px] md:w-[330px] md:h-[537px] lg:w-[380px] xl:w-[450px] 2xl:w-[500px] p-10 rounded-md ' style={{ background: "rgba(255, 255, 255, 0.03)" }}>
               <div className='flex flex-col  justify-center items-center'>
                 <Image
                   src={`data:image/jpeg;base64,${st?.image}`}
@@ -143,7 +143,7 @@ export const Testimonials = () => {
 
 
       </Carousel>
-      <div className='flex justify-center mt-20 py-3 sm:py-0 '>
+      <div className='flex justify-center mt-20 py-3 sm:py-4 '>
         <Link href='/testimonial-page'>
           <button className='text-[#fefeff] text-[16px] hover:text-primary font-semibold border-1 border-white-700 p-2 rounded-lg sm:hover:-translate-y-1 sm:hover:scale:110 duration-500'>
             See All Testimonials &nbsp; <FontAwesomeIcon icon={faArrowUpRightFromSquare} className='text-[blue]' />
