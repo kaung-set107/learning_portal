@@ -68,7 +68,7 @@ export default function CourseDetail(props) {
   return (
     <>
       <MSINav />
-      <div className=' sm:pt-[24px] sm:pr-[20px] sm:pb-[100px] sm:pl-[40px] '>
+      <div className=' sm:pt-[24px] sm:pr-[20px] sm:pb-[100px] sm:pl-[40px] 2xl:container '>
         <>
           {/* <Head /> */}
           <div className='flex flex-col gap-5 sm:gap-10 md:gap-10 lg:gap-16 xl:gap-20 2xl:gap-28 duration-100'>
@@ -83,7 +83,7 @@ export default function CourseDetail(props) {
 
                 showVideoList ?
                   (showVideoList.map((video) => (
-                    <div className='flex w-full gap-2 md:w-[900px]' key={video}>
+                    <div className='flex w-full gap-2 md:w-[900px] ' key={video}>
                       <iframe
                         src={
                           "https://www.youtube.com/embed/" +
@@ -91,18 +91,18 @@ export default function CourseDetail(props) {
                         }
                         //   title={assignList.name}
                         allowFullScreen
-                        className='border w-[375px] h-[136px] md:w-[711px] md:h-[306px] lg:w-[680px] xl:w-[850px]'
+                        className='border w-[375px] h-[136px] md:w-[711px] md:h-[306px] lg:w-[580px] xl:w-[850px] '
                         allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
                       // style={{ width:'1400px',height:'500px' }}
                       ></iframe>
                     </div>
                   ))) : (
-                    <div className='flex w-full gap-2 md:w-[900px] ' >
+                    <div className='flex w-full gap-2 md:w-[900px] lg:w-[800px] ' >
                       <iframe
                         src='https://www.youtube.com/embed/AJhplp3dct8'
                         //   title={assignList.name}
                         allowFullScreen
-                        className='border w-[375px] h-[136px] md:w-[911px] md:h-[306px]'
+                        className='border w-[375px] h-[136px] md:w-[711px] md:h-[306px] lg:w-[580px] xl:w-[850px]]'
                         allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
                       // style={{ width:'1400px',height:'500px' }}
                       ></iframe>
@@ -116,7 +116,7 @@ export default function CourseDetail(props) {
                     border: "1px solid red",
                     borderRadius: "12px",
                   }}
-                  className='flex justify-center sm:justify-start sm:items-center mx-4 md:mx-0 pr-[20px] md:pr-[24px] w-[345px] h-[134px] md:w-[275px] md:h-[306px]'
+                  className='flex justify-center sm:justify-start sm:items-center mx-4 md:mx-0 pr-[20px] md:pr-[24px] w-[345px] h-[134px] md:w-[275px] md:h-[306px] lg:w-[300px]'
                 >
                   <div className='flex flex-col gap-2 sm:gap-5 p-2 sm:p-5 justify-center'>
                     <h1 style={{ fontSize: "20px", fontWeight: "700" }}>
@@ -516,7 +516,7 @@ export default function CourseDetail(props) {
             >
               {/* Web View */}
               <div
-                className='hidden sm:grid sm:grid-cols-2 gap-52 h-[629px] p-[32px 0px]'
+                className='hidden sm:grid sm:grid-cols-2 gap-52 lg:gap-[200px] h-[629px] p-[32px 0px]'
 
               >
                 <div
@@ -547,19 +547,18 @@ export default function CourseDetail(props) {
                   </p>
                 </div>
 
-                <div style={{ width: "465px", height: "565px" }} className='hidden sm:block'>
+                <div className='hidden sm:block'>
                   <div
-                    style={{
-                      padding: "50.35px 0px 107.35px 13.038px",
-                    }}
+
                     className='hover:cursor-pointer hover:-translate-y-2 hover:rotate-1 hover:scale-110 duration-500'
                   >
                     <Image
                       src={Certi}
-                      style={{
-                        width: "380.905px",
-                        height: "346.011px",
-                      }}
+                      // style={{
+                      //   width: "380.905px",
+                      //   height: "346.011px",
+                      // }}
+                      className='pl-[60px] w-[300.905px] h-[346.011px] 2xl:w-full '
                     />
                   </div>
                 </div>
@@ -595,10 +594,11 @@ export default function CourseDetail(props) {
                     </p>
                     <Image
                       src={Certi}
-                      style={{
-                        width: "316.905px",
-                        height: "346.011px",
-                      }}
+                      // style={{
+                      //   width: "316.905px",
+                      //   height: "346.011px",
+                      // }}
+                      className='w-[316.905px] h-[346.011px] lg:w-full'
                     />
 
                   </div>
@@ -670,7 +670,7 @@ export default function CourseDetail(props) {
                 left: "299px",
                 marginTop: "8rem",
               }}
-              className='-rotate-17'
+              className='-rotate-17 2xl:hidden flex'
             ></div>
             <div
               style={{
@@ -784,7 +784,7 @@ export default function CourseDetail(props) {
 
       </div >
 
-      <div className='pt-[10px] mx-2'>
+      <div className='pt-[100px] sm:pt-[150px] md:pt-[200px] lg:pt-[170px] mx-2'>
         <Footer />
       </div>
     </>

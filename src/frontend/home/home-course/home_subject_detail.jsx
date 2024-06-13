@@ -87,7 +87,7 @@ const SubjectDetail = (props) => {
 
   const handleFunQuizPage = (val, stu) => {
     console.log(stu, 'hfjsakdsnjkj')
-    navigate(`/fun-quiz/${val?._id}`, { state: { FunQuizData: val?.quiz, StudentID: val?.student } })
+    navigate(`/fun-quiz/${val?._id}`, { state: { FunQuizData: val?.quiz, StudentID: val?.student, SubID: SubidfromCourse } })
 
   }
   const handleBack = () => {
@@ -96,7 +96,7 @@ const SubjectDetail = (props) => {
   return (
     <>
       <MSINav />
-      <div className=' md:p-[24 20 100 40]'>
+      <div className=' md:p-[24 20 100 40] 2xl:container'>
         <div className='flex flex-col gap-10 duration-100'>
           {/* Video Section */}
           <div className='flex flex-col gap-10 md:gap-32 pt-5 md:pt-20 md:flex-row'>

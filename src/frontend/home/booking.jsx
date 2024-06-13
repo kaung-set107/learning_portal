@@ -182,6 +182,10 @@ const About = () => {
                         <label>Full Name</label>
                         <Input type='text' size='lg' variant={variant} className='' name='name' placeholder="Enter name" onChange={(e) => setName(e.target.value)} />
                     </div>
+                    <div className='w-full flex flex-col gap-2 '>
+                        <label>Email</label>
+                        <Input type='email' size='lg' variant={variant} className='' name='email' placeholder="Enter email" onChange={(e) => setEmail(e.target.value)} />
+                    </div>
                     <div className='w-full flex flex-col gap-2'>
                         <label>Phone Number</label>
                         <Input

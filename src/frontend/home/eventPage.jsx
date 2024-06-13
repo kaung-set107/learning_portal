@@ -79,12 +79,12 @@ export default function EventPage() {
                                         <div className='relative cursor-pointer'>
                                             <Image
                                                 src={`data:image/jpeg;base64,${b?.image}`}
-                                                className=' w-[300px] h-[411px]  rounded-[24px]'
+                                                className=' w-[300px] h-[511px]  rounded-[24px]'
                                             // width={620}
                                             // height={354}
                                             />
                                             <div
-                                                className='h-[200px] flex flex-col items-start justify-start sm:items-center sm:justify-center absolute bottom-0 w-[200px] sm:w-[300px] p-2 z-50 rounded-[20px]'
+                                                className='h-[200px] flex flex-col items-start justify-start sm:items-center sm:justify-center absolute bottom-0 w-[300px] sm:w-[300px] p-2 z-50 rounded-[20px]'
                                                 style={{
                                                     background:
                                                         "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 125.65%)",
@@ -111,7 +111,7 @@ export default function EventPage() {
 
             </div >
 
-            <div className='md:mt-[80px] lg:mt-[100px] xl:mt-[120px] 2xl:mt-[140px]'>
+            <div className='mt-[40px] sm:mt-[60px] md:mt-[80px] lg:mt-[100px] xl:mt-[120px] 2xl:mt-[140px]'>
                 <Footer />
             </div>
         </div>

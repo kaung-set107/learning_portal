@@ -21,7 +21,7 @@ const FunQuizPage = () => {
     const location = useLocation()
 
     const QuizData = location.state.FunQuizData
-    const studentID = location.state.StudentID
+    const Subid = location.state.SubID
     // console.log(studentID, 'FunQuizData')
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [arr, setArr] = useState([]);
@@ -440,7 +440,7 @@ const FunQuizPage = () => {
                                                     </span>
                                                     <div className='flex gap-2'>
                                                         <Button color='primary' variant='bordered'>
-                                                            <Link to='/student'>   Cancel</Link>
+                                                            <Link to={'/home-sub-detail/' + Subid}>   Cancel</Link>
 
                                                         </Button>
                                                         {QuizData?.questionData[0] ? (
