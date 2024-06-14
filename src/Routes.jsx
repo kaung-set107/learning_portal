@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+
 import Login from "./pages/Login/login";
 // Home Web Page
 import NewsAndActivities from "./frontend/home/home-course/activitiesAll.jsx";
@@ -129,6 +130,17 @@ import InstructorExamResultCheck from "./frontend/features/exam-results/pages/Ex
 //Fun quiz
 import FunQuiz from './frontend/home/home-course/funQuiz/funQuizPage.jsx'
 import FunQuizResult from './frontend/home/home-course/funQuiz/funQuizResult.jsx'
+
+//Admin
+//Counsellor
+import CounsellorPage from './pages/Counsellor/counsellorsPage.jsx'
+import CounsellorCreate from './pages/Counsellor/counsellorInputPage.jsx'
+import CounsellorUpdate from './pages/Counsellor/counsellorUpdatePage.jsx'
+
+//Appointment
+import AppointmentPage from './pages/Appointment/appointmentsPage.jsx'
+import AppointmentDetailPage from './pages/Appointment/appointmentDetailPage.jsx'
+
 export default function RouteFile() {
   console.log(localStorage.getItem("user"), "local use");
   return (
@@ -175,6 +187,15 @@ export default function RouteFile() {
 
           <Route element={<AuthContainer />}>
             {/* Admin Panel */}
+            {/* CounsellorPage */}
+            <Route path="/counsellors" element={<CounsellorPage />}></Route>
+            <Route path="/counsellor-create" element={<CounsellorCreate />}></Route>
+            <Route path="/counsellor-update/:id" element={<CounsellorUpdate />}></Route>
+
+            {/* Appointment */}
+            <Route path="/appointments" element={<AppointmentPage />}></Route>
+            <Route path="/appointment-detail/:id" element={<AppointmentDetailPage />}></Route>
+
             {/* Start Student Register and Detail */}
             <Route path="/home" element={<Dashboard />}></Route>
             <Route path="/register-list" element={<StudentReg />}></Route>

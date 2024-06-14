@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBook,
   faLaptopFile,
-  faUsers,
+  faUserTie,
   faDesktop,
   faCircleQuestion,
   faUserGraduate,
@@ -88,6 +88,40 @@ export default function Sidebar(props) {
                           {/* <FontAwesomeIcon icon={faCircleQuestion} size='xl' /> */}
                           &nbsp;&nbsp;
                           <span className="ml-3 font-medium">Something</span>
+                        </div>
+                      </Link>
+                    </AccordionItem>
+                  </Accordion>
+                  <Divider></Divider>
+                  <Accordion>
+                    <AccordionItem
+                      key="1"
+                      aria-label="Accordion 1"
+                      title="Admin"
+                      startContent={
+                        <FontAwesomeIcon icon={faUserTie} size='xl' />
+                      }
+                    >
+                      <Divider></Divider>
+                      <Link to="/counsellors">
+                        <div
+                          onClick={() => setInc(true)}
+                          className="hover:bg-blue-100 px-4 py-3 m-auto text-sm "
+                        >
+                          {/* <FontAwesomeIcon icon={faCircleQuestion} size='xl' /> */}
+                          &nbsp;&nbsp;
+                          <span className="ml-3 font-medium">Counsellors</span>
+                        </div>
+                      </Link>
+                      <Divider></Divider>
+                      <Link to="/appointments">
+                        <div
+                          onClick={() => setInc(true)}
+                          className="hover:bg-blue-100 px-4 py-3 m-auto text-sm "
+                        >
+                          {/* <FontAwesomeIcon icon={faCircleQuestion} size='xl' /> */}
+                          &nbsp;&nbsp;
+                          <span className="ml-3 font-medium">Appointments</span>
                         </div>
                       </Link>
                     </AccordionItem>
