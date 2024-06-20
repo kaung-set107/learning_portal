@@ -20,6 +20,8 @@ import {
     TableBody,
     TableRow,
     TableCell,
+    Badge,
+    Chip,
 } from "@nextui-org/react";
 import React, { useState } from "react";
 import { useEffect } from "react";
@@ -27,25 +29,24 @@ import apiInstance from "../../util/api";
 import { EditIcon } from "../Table/editicon";
 import { DeleteIcon } from "../Table/deleteicon";
 import { Link } from "react-router-dom";
-import { ChevronDownIcon } from "../../assets/Icons/ChevronDownIcon";
-import { SearchIcon } from "../Navbar/search";
 import { PlusIcon } from "../../assets/Icons/PlusIcon";
-import { getFile } from "../../util/index";
+import Swal from "sweetalert2";
+
 
 export default function Counsellors() {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [delID, setDelID] = useState(null);
+    const [delID, setDelID] = useState('');
     const [page, setPage] = React.useState(1);
     const [pages, setPages] = React.useState(1);
     const [rowsPerPage, setRowsPerPage] = React.useState(15);
-    const [courseList, setCourseList] = React.useState([]);
+    const [counsellorList, setCounsellorList] = React.useState([]);
     const [dataCount, setDataCount] = useState('')
 
     const items = React.useMemo(() => {
         const start = (page - 1) * rowsPerPage;
         const end = start + rowsPerPage;
-        return courseList.slice(start, end);
-    }, [page, courseList]);
+        return counsellorList.slice(start, end);
+    }, [page, counsellorList]);
 
     const handleKeyDown = (event) => {
         if (event.key === "Enter" && isOpen) {
@@ -70,11 +71,11 @@ export default function Counsellors() {
     };
 
     useEffect(() => {
-        const getCourses = async () => {
+        const getCounsellor = async () => {
             await apiInstance
-                .get(`courses`, { params: { limit: 80, rowsPerPage: rowsPerPage } })
+                .get(`counsellors`, { params: { limit: 80, rowsPerPage: rowsPerPage } })
                 .then((res) => {
-                    setCourseList(res.data.data);
+                    setCounsellorList(res.data.data);
                     // console.log(res.data, 'att')
                     setDataCount(res.data.count);
                     setPages(
@@ -87,7 +88,7 @@ export default function Counsellors() {
                 });
         };
 
-        getCourses();
+        getCounsellor();
         document.addEventListener("keydown", handleKeyDown);
 
         return () => {
@@ -97,8 +98,8 @@ export default function Counsellors() {
 
     const handleOpen = (event) => {
         onOpen();
-        // console.log(event.currentTarget.getAttribute("data-key"));
-        setDelID(event.currentTarget.getAttribute("data-key"));
+        console.log(event);
+        setDelID(event);
     };
 
     const handleClose = () => {
@@ -108,8 +109,15 @@ export default function Counsellors() {
 
     const handleDelete = async () => {
         // console.log(setDelID);
-        await apiInstance.delete("courses/" + delID).then(() => {
-            setCourseList(courseList.filter((item) => item._id !== delID));
+        await apiInstance.delete("counsellors/" + delID).then(() => {
+            Swal.fire({
+                icon: "success",
+                title: "Success",
+                text: "Counsellor Deleted!",
+                showConfirmButton: false,
+                timer: 2000,
+            });
+            setCounsellorList(counsellorList.filter((item) => item._id !== delID));
             onClose();
         });
     };
@@ -131,7 +139,7 @@ export default function Counsellors() {
             </div>
             <div className='flex justify-between items-center mb-3'>
                 <span className='text-default-400 text-small'>
-                    Total {courseList.length} Attendances
+                    Total {counsellorList.length} counsellors
                 </span>
                 <label className='flex items-center text-default-400 text-small'>
                     Rows per page:
@@ -149,8 +157,8 @@ export default function Counsellors() {
                 isHeaderSticky
                 aria-label='Example table with client side sorting'
                 classNames={{
-                    base: "max-h-[719px] ",
-                    table: "min-h-[100px]",
+                    base: "max-h-[719px]  ",
+                    table: "min-h-[100px] ",
                 }}
                 bottomContent={
                     <div className='flex w-full justify-center'>
@@ -166,47 +174,53 @@ export default function Counsellors() {
                     </div>
                 }
             >
-                <TableHeader>
+                <TableHeader className=''>
                     <TableColumn>No</TableColumn>
                     <TableColumn>Counsellor Name</TableColumn>
                     <TableColumn>Time</TableColumn>
-                    <TableColumn>Date</TableColumn>
+                    <TableColumn>Status</TableColumn>
 
 
                     <TableColumn key='action'>Action</TableColumn>
                 </TableHeader>
                 <TableBody emptyContent={"No Positions to display."}>
-                    {/* {items.map((item, index) => ( */}
-                    <TableRow key=''>
-                        <TableCell>001</TableCell>
-                        <TableCell>Example Name</TableCell>
-                        <TableCell>9:00 - 10:00</TableCell>
+                    {items.map((item, index) => (
+                        <TableRow key='index'>
+                            <TableCell>{index + 1}</TableCell>
+                            <TableCell>{item.name}</TableCell>
+                            <TableCell>{item.schedule.slice(0, 2).map((sc, scInd) => (
+                                <>
+                                    <div key={scInd}>{sc.startTime} {`=>`}{sc.endTime}</div>
 
-                        <TableCell>12.06.2024</TableCell>
+                                </>
+
+                            ))} {item.schedule.length > 2 && (<span>{item.schedule.length - 2} more+</span>)}</TableCell>
+
+                            <TableCell >{item.available === true ? (<Chip color="success" className='text-[#fff]'>Available</Chip>) : <Chip color="warning" className='text-[#fff]'>Unavailable</Chip>}</TableCell>
 
 
-                        <TableCell>
-                            <div className='relative flex items-center gap-2'>
-                                <Tooltip content='Edit Position'>
-                                    <Link to={"/counsellor-update/" + 1}>
-                                        <span className='text-lg text-default-400 cursor-pointer active:opacity-50'>
-                                            <EditIcon />
+                            <TableCell>
+                                <div className='relative flex items-center gap-2'>
+                                    <Tooltip content='Edit Position'>
+                                        <Link to={"/counsellor-update/" + item._id}>
+                                            <span className='text-lg text-default-400 cursor-pointer active:opacity-50'>
+                                                <EditIcon />
+                                            </span>
+                                        </Link>
+                                    </Tooltip>
+                                    <Tooltip color='danger' content='Delete user'>
+                                        <span
+                                            data-key=''
+                                            className='text-lg text-danger cursor-pointer active:opacity-50'
+                                            onClick={(e) => handleOpen(item._id)}
+                                        >
+                                            <DeleteIcon />
                                         </span>
-                                    </Link>
-                                </Tooltip>
-                                <Tooltip color='danger' content='Delete user'>
-                                    <span
-                                        data-key=''
-                                        className='text-lg text-danger cursor-pointer active:opacity-50'
-                                        onClick={(e) => handleOpen(e)}
-                                    >
-                                        <DeleteIcon />
-                                    </span>
-                                </Tooltip>
-                            </div>
-                        </TableCell>
-                    </TableRow>
-                    {/* ))} */}
+                                    </Tooltip>
+                                </div>
+                            </TableCell>
+                        </TableRow>
+                    ))}
                 </TableBody>
             </Table>
             <Modal backdrop='blur' isOpen={isOpen} onClose={handleClose}>

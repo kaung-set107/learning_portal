@@ -18,6 +18,7 @@ import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import Swal from "sweetalert2";
 const countryList = [
     {
         id: 1,
@@ -101,20 +102,21 @@ const countryList = [
 // import Footer from '../../frontend/home/footer';
 const About = () => {
     const [value, setValue] = useState(dayjs(''));
-    console.log(value, 'va')
-    console.log(value.$d, 'd   ')
-    function formatDate(dateString) {
-        const date = new Date(dateString);
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Adding 1 because month index starts from 0
-        const day = String(date.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    }
+
+    // console.log(value, 'va')
+    // console.log(value.$d, 'd   ')
+    // function formatDate(dateString) {
+    //     const date = new Date(dateString);
+    //     const year = date.getFullYear();
+    //     const month = String(date.getMonth() + 1).padStart(2, '0'); // Adding 1 because month index starts from 0
+    //     const day = String(date.getDate()).padStart(2, '0');
+    //     return `${year}-${month}-${day}`;
+    // }
 
 
-    const formattedDate = formatDate(value.$d);
-    const [date, setDate] = useState()
-    console.log(formattedDate); // Output: 2022-04-17
+    // const formattedDate = formatDate(value.$d);
+
+    // console.log(formattedDate); // Output: 2022-04-17
 
 
     const {
@@ -124,34 +126,68 @@ const About = () => {
         handleSubmit
     } = useForm()
     const variant = "bordered"
+    const [counsellorList, setCounsellorList] = useState([])
     const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
     const [phone, setPhone] = useState('')
     const [studyDesti, setStudyDesti] = useState('')
     const [desiredCourse, setDesiredCourse] = useState('')
-    const [counselorName, setCounselorName] = useState('')
+    const [counsellorName, setCounsellorName] = useState('')
     const [courseList, setCourseList] = useState([])
-    // const [value, onChange] = useState(new Date());
+    const [scheduleList, setScheduleList] = useState([])
+    const [description, setDescription] = useState('')
+    const [startTime, setStartTime] = useState('');
+    const [endTime, setEndTime] = useState('');
+
+
+    const handleCounsellor = (id) => {
+        console.log(counsellorList.filter(el => el._id === id)[0], 'res')
+        setCounsellorName(counsellorList.filter(el => el._id === id)[0]._id)
+        setScheduleList(counsellorList.filter(el => el._id === id)[0].schedule)
+    }
+
+    const handleTime = (id) => {
+        setStartTime(scheduleList.filter(el => el._id === id)[0].startTime)
+        setEndTime(scheduleList.filter(el => el._id === id)[0].endTime)
+    }
     const createForm = (event) => {
 
         // Do something with the name and value, e.g., send it to a server
         const data = {
-            name: name,
-            phone: phone,
+            guest: {
+                name: name,
+                phone: phone,
+                email: email
+            },
+
             studyDestination: studyDesti,
             desiredCourse: desiredCourse,
-            date: value.$d
-        }
-        console.log("Data:", data);
-        localStorage.setItem('data', JSON.stringify(data))
+            counsellorName: counsellorName,
+            description: description,
+            startTime: startTime,
+            endTime: endTime
 
+        }
+        // console.log("Data:", data);
+        // localStorage.setItem('data', JSON.stringify(data))
+        apiInstance
+            .post("appointments", data,)
+            .then(function () {
+                Swal.fire({
+                    icon: "success",
+                    title: " Successful!",
+                    text: "Appointment Created",
+                    showConfirmButton: false,
+                    timer: 2000,
+                });
+            })
+            .catch((error) => {
+                alert(error);
+            });
         // Reset the input fields
         // setFormData({ name: '', value: '' });
     };
-    const handlePhoneInputChange = (value, country, event) => {
-        // Do something with the phone input value
-        setPhone(value)
-        console.log("Phone input value:", value);
-    };
+
     useEffect(() => {
         window.scroll(0, 0)
         const hee = localStorage.getItem('data')
@@ -166,8 +202,18 @@ const About = () => {
                     // setPages(res.data._metadata.page_count);
                 });
         };
+        const getCounsellor = async () => {
+            await apiInstance
+                .get(`counsellors`)
+                .then((res) => {
+                    setCounsellorList(res.data.data);
+                    // console.log(res.data.data, 'att')
+                    // setPages(res.data._metadata.page_count);
+                });
+        };
 
-        getCourses();
+        getCounsellor();
+        getCourses()
     }, [])
     return (
         <div className=''>
@@ -177,7 +223,7 @@ const About = () => {
                     <span className='text-[20px] sm:text-[32px] font-medium sm:font-semibold text-[#0B2743]'>Student Counseling Booking </span>
                     <span className='text-[11px] sm:text-[20px] font-light sm:font-normal text-[#0B2743]'>Complete the following form and our staff will contact you.</span>
                 </div>
-                <div className='flex flex-col sm:flex-row gap-10 text-[14px] font-normal'>
+                <div className='flex flex-col  gap-5 text-[14px] font-normal'>
                     <div className='w-full flex flex-col gap-2 '>
                         <label>Full Name</label>
                         <Input type='text' size='lg' variant={variant} className='' name='name' placeholder="Enter name" onChange={(e) => setName(e.target.value)} />
@@ -192,7 +238,7 @@ const About = () => {
                             name="phone"
                             placeholder="Enter phone"
                             size='lg' variant={variant}
-                            onChange={handlePhoneInputChange}
+                            onChange={(e) => setPhone(e.target.value)}
                             className=''
                         />
                     </div>
@@ -207,7 +253,7 @@ const About = () => {
                             onChange={(e) => setStudyDesti(e.target.value)}
                         >
                             {countryList.map((animal) => (
-                                <SelectItem key={animal.id} value={animal.name}>
+                                <SelectItem key={animal.name} value={animal.name}>
                                     {animal.name}
                                 </SelectItem>
                             ))}
@@ -232,23 +278,23 @@ const About = () => {
                 </div>
                 <div className='flex flex-col sm:flex-row sm:flex gap-10 text-[14px] font-normal'>
                     <div className='w-full flex flex-col gap-2'>
-                        <label>Counselor Name</label>
+                        <label>Counsellor Name</label>
                         <Select
                             size="sm"
                             label="Select an counselor"
                             className='border-1 border-slate-300 rounded-lg'
-                            onChange={(e) => setCounselorName(e.target.value)}
+                            onChange={(e) => handleCounsellor(e.target.value)}
                         >
-                            {/* {courseList.map((animal) => ( */}
-                            <SelectItem value=''>
-                                Example Name
-                            </SelectItem>
-                            {/* ))} */}
+                            {counsellorList.map((item) => (
+                                <SelectItem value={item} key={item._id}>
+                                    {item.name}
+                                </SelectItem>
+                            ))}
                         </Select>
                     </div>
-                    <div className='w-full flex flex-col gap-2 mt-3 '>
+                    <div className='w-full flex flex-col gap-2 '>
 
-
+                        {/* 
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DemoContainer components={['DateTimePicker', 'MobileDateTimePicker',]} className='p-1'>
 
@@ -256,19 +302,29 @@ const About = () => {
                                     <MobileDateTimePicker label="Appointment Date & Time" defaultValue={dayjs(value)} value={value}
                                         onChange={(newValue) => setValue(newValue)} />
                                 </DemoItem>
-                                {/* <DateTimePicker
-                                    label="Date & Time Picker"
-                                    value={value}
-                                    onChange={(newValue) => setValue(newValue)}
-                                /> */}
+                        
                             </DemoContainer>
-                        </LocalizationProvider>
-
+                        </LocalizationProvider> */}
+                        <div className='w-full flex flex-col gap-2'>
+                            <label>Available Time</label>
+                            <Select
+                                size="sm"
+                                label='Select Time'
+                                className='border-1 border-slate-300 rounded-lg'
+                                onChange={(e) => handleTime(e.target.value)}
+                            >
+                                {scheduleList.map((item) => (
+                                    <SelectItem value='' key={item._id}>
+                                        {`${item.startTime}${'=>'} ${item.endTime}`}
+                                    </SelectItem>
+                                ))}
+                            </Select>
+                        </div>
                     </div>
 
                 </div>
                 <div className='flex flex-col sm:flex-row sm:flex gap-10 text-[14px] font-normal'>
-                    <Textarea placeholder='Description' className='border-1 border-slate-300 rounded-lg' />
+                    <Textarea placeholder='Description' className='border-1 border-slate-300 rounded-lg' onChange={(e) => setDescription(e.target.value)} />
                 </div>
                 <div className='flex justify-center '>
                     <Button type="submit" className='w-[220px] bg-[#0B2743] text-[#fff]'  >Submit</Button>

@@ -1,14 +1,19 @@
-import React, { useState } from 'react'
-import { Button, DatePicker, Input, TimeInput } from "@nextui-org/react";
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import { Button, Checkbox, DatePicker, Input, TimeInput } from "@nextui-org/react";
+import { Link, useLocation } from 'react-router-dom';
+import apiInstance from '../../util/api';
+import Swal from 'sweetalert2';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleChevronLeft } from "@fortawesome/free-solid-svg-icons";
 export default function CounsellorInput() {
+
     const [name, setName] = useState('')
     const [startTime, setStartTime] = useState('')
     const [endTime, setEndTime] = useState('')
-    const [date, setDate] = useState('')
+    const [checkVal, setCheckVal] = useState(false)
     const [addSection, setAddSection] = useState([])
     const [showNextSection, setShowNextSection] = useState(false)
-    const DateFormat = `${date.day}-${date.month}-${date.year}`
+    // const DateFormat = `${date.day}-${date.month}-${date.year}`
 
 
     const AddSection = () => {
@@ -32,34 +37,47 @@ export default function CounsellorInput() {
     const create = () => {
         const data = {
             name: name,
-            date: DateFormat,
-            time: addSection.map((i) => {
+            available: checkVal,
+            schedule: addSection.map((i) => {
                 return {
-                    startTime: `${i.startTime.hour > 12 ? i.startTime.hour - 12 : i.startTime.hour}:${i.startTime.minute}`,
-                    endTime: `${i.endTime.hour > 12 ? i.endTime.hour - 12 : i.endTime.hour}:${i.endTime.minute}`,
+                    startTime: `${i.startTime.hour > 12 ? i.startTime.hour - 12 : i.startTime.hour}:${i.startTime.minute} ${i.startTime.hour > 12 ? 'PM' : 'AM'}`,
+                    endTime: `${i.endTime.hour > 12 ? i.endTime.hour - 12 : i.endTime.hour}:${i.endTime.minute} ${i.endTime.hour > 12 ? 'PM' : 'AM'}`,
 
                 }
             })
         }
-        console.log(data, 'data')
+
+        apiInstance
+            .post("counsellors", data,)
+            .then(function () {
+                Swal.fire({
+                    icon: "success",
+                    title: "Counsellor Created Successful",
+                    text: "",
+                    showConfirmButton: false,
+                    timer: 2000,
+                });
+            })
+            .catch((error) => {
+                alert(error);
+            });
     }
+
+
     return (
-        <div>
+        <div className='flex flex-col gap-5'>
+            <div className='rounded-none py-3 text-left'>
+                <Link to='/counsellors' className=''>
+                    <FontAwesomeIcon icon={faCircleChevronLeft} size='2xl' />
+                </Link>
+            </div>
             <div className='flex flex-col gap-4 text-[16px] font-medium'>
                 <div>
-                    <label className=''>Counsellor Name</label>
+                    <label className=' font-bold'>Counsellor Name</label>
                     <Input type='text' id='tn' placeholder='Enter Name' className='form-control' onChange={(e) => setName(e.target.value)} />
                 </div>
-                <div>
-                    <DatePicker
-                        label={"Date"}
-                        className=""
-                        description=""
-                        labelPlacement="outside"
-                        onChange={(e) => setDate(e)}
-                    />
-                </div>
-                <h3 className='text-decoration-underline'>Time </h3>
+
+                <h3 className='text-decoration-underline font-bold'>Time </h3>
                 <div className='flex gap-5  rounded-1 p-3 mt-2'>
 
 
@@ -98,7 +116,12 @@ export default function CounsellorInput() {
                     ''
                 )}
 
+                <div className='flex gap-2'>
 
+                    <span className='font-bold'>Avaialble</span>
+                    <Checkbox onChange={() => setCheckVal(!checkVal)} />
+
+                </div>
             </div>
             {/* Footer Button */}
             <div className='mt-10 '>

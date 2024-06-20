@@ -56,17 +56,17 @@ export default function Activities() {
 
                     {newsList.slice(0, 4).map((e) => (
                         <Link to={'/activities-detail/' + e._id}
-
+                            data-aos={'fade-up'}
                         >
 
                             <Image
                                 // style={{ width: "500px", height: "280px" }}
                                 // alt={e.image?.originalname}
-                                data-aos={'fade-zoom-in'}
+
                                 src={e.images ? getFile({ payload: e.images?.bannerImage[0] }) : ''}
                                 className='w-[350px] h-full md:w-[300px] md:h-[200px] lg:w-[320px] lg:h-[250px] 2xl:w-full sm:hover:-translate-y-2 sm:hover:scale-105 duration-500'
                             />
-                            <div className='flex p-5 flex-col justify-start flex-grow ' data-aos={'fade-up'}>
+                            <div className='flex p-5 flex-col justify-start flex-grow '>
 
                                 <Link to={'/activities-detail/' + e._id}
 
@@ -78,7 +78,7 @@ export default function Activities() {
 
                             </div>
                             <div className='flex justify-start items-start p-2'>
-                                <div className='flex gap-2' data-aos={'fade-up'}>
+                                <div className='flex gap-2' >
                                     <Image src={Globe} className='w-[25px] h-[35px] rounded-xl' />
                                     <span className='flex justify-start items-start pt-1'>MSI ACADEMY</span>
                                 </div>

@@ -26,7 +26,7 @@ const CarouselView = ({ dataList }) => {
         }
     };
     return (
-        <div className='container'>
+        <div className='container' >
             <Carousel
                 additionalTransfrom={0}
                 arrows
@@ -55,7 +55,7 @@ const CarouselView = ({ dataList }) => {
                 swipeable
                 responsive={responsive}
                 className='p-1 '
-
+                data-aos={'fade-up'}
             >
 
                 {dataList.slice(0, 4).map((e, index) => (
@@ -65,12 +65,12 @@ const CarouselView = ({ dataList }) => {
 
                         <Image
                             src={e.images ? getFile({ payload: e.images?.bannerImage[0] }) : ''}
-
+                            data-aos={'fade-left'}
                             className=' w-[200px] h-[170px] sm:w-[280px] sm:h-[230px] md:w-[320px] md:h-[250px] lg:w-[250px] lg:h-[220px] xl:w-[310px] xl:h-[290px] 2xl:w-[400px] 2xl:h-[350px] mb-10 sm:mb-0 sm:mt-2'
 
                             alt='testimonal participant'
                         />
-                        <div className='flex p-5 flex-col justify-start flex-grow ' data-aos={'fade-up'}>
+                        <div className='flex p-5 flex-col justify-start flex-grow ' >
 
                             <Link to={'/activities-detail/' + e._id}
 
@@ -82,7 +82,7 @@ const CarouselView = ({ dataList }) => {
 
                         </div>
                         <div className='flex justify-start items-start p-2'>
-                            <div className='flex gap-2' data-aos={'fade-up'}>
+                            <div className='flex gap-2' >
                                 <Image src={Globe} className='w-[25px] h-[35px] rounded-xl' />
                                 <span className='flex justify-start items-start pt-1'>MSI ACADEMY</span>
                             </div>

@@ -182,7 +182,7 @@ const Body = () => {
       < div data-aos={"fade-up"} className='flex justify-around pl-[26px]  sm:pl-[57px] pr-[26px] sm:pr-[57px] pt-[20px] sm:pt-[30px] md:pt-[100px] relative  overflow-hidden xl:container 2xl:container' >
 
         <div
-          className="absolute bg-[#0B2743] top-16 sm:top-2 lg:top-16 2xl:top-[90px] -left-[130px] sm:-left-48 lg:-left-[240px] w-[170px] h-[140px] rounded-full md:w-[300px] md:h-[300px] lg:w-[300px] lg:h-[200px] 2xl:w-[300px]"
+          className="absolute bg-[#0B2743] top-16 sm:top-2 md:top-0 md:-left-[130px] lg:top-16 2xl:top-[90px] -left-[130px] sm:-left-48 lg:-left-[240px] w-[170px] h-[140px] rounded-full md:w-[200px] md:h-[200px] lg:w-[300px] lg:h-[200px] 2xl:w-[300px]"
 
         ></div>
         <div className='w-[654px] flex flex-col gap-10  mt-14 lg:mt-16'>
@@ -251,7 +251,7 @@ const Body = () => {
             {courseList?.slice(0, 4).map((e) => (
               <div
                 onClick={() => handleRoute(e)}
-
+                data-aos={"fade-up"}
                 className='flex justify-center w-[310px] sm:w-[600px] sm:h-[400px] md:w-full lg:w-[300px] xl:w-[310px] 2xl:w-[400px] md:h-[480px] h-[470px]'
               >
                 <div >
@@ -272,7 +272,7 @@ const Body = () => {
                         letterSpacing: "-0.96px",
                       }}
                       className='sm:w-[320px] md:w-[290px] xl:h-auto py-2'
-                      data-aos={"fade-up"}
+
                     >
                       {e.title}
                     </span>
@@ -284,14 +284,14 @@ const Body = () => {
                         // height: "auto",
                       }}
                       className='sm:w-[320px] md:w-[280px] xl:w-[260px] h-[40px]'
-                      data-aos={"fade-up"}
+
                     >
                       {e?.description.substring(0, 50)}...
                     </div>
                     {/* card footer */}
                     <div
                       className='py-5 flex justify-center gap-2 md:w-[250px] w-[290px]'
-                      data-aos={"fade-up"}
+
                     >
                       <div className='h-[24px] w-full md:w-[200px]  text-start bg-[#ECEFFF] rounded-2xl md:text-[12px] text-[13px] 2xl:text-[16px] font-medium'>
                         <span>Duration -</span>
