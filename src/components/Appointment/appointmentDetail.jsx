@@ -1,8 +1,14 @@
 import { ReactElement, useState, useEffect } from "react";
-import { Image, Button, Card, Input, Textarea, } from "@nextui-org/react";
-import { Select, SelectItem } from '@nextui-org/select'
-import 'react-phone-number-input/style.css'
-import PhoneInputWithCountry from "react-phone-number-input/react-hook-form"
+import {
+    Image, Button, Card, Input, Textarea, Modal,
+    DropdownItem,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalBody,
+    useDisclosure
+} from "@nextui-org/react";
+
 
 // import DateTimePicker from 'react-datetime-picker';
 import { useForm } from "react-hook-form"
@@ -13,96 +19,16 @@ import 'react-clock/dist/Clock.css';
 import apiInstance from "../../util/api";
 
 import dayjs from 'dayjs';
-import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
-import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-const countryList = [
-    {
-        id: 1,
-        name: 'Thailand'
-    },
-    {
-        id: 2,
-        name: 'Singapore'
-    },
-    {
-        id: 3,
-        name: 'Malaysia'
-    }
-    ,
-    {
-        id: 4,
-        name: 'Vietnam'
-    }
-    ,
-    {
-        id: 5,
-        name: 'Japan'
-    }
-    ,
-    {
-        id: 6,
-        name: 'Taiwan'
-    }
-    ,
-    {
-        id: 7,
-        name: 'China'
-    }
-    ,
-    {
-        id: 8,
-        name: 'Korea'
-    }
-    ,
-    {
-        id: 9,
-        name: 'USA'
-    }
-    ,
-    {
-        id: 10,
-        name: 'UK'
-    }
-    ,
-    {
-        id: 11,
-        name: 'Australia'
-    }
-    ,
-    {
-        id: 12,
-        name: 'Canada'
-    },
-    {
-        id: 13,
-        name: 'Switzerland'
-    },
-    {
-        id: 14,
-        name: 'Natherland'
-    },
-    {
-        id: 15,
-        name: 'Poland'
-    },
-    {
-        id: 16,
-        name: 'Spain'
-    },
-    {
-        id: 17,
-        name: 'Germany'
-    }
-]
+
+import { useLocation } from "react-router";
+import Swal from "sweetalert2";
 
 // import Footer from '../../frontend/home/footer';
 const About = () => {
+    const location = useLocation()
+    const ID = location.pathname.split('/')[2]
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const [value, setValue] = useState(dayjs(''));
-    // console.log(value, 'va')
-    // console.log(value.$d, 'd   ')
     function formatDate(dateString) {
         const date = new Date(dateString);
         const year = date.getFullYear();
@@ -128,24 +54,32 @@ const About = () => {
     const [phone, setPhone] = useState('')
     const [studyDesti, setStudyDesti] = useState('')
     const [desiredCourse, setDesiredCourse] = useState('')
-    const [counselorName, setCounselorName] = useState('')
-    const [courseList, setCourseList] = useState([])
+    const [approveStartTime, setApproveStartTime] = useState('')
+    const [approveEndTime, setApproveEndTime] = useState('')
+    const [approveDate, setApproveDate] = useState('')
+    const [appointmentData, setAppointmentData] = useState([])
     // const [value, onChange] = useState(new Date());
-    const createForm = (event) => {
+    const Approve = () => {
 
-        // Do something with the name and value, e.g., send it to a server
         const data = {
-            name: name,
-            phone: phone,
-            studyDestination: studyDesti,
-            desiredCourse: desiredCourse,
-            date: value.$d
-        }
-        // console.log("Data:", data);
-        localStorage.setItem('data', JSON.stringify(data))
+            date: approveDate ? approveDate : appointmentData?.date,
+            startTime: approveStartTime ? approveStartTime : appointmentData?.startTime,
+            endTime: approveEndTime ? approveEndTime : appointmentData?.endTime,
 
-        // Reset the input fields
-        // setFormData({ name: '', value: '' });
+        }
+        apiInstance.put(`appointments/${ID}/confirm`, data).then((res) => {
+            Swal.fire({
+                icon: "success",
+                title: "Approved Successful",
+                text: "",
+                showConfirmButton: false,
+                timer: 2000,
+            });
+            onClose();
+        }).catch((err) => {
+            console.log(err)
+        })
+
     };
     const handlePhoneInputChange = (value, country, event) => {
         // Do something with the phone input value
@@ -153,26 +87,45 @@ const About = () => {
         // console.log("Phone input value:", value);
     };
     useEffect(() => {
-        window.scroll(0, 0)
-        const hee = localStorage.getItem('data')
-        // console.log(hee, 'dddd')
 
         const getCourses = async () => {
             await apiInstance
-                .get(`courses`)
+                .get(`appointments/${ID}`)
                 .then((res) => {
-                    setCourseList(res.data.data);
-                    // console.log(res.data.data, 'att')
+                    setAppointmentData(res.data.data);
+                    console.log(res.data.data, 'att')
                     // setPages(res.data._metadata.page_count);
                 });
         };
 
         getCourses();
-    }, [])
+        document.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            document.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [isOpen])
+
+    const handleKeyDown = (event) => {
+        if (event.key === "Enter" && isOpen) {
+            Approve();
+        }
+    };
+    const handleOpen = (event) => {
+        onOpen();
+
+    };
+
+    const handleClose = () => {
+        onClose();
+
+    };
+
+
     return (
         <div className=''>
 
-            <form onSubmit={handleSubmit(createForm)} className='flex flex-col p-5 sm:pl-[20px] sm:pr-[20px]  sm:pt-20 sm:pb-10  gap-10 w-full'>
+            <div className='flex flex-col p-5 sm:pl-[20px] sm:pr-[20px]  sm:pt-20 sm:pb-10  gap-10 w-full'>
                 <div className='flex flex-col gap-2 sm:gap-5 '>
                     <span className='text-[20px] sm:text-[32px] font-medium sm:font-semibold text-[#0B2743]'>Student Counseling Booking Detail</span>
                     <span className='text-[11px] sm:text-[20px] font-light sm:font-normal text-[#0B2743]'>Complete the following form and our staff will contact you.</span>
@@ -180,17 +133,17 @@ const About = () => {
                 <div className='flex flex-col  gap-6 text-[14px] font-normal'>
                     <div className='w-full flex flex-col gap-2 '>
                         <label>Full Name</label>
-                        <Input type='text' size='lg' variant={variant} className='' name='name' placeholder="Enter name" onChange={(e) => setName(e.target.value)} />
+                        <Input type='text' size='lg' variant={variant} className='' name='name' isDisabled value={appointmentData?.guest?.name} onChange={(e) => setName(e.target.value)} />
                     </div>
                     <div className='w-full flex flex-col gap-2 '>
                         <label>Email</label>
-                        <Input type='email' size='lg' variant={variant} className='' name='email' placeholder="Enter email" onChange={(e) => setEmail(e.target.value)} />
+                        <Input type='email' size='lg' variant={variant} className='' name='email' isDisabled value={appointmentData?.guest?.email} onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div className='w-full flex flex-col gap-2'>
                         <label>Phone Number</label>
                         <Input
                             name="phone"
-                            placeholder="Enter phone"
+                            isDisabled value={appointmentData?.guest?.phone}
                             size='lg' variant={variant}
                             onChange={handlePhoneInputChange}
                             className=''
@@ -200,79 +153,33 @@ const About = () => {
                 <div className='flex flex-col sm:flex-row sm:flex gap-10 text-[14px] font-normal'>
                     <div className='w-full flex flex-col gap-2 '>
                         <label>Study Destination</label>
-                        <Select
-                            size={studyDesti ? "lg" : "sm"}
-                            label={studyDesti ? '' : "Select an country"}
-                            className='border-1 border-slate-300 rounded-lg'
-                            onChange={(e) => setStudyDesti(e.target.value)}
-                        >
-                            {countryList.map((animal) => (
-                                <SelectItem key={animal.id} value={animal.name}>
-                                    {animal.name}
-                                </SelectItem>
-                            ))}
-                        </Select>
+                        <Input isDisabled value={appointmentData?.studyDestination} />
 
                     </div>
                     <div className='w-full flex flex-col gap-2'>
                         <label>Desired Course</label>
-                        <Select
-                            size="sm"
-                            label="Select an course"
-                            className='border-1 border-slate-300 rounded-lg'
-                            onChange={(e) => setDesiredCourse(e.target.value)}
-                        >
-                            {courseList.map((animal) => (
-                                <SelectItem key={animal._id} value={animal._id}>
-                                    {animal.title}
-                                </SelectItem>
-                            ))}
-                        </Select>
+                        <Input isDisabled value={appointmentData?.desiredCourse?.title} />
                     </div>
                 </div>
                 <div className='flex flex-col sm:flex-row sm:flex gap-10 text-[14px] font-normal'>
                     <div className='w-full flex flex-col gap-2'>
                         <label>Counselor Name</label>
-                        <Select
-                            size="sm"
-                            label="Select an counselor"
-                            className='border-1 border-slate-300 rounded-lg'
-                            onChange={(e) => setCounselorName(e.target.value)}
-                        >
-                            {/* {courseList.map((animal) => ( */}
-                            <SelectItem value=''>
-                                Example Name
-                            </SelectItem>
-                            {/* ))} */}
-                        </Select>
+                        <Input isDisabled value={appointmentData?.counsellor?.name} />
                     </div>
-                    <div className='w-full flex flex-col gap-2 mt-3 '>
+                    <div className='w-full flex flex-col gap-2'>
 
-
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DemoContainer components={['DateTimePicker', 'MobileDateTimePicker',]} className='p-1'>
-
-                                <DemoItem >
-                                    <MobileDateTimePicker label="Appointment Date & Time" defaultValue={dayjs(value)} value={value}
-                                        onChange={(newValue) => setValue(newValue)} />
-                                </DemoItem>
-                                {/* <DateTimePicker
-                                    label="Date & Time Picker"
-                                    value={value}
-                                    onChange={(newValue) => setValue(newValue)}
-                                /> */}
-                            </DemoContainer>
-                        </LocalizationProvider>
+                        <label>Time</label>
+                        <Input isDisabled value={`${appointmentData?.startTime} ${'=>'} ${appointmentData?.endTime}`} />
 
                     </div>
 
                 </div>
                 <div className='flex flex-col sm:flex-row sm:flex gap-10 text-[14px] font-normal'>
-                    <Textarea placeholder='Description' className='border-1 border-slate-300 rounded-lg' />
+                    <Textarea isDisabled value={appointmentData?.description} className='border-1 border-slate-300 rounded-lg' />
                 </div>
                 <div className='flex justify-between'>
                     <div className='flex justify-start gap-4 '>
-                        <Button type="submit" className='w-[200px] bg-[#0B2743] text-[#fff]'  >Approve</Button>
+                        <Button type="submit" className='w-[200px] bg-[#0B2743] text-[#fff]' onClick={(e) => handleOpen(e)}>Approve</Button>
                         <Button type="submit" className='w-[200px] bg-red-700 text-[#fff]'  >Rejecte</Button>
                     </div>
                     <div className='flex justify-start gap-4 '>
@@ -282,8 +189,46 @@ const About = () => {
                 </div>
 
 
-            </form>
+            </div>
+            <Modal backdrop="opaque" isOpen={isOpen} onClose={handleClose}>
+                <ModalContent>
+                    {(handleClose) => (
+                        <>
+                            <ModalHeader className='flex flex-col gap-1'>
+                                Approve Appointment
+                            </ModalHeader>
+                            <ModalBody>
+                                <div>
+                                    <label>Date</label>
+                                    <Input type='date' defaultValue={appointmentData?.date?.split('T')[0]} onChange={(e) => setApproveDate(e.target.value)} />
+                                </div>
+                                <div>
+                                    <label>Start Time</label>
+                                    <Input type='time' onChange={(e) => setApproveStartTime(e.target.value)} />
+                                </div>
+                                <div>
+                                    <label>End Time</label>
+                                    <Input type='time' onChange={(e) => setApproveEndTime(e.target.value)} />
+                                </div>
 
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button color='default' variant='light' onClick={handleClose}>
+                                    Cancel
+                                </Button>
+                                <Button
+                                    color='danger'
+                                    onPress={() => Approve()}
+                                    onKeyDown={handleKeyDown}
+                                >
+                                    Yes
+
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
 
         </div>
     );

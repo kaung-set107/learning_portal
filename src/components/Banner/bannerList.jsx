@@ -97,7 +97,7 @@ const BannerList = () => {
 
                         <div className='grid grid-cols-5 gap-10'>
                             {i.images.map((e) => (
-                                <img src={getFile({ payload: e })} className='w-[290px] h-[290px] rounded-md' />
+                                <img src={getFile({ payload: e })} className='w-full h-[120px] rounded-md' />
 
                             ))}
                         </div>

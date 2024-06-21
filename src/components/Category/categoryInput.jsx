@@ -22,10 +22,10 @@ export default function category() {
       .then(function () {
         Swal.fire({
           icon: "success",
-          title: "Category Create Successful",
-          text: "Nice!",
-          confirmButtonText: "OK",
-          confirmButtonColor: "#3085d6",
+          title: "Successful",
+          text: "Category Created !",
+          showConfirmButton: false,
+          timer: 2000
         });
       })
       .catch((error) => {
@@ -33,8 +33,8 @@ export default function category() {
           icon: "error",
           title: "Something Wrong!",
           text: "Try again",
-          confirmButtonText: "OK",
-          confirmButtonColor: "#3085d6",
+          showConfirmButton: false,
+          timer: 2000
         });
       });
   };
@@ -77,7 +77,7 @@ export default function category() {
           <Link to='/category'>Cancel</Link>
         </Button>
         <Button color='primary' onClick={create}>
-          Register
+          Create
         </Button>
       </div>
     </div>

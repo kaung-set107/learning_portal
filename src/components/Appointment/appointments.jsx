@@ -2,14 +2,16 @@ import {
     Tooltip,
     Table,
     TableHeader,
-    Modal,
-    DropdownItem,
-    ModalContent,
+
     Image,
     Kbd,
     Button,
-    ModalFooter,
+
     Pagination,
+    Modal,
+    DropdownItem,
+    ModalContent,
+    ModalFooter,
     ModalHeader,
     ModalBody,
     useDisclosure,
@@ -30,6 +32,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRotateRight } from '@fortawesome/free-solid-svg-icons'
 import FilterBarSvg from '../../assets/img/VectorSvg.svg'
 import { setDate } from "date-fns";
+import countryList from "../../constant/countryList";
+import { formatDate } from "../../util/Spinner";
+
 export default function Counsellors() {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -37,73 +42,74 @@ export default function Counsellors() {
     const [page, setPage] = React.useState(1);
     const [pages, setPages] = React.useState(1);
     const [rowsPerPage, setRowsPerPage] = React.useState(15);
-    const [courseList, setCourseList] = React.useState([]);
+    const [appointmentList, setAppointmentList] = React.useState([]);
+    const [courseList, setCourseList] = useState([])
+    const [counsellorList, setCounsellorList] = useState([])
     const [dataCount, setDataCount] = useState('')
     const [appointmentDataList, setAppointmentDataList] = useState('')
-    const [date, setDate] = useState('')
     const [arr, setArr] = useState([])
-    console.log(date, 'date')
+    const [date, setDate] = useState('')
+    const [counsellor, setCounsellor] = useState('')
+    const [country, setCountry] = useState('')
+    const [course, setCourse] = useState('')
+    const [status, setStatus] = useState('')
     const DateFormat = `${date.day}-${date.month}-${date.year}`
-    const handleItems = (data, index) => {
-        console.log(data.split('-')[1] === index && data.split('-')[0], 'e')
 
-        setArr([...arr, {
-            id: parseInt(data.split('-')[1]),
-            counsellor: data.split('-')[0],
-
-
-        }])
-
-    }
-    const handleFilter = () => {
-        // console.log(arr)
+    const handleFilter = async () => {
+        console.log(arr, 'arr')
         const data = {
-            date: DateFormat,
-            counsellor: arr.filter(el => el.id === 0)[arr.filter(el => el.id === 0).length - 1].counsellor,
-            country: arr.filter(el => el.id === 1)[arr.filter(el => el.id === 1).length - 1].counsellor,
-            course: arr.filter(el => el.id === 2)[arr.filter(el => el.id === 2).length - 1].counsellor,
-            status: arr.filter(el => el.id === 3)[arr.filter(el => el.id === 3).length - 1].counsellor,
-
+            // startDate: DateFormat,
+            // endDate: DateFormat,
+            // counsellor: counsellor,
+            // studyDestination: country,
+            // desiredCourse: course,
+            // status: status
+        }
+        if (date) {
+            data.startDate = formatDate(DateFormat) // to change date format
+            data.endDate = formatDate(DateFormat)
+        }
+        if (counsellor) {
+            data.counsellor = counsellor
+        }
+        if (country) {
+            data.studyDestination = country
+        }
+        if (course) {
+            data.desiredCourse = course
+        }
+        if (status) {
+            data.status = status
         }
 
-        localStorage.setItem('AppointmentData', JSON.stringify(data))
-        setAppointmentDataList(data)
+        console.log(data, 'res')
+        await apiInstance.get('appointments', { params: data }).then((res) => {
+            console.log(res.data.data, 'filter')
+            setAppointmentList(res.data.data)
+        })
+        // setAppointmentList(data)
         // console.log(data
         //     , 'data')
 
     }
-    const MainList = [{
-        title: 'Counsellor', data: [
-            { name: 'Kyaw' },
-            { name: 'Aye' },
-            { name: 'Ba' },
-        ]
-    },
-    {
-        title: 'Country', data: [
-            { name: 'USA' },
-            { name: 'Thai' },
-            { name: 'Korea' },
-        ]
-    },
-    {
-        title: 'Courses', data: courseList
-    },
-    {
-        title: 'Status', data: [
-            { name: 'Pending' },
-            { name: 'Approved' },
-            { name: 'Rejected' },
-            { name: 'Scheduled' },
-        ]
-    }]
+    const handleClear = async () => {
+        setDate('')
+        setCounsellor('')
+        setCountry('')
+        setCourse('')
+        setStatus('')
+        await apiInstance.get('appointments').then((res) => {
+
+            setAppointmentList(res.data.data)
+        })
+    }
 
 
     const items = React.useMemo(() => {
         const start = (page - 1) * rowsPerPage;
         const end = start + rowsPerPage;
-        return courseList.slice(start, end);
-    }, [page, courseList]);
+        return appointmentList.slice(start, end);
+    }, [page, appointmentList]);
 
     const handleKeyDown = (event) => {
         if (event.key === "Enter" && isOpen) {
@@ -129,12 +135,12 @@ export default function Counsellors() {
 
     useEffect(() => {
 
-        const getCourses = async () => {
+        const getAppointment = async () => {
             await apiInstance
-                .get(`courses`, { params: { limit: 80, rowsPerPage: rowsPerPage } })
+                .get(`appointments`, { params: { limit: 80, rowsPerPage: rowsPerPage } })
                 .then((res) => {
-                    setCourseList(res.data.data);
-                    // console.log(res.data, 'att')
+                    setAppointmentList(res.data.data);
+                    console.log(res.data.data, 'att')
                     setDataCount(res.data.count);
                     setPages(
                         res.data.count % rowsPerPage === 0
@@ -146,7 +152,20 @@ export default function Counsellors() {
                 });
         };
 
-        getCourses();
+        const getCourse = async () => {
+            await apiInstance.get('courses').then((res) => {
+                setCourseList(res.data.data)
+            })
+        }
+
+        const getCounsellors = async () => {
+            await apiInstance.get('counsellors').then((res) => {
+                setCounsellorList(res.data.data)
+            })
+        }
+        getCounsellors()
+        getCourse()
+        getAppointment();
         document.addEventListener("keydown", handleKeyDown);
 
         return () => {
@@ -167,8 +186,8 @@ export default function Counsellors() {
 
     const handleDelete = async () => {
         // console.log(setDelID);
-        await apiInstance.delete("courses/" + delID).then(() => {
-            setCourseList(courseList.filter((item) => item._id !== delID));
+        await apiInstance.delete("appointments/" + delID).then(() => {
+            setAppointmentList(appointmentList.filter((item) => item._id !== delID));
             onClose();
         });
     };
@@ -179,39 +198,98 @@ export default function Counsellors() {
             <div className='flex flex-row gap-5 justify-between py-5 '>
 
                 <div className='flex gap-0 mb-3 flex-row '>
-                    <Button radius='none' className=' bg-white border-1 border-slate-300 h-10 p-5' style={{ borderRadius: '50px 0px 0px 50px' }}>
+                    <Button radius='none' className=' bg-white border-1 border-slate-300 h-10 p-5' style={{ borderRadius: '50px 0px 0px 50px' }} >
                         <Image src={FilterBarSvg} className='w-12 h-4' />
                     </Button>
-                    <Button radius='none' className=' bg-white border-1 border-slate-300 h-10 p-5' >Filter By </Button>
+                    <Button radius='none' className=' bg-white border-1 border-slate-300 h-10 p-5' onClick={() => handleFilter()}>Filter By </Button>
                     <DatePicker
                         radius='none'
                         className="w-36 bg-white border-1 border-slate-300"
                         onChange={(e) => setDate(e)}
                     />
-                    {MainList.map((r, index) => (
-                        <Select
-                            key={r}
-                            radius='none'
-                            // label={r.title}
-                            aria-labelledby="Select"
-                            placeholder={r.title}
-                            className=' w-36 bg-white border-1 border-slate-300'
-                            onChange={(e) => handleItems(e.target.value, index)}
-                        >
-                            {r.data.map((animal, ind) => (
-                                <SelectItem key={`${animal.name || animal.title}-${index}`} >
-                                    {animal.name || animal.title}
-                                </SelectItem>
-                            ))}
-                        </Select>
-                    ))}
-                    <Button className='text-red-600 bg-white border-1 border-slate-300 h-10 p-5' style={{ borderRadius: '0px 50px 50px 0px' }} onClick={handleFilter}><FontAwesomeIcon icon={faRotateRight} size='lg' />Refresh </Button>
+                    {/* Counsellor */}
+                    <Select
+
+                        radius='none'
+                        // label={r.title}
+                        aria-labelledby="Select"
+                        placeholder='Counsellor'
+                        className=' w-36 bg-white border-1 border-slate-300'
+                        onChange={(e) => setCounsellor(e.target.value)}
+                    >
+                        {counsellorList.map((item, ind) => (
+                            <SelectItem key={item.name} >
+                                {item.name}
+                            </SelectItem>
+                        ))}
+                    </Select>
+
+                    {/* Study Destination */}
+                    <Select
+
+                        radius='none'
+                        // label={r.title}
+                        aria-labelledby="Select"
+                        placeholder='Country'
+                        className=' w-36 bg-white border-1 border-slate-300'
+                        onChange={(e) => setCountry(e.target.value)}
+                    >
+                        {countryList.map((item, ind) => (
+                            <SelectItem key={item.name} >
+                                {item.name}
+                            </SelectItem>
+                        ))}
+                    </Select>
+
+                    {/* Course */}
+                    <Select
+
+                        radius='none'
+                        // label={r.title}
+                        aria-labelledby="Select"
+                        placeholder='Course'
+                        className=' w-36 bg-white border-1 border-slate-300'
+                        onChange={(e) => setCourse(e.target.value)}
+                    >
+                        {courseList.map((item, ind) => (
+                            <SelectItem key={item._id} >
+                                {item.title}
+                            </SelectItem>
+                        ))}
+                    </Select>
+
+                    {/* Status */}
+                    <Select
+
+                        radius='none'
+                        // label={r.title}
+                        aria-labelledby="Select"
+                        placeholder='Status'
+                        className=' w-36 bg-white border-1 border-slate-300'
+                        onChange={(e) => setStatus(e.target.value)}
+                    >
+
+                        <SelectItem key={'request'} >
+                            Request
+                        </SelectItem>
+                        <SelectItem key={'ongoing'} >
+                            Ongoing
+                        </SelectItem>
+                        <SelectItem key={'rejected'} >
+                            Rejected
+                        </SelectItem>
+                        <SelectItem key={'done'} >
+                            Done
+                        </SelectItem>
+
+                    </Select>
+                    <Button className='text-red-600 bg-white border-1 border-slate-300 h-10 p-5' style={{ borderRadius: '0px 50px 50px 0px' }} onClick={() => handleClear()} ><FontAwesomeIcon icon={faRotateRight} size='lg' />Refresh </Button>
                 </div>
 
             </div>
             <div className='flex justify-between items-center mb-3'>
                 <span className='text-default-400 text-small'>
-                    Total {courseList.length} Attendances
+                    Total {appointmentList.length} Appointments
                 </span>
                 <label className='flex items-center text-default-400 text-small'>
                     Rows per page:
@@ -225,92 +303,96 @@ export default function Counsellors() {
                     </select>
                 </label>
             </div>
-            <Table
-                isHeaderSticky
-                aria-label='Example table with client side sorting'
-                classNames={{
-                    base: "max-h-[719px] ",
-                    table: "min-h-[100px]",
-                }}
-                bottomContent={
-                    <div className='flex w-full justify-center'>
-                        <Pagination
-                            isCompact
-                            showControls
-                            showShadow
-                            color='primary'
-                            page={page}
-                            total={pages}
-                            onChange={(page) => setPage(page)}
-                        />
-                    </div>
-                }
-            >
-                <TableHeader>
-                    <TableColumn>No</TableColumn>
-                    <TableColumn>Counsellor Name</TableColumn>
-                    <TableColumn>Date</TableColumn>
-                    <TableColumn>Time</TableColumn>
-                    <TableColumn>Student Name</TableColumn>
-                    <TableColumn>Study Destination</TableColumn>
-                    <TableColumn>Desire Course</TableColumn>
-                    <TableColumn>Status</TableColumn>
-                    <TableColumn>Phone</TableColumn>
+            <div className='overflow-x'>
+                <Table
+                    isHeaderSticky
+                    aria-label='Example table with client side sorting'
+                    classNames={{
+                        base: "max-h-[420px]",
+                        table: "min-h-[200px]",
+                    }}
+                    bottomContent={
+                        <div className='flex w-full justify-center'>
+                            <Pagination
+                                isCompact
+                                showControls
+                                showShadow
+                                color='primary'
+                                page={page}
+                                total={pages}
+                                onChange={(page) => setPage(page)}
+                            />
+                        </div>
+                    }
+                >
+
+                    <TableHeader>
+                        <TableColumn>No</TableColumn>
+                        <TableColumn>Counsellor</TableColumn>
+                        <TableColumn>Date</TableColumn>
+                        <TableColumn>Time</TableColumn>
+                        <TableColumn>Student Name</TableColumn>
+                        <TableColumn>Study Destination</TableColumn>
+                        <TableColumn>Desire Course</TableColumn>
+                        <TableColumn>Status</TableColumn>
+                        <TableColumn>Phone</TableColumn>
 
 
 
-                    <TableColumn key='action'>Actions</TableColumn>
-                </TableHeader>
-                <TableBody emptyContent={"No Positions to display."}>
-                    {/* {items.map((item, index) => ( */}
-                    <TableRow key=''>
-                        <TableCell>001</TableCell>
-                        <TableCell>{appointmentDataList.counsellor}</TableCell>
-                        <TableCell>{appointmentDataList.date}</TableCell>
-                        <TableCell>9:00 - 11:00</TableCell>
-                        <TableCell>Kyaw Kyaw Aung</TableCell>
-                        <TableCell>{appointmentDataList.country}</TableCell>
-                        <TableCell>{appointmentDataList.course}</TableCell>
-                        <TableCell>{appointmentDataList.status}</TableCell>
-                        <TableCell>09123456789</TableCell>
+                        <TableColumn key='action'>Actions</TableColumn>
+                    </TableHeader>
+                    <TableBody emptyContent={"No Positions to display."} >
+                        {items.map((item, index) => (
+                            <TableRow key={index} >
+                                <TableCell>{index + 1}</TableCell>
+                                <TableCell>{item.counsellor?.name}</TableCell>
+                                <TableCell>{item.date?.split('T')[0]}</TableCell>
+                                <TableCell className=' w-[300px]'>{item.startTime}{`=>`}{item.endTime}</TableCell>
+                                <TableCell>{item.guest?.name}</TableCell>
+                                <TableCell>{item.studyDestination}</TableCell>
+                                <TableCell>{item.desiredCourse?.title}</TableCell>
+                                <TableCell>{item.status}</TableCell>
+                                <TableCell>{item?.guest?.phone}</TableCell>
 
 
 
 
-                        <TableCell>
-                            <div className='relative flex items-center gap-2'>
-                                {appointmentDataList.status === 'Rejected' ? (
-                                    <Button color='warning' size='md'>Rebook</Button>
-                                ) : (
-                                    <>
-                                        <Tooltip content='Edit Position'>
-                                            <Link to={"/appointment-detail/" + 1}>
+                                <TableCell>
+                                    <div className='relative flex items-center gap-2'>
+                                        {appointmentDataList.status === 'Rejected' ? (
+                                            <Button color='warning' size='md'>Rebook</Button>
+                                        ) : (
+                                            <>
+                                                <Tooltip content='Edit Position'>
+                                                    <Link to={"/appointment-detail/" + item._id}>
 
-                                                <span className='text-lg  text-blue-900 cursor-pointer active:opacity-50'>
-                                                    <EditIcon />
-                                                </span>
-                                            </Link>
-                                        </Tooltip>
-                                        <Tooltip color='danger' content='Delete user'>
-                                            <span
-                                                data-key=''
-                                                className='text-lg text-danger cursor-pointer active:opacity-50'
-                                                onClick={(e) => handleOpen(e)}
-                                            >
-                                                <DeleteIcon />
-                                            </span>
-                                        </Tooltip>
+                                                        <span className='text-lg  text-blue-900 cursor-pointer active:opacity-50'>
+                                                            <EditIcon />
+                                                        </span>
+                                                    </Link>
+                                                </Tooltip>
+                                                <Tooltip color='danger' content='Delete user'>
+                                                    <span
+                                                        data-key=''
+                                                        className='text-lg text-danger cursor-pointer active:opacity-50'
+                                                        onClick={(e) => handleOpen(e)}
+                                                    >
+                                                        <DeleteIcon />
+                                                    </span>
+                                                </Tooltip>
 
-                                    </>
-                                )
-                                }
+                                            </>
+                                        )
+                                        }
 
-                            </div>
-                        </TableCell>
-                    </TableRow>
-                    {/* ))} */}
-                </TableBody>
-            </Table>
+                                    </div>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </div>
+
             <Modal backdrop='blur' isOpen={isOpen} onClose={handleClose}>
                 <ModalContent>
                     {(handleClose) => (
