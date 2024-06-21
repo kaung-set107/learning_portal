@@ -85,7 +85,7 @@ export default function LearningMaterialUpdateModal(props) {
     } else {
         content = (
             <>
-                <CustomButton onPress={onOpen} type="edit" iconOnly size="sm">Update</CustomButton>
+                <CustomButton onPress={onOpen} type="edit" iconOnly>Update</CustomButton>
                 <Modal
                     isOpen={isOpen}
                     onOpenChange={onOpenChange}
