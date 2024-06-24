@@ -170,20 +170,31 @@ const About = () => {
         }
         // console.log("Data:", data);
         // localStorage.setItem('data', JSON.stringify(data))
-        apiInstance
-            .post("appointments", data,)
-            .then(function () {
-                Swal.fire({
-                    icon: "success",
-                    title: " Successful!",
-                    text: "Appointment Created",
-                    showConfirmButton: false,
-                    timer: 2000,
+        if (email && studyDesti && desiredCourse && counsellorName && startTime && endTime) {
+            apiInstance
+                .post("appointments", data,)
+                .then(function () {
+                    Swal.fire({
+                        icon: "success",
+                        title: " Successful!",
+                        text: "Appointment Created",
+                        showConfirmButton: false,
+                        timer: 2000,
+                    });
+                })
+                .catch((error) => {
+                    alert(error);
                 });
-            })
-            .catch((error) => {
-                alert(error);
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: "Need to check!",
+                text: "Try again",
+                showConfirmButton: false,
+                timer: 2000,
             });
+        }
+
         // Reset the input fields
         // setFormData({ name: '', value: '' });
     };
@@ -229,8 +240,8 @@ const About = () => {
                         <Input type='text' size='lg' variant={variant} className='' name='name' placeholder="Enter name" onChange={(e) => setName(e.target.value)} />
                     </div>
                     <div className='w-full flex flex-col gap-2 '>
-                        <label className=''>Email</label>
-                        <Input type='email' size='lg' variant={variant} className='' name='email' placeholder="Enter email" onChange={(e) => setEmail(e.target.value)} />
+                        <label className='flex justify-start items-center'>Email &nbsp;<span className='text-red-600 font-semibold'>*</span></label>
+                        <Input type='email' size='lg' variant={variant} name='email' placeholder="Enter email" onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div className='w-full flex flex-col gap-2'>
                         <label>Phone Number</label>
@@ -245,7 +256,7 @@ const About = () => {
                 </div>
                 <div className='flex flex-col sm:flex-row sm:flex gap-10 text-[14px] font-normal'>
                     <div className='w-full flex flex-col gap-2 '>
-                        <label>Study Destination</label>
+                        <label>Study Destination &nbsp;<span className='text-red-600 font-semibold'>*</span></label>
                         <Select
                             size={studyDesti ? "lg" : "sm"}
                             label={studyDesti ? '' : "Select an country"}
@@ -261,7 +272,7 @@ const About = () => {
 
                     </div>
                     <div className='w-full flex flex-col gap-2'>
-                        <label>Desired Course</label>
+                        <label>Desired Course &nbsp;<span className='text-red-600 font-semibold'>*</span></label>
                         <Select
                             size="sm"
                             label="Select an course"
@@ -278,7 +289,7 @@ const About = () => {
                 </div>
                 <div className='flex flex-col sm:flex-row sm:flex gap-10 text-[14px] font-normal'>
                     <div className='w-full flex flex-col gap-2'>
-                        <label>Counsellor Name</label>
+                        <label>Counsellor Name &nbsp;<span className='text-red-600 font-semibold'>*</span></label>
                         <Select
                             size="sm"
                             label="Select an counselor"
@@ -306,7 +317,7 @@ const About = () => {
                             </DemoContainer>
                         </LocalizationProvider> */}
                         <div className='w-full flex flex-col gap-2'>
-                            <label>Available Time</label>
+                            <label>Available Time &nbsp;<span className='text-red-600 font-semibold'>*</span></label>
                             <Select
                                 size="sm"
                                 label='Select Time'
