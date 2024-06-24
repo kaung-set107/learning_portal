@@ -29,7 +29,7 @@ import { EditIcon } from "../Table/editicon";
 import { DeleteIcon } from "../Table/deleteicon";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faRotateRight } from '@fortawesome/free-solid-svg-icons'
+import { faRotateRight, faCalendarWeek } from '@fortawesome/free-solid-svg-icons'
 import FilterBarSvg from '../../assets/img/VectorSvg.svg'
 import { setDate } from "date-fns";
 import countryList from "../../constant/countryList";
@@ -46,7 +46,6 @@ export default function Counsellors() {
     const [courseList, setCourseList] = useState([])
     const [counsellorList, setCounsellorList] = useState([])
     const [dataCount, setDataCount] = useState('')
-    const [appointmentDataList, setAppointmentDataList] = useState('')
     const [arr, setArr] = useState([])
     const [date, setDate] = useState('')
     const [counsellor, setCounsellor] = useState('')
@@ -175,8 +174,8 @@ export default function Counsellors() {
 
     const handleOpen = (event) => {
         onOpen();
-        // console.log(event.currentTarget.getAttribute("data-key"));
-        setDelID(event.currentTarget.getAttribute("data-key"));
+        // console.log(event, 'ev');
+        setDelID(event);
     };
 
     const handleClose = () => {
@@ -185,7 +184,7 @@ export default function Counsellors() {
     };
 
     const handleDelete = async () => {
-        // console.log(setDelID);
+
         await apiInstance.delete("appointments/" + delID).then(() => {
             setAppointmentList(appointmentList.filter((item) => item._id !== delID));
             onClose();
@@ -201,7 +200,12 @@ export default function Counsellors() {
                     <Button radius='none' className=' bg-white border-1 border-slate-300 h-10 p-5' style={{ borderRadius: '50px 0px 0px 50px' }} >
                         <Image src={FilterBarSvg} className='w-12 h-4' />
                     </Button>
-                    <Button radius='none' className=' bg-white border-1 border-slate-300 h-10 p-5' onClick={() => handleFilter()}>Filter By </Button>
+                    {date || counsellor || country || course || status ? (
+                        <Button radius='none' className='border-1 border-slate-300 h-10 p-5 bg-blue-950 text-white' onClick={() => handleFilter()}>Filter By </Button>
+                    ) : (
+                        <Button radius='none' className='border-1 border-slate-300 h-10 p-5 bg-white text-opacity-50'>Filter By </Button>
+                    )}
+
                     <DatePicker
                         radius='none'
                         className="w-36 bg-white border-1 border-slate-300"
@@ -286,7 +290,7 @@ export default function Counsellors() {
                     <Button className='text-red-600 bg-white border-1 border-slate-300 h-10 p-5' style={{ borderRadius: '0px 50px 50px 0px' }} onClick={() => handleClear()} ><FontAwesomeIcon icon={faRotateRight} size='lg' />Refresh </Button>
                 </div>
 
-            </div>
+            </div >
             <div className='flex justify-between items-center mb-3'>
                 <span className='text-default-400 text-small'>
                     Total {appointmentList.length} Appointments
@@ -359,31 +363,27 @@ export default function Counsellors() {
 
                                 <TableCell>
                                     <div className='relative flex items-center gap-2'>
-                                        {appointmentDataList.status === 'Rejected' ? (
-                                            <Button color='warning' size='md'>Rebook</Button>
-                                        ) : (
-                                            <>
-                                                <Tooltip content='Edit Position'>
-                                                    <Link to={"/appointment-detail/" + item._id}>
 
-                                                        <span className='text-lg  text-blue-900 cursor-pointer active:opacity-50'>
-                                                            <EditIcon />
-                                                        </span>
-                                                    </Link>
-                                                </Tooltip>
-                                                <Tooltip color='danger' content='Delete user'>
-                                                    <span
-                                                        data-key=''
-                                                        className='text-lg text-danger cursor-pointer active:opacity-50'
-                                                        onClick={(e) => handleOpen(e)}
-                                                    >
-                                                        <DeleteIcon />
-                                                    </span>
-                                                </Tooltip>
 
-                                            </>
-                                        )
-                                        }
+                                        <Tooltip content='Approve or Reject'>
+                                            <Link to={"/appointment-detail/" + item._id}>
+
+                                                <span className='text-lg  text-blue-900 cursor-pointer active:opacity-50'>
+                                                    <FontAwesomeIcon icon={faCalendarWeek} />
+                                                </span>
+                                            </Link>
+                                        </Tooltip>
+                                        <Tooltip color='danger' content='Delete user'>
+                                            <span
+                                                data-key=''
+                                                className='text-lg text-danger cursor-pointer active:opacity-50'
+                                                onClick={() => handleOpen(item._id)}
+                                            >
+                                                <DeleteIcon />
+                                            </span>
+                                        </Tooltip>
+
+
 
                                     </div>
                                 </TableCell>

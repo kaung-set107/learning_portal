@@ -1,13 +1,7 @@
 import React from "react";
 
 import {
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-  Badge,
-  Tooltip,
-  Image,
+
   Table,
   TableHeader,
   Kbd,

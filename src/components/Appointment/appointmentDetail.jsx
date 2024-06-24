@@ -17,17 +17,20 @@ import 'react-datetime-picker/dist/DateTimePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
 import apiInstance from "../../util/api";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import dayjs from 'dayjs';
 
 import { useLocation } from "react-router";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 
 // import Footer from '../../frontend/home/footer';
 const About = () => {
     const location = useLocation()
     const ID = location.pathname.split('/')[2]
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen: isreOpen, onOpen: onreOpen, onClose: onreClose } = useDisclosure();
     const [value, setValue] = useState(dayjs(''));
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -52,33 +55,70 @@ const About = () => {
     const variant = "bordered"
     const [name, setName] = useState('')
     const [phone, setPhone] = useState('')
-    const [studyDesti, setStudyDesti] = useState('')
-    const [desiredCourse, setDesiredCourse] = useState('')
-    const [approveStartTime, setApproveStartTime] = useState('')
-    const [approveEndTime, setApproveEndTime] = useState('')
-    const [approveDate, setApproveDate] = useState('')
+    const [approveDescription, setApproveDescription] = useState('')
+    const [rejectDescription, setRejectDescription] = useState('')
     const [appointmentData, setAppointmentData] = useState([])
     // const [value, onChange] = useState(new Date());
     const Approve = () => {
 
         const data = {
-            date: approveDate ? approveDate : appointmentData?.date,
-            startTime: approveStartTime ? approveStartTime : appointmentData?.startTime,
-            endTime: approveEndTime ? approveEndTime : appointmentData?.endTime,
+            description: approveDescription
 
         }
-        apiInstance.put(`appointments/${ID}/confirm`, data).then((res) => {
+        if (appointmentData?.guest?.email) {
+            apiInstance.put(`appointments/${ID}/confirm`, data).then((res) => {
+                Swal.fire({
+                    icon: "success",
+                    title: "Sent Email!",
+                    text: "Approved Successful",
+                    showConfirmButton: false,
+                    timer: 2000,
+                });
+                onClose();
+            }).catch((err) => {
+                console.log(err)
+            })
+        } else {
             Swal.fire({
-                icon: "success",
-                title: "Approved Successful",
-                text: "",
+                icon: "error",
+                title: "Need Student's Email!",
+                text: "Can not send Email!",
                 showConfirmButton: false,
                 timer: 2000,
             });
-            onClose();
-        }).catch((err) => {
-            console.log(err)
-        })
+        }
+
+    };
+
+    const Reject = () => {
+
+        const data = {
+            description: rejectDescription
+
+        }
+        if (appointmentData?.guest?.email) {
+            apiInstance.put(`appointments/${ID}/reject`, data).then((res) => {
+                Swal.fire({
+                    icon: "success",
+                    title: "Sent Email!",
+                    text: "Rejected",
+                    showConfirmButton: false,
+                    timer: 2000,
+                });
+                onClose();
+            }).catch((err) => {
+                console.log(err)
+            })
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: "Need Student's Email!",
+                text: "Can not send Email!",
+                showConfirmButton: false,
+                timer: 2000,
+            });
+        }
+
 
     };
     const handlePhoneInputChange = (value, country, event) => {
@@ -121,9 +161,30 @@ const About = () => {
 
     };
 
+    //Reject
+
+    const handleKeyDownReject = (event) => {
+        if (event.key === "Enter" && isreOpen) {
+            Reject();
+        }
+    };
+    const handleRejectOpen = (event) => {
+        onreOpen();
+
+    };
+
+    const handleRejectClose = () => {
+        onreClose();
+
+    };
 
     return (
         <div className=''>
+            <div className='rounded-none py-3 text-left'>
+                <Link to='/appointments' className=''>
+                    <FontAwesomeIcon icon={faCircleChevronLeft} size='2xl' />
+                </Link>
+            </div>
 
             <div className='flex flex-col p-5 sm:pl-[20px] sm:pr-[20px]  sm:pt-20 sm:pb-10  gap-10 w-full'>
                 <div className='flex flex-col gap-2 sm:gap-5 '>
@@ -179,12 +240,12 @@ const About = () => {
                 </div>
                 <div className='flex justify-between'>
                     <div className='flex justify-start gap-4 '>
-                        <Button type="submit" className='w-[200px] bg-[#0B2743] text-[#fff]' onClick={(e) => handleOpen(e)}>Approve</Button>
-                        <Button type="submit" className='w-[200px] bg-red-700 text-[#fff]'  >Rejecte</Button>
+                        <Button type="submit" className='w-[200px] bg-[#0B2743] text-[#fff]' isDisabled={appointmentData.status === 'ongoing'} onClick={(e) => handleOpen(e)}>Approve</Button>
+                        <Button type="submit" className='w-[200px] bg-red-700 text-[#fff]' isDisabled={appointmentData.status === 'rejected'} onClick={(e) => handleRejectOpen(e)}>Reject</Button>
                     </div>
                     <div className='flex justify-start gap-4 '>
 
-                        <Button type="submit" className='w-[200px] bg-yellow-600 text-[#fff]' >Rebook</Button>
+                        {/* <Button type="submit" className='w-[200px] bg-yellow-600 text-[#fff]' >Rebook</Button> */}
                     </div>
                 </div>
 
@@ -199,17 +260,10 @@ const About = () => {
                             </ModalHeader>
                             <ModalBody>
                                 <div>
-                                    <label>Date</label>
-                                    <Input type='date' defaultValue={appointmentData?.date?.split('T')[0]} onChange={(e) => setApproveDate(e.target.value)} />
+                                    <label className='text-[18px] font-medium'>Description</label>
+                                    <Textarea type='text' onChange={(e) => setApproveDescription(e.target.value)} />
                                 </div>
-                                <div>
-                                    <label>Start Time</label>
-                                    <Input type='time' onChange={(e) => setApproveStartTime(e.target.value)} />
-                                </div>
-                                <div>
-                                    <label>End Time</label>
-                                    <Input type='time' onChange={(e) => setApproveEndTime(e.target.value)} />
-                                </div>
+
 
                             </ModalBody>
                             <ModalFooter>
@@ -230,6 +284,38 @@ const About = () => {
                 </ModalContent>
             </Modal>
 
+            <Modal backdrop="opaque" isOpen={isreOpen} onClose={handleRejectClose}>
+                <ModalContent>
+                    {(handleRejectClose) => (
+                        <>
+                            <ModalHeader className='flex flex-col gap-1 '>
+                                Reject Appointment
+                            </ModalHeader>
+                            <ModalBody>
+                                <div>
+                                    <label className='text-[18px] font-medium'>Description</label>
+                                    <Textarea type='text' onChange={(e) => setRejectDescription(e.target.value)} />
+                                </div>
+
+
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button color='default' variant='light' onClick={handleRejectClose}>
+                                    Cancel
+                                </Button>
+                                <Button
+                                    color='danger'
+                                    onPress={() => Reject()}
+                                    onKeyDown={handleKeyDownReject}
+                                >
+                                    Yes
+
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
         </div>
     );
 };

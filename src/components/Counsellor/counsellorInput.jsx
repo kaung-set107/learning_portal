@@ -118,7 +118,7 @@ export default function CounsellorInput() {
 
                 <div className='flex gap-2'>
 
-                    <span className='font-bold'>Avaialble</span>
+                    <span className='font-bold'>Available</span>
                     <Checkbox onChange={() => setCheckVal(!checkVal)} />
 
                 </div>
