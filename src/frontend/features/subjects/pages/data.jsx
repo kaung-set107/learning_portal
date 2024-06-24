@@ -12,6 +12,13 @@ export const getTableData = ({ getViewButton }) => {
       {
         name: "Description",
         key: "description",
+        getComponent: (data) => {
+          return (
+            <>
+              <p className="truncate w-[400px]">{data?.description ?? "Not Set"}</p>
+            </>
+          );
+        },
       },
       {
         name: "Action",
