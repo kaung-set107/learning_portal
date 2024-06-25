@@ -301,7 +301,7 @@ export default function SubjectInputForm() {
             <Link to='/position'>Cancel</Link>
           </Button>
           <Button color='primary' type='submit'>
-            Register
+            Update
           </Button>
         </div>
       </form >

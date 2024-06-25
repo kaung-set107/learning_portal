@@ -82,8 +82,8 @@ export default function DepartmentUpdateInput() {
           icon: "success",
           title: "Email Sent",
           text: "Nice!",
-          confirmButtonText: "OK",
-          confirmButtonColor: "#3085d6",
+          showConfirmButton: false,
+          timer: 2000
         });
       })
       .catch((error) => {
@@ -91,8 +91,9 @@ export default function DepartmentUpdateInput() {
           icon: "warning",
           title: "Something Wrong!",
           text: "Please,Try again!",
-          confirmButtonText: "OK",
-          confirmButtonColor: "#3085d6",
+
+          showConfirmButton: false,
+          timer: 2000
         });
       });
   };
@@ -216,7 +217,7 @@ export default function DepartmentUpdateInput() {
                   fontWeight: "500",
                   fontSize: "18px",
                 }}
-                // className='sm:ml-10 md:ml-5'
+              // className='sm:ml-10 md:ml-5'
               >
                 {student?.subject?.title}
               </span>
@@ -235,7 +236,7 @@ export default function DepartmentUpdateInput() {
                   fontWeight: "500",
                   fontSize: "18px",
                 }}
-                // className='sm:ml-10 md:ml-5'
+              // className='sm:ml-10 md:ml-5'
               >
                 {new Date(student.date).toLocaleDateString("en-US", {
                   day: "numeric",
@@ -258,7 +259,7 @@ export default function DepartmentUpdateInput() {
                   fontWeight: "500",
                   fontSize: "18px",
                 }}
-                // className='sm:ml-10 md:ml-5'
+              // className='sm:ml-10 md:ml-5'
               >
                 Lorem ipsum dolor sit amet consectetur. Lectus eros molestie id
                 eget nisl leo. Tempor cursus diam venenatis maecenas
@@ -279,7 +280,7 @@ export default function DepartmentUpdateInput() {
                   fontWeight: "500",
                   fontSize: "18px",
                 }}
-                // className='sm:ml-10 md:ml-5'
+              // className='sm:ml-10 md:ml-5'
               >
                 Lorem ipsum dolor sit amet consectetur. Lectus eros molestie id
                 eget nisl leo. Tempor cursus diam venenatis maecenas

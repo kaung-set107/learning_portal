@@ -171,7 +171,7 @@ const Body = () => {
         >
           {bannerList.map((i) => (
             <>
-              <img src={getFile({ payload: i })} className=' h-[50vh] sm:h-[70vh] lg:h-[80vh] lg:w-full w-[10vh] ' />
+              <img src={getFile({ payload: i })} className=' h-[50vh] sm:h-[70vh] sm:w-full lg:h-[80vh] lg:w-full w-[10vh] ' />
             </>
           ))}
 
@@ -179,13 +179,13 @@ const Body = () => {
       </div>
 
 
-      < div data-aos={"fade-up"} className='flex justify-around pl-[26px]  sm:pl-[57px] pr-[26px] sm:pr-[57px] pt-[20px] sm:pt-[30px] md:pt-[100px] relative  overflow-hidden xl:container 2xl:container' >
+      < div data-aos={"fade-up"} className='flex justify-around pl-[26px]  sm:pl-[57px] pr-[26px] sm:pr-[57px] pt-[20px] sm:pt-[30px] md:pt-[10px] relative  overflow-hidden xl:container 2xl:container' >
 
         <div
-          className="absolute bg-[#0B2743] top-16 sm:top-2 md:top-0 md:-left-[130px] lg:top-16 2xl:top-[90px] -left-[130px] sm:-left-48 lg:-left-[240px] w-[170px] h-[140px] rounded-full md:w-[200px] md:h-[200px] lg:w-[300px] lg:h-[200px] 2xl:w-[300px]"
+          className="absolute bg-[#0B2743] top-10 sm:top-2 md:top-0 md:-left-[130px] lg:top-16 2xl:top-[90px] -left-[130px] sm:-left-48 lg:-left-[240px] w-[170px] h-[140px] rounded-full md:w-[180px] md:h-[150px] lg:w-[300px] lg:h-[200px] 2xl:w-[300px]"
 
         ></div>
-        <div className='w-[654px] flex flex-col gap-10  mt-14 lg:mt-16'>
+        <div className='w-[654px] flex flex-col gap-10  mt-1 lg:mt-2'>
           <ScrollAnimation animateIn='wobble'
           >
             <h1
@@ -219,7 +219,7 @@ const Body = () => {
           </div>
 
         </div>
-        <div className='hidden sm:flex overflow-hidden lg:mt-16 mt-14'>
+        <div className='hidden  lg:flex overflow-hidden lg:mt-16 mt-10'>
           <Image src={MSIHead} className='w-[200px] sm:w-[300px] md:w-[400px] md:h-[400px] lg:w[450px] lg:h-[450px] ' />
         </div>
 
@@ -241,18 +241,18 @@ const Body = () => {
         < div className='flex flex-col p-5 md:p-5 container  relative ' id='cou' data-aos={"fade-up"} >
 
           <h1
-            className=' p-10 md:p-20  flex justify-center text-[30px] sm:text-[40px] font-[semibold] py-5'
+            className=' p-5 md:p-10  flex justify-center text-[30px] sm:text-[40px] font-[semibold] py-1'
             style={{ color: "#BC1F40", fontWeight: "900" }}
           >
             Courses We Offer
           </h1>
 
-          <div data-aos={"fade-up"} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-32 md:gap-4 lg:gap-10 2xl:gap-48 items-center justify-center sm:py-10 2xl:py-20 container'>
+          <div data-aos={"fade-up"} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-32 md:gap-4 lg:gap-10 2xl:gap-48 items-center justify-center sm:py-4 2xl:py-10 container'>
             {courseList?.slice(0, 4).map((e) => (
               <div
                 onClick={() => handleRoute(e)}
                 data-aos={"fade-up"}
-                className='flex justify-center w-[310px] sm:w-[600px] sm:h-[400px] md:w-full lg:w-[300px] xl:w-[310px] 2xl:w-[400px] md:h-[480px] h-[470px]'
+                className='flex justify-center w-[310px] sm:w-[600px] sm:h-[400px] md:w-full lg:w-[300px] xl:w-[310px] 2xl:w-[400px] md:h-[400px] h-[470px]'
               >
                 <div >
                   <Image
@@ -316,7 +316,7 @@ const Body = () => {
           </Link>
         </div >
       </ScrollAnimation >
-      < div data-aos={"fade-up"} style={{ background: "var(--blue-pale, #F4FAFF)" }} className='flex flex-col gap-10 sm:gap-24 relative container h-[800px] lg:h-[880px] xl:h-[950px] sm:h-[1200px]' >
+      < div data-aos={"fade-up"} style={{ background: "var(--blue-pale, #F4FAFF)" }} className='flex flex-col gap-10 sm:gap-32 relative container h-auto py-10 ' >
         {/* <img
           src={EBlue}
           className="absolute bottom-0 left-0 z-0 w-[150px] md:w-[150px]"
@@ -330,13 +330,13 @@ const Body = () => {
         </div >
 
         {/* Web */}
-        < div className='hidden md:grid md:grid-cols-3 lg:grid-cols-3 sm:gap-10 lg:gap-5 items-center justify-around flex-wrap container pr-[33px]' data-aos={"fade-up"}>
+        < div className='hidden sm:grid sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 sm:gap-10 lg:gap-5 items-center justify-around flex-wrap container pr-[33px]' data-aos={"fade-up"}>
           {eventList?.slice(0, 3)?.map((b, index) => (
             <Link href={`/events/${b._id}`} key={index}>
               <div className='relative cursor-pointer hover:translate-y-1 hover:scale-105 duration-500'>
                 <Image
                   src={`data:image/jpeg;base64,${b?.image}`}
-                  className='sm:w-[300px] sm:h-[500px] md:w-[340px] md:h-[511px] lg:w-[420px] lg:h-[450px] 2xl:w-[430px] 2xl:h-[550px]  rounded-[24px]'
+                  className='sm:w-[300px] sm:h-[400px] md:w-[340px] md:h-[511px] lg:w-[420px] lg:h-[450px] 2xl:w-[430px] 2xl:h-[550px]  rounded-[24px]'
                 // width={620}
                 // height={354}
                 />
@@ -363,7 +363,7 @@ const Body = () => {
           )}
         </div >
         {/* Mobile */}
-        < div data-aos={"fade-up"} className='grid md:hidden sm:grid-cols-1 md:grid-cols-2 sm:gap-10 items-center justify-around flex-wrap pl-[40px] pr-[33px]' >
+        < div data-aos={"fade-up"} className='grid sm:hidden sm:grid-cols-1 md:grid-cols-2 sm:gap-10 items-center justify-around flex-wrap pl-[40px] pr-[33px]' >
           {
             eventList?.slice(0, 2).map((b, index) => (
               <Link href={`/events/${b._id}`} key={index}>
@@ -404,7 +404,7 @@ const Body = () => {
         </div>
 
       </div >
-      <div className='pt-[200px] sm:pt-[200px] md:pt-[250px] lg:pt-[460px] 2xl:pt-[200px]'>
+      <div className='pt-[20px] sm:pt-[20px] md:pt-[10px] lg:pt-[60px] 2xl:pt-[100px]'>
         <Activities />
       </div>
 

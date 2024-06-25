@@ -19,6 +19,7 @@ function EntranceTestPage() {
     // const { state } = props.location;
     // const { entranceTestID, enrollID, batchID } = state;
     // console.log(location.state.entranceID, 'e')
+    const studentName = location.state.entranceID?.title
     const subjectID = location.state.entranceID._id
     const QuizID = location.state.entranceID.entranceTests[0].quiz
     const entranceID = location.state.entranceID.entranceTests[0]._id
@@ -416,7 +417,7 @@ function EntranceTestPage() {
                             />
                             <div className='flex flex-col gap-10 pt-[20px] mt-[110px]'>
                                 <span className='text-[35px] font-bold w-80'>
-                                    This placement test will test your basic knowledge on IELTS
+                                    This placement test will test your basic knowledge on {studentName}
                                 </span>
                                 <div className='flex gap-2'>
                                     <Button color='primary' variant='bordered'>

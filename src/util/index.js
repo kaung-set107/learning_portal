@@ -8,21 +8,13 @@ export const getFile = ({ resource, fileType, payload }) => {
     payload.filename
   );
 
-//   return (
-//     `http://localhost:3600/${prefix}/` +
-//     payload.filename
-//   )
+  // return `http://localhost:3600/${prefix}/` + payload.filename;
 };
 
 export const download = (data) => {
   let element = document.createElement("a");
-  if(data && data.mimetype.includes('image')) {
-    let file = new Blob(
-      [
-        getFile({payload: data}),
-      ],
-      { type: "image/*" }
-    );
+  if (data && data.mimetype.includes("image")) {
+    let file = new Blob([getFile({ payload: data })], { type: "image/*" });
     element.href = URL.createObjectURL(file);
     element.download = data.originalname;
     element.click();
@@ -33,7 +25,7 @@ export const download = (data) => {
 };
 
 export const downloadPDF = (val) => {
-  console.log('hereing dfsljfkls')
+  console.log("hereing dfsljfkls");
 
   // Replace 'your-pdf-file.pdf' with the actual file path or URL
   const pdfUrl = getFile({ payload: val });
@@ -57,28 +49,28 @@ export const getFormData = (src) => {
   let formData = new FormData();
 
   for (const pair of Object.entries(src)) {
-    if(Array.isArray(pair[1])) {
-      pair[1].map(each => {
+    if (Array.isArray(pair[1])) {
+      pair[1].map((each) => {
         formData.append(pair[0], each);
-      })
+      });
     } else {
       formData.append(pair[0], pair[1]);
     }
   }
 
-  return formData
+  return formData;
 };
 
 export const showConfirmWithInput = async (payload) => {
-	return Swal.fire({
+  return Swal.fire({
     title: payload.title ?? "Are you sure?",
     text: "You won't be able to revert this!",
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it!"
+    confirmButtonText: "Yes, delete it!",
   }).then((result) => {
-    return result.isConfirmed
+    return result.isConfirmed;
   });
-}
+};

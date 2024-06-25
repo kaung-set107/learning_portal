@@ -41,7 +41,7 @@ export default function CourseDetail(props) {
   const [subjectList, setSubjectList] = useState([]);
   const [subjectAndTeacherList, setSubjectAndTeacherList] = useState([]);
   useEffect(() => {
-    window.scroll(0, 0)
+    // window.scroll(0, 0)
     const getCourseDetail = async () => {
       await apiInstance.get("courses/" + courseData._id).then((res) => {
         // console.log(res.data.data, "c detail");
@@ -68,7 +68,7 @@ export default function CourseDetail(props) {
   return (
     <>
       <MSINav />
-      <div className=' sm:pt-[24px] sm:pr-[20px] sm:pb-[100px] sm:pl-[40px] 2xl:container '>
+      <div className='sm:pr-[20px] sm:pb-[100px] sm:pl-[40px] container '>
         <>
           {/* <Head /> */}
           <div className='flex flex-col gap-5 sm:gap-10 md:gap-10 lg:gap-16 xl:gap-20 2xl:gap-28 duration-100'>
@@ -91,7 +91,7 @@ export default function CourseDetail(props) {
                         }
                         //   title={assignList.name}
                         allowFullScreen
-                        className='border w-[375px] h-[136px] md:w-[711px] md:h-[306px] lg:w-[580px] xl:w-[850px] '
+                        className='border w-[375px] h-[136px] sm:w-[600px] sm:h-[250px] md:w-[711px] md:h-[306px] lg:w-[580px] xl:w-[850px] '
                         allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
                       // style={{ width:'1400px',height:'500px' }}
                       ></iframe>
@@ -110,25 +110,22 @@ export default function CourseDetail(props) {
                   ))}
 
 
-              <div className=''>
+              <div className='py-20 md:py-0'>
                 <div
-                  style={{
-                    border: "1px solid red",
-                    borderRadius: "12px",
-                  }}
-                  className='flex justify-center sm:justify-start sm:items-center mx-4 md:mx-0 pr-[20px] md:pr-[24px] w-[345px] h-[134px] md:w-[275px] md:h-[306px] lg:w-[300px]'
+
+                  className='flex justify-center sm:justify-start sm:items-center mx-4 md:mx-0 pr-[20px] md:pr-[24px] w-[330px] h-[120px] sm:w-[560px] sm:h-[250px] md:w-[275px] md:h-[306px] lg:w-[300px] '
                 >
-                  <div className='flex flex-col gap-2 sm:gap-5 p-2 sm:p-5 justify-center'>
+                  <div className='flex flex-col gap-10 sm:gap-5  sm:p-5 justify-center'>
                     <h1 style={{ fontSize: "20px", fontWeight: "700" }}>
                       This Course Include
                     </h1>
-                    <div className='grid grid-cols-3 gap-4 align-middle md:grid-cols-1'>
+                    <div className=' grid grid-cols-2 sm:grid sm:grid-cols-3 gap-4 align-middle md:grid-cols-1 text-[14px] font-normal sm:text-[16px] md:text-[14px]  border-1 border-red-600 p-5 sm:p-6 rounded-lg sm:rounded-lg '>
                       <div className='flex gap-2'>
                         <img
                           src={Module}
                           style={{ width: "16px", height: "16px" }}
                         />{" "}
-                        <span className='text-[8px] font-normal md:text-[14px]'>
+                        <span className=''>
                           4 modules
                         </span>
                       </div>
@@ -137,7 +134,7 @@ export default function CourseDetail(props) {
                           src={Chapter}
                           style={{ width: "16px", height: "16px" }}
                         />{" "}
-                        <span className='text-[8px] font-normal md:text-[14px]'>
+                        <span className=''>
                           26 chapters
                         </span>
                       </div>
@@ -146,7 +143,7 @@ export default function CourseDetail(props) {
                           src={Download}
                           style={{ width: "16px", height: "16px" }}
                         />{" "}
-                        <span className='text-[8px] font-normal md:text-[14px]'>
+                        <span className=''>
                           64 downloadable resources
                         </span>
                       </div>
@@ -155,7 +152,7 @@ export default function CourseDetail(props) {
                           src={TV}
                           style={{ width: "16px", height: "16px" }}
                         />{" "}
-                        <span className='text-[8px] font-normal md:text-[14px]'>
+                        <span className=''>
                           Full lifetime access
                         </span>
                       </div>
@@ -164,7 +161,7 @@ export default function CourseDetail(props) {
                           src={TV}
                           style={{ width: "16px", height: "16px" }}
                         />{" "}
-                        <span className='text-[8px] font-normal md:text-[14px]'>
+                        <span className=''>
                           Certificate of completion
                         </span>
                       </div>
@@ -211,7 +208,7 @@ export default function CourseDetail(props) {
                 <span className='text-[30px] font-semibold sm:text-[40px]'>
                   Subjects
                 </span>
-                <div className='grid grid-cols-1 sm:grid-cols-3 gap-10 pt-10'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 pt-10'>
                   {subjectList.map((e) => (
                     <>
                       <div
@@ -220,16 +217,16 @@ export default function CourseDetail(props) {
                           borderRadius: "14px",
                           boxShadow: "0px 4px 15px 0px rgba(0, 0, 0, 0.10)",
                           // width: "490px",
-                          height: "463px",
+                          // height: "463px",
                           padding: "14px 13px",
                         }}
-                        className='w-full sm:min-w:[490px]  flex flex-col gap-3 sm:hover:-translate-y-2  sm:hover:scale-105 hover:bg-indigo-500 duration-700'
+                        className='w-full sm:w-[280px] sm:h-auto md:w-[320px] xl:w-[380px] md:h-[463px] flex flex-col gap-3 sm:hover:-translate-y-2  sm:hover:scale-105 hover:bg-indigo-500 duration-700'
                       >
                         <Image
                           radius='sm'
                           alt={e.image.originalname}
 
-                          className='sm:w-[464px] sm:h-[238px] w-[364px] h-[200px]'
+                          className='sm:w-[280px] sm:h-[180px] md:w-[300px] xl:w-[350px] w-[364px] h-[200px]'
                           src={getFile({ payload: e.image })}
                         />
 
@@ -300,84 +297,7 @@ export default function CourseDetail(props) {
               </div>
               {/* Subject Section End */}
 
-              {/* Teacher Section End */}
-              {/* <div className='mt-20'>
-                <span style={{ fontSize: "40px", fontWeight: "600" }}>
-                  Teachers
-                </span>
-                <div className='grid grid-cols-3 gap-10 pt-10'>
-                  {subjectAndTeacherList.slice(0, 3).map((e) => (
-                    <>
-                      <div
-                        style={{
-                          border: "2px solid red",
-                          borderRadius: "14px",
-                          boxShadow: "0px 4px 25px 0px rgba(0, 0, 0, 0.10)",
-                     
-                          padding: "14px 13px",
-                          backgroundColor: "white",
-                        }}
-                        className='min-w:[490px] min-h:[463px] flex flex-col gap-3 hover:-translate-y-2 hover:rotate-1 hover:scale-110 hover:bg-indigo-500 duration-500'
-                      >
-                        <Image
-                          radius='sm'
-                          alt={e.instructor.image.originalname}
-                          style={{ width: "464px", height: "238px" }}
-                          src={getFile({ payload: e.instructor.image })}
-                        />
-                        <span
-                          style={{
-                            fontSize: "20px",
-                            fontWeight: "500",
 
-                            width: "464px",
-                            height: "56px",
-                          }}
-                          className='flex flex-col'
-                        >
-                          {e.instructor.name}
-                          <span
-                            style={{
-                              fontSize: "16px",
-                              fontWeight: "500",
-                              color: "#868686",
-                              width: "464px",
-                              height: "56px",
-                            }}
-                          >
-                            {e.instructor.email}
-                          </span>
-                        </span>
-
-                        <p
-                          style={{
-                            fontSize: "18px",
-                            fontWeight: "400",
-                            color: "#ACACAC",
-                      
-                          }}
-                          className='min-w:[464px] min-h:[auto]'
-                        >
-                          {e.instructor?.introduction}
-                        </p>
-                        <span
-                          style={{
-                            fontSize: "18px",
-                            fontWeight: "500",
-                            color: "#ED1D25",
-                            width: "182px",
-                            height: "27px",
-                          }}
-                          className=''
-                        >
-                          {e.instructor.qualification}
-                        </span>
-                      </div>
-                    </>
-                  ))}
- 
-                </div>
-              </div> */}
               {/* Teacher Section End */}
             </div>
 
@@ -388,25 +308,7 @@ export default function CourseDetail(props) {
               }}
               className='flex sm:hidden flex-col mt-0 sm:mt-20 md:bg-right md:bg-contain'
             >
-              {/* <div className='w-[375px] h-full sm:w-full sm:h-[272px]'>
-                <div className='ml-2'>
-                  <span className='text-[20px] font-semibold sm:text-[40px]'>
-                    Not sure where to start?
-                  </span>
 
-                  <div className='flex flex-col gap-5'>
-                    <p className='text-[12px] font-medium w-[330px] h-[36px] sm:w-[466px] sm:h-[72px] sm:text-[16px]'>
-                      No problem, we are here to help! Just answer a couple of
-                      questions related to your interests and goals, and we will
-                      help set you on the right path on your learning journey.{" "}
-                    </p>
-                    <Button className='text-[#fff] bg-[#053CFF] text-[12px] sm:text-[16px] rounded-[4px] sm:rounded-[8px] mt-5 sm:mt-10 sm:hover:-translate-x-1 sm:hover:scale-110 duration-700 w-[67px] h-[26px] sm:w-[227px] sm:h-[48px]'>
-                      <span className='p-2'>Take Quiz</span>
-                    </Button>
-                  </div>
-
-                </div>
-              </div> */}
 
               {/* Subjects Section Start */}
               <div className='sm:pt-0 pt-10 mx-2'>
@@ -516,7 +418,7 @@ export default function CourseDetail(props) {
             >
               {/* Web View */}
               <div
-                className='hidden sm:grid sm:grid-cols-2 gap-52 lg:gap-[200px] h-[629px] p-[32px 0px]'
+                className='hidden md:grid md:grid-cols-2 gap-52 lg:gap-[200px] h-[629px] p-[32px 0px]'
 
               >
                 <div
@@ -566,12 +468,12 @@ export default function CourseDetail(props) {
 
               {/* Mobile View */}
               <div
-                className='grid sm:hidden grid-cols-1 gap-12 h-[159px]'
+                className='grid md:hidden grid-cols-1 gap-12 h-[159px]'
 
               >
                 <div
 
-                  className='sm:w-[642px] sm:h-[304px] w-full h-full'
+                  className='sm:w-[642px] sm:h-[304px] w-full h-full p-5 sm:p-6 md:p-0'
                 >
                   <span
 
@@ -582,7 +484,7 @@ export default function CourseDetail(props) {
                   <div className='flex flex-col'>
                     <p
 
-                      className='text-[12px] p-3 sm:text-[16px] font-normal sm:font-medium text-[#fff]'
+                      className='text-[12px] sm:text-[16px] font-normal sm:font-medium text-[#fff] w-[300px] sm:w-[530px]'
                     >
                       Complete our IELTS course with excellence and earn a
                       prestigious certificate, a testament to your enhanced
@@ -598,7 +500,7 @@ export default function CourseDetail(props) {
                       //   width: "316.905px",
                       //   height: "346.011px",
                       // }}
-                      className='w-[316.905px] h-[346.011px] lg:w-full'
+                      className='w-[220px] h-[200px] sm:w-[240px] sm:h-[230px] lg:w-full'
                     />
 
                   </div>
@@ -613,7 +515,7 @@ export default function CourseDetail(props) {
           {/* Info Section Start */}
 
           <div
-            className='hidden sm:flex'
+            className='hidden md:flex'
             style={{
               height: "327px",
             }}
@@ -662,12 +564,12 @@ export default function CourseDetail(props) {
             </div>
             <div
               style={{
-                width: "390px",
-                height: "168px",
+                width: "395px",
+                height: "175px",
                 backgroundColor: "#FFF",
 
                 position: "absolute",
-                left: "299px",
+                left: "310px",
                 marginTop: "8rem",
               }}
               className='-rotate-17 2xl:hidden flex'
@@ -705,19 +607,18 @@ export default function CourseDetail(props) {
           </div>
 
           <div
-            className='flex flex-col gap-10 sm:hidden pt-10 mx-2'
+            className='flex flex-col gap-10 md:hidden pt-10 mx-2'
 
           >
             {/* Mobile View */}
             <div
               style={{
-                width: "355px",
-                height: "527px",
+
                 backgroundColor: "#215887",
 
                 position: "absolute",
               }}
-              className='flex flex-col gap-1 p-3'
+              className='flex flex-col gap-1 p-3  sm:h-[527px] sm:w-[560px] w-[330px] h-[500px]'
             >
               <span
                 style={{
@@ -784,7 +685,7 @@ export default function CourseDetail(props) {
 
       </div >
 
-      <div className='pt-[100px] sm:pt-[150px] md:pt-[200px] lg:pt-[170px] mx-2'>
+      <div className='pt-[100px] mx-2'>
         <Footer />
       </div>
     </>

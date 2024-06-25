@@ -67,12 +67,20 @@ export default function EmployeeInput() {
           icon: "success",
           title: "Created Successful",
           text: "Nice!",
-          confirmButtonText: "OK",
-          confirmButtonColor: "#3085d6",
+          showConfirmButton: false,
+          timer: 3000,
         });
       })
       .catch((error) => {
-        alert(error);
+
+        Swal.fire({
+          icon: "error",
+          title: "Something Wrong",
+          text: "Try again!",
+          showConfirmButton: false,
+          timer: 3000,
+        });
+        console.log(error)
       });
   };
   return (

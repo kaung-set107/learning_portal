@@ -59,13 +59,13 @@ const SubjectDetail = (props) => {
     const getSubjects = async () => {
       await apiInstance.get("subjects").then((res) => {
         setFunQuizData(res.data.data.filter((el) => el._id === SubidfromCourse)[0])
-        // console.log(
-        //   res.data.data.filter((el) => el._id === SubidfromCourse)[0].course,
-        //   "c subject"
-        // );
+        console.log(
+          res.data.data.filter((el) => el._id === SubidfromCourse)[0].course,
+          "c subject"
+        );
         setCourseData(res.data.data.filter((el) => el._id === SubidfromCourse)[0].course)
         const Filter = res.data.data.filter((el) => el._id === SubidfromCourse)[0];
-        console.log(Filter?.funQuizzes[0].quiz, 'sub detail')
+        // console.log(JSON.parse(Filter), 'sub detail')
 
         setShowVideoList(JSON.parse(Filter.previewVideo));
         setSubjectDetailData(Filter.subjectSections)
@@ -96,7 +96,7 @@ const SubjectDetail = (props) => {
   return (
     <>
       <MSINav />
-      <div className=' md:p-[24 20 100 40] 2xl:container'>
+      <div className='container'>
         <div className='flex flex-col gap-10 duration-100'>
           {/* Video Section */}
           <div className='flex flex-col gap-10 md:gap-32 pt-5 md:pt-20 md:flex-row'>
@@ -134,7 +134,7 @@ const SubjectDetail = (props) => {
                           }
                           //   title={assignList.name}
                           allowFullScreen
-                          className='border w-[375px] h-[136px] md:w-[711px] md:h-[306px] lg:w-[670px] xl:w-[700px]'
+                          className='border w-[375px] h-[136px] sm:w-[600px] sm:h-[250px] md:w-[711px] md:h-[306px] lg:w-[670px] xl:w-[700px]'
                           allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
                         // style={{ width:'1400px',height:'500px' }}
                         ></iframe>
@@ -160,19 +160,20 @@ const SubjectDetail = (props) => {
                   border: "1px solid red",
                   borderRadius: "12px",
                 }}
-                className='flex justify-center sm:justify-start sm:items-center mx-4 md:mx-0 pr-[20px] md:pr-[24px] w-[345px] h-[134px] md:w-[275px] md:h-[306px]'
+                className='flex justify-center sm:justify-start sm:items-center mx-4 md:mx-0 pr-[20px] md:pr-[24px] w-[345px] h-[134px] sm:w-[560px] sm:h-[200px] md:w-[275px] md:h-[306px]'
               >
                 <div className='flex flex-col gap-2 sm:gap-5 p-2 sm:p-5 justify-center'>
                   <h1 style={{ fontSize: "20px", fontWeight: "700" }}>
                     This Subject Include
                   </h1>
-                  <div className='grid grid-cols-3 gap-4 align-middle md:grid-cols-1'>
+                  <div className='grid grid-cols-3 gap-4 align-middle md:grid-cols-1 text-[14px] font-normal md:text-[18px]
+'>
                     <div className='flex gap-2'>
                       <img
                         src={Module}
                         style={{ width: "16px", height: "16px" }}
                       />{" "}
-                      <span className='text-[8px] font-normal md:text-[14px]'>
+                      <span className=''>
                         4 modules
                       </span>
                     </div>
@@ -181,7 +182,7 @@ const SubjectDetail = (props) => {
                         src={Chapter}
                         style={{ width: "16px", height: "16px" }}
                       />{" "}
-                      <span className='text-[8px] font-normal md:text-[14px]'>
+                      <span className=''>
                         26 chapters
                       </span>
                     </div>
@@ -190,7 +191,7 @@ const SubjectDetail = (props) => {
                         src={Download}
                         style={{ width: "16px", height: "16px" }}
                       />{" "}
-                      <span className='text-[8px] font-normal md:text-[14px]'>
+                      <span className=''>
                         64 downloadable resources
                       </span>
                     </div>
@@ -199,7 +200,7 @@ const SubjectDetail = (props) => {
                         src={TV}
                         style={{ width: "16px", height: "16px" }}
                       />{" "}
-                      <span className='text-[8px] font-normal md:text-[14px]'>
+                      <span className=''>
                         Full lifetime access
                       </span>
                     </div>
@@ -208,7 +209,7 @@ const SubjectDetail = (props) => {
                         src={TV}
                         style={{ width: "16px", height: "16px" }}
                       />{" "}
-                      <span className='text-[8px] font-normal md:text-[14px]'>
+                      <span className=''>
                         Certificate of completion
                       </span>
                     </div>
@@ -218,7 +219,7 @@ const SubjectDetail = (props) => {
             </div>
           </div>
           {/* Detail Section */}
-          <div style={{ height: "241px" }}>
+          <div className='h-auto'>
             <div className='grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 xl:gap-5 gap-10 mx-4 '>
               <div
                 style={{
@@ -230,7 +231,7 @@ const SubjectDetail = (props) => {
                   backgroundColor: "#FFF",
                   boxShadow: "0px 2px 12px 0px rgba(0, 0, 0, 0.10)",
                 }}
-                className='flex flex-col w-[160px] h-[119px] md:w-[305px] md:h-[177px] md:p-[24px 120px 50px 120px] justify-center'
+                className='flex flex-col w-[260px] h-[119px] md:w-[325px] md:h-[177px] md:p-[24px 120px 50px 120px] justify-center'
               >
                 <Image
                   src={Time}
@@ -263,7 +264,7 @@ const SubjectDetail = (props) => {
                   backgroundColor: "#FFF",
                   boxShadow: "0px 2px 12px 0px rgba(0, 0, 0, 0.10)",
                 }}
-                className='flex flex-col w-[160px] h-[119px] md:w-[305px] md:h-[177px] md:p-[24px 120px 50px 120px] justify-center'
+                className='flex flex-col w-[260px] h-[119px] md:w-[305px] md:h-[177px] md:p-[24px 120px 50px 120px] justify-center'
               >
                 <Image
                   src={Person}
@@ -288,7 +289,7 @@ const SubjectDetail = (props) => {
                   backgroundColor: "#FFF",
                   boxShadow: "0px 2px 12px 0px rgba(0, 0, 0, 0.10)",
                 }}
-                className='flex flex-col w-[160px] h-[119px] md:w-[305px] md:h-[177px] md:p-[24px 120px 50px 120px] justify-center'
+                className='flex flex-col w-[260px] h-[119px] md:w-[305px] md:h-[177px] md:p-[24px 120px 50px 120px] justify-center'
               >
                 <Image
                   src={Book}
@@ -311,7 +312,7 @@ const SubjectDetail = (props) => {
                   backgroundColor: "#FFF",
                   boxShadow: "0px 2px 12px 0px rgba(0, 0, 0, 0.10)",
                 }}
-                className='flex flex-col w-[160px] h-[119px] md:w-[305px] md:h-[177px] md:p-[24px 120px 50px 120px] justify-center'
+                className='flex flex-col w-[260px] h-[119px] md:w-[305px] md:h-[177px] md:p-[24px 120px 50px 120px] justify-center'
               >
                 <Image
                   src={Date}
@@ -326,12 +327,12 @@ const SubjectDetail = (props) => {
               </div>
             </div>
           </div>
-          <div className='flex xl:gap-10 justify-between w-[375px] h-full sm:w-full container sm:h-[272px]'>
+          <div className='flex xl:gap-10 justify-start md:justify-between w-[375px] h-auto sm:w-full container sm:h-[272px]'>
             <div>
-              <Image src={Roadmap} className='transform-x-[-1] w-[370px] h-[250px] sm:flex hidden' />
+              <Image src={Roadmap} className='transform-x-[-1] w-[370px] h-[250px] md:flex hidden' />
             </div>
             <div className=''>
-              <span className='text-[20px] font-semibold sm:text-[40px]'>
+              <span className='text-[25px] font-semibold md:text-[40px]'>
                 Not sure where to start?
               </span>
 
@@ -341,16 +342,16 @@ const SubjectDetail = (props) => {
                   questions related to your interests and goals, and we will
                   help set you on the right path on your learning journey.{" "}
                 </p>
-                <Button className='text-[#fff] bg-[#215887] text-[12px] sm:text-[16px] rounded-[4px] sm:rounded-[8px] mt-5 sm:mt-10 sm:hover:-translate-x-1 sm:hover:scale-110 duration-700 w-[67px] h-[26px] sm:w-[227px] sm:h-[48px] lg:w-[200px] lg:h-[40px]' onClick={() => handleFunQuizPage(funQuizData?.funQuizzes[0], funQuizData)}>
+                <Button className='text-[#fff] bg-[#215887] text-[12px] sm:text-[16px] rounded-[4px] sm:rounded-[8px] mt-5 sm:mt-10 sm:hover:-translate-x-1 sm:hover:scale-110 duration-700 w-[67px] h-[26px] sm:w-[150px] sm:h-[40px] lg:w-[200px] lg:h-[40px]' onClick={() => handleFunQuizPage(funQuizData?.funQuizzes[0], funQuizData)}>
                   {funQuizData?.funQuizzes ? (
                     <span className=''>Take Quiz</span>
                   ) : (
                     <Button color='light'>
-                      Take Quiz <Spinner size='sm' color="primary" />
+                      Take Quiz <Spinner size='sm' color="default" />
                     </Button>
                   )}
 
-                  {/* <FunQuizPage FunQuizData={funQuizData?.funQuizzes[0]?.quiz} QuizID={funQuizData?.funQuizzes[0]?.quiz?._id} /> */}
+
                 </Button>
               </div>
 
@@ -358,12 +359,12 @@ const SubjectDetail = (props) => {
           </div>
           {/* About Section */}
           <div className='flex container'>
-            <div className='w-[375px] h-full sm:h-[426px] pt-[24px] md:w-[946px] md:h-[426px] md:p-[24px] mx-4 md:mx-0'>
+            <div className='w-full sm:pt-[14px] md:pt-0 md:w-[946px] h-auto md:p-[24px] mx-4 md:mx-0'>
               <div className='flex flex-col gap-10'>
                 <span className='text-[20px] md:text-[40px] font-bold '>
                   About This Subject
                 </span>
-                <p className='text-[11px] pt-0 md:text-[16px] font-medium'>
+                <p className='text-[14px] sm:text-[16px] pt-0 md:text-[18px] font-medium h-auto'>
                   {teacherName?.description}
                 </p>
               </div>
@@ -373,8 +374,8 @@ const SubjectDetail = (props) => {
             </div>
           </div>
           {/* Meet Teacher */}
-          <div className='container lg:pt-[100px]'>
-            <div className='flex flex-col gap-10 p-0 w-[355px] h-[600px] sm:h-[550px] md:w-[693px] md:p-[24px] mx-4 md:mx-0 '>
+          <div className=''>
+            <div className='flex flex-col gap-10  w-[355px] h-auto sm:pb-[200px]  md:w-[693px] mx-4 md:mx-0 '>
 
               <span
                 //   style={{ fontSize: "40px", fontWeight: "700" }}
@@ -382,14 +383,14 @@ const SubjectDetail = (props) => {
               >
                 Meet Your Teacher
               </span>
-              <div className='flex flex-col gap-0 md:gap-5 md:flex-row w-[345px] h-full md:w-[420px] md:h-[565px]'>
+              <div className='flex flex-col gap-0 md:gap-5 md:flex-row w-[345px] h-auto md:w-[420px] '>
                 {teacherName.instructors && teacherName.instructors.map((tlist) => (
                   <div className='flex flex-col gap-2 md:w-[500px]'>
 
                     <Image
                       //   style={{ width: "565px", height: "565px" }}
                       // alt={teacherName.instructor.image?.originalname}
-                      className='w-[335px] h-[300px] md:w-[465px] md:h-[365px]'
+                      className='w-[335px] h-[300px] sm:w-[300px] sm:h-[250px] md:w-[465px] md:h-[365px]'
                       src={getFile({ payload: tlist.image })}
                     />
 
@@ -416,7 +417,7 @@ const SubjectDetail = (props) => {
                           // height: "auto",
 
                         }}
-                        className='flex flex-col gap-4 w-[309px] h-full sm:h-[400px] md:w-[500px] md:h-[auto]'
+                        className='flex flex-col gap-4 w-[400px]  '
                       >
                         <p
                           // style={{
@@ -424,12 +425,10 @@ const SubjectDetail = (props) => {
                           //   fontWeight: "500",
                           // }}
                           onClick={() => handleMore(tlist._id)}
-                          className='text-[12px] md:text-[20px] h-[200px] font-medium'
+                          className='text-[12px] sm:text-[14px] md:text-[20px] w-[300px]  font-medium'
                         >
 
-                          {showMore ? <span>
-                            {tlist?.introduction}
-                          </span> : <span>{tlist?.introduction.substring(0, 400)}</span>}
+                          <span>{tlist?.introduction}</span>
                         </p>
                         {/* Email & Phone */}
                         {/* <div className='lg:pt-[50px]'>
@@ -461,8 +460,8 @@ const SubjectDetail = (props) => {
           </div>
 
           {/* Course Curriculum Section */}
-          <div className='w-full pt-[200px] md:pt-[230px] lg:pt-[250px] xl:pt-[260px] 2xl:pt-[270px]'>
-            <div className=' flex flex-col w-[345px] pt-[64px] pb-[24px]  gap-5 md:w-[100%] md:p-[24px] md:pt-[150px] mx-4 md:mx-0'>
+          <div className='w-full '>
+            <div className=' flex flex-col w-[345px] pb-[24px]  gap-5 md:w-[100%] md:p-[24px] md:pt-[150px] mx-4 md:mx-0'>
               <span className='text-[20px] md:text-[40px] font-bold'>
                 Course Curriculum
               </span>

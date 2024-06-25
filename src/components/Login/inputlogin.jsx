@@ -127,7 +127,7 @@ export default function Login() {
             }
           })
           .catch((error) => {
-            console.log(error);
+
             Swal.fire({
               icon: "error",
               title: "Login Failed",
@@ -136,6 +136,7 @@ export default function Login() {
               showConfirmButton: false,
               timer: 3000,
             });
+            console.log(error);
           });
       } else {
         Swal.fire({
@@ -166,6 +167,7 @@ export default function Login() {
       desiredCountry: countryRef.current.value,
 
     };
+
     apiInstance
       .post("register-waiting-lists", data)
       .then((res) => {

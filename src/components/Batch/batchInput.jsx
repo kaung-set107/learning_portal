@@ -47,8 +47,8 @@ export default function Batch() {
                     icon: "success",
                     title: "Batch Create Successful",
                     text: "Nice!",
-                    confirmButtonText: "OK",
-                    confirmButtonColor: "#3085d6",
+                    showConfirmButton: false,
+                    timer: 2000
                 });
             })
             .catch((error) => {
@@ -56,8 +56,8 @@ export default function Batch() {
                     icon: "error",
                     title: "Something Wrong!",
                     text: "Try again",
-                    confirmButtonText: "OK",
-                    confirmButtonColor: "#3085d6",
+                    showConfirmButton: false,
+                    timer: 2000
                 });
             });
     };
@@ -142,6 +142,7 @@ export default function Batch() {
                         placeholder='description'
                         onChange={(e) => setDescription(e.target.value)}
                         labelPlacement='outside'
+                        isRequired
                     />
                 </div>
             </div>

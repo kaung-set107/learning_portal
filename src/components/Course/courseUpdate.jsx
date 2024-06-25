@@ -365,7 +365,7 @@ export default function DepartmentInputForm() {
             <Link to='/attendance'>Cancel</Link>
           </Button>
           <Button color='primary' type='submit'>
-            Register
+            Update
           </Button>
         </div>
       </form>
