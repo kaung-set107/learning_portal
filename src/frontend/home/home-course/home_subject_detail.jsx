@@ -231,7 +231,7 @@ const SubjectDetail = (props) => {
                   backgroundColor: "#FFF",
                   boxShadow: "0px 2px 12px 0px rgba(0, 0, 0, 0.10)",
                 }}
-                className='flex flex-col w-[260px] h-[119px] md:w-[325px] md:h-[177px] md:p-[24px 120px 50px 120px] justify-center'
+                className='flex flex-col w-[260px] h-[119px] md:w-[325px] md:h-[177px] lg:w-[220px] xl:w-[280px]  md:p-[24px 120px 50px 120px] justify-center'
               >
                 <Image
                   src={Time}
@@ -264,7 +264,7 @@ const SubjectDetail = (props) => {
                   backgroundColor: "#FFF",
                   boxShadow: "0px 2px 12px 0px rgba(0, 0, 0, 0.10)",
                 }}
-                className='flex flex-col w-[260px] h-[119px] md:w-[305px] md:h-[177px] md:p-[24px 120px 50px 120px] justify-center'
+                className='flex flex-col w-[260px] h-[119px] md:w-[305px] md:h-[177px] lg:w-[220px] xl:w-[280px] md:p-[24px 120px 50px 120px] justify-center'
               >
                 <Image
                   src={Person}
@@ -289,7 +289,7 @@ const SubjectDetail = (props) => {
                   backgroundColor: "#FFF",
                   boxShadow: "0px 2px 12px 0px rgba(0, 0, 0, 0.10)",
                 }}
-                className='flex flex-col w-[260px] h-[119px] md:w-[305px] md:h-[177px] md:p-[24px 120px 50px 120px] justify-center'
+                className='flex flex-col w-[260px] h-[119px] md:w-[305px] md:h-[177px] lg:w-[220px] xl:w-[280px] md:p-[24px 120px 50px 120px] justify-center'
               >
                 <Image
                   src={Book}
@@ -312,7 +312,7 @@ const SubjectDetail = (props) => {
                   backgroundColor: "#FFF",
                   boxShadow: "0px 2px 12px 0px rgba(0, 0, 0, 0.10)",
                 }}
-                className='flex flex-col w-[260px] h-[119px] md:w-[305px] md:h-[177px] md:p-[24px 120px 50px 120px] justify-center'
+                className='flex flex-col w-[260px] h-[119px] md:w-[305px] md:h-[177px] lg:w-[220px] xl:w-[280px] md:p-[24px 120px 50px 120px] justify-center'
               >
                 <Image
                   src={Date}
@@ -358,8 +358,8 @@ const SubjectDetail = (props) => {
             </div>
           </div>
           {/* About Section */}
-          <div className='flex container'>
-            <div className='w-full sm:pt-[14px] md:pt-0 md:w-[946px] h-auto md:p-[24px] mx-4 md:mx-0'>
+          <div className='flex '>
+            <div className='w-full sm:pt-[14px] md:pt-0 md:w-[946px] md:p-[24px] mx-4 md:mx-0'>
               <div className='flex flex-col gap-10'>
                 <span className='text-[20px] md:text-[40px] font-bold '>
                   About This Subject
@@ -369,13 +369,13 @@ const SubjectDetail = (props) => {
                 </p>
               </div>
             </div>
-            <div className='hidden md:flex md:w-[565px] md:h-[565px] p-[66.79 4.442 81.946 3.637]'>
-              <Image src={ReadBook} />
+            <div className='hidden md:flex md:w-[565px] md:h-[565px] xl:w-[400px] xl:h-[350px] 2xl:w-[450px] 2xl:h-[400px]  p-[66.79 4.442 81.946 3.637]'>
+              <Image src={ReadBook} className='w-[200px] xl:w-[300px] xl:h-[200px]' />
             </div>
           </div>
           {/* Meet Teacher */}
           <div className=''>
-            <div className='flex flex-col gap-10  w-[355px] h-auto sm:pb-[200px]  md:w-[693px] mx-4 md:mx-0 '>
+            <div className='flex flex-col gap-10   w-[355px]  sm:pb-[200px]  md:w-[693px] mx-4 md:mx-0 '>
 
               <span
                 //   style={{ fontSize: "40px", fontWeight: "700" }}
@@ -383,14 +383,14 @@ const SubjectDetail = (props) => {
               >
                 Meet Your Teacher
               </span>
-              <div className='flex flex-col gap-0 md:gap-5 md:flex-row w-[345px] h-auto md:w-[420px] '>
+              <div className='flex flex-col gap-0 md:gap-5 md:flex-row xl:w-[1200px] xl:h-[100px]'>
                 {teacherName.instructors && teacherName.instructors.map((tlist) => (
-                  <div className='flex flex-col gap-2 md:w-[500px]'>
+                  <div className='flex md:flex-row flex-col gap-2 '>
 
                     <Image
                       //   style={{ width: "565px", height: "565px" }}
                       // alt={teacherName.instructor.image?.originalname}
-                      className='w-[335px] h-[300px] sm:w-[300px] sm:h-[250px] md:w-[465px] md:h-[365px]'
+                      className='w-[335px] h-[100px] sm:w-[300px] sm:h-[250px] md:w-[325px] md:h-[365px] lg:w-[350px] xl:w-[380px]'
                       src={getFile({ payload: tlist.image })}
                     />
 
@@ -417,7 +417,7 @@ const SubjectDetail = (props) => {
                           // height: "auto",
 
                         }}
-                        className='flex flex-col gap-4 w-[400px]  '
+                        className='flex flex-col gap-4 w-full md:w-[700px]  '
                       >
                         <p
                           // style={{
@@ -425,13 +425,13 @@ const SubjectDetail = (props) => {
                           //   fontWeight: "500",
                           // }}
                           onClick={() => handleMore(tlist._id)}
-                          className='text-[12px] sm:text-[14px] md:text-[20px] w-[300px]  font-medium'
+                          className='text-[12px] sm:text-[14px] md:text-[20px] w-full  font-medium'
                         >
 
                           <span>{tlist?.introduction}</span>
                         </p>
                         {/* Email & Phone */}
-                        {/* <div className='lg:pt-[50px]'>
+                        <div className=''>
                           <span
                             style={{
                               color: "#FFF",
@@ -449,7 +449,7 @@ const SubjectDetail = (props) => {
                           >
                             Phone : {tlist?.phone}
                           </span>
-                        </div> */}
+                        </div>
                       </div>
                     </div>
                   </div>

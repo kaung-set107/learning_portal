@@ -8,8 +8,6 @@ import {
     ModalBody,
     useDisclosure
 } from "@nextui-org/react";
-
-
 // import DateTimePicker from 'react-datetime-picker';
 import { useForm } from "react-hook-form"
 
