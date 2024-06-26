@@ -12,15 +12,18 @@ import { useEffect, useState } from "react";
 import CustomButton from "../../../components/general/CustomButton";
 import Loading from "../../../components/general/Loading";
 import { instructorsApi } from "../../instructors/api";
+import { coursesApi } from "../../courses/api";
 
 // eslint-disable-next-line react/prop-types
 const SubjectCopyModal = ({ isOpen, onClose, handleSubmit, isSubmitting }) => {
   const [instructors, setInstructors] = useState([]);
+  const [courses, setCourses] = useState([]);
 
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     instructors: [],
+    course: "",
   });
 
   const variant = "bordered";
@@ -29,6 +32,13 @@ const SubjectCopyModal = ({ isOpen, onClose, handleSubmit, isSubmitting }) => {
     setFormData((prev) => ({
       ...prev,
       instructors: [...e],
+    }));
+  };
+
+  const handleCourseSelect = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      course: e.currentKey,
     }));
   };
 
@@ -42,8 +52,19 @@ const SubjectCopyModal = ({ isOpen, onClose, handleSubmit, isSubmitting }) => {
     }
   };
 
+  const getCourses = async () => {
+    try {
+      let res = await coursesApi.getAll();
+      setCourses(res.data);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getInstructors();
+    getCourses();
   }, []);
 
   let content;
@@ -94,21 +115,38 @@ const SubjectCopyModal = ({ isOpen, onClose, handleSubmit, isSubmitting }) => {
                   </div>
 
                   <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
-                  <Select
-                    label="Instructors"
-                    placeholder="Select Instructor"
-                    labelPlacement="outside"
-                    selectionMode="multiple"
-                    selectedKeys={formData.instructors}
-                    onSelectionChange={handleMultipleSelect}
-                    className="max-w-xs"
-                  >
-                    {instructors.map((each) => (
-                      <SelectItem key={each._id} value={each._id}>
-                        {each.name}
-                      </SelectItem>
-                    ))}
-                  </Select>
+                    <Select
+                      label="Instructors"
+                      placeholder="Select Instructor"
+                      labelPlacement="outside"
+                      selectionMode="multiple"
+                      selectedKeys={formData.instructors}
+                      onSelectionChange={handleMultipleSelect}
+                      className="max-w-xs"
+                    >
+                      {instructors.map((each) => (
+                        <SelectItem key={each._id} value={each._id}>
+                          {each.name}
+                        </SelectItem>
+                      ))}
+                    </Select>
+                  </div>
+
+                  <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-3 gap-4 mt-3">
+                    <Select
+                      label="Courses"
+                      placeholder="Select Course"
+                      labelPlacement="outside"
+                      selectedKeys={[formData.course]}
+                      onSelectionChange={handleCourseSelect}
+                      className="max-w-xs"
+                    >
+                      {courses.map((each) => (
+                        <SelectItem key={each._id} value={each._id}>
+                          {each.title}
+                        </SelectItem>
+                      ))}
+                    </Select>
                   </div>
                 </form>
               </ModalBody>

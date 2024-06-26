@@ -26,7 +26,7 @@ import { DeleteIcon } from "../Table/deleteicon";
 import { Link } from "react-router-dom";
 import { PlusIcon } from "../../assets/Icons/PlusIcon";
 import { FaCopy } from "react-icons/fa";
-import {subjectsApi} from "../../frontend/features/subjects/api.js"
+import { subjectsApi } from "../../frontend/features/subjects/api.js";
 import { getFile } from "../../util/index";
 import SubjectCopyModal from "../../frontend/features/subjects/components/SubjectCopyModal";
 import { showError, showSuccess } from "../../util/noti";
@@ -132,19 +132,20 @@ export default function AttendanceTable() {
     // }, 1500);
     const modifiedPayload = {
       ...payload,
-      _id: selectedSubjectId
-    }
+      _id: selectedSubjectId,
+    };
+    
     try {
-      const res = await subjectsApi.copy(modifiedPayload)
-      await getSubject()
-      console.log(res)
+      const res = await subjectsApi.copy(modifiedPayload);
+      await getSubject();
+      console.log(res);
       showSuccess({ text: res.message, type: "noti-box" });
     } catch (error) {
-      console.log(error)
+      console.log(error);
       showError({ axiosResponse: error });
     } finally {
-      setCopyingSubject(false)
-      onSubjectCopyClose()
+      setCopyingSubject(false);
+      onSubjectCopyClose();
     }
   };
 

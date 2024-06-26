@@ -199,6 +199,7 @@ const SubjectBrief = () => {
                                 successCallback={getSubject}
                               />
                               <CustomButton
+                                confirmBox
                                 iconOnly
                                 type="delete"
                                 onClick={() =>
