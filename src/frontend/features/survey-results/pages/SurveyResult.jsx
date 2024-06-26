@@ -15,10 +15,10 @@ const getStudentAnswers = (ans) => {
       {ans.map((each) => {
         return (
           <span
-            className="px-2 py-1 rounded-xl bg-white border inline-block"
+            className="px-2 py-1 mr-1 rounded-xl bg-white border inline-block"
             key={uuidv4()}
           >
-            {each}
+            {each.answer ? each.answer : each}
           </span>
         );
       })}
@@ -59,7 +59,7 @@ const SurveyResult = () => {
     content = (
       <div>
         <div className="flex items-center justify-between mb-12">
-          <CustomButton type="back" title={`Back to Learning Material`} />
+          <CustomButton type="back" title={`Back`} />
         </div>
         <Card>
           <CardBody>
@@ -81,11 +81,21 @@ const SurveyResult = () => {
               {surveyResult.updatedQuestions.map((each, index) => {
                 return (
                   <div key={uuidv4()} className="p-3 border rounded-xl">
-                    <ListInfo
-                      className="mb-2 text-lg"
-                      title={`${index + 1}. ${each.question}`}
-                    />
-                    <ListDetail title={getStudentAnswers(each.studentAnswer)} />
+                    <h3>
+                      {`${index + 1}. ${each.question}`}
+                    </h3>
+                    <div>
+                      <ListInfo className="mb-2 text-lg" title="options" />
+                      <ListDetail
+                        title={getStudentAnswers(each.options)}
+                      />
+                    </div>
+                    <div>
+                      <ListInfo className="mb-2 text-lg" title="answer" />
+                      <ListDetail
+                        title={getStudentAnswers(each.studentAnswer)}
+                      />
+                    </div>
                   </div>
                 );
               })}

@@ -49,6 +49,7 @@ const LearningMaterials = () => {
     return (
       <CustomButton
         title="Delete"
+        confirmBox
         isLoading={isSubmitting}
         iconOnly
         type="delete"

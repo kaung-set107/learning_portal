@@ -287,6 +287,7 @@ const SubjectBrief = () => {
                             />
                             <CustomButton
                               type="delete"
+                              confirmBox
                               onClick={() =>
                                 handleSubjectSectionDelete(section._id)
                               }
@@ -329,12 +330,14 @@ const SubjectBrief = () => {
                             /> */}
                             {!subject.data.entranceTests[0].quiz ? (
                               <QuizCreateForm
+                                fixedQuestionTypes={fixedQuestionTypes}
                                 type="entranceTest"
                                 entranceTest={subject.data.entranceTests[0]}
                                 successCallback={getSubject}
                               />
                             ) : (
                               <QuizUpdateForm
+                                fixedQuestionTypes={fixedQuestionTypes}
                                 quizData={subject.data.entranceTests[0].quiz}
                                 type="entranceTest"
                                 entranceTest={subject.data.entranceTests[0]}

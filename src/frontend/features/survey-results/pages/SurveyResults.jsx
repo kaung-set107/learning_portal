@@ -5,7 +5,7 @@ import TableHeading from "../../../components/general/typography/TableHeading";
 import { getTableData } from "../data";
 import Loading from "../../../components/general/Loading";
 import { surveyResultsApi } from "../api";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import CustomButton from "../../../components/general/CustomButton";
 import { surveysApi } from "../../surveys/data";
 import { showError } from "../../../../util/noti";
@@ -17,6 +17,7 @@ const SurveyResults = () => {
   const [isFetching, setIsFetching] = useState(true);
   const [surveyResults, setSurveyResults] = useState([]);
   const [survey, setSurvey] = useState({});
+  const { id, subjectSectionId, learningMaterialId } = useParams();
   // const [currentBatch, setCurrentBatch] = useState()
   // const [filters, setFilters] = useState({
   //   batch: "",
@@ -78,8 +79,11 @@ const SurveyResults = () => {
       <CustomButton
         title="View"
         onClick={() =>
+          // navigate(
+          //   `/by-instructor/surveys/${survey._id}/survey-results/${resultId}`
+          // )
           navigate(
-            `/by-instructor/surveys/${survey._id}/survey-results/${resultId}`
+            `/by-instructor/subjects/${id}/subject-sections/${subjectSectionId}/learning-materials/${learningMaterialId}/survey-results/${resultId}`
           )
         }
       />
@@ -94,11 +98,9 @@ const SurveyResults = () => {
   }, []);
 
   useEffect(() => {
-    
-    if(Object.keys(survey).length > 0) {
+    if (Object.keys(survey).length > 0) {
       if (survey._id) getSurveyResults();
     }
-
   }, [survey]);
 
   let content;
