@@ -52,7 +52,7 @@ const CourseDetail = (props) => {
   //   setTime(time)
   // }
   // setInterval(UpdateTime)
-  const [selected, setSelected] = useState("sum");
+  const [selected, setSelected] = useState("");
   const StudentId = localStorage.getItem("id")
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const tabRef = useRef();
@@ -170,6 +170,13 @@ const CourseDetail = (props) => {
 
       });
     };
+    const getSurvey = async () => {
+      await apiInstance.get(`survey-results?student=${StudentId}&survey=${surveyData?._id}&batch=${batchID}`).then((res) => {
+        // console.log(res.data.data, "survey res detail");
+        setSurveyDisabled(res.data.data);
+      });
+    };
+    getSurvey();
     getEnrol();
     getSubjects();
 
@@ -183,11 +190,10 @@ const CourseDetail = (props) => {
 
 
   const handleVideo = (data, index) => {
+
     setSelected("sum")
     setActiveTab(1);
-    console.log(data, "heee");
     setQuizID(data.quiz);
-
     setShowVideoList(JSON.parse(data.video));
     setShowDocumentList(data.assets);
     // console.log(data.assets, "document");
@@ -392,8 +398,8 @@ const CourseDetail = (props) => {
           <div>
             {/* Right Header */}
             {showVideo && (
-              <div className='flex lg:gap-28 gap-10'>
-                <div className='w-[410px] lg:w-[500px] xl:w-[600px] 2xl:w-[780px] h-[60px] flex flex-col'>
+              <div className='flex lg:gap-2 gap-10'>
+                <div className='w-[410px] lg:w-[480px] xl:w-[600px] 2xl:w-[780px] h-[60px] flex flex-col'>
                   <span className='text-[20px] text-[#0025A9] font-semibold'>
                     {LMDataList.title}
                   </span>
@@ -403,10 +409,10 @@ const CourseDetail = (props) => {
                     value={65}
                     color='primary'
                     showValueLabel={true}
-                    className='lg:w-[300px] xl:w-[350px] 2xl:w-[400px] '
+                    className='w-full lg:w-[240px] xl:w-[350px] 2xl:w-[400px] '
                   />
                 </div>
-                <div className='flex w-[200px] lg:w-[210px] xl:w-[220px] 2xl:w-[230px] lg:pt-[45px] gap-5 pt-[32px]'>
+                <div className='flex w-[180px] lg:w-[160px] xl:w-[220px] 2xl:w-[230px] lg:pt-[45px] gap-5 pt-[32px]'>
                   <Button
                     className='w-[34px] h-[34px]'
                     color='primary'
@@ -421,7 +427,7 @@ const CourseDetail = (props) => {
               </div>
             )}
           </div>
-          <div className='w-[800px] lg:w-[800px] xl:w-[900px] 2xl:w-[1100px]'>
+          <div className='w-[600px] lg:w-[700px] xl:w-[900px] 2xl:w-[1100px]'>
             {/* Right Video Section */}
             {showVideo &&
               showVideoList.map((video) => (
@@ -435,11 +441,11 @@ const CourseDetail = (props) => {
                     }
                     //   title={assignList.name}
                     allowFullScreen
-                    className=' w-[700px] lg:w-[800px] xl:w-[900px] 2xl:w-[1080px] h-[442px]'
+                    className=' w-[700px] lg:w-[650px] xl:w-[900px] 2xl:w-[1080px] h-[442px]'
                     allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
                   // style={{ width:'1400px',height:'500px' }}
                   ></iframe>
-                  <div className='flex justify-between w-[800px] lg:w-full pt-[20px] lg:pt-[30px] lg:p-5'>
+                  <div className='flex justify-between w-[300px] lg:w-[600px] pt-[20px] lg:pt-[30px] lg:p-5'>
                     <span className='w-[311px] h-[16px] text-[22px] text-[#0025A9] font-semibold'>
                       {LMDataList.title}
                     </span>
@@ -450,7 +456,7 @@ const CourseDetail = (props) => {
                       Complete
                     </Button>
                   </div>
-                  <div className='flex w-[700px] lg:w-[800px] xl:w-[900px] 2xl:w-[1100px] flex-col pt-[20px]'>
+                  <div className='flex w-[500px] lg:w-[600px] xl:w-[900px] 2xl:w-[1100px] flex-col pt-[20px]'>
                     <Tabs
 
                       variant='light'
@@ -458,6 +464,8 @@ const CourseDetail = (props) => {
                       radius='full'
                       aria-label="Options"
                       defaultSelectedKey={selected}
+                      onChange={() => setSelected('sum')}
+                      destroyInactiveTabPanel={true}
 
 
                     >
@@ -601,6 +609,7 @@ const CourseDetail = (props) => {
                                             <label className='flex gap-2'>
                                               <input
                                                 type="radio"
+                                                className='w-[30px] h-[20px]'
                                                 name={item._id}
                                                 value={ans.answer}
                                                 onChange={() => handleAns(item, ans.answer)}

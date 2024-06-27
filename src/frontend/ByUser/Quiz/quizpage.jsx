@@ -230,6 +230,7 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
       quiz: quizData._id,
       student: studentID,
       batch: batchID,
+      timeTaken: parseInt(timer),
       answerDate: Date.now(),
       updatedQuestionData: quizData.questionData.map((first) => {
         return {
@@ -458,11 +459,11 @@ const QuizPage = ({ QuizID, enrollID, batchID }) => {
 
                     ) : (
                       <div className='flex gap-32 justify-start items-center' >
-                        <Image src={ResultUFO} className='w-[300px] h-[300px]' />
-                        <div className='flex flex-col gap-4 w-[400px]'>
-                          <span className=' text-[20px] font-semibold'>You have already finished QUIZ.</span>
+                        <Image src={ResultUFO} className='w-[300px] xl:w-[300px] xl:h-[300px] h-[200px]' />
+                        <div className='flex flex-col gap-4 w-[450px] xl:w-[400px]'>
+                          <span className='text-[18px] xl:text-[20px] font-semibold'>You have already finished QUIZ.</span>
                           <div className=' hover:-translate-y-1 hover:scale-110 duration-500 flex justify-end'>
-                            <Button color='primary' onPress={() => handleQuizRes('5xl')} className=''>See Result</Button>
+                            <Button color='primary' className='xl:w-[110px] xl:h-[40px]' onPress={() => handleQuizRes('5xl')} >See Result</Button>
                           </div>
 
                         </div>

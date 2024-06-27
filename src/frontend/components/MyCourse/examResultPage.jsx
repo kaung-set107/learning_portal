@@ -1,11 +1,7 @@
 import {
-    Card,
-    CardBody,
-    Button,
-    CardHeader,
+
     Image,
-    Divider,
-    Textarea,
+
 } from "@nextui-org/react";
 import { Link, useLocation } from "react-router-dom";
 // import {useEffect,useState} from 'react'
@@ -14,13 +10,6 @@ import { faEye, faClock, faCalendarDays, faArrowLeft } from "@fortawesome/free-s
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 // import apiInstance from "../../util/api";
-import Exam from "./examTab";
-import Assignment from "./assignTab";
-import Module from "./moduleTab";
-import TabValueComponent from "./sub-detail-head";
-import Nav from "../../home/header";
-import PF from '../../../assets/img/pf.png'
-import QP from '../../../assets/img/qp.png'
 import apiInstance from "../../../util/api";
 import { getFile } from "../../../util";
 import ExcelPhoto from "../../ByInstructor/images/excel.png";
@@ -30,7 +19,6 @@ import PPTX from '../../../assets/img/pptx.png';
 import DOCX from '../../../assets/img/docx.png';
 const ExamResult = ({ ResData, showResult, subjectData, examFile }) => {
     const [studentData, setStudentData] = useState([]);
-    const [activeTab, setActiveTab] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
 
 
@@ -67,7 +55,7 @@ const ExamResult = ({ ResData, showResult, subjectData, examFile }) => {
         document.body.removeChild(link);
     };
     const location = useLocation();
-    console.log(ResData, "body");
+    // console.log(ResData, "body");
     const marks = ResData.quizResult && ResData.quizResult.updatedQuestionData.map((e) => (e.questions.map((h) => h.mark).reduce((acc, val) => acc + val, 0)))
     // console.log(marks, 'arr')
     const originMark = ResData.quizResult && marks.reduce((acc, val) => acc + val, 0)
@@ -75,12 +63,12 @@ const ExamResult = ({ ResData, showResult, subjectData, examFile }) => {
     useEffect(() => {
         const getExamRes = async () => {
             await apiInstance.get('exam-results').then((res) => {
-                console.log(res.data.data, 'res')
+                // console.log(res.data.data, 'res')
             })
         }
         const getStudent = async () => {
             await apiInstance.get('students').then((res) => {
-                console.log(res.data.data.filter(el => el._id === ResData?.student._id), 'res')
+                // console.log(res.data.data.filter(el => el._id === ResData?.student._id), 'res')
                 setStudentData(res.data.data.filter(el => el._id === ResData.student._id)[0])
             })
         }
@@ -125,7 +113,7 @@ const ExamResult = ({ ResData, showResult, subjectData, examFile }) => {
                         {/* Second Section */}
                         <div className='flex gap-10'>
                             <div>
-                                <Image src={getFile({ payload: studentData?.image })} className='rounded-[50%] w-[105px] h-[100px]' />
+                                <Image src={studentData.image ? getFile({ payload: studentData?.image }) : ''} className='rounded-[50%] w-[105px] h-[100px]' alt="Student Photo" />
                             </div>
                             <div className='flex flex-col gap-2'>
                                 <span className='text-[24px] font-semibold'>{studentData.name}</span>
@@ -143,7 +131,7 @@ const ExamResult = ({ ResData, showResult, subjectData, examFile }) => {
                                     <span className='text-[16px] font-medium text-[#fff]'>{ResData.batch.name}-{ResData.batch.code}</span>
                                 </div>
                                 <div className='bg-[#BB1E3F] rounded-lg p-4 w-[226px] flex justify-center items-center'>
-                                    <span className='text-[16px] font-medium text-[#fff]'><FontAwesomeIcon icon={faClock} size='sm' /> &nbsp;12:40 PM - 5:00 PM</span>
+                                    <span className='text-[16px] font-medium text-[#fff]'><FontAwesomeIcon icon={faClock} size='sm' /> &nbsp;{ResData?.exam?.startTime} - {ResData?.exam?.endTime}</span>
                                 </div>
                                 <div className='bg-[#BB1E3F] rounded-lg p-4 w-[236px] flex justify-center items-center'>
                                     <span className='text-[16px] lg:text-[15px] font-medium text-[#fff]'><FontAwesomeIcon icon={faCalendarDays} /> &nbsp;Start Date : {ResData.exam.examDate.split('T')[0]}</span>
@@ -233,15 +221,16 @@ const ExamResult = ({ ResData, showResult, subjectData, examFile }) => {
                                                 radius="sm"
                                                 alt={i.title}
                                                 className="object-cover w-[40px] h-[40px]"
-                                                src={
-                                                    i.originalname?.split(".")[1] === "pdf"
-                                                    && PdfPhoto ||
-                                                    (i.originalname?.split(".")[1] === "xlsx")
-                                                    && ExcelPhoto || (i.originalname?.split(".")[1] === "csv")
-                                                    && CSV || (i.originalname?.split(".")[1] === "pptx")
-                                                    && PPTX || (i.originalname?.split(".")[1] === "docx")
-                                                    && DOCX ||
-                                                    (i.originalname?.split(".")[1] === "png" || "jpg" || "jpeg") && getFile({ payload: i })
+                                                src={i ?
+                                                    (i.originalname?.split(".")[1] === "pdf"
+                                                        && PdfPhoto ||
+                                                        (i.originalname?.split(".")[1] === "xlsx")
+                                                        && ExcelPhoto || (i.originalname?.split(".")[1] === "csv")
+                                                        && CSV || (i.originalname?.split(".")[1] === "pptx")
+                                                        && PPTX || (i.originalname?.split(".")[1] === "docx")
+                                                        && DOCX ||
+                                                        (i.originalname?.split(".")[1] === "png" || "jpg" || "jpeg") && getFile({ payload: i }))
+                                                    : ExcelPhoto
                                                 }
                                             />
                                         </a>

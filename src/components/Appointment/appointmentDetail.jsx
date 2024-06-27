@@ -103,7 +103,7 @@ const About = () => {
                     showConfirmButton: false,
                     timer: 2000,
                 });
-                onClose();
+                onreClose();
             }).catch((err) => {
                 console.log(err)
             })
@@ -131,7 +131,7 @@ const About = () => {
                 .get(`appointments/${ID}`)
                 .then((res) => {
                     setAppointmentData(res.data.data);
-                    console.log(res.data.data, 'att')
+                    // console.log(res.data.data, 'att')
                     // setPages(res.data._metadata.page_count);
                 });
         };

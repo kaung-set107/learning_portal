@@ -26,7 +26,7 @@ import { DeleteIcon } from "../Table/deleteicon";
 import { Link } from "react-router-dom";
 import { PlusIcon } from "../../assets/Icons/PlusIcon";
 import { FaCopy } from "react-icons/fa";
-import {subjectsApi} from "../../frontend/features/subjects/api.js"
+import { subjectsApi } from "../../frontend/features/subjects/api.js"
 import { getFile } from "../../util/index";
 import SubjectCopyModal from "../../frontend/features/subjects/components/SubjectCopyModal";
 import { showError, showSuccess } from "../../util/noti";
@@ -289,7 +289,7 @@ export default function AttendanceTable() {
                 />
               </TableCell>
               <TableCell>{item?.fee}</TableCell>
-              <TableCell>{item?.description}</TableCell>
+              <TableCell>{item?.description?.split(" ").slice(0, 10).join(" ")} ....</TableCell>
 
               <TableCell>
                 <div className="relative flex items-center gap-2">

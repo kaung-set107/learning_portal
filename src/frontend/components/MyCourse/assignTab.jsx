@@ -22,13 +22,17 @@ export default function App() {
 
   const assignmentList = location.state.data.assignments
   const courseId = location.state.data
-  console.log(assignmentList, 'c')
+  // console.log(assignmentList, 'c')
   const enrollID = location.state.enroll_id;
   const [completeList, setCompleteList] = useState([])
   const [checkedList, setCheckedList] = useState([])
   const [image, setImage] = useState("");
   const [studentID, setStudentID] = useState('')
   const [batchID, setBatchID] = useState('')
+  const [loading, setLoading] = useState(true)
+  setTimeout(() => {
+    setLoading(false);
+  }, 3000);
   const timestamp = Date.now();
 
   // Convert the timestamp to a Date object
@@ -43,7 +47,7 @@ export default function App() {
   const formattedDate = `${year}-${month}-${day}`;
 
   // console.log(assignmentList.map((i) => (i._id)), ' assign')
-  // console.log(LoginStudentID, 'student id')
+  // console.log(checkedList, 'student id')
   const download = () => {
     const file = getFile({ payload: i });
 
@@ -81,7 +85,7 @@ export default function App() {
 
     const getStudentId = async () => {
       apiInstance.get('enrollments').then(res => {
-        console.log((res.data.data.filter(el => el.course._id === courseId)), 'hee')
+        // console.log((res.data.data.filter(el => el.course._id === courseId)), 'hee')
         // setStudentID(res.data.data.filter(el => el.course._id === courseId)[0].student)
         setBatchID(res.data.data.filter(el => el.student === LoginStudentID) ? res.data.data.filter(el => el.student === LoginStudentID)[0]?.batch : (''))
 
@@ -98,7 +102,7 @@ export default function App() {
         // console.log(studentID, 'lll ')
         // const CompleteStatusAssign = res.data.data.filter(el => el.status === "submitted")
         // const CheckedStatusAssign = res.data.data.filter(el => el.status === "checked")
-        console.log(res.data.data.filter(el => el.status === "submitted").filter(el => el.student._id === LoginStudentID).filter(el => el.assignment !== null), 'stttututtu')
+        // console.log(res.data.data.filter(el => el.status === "submitted").filter(el => el.student._id === LoginStudentID).filter(el => el.assignment !== null), 'stttututtu')
 
         setCompleteList(res.data.data.filter(el => el.status === "submitted").filter(el => el.student._id === LoginStudentID).filter(el => el.assignment !== null))
         setCheckedList(res.data.data.filter(el => el.status === "published").filter(el => el.student._id === LoginStudentID).filter(el => el.assignment !== null))
@@ -107,8 +111,10 @@ export default function App() {
 
       )
     }
+
     getStudentId()
     getAssignRes()
+
   }, [])
 
   const handleImage = (e) => {
@@ -148,7 +154,7 @@ export default function App() {
   };
 
   return (
-    <div className="flex justify-center items-center w-[500px] lg:w-[1024px] xl:w-[1280px] 2xl:w-[1440px] flex-col mb-20">
+    <div className="flex justify-center items-center w-[500px] md:w-full lg:w-[1024px] xl:w-[1280px] 2xl:w-[1440px] flex-col mb-20">
       <Tabs aria-label="Options" color="primary" variant="bordered" size='sm'>
         <Tab
           key="photos"
@@ -245,7 +251,7 @@ export default function App() {
 
                       <div className='flex justify-start gap-2'>
                         <Button>Cancel</Button>
-                        {completeList ? (<Button color='primary' className='cursor-not-allowed opacity-50' >Upload</Button>
+                        {completeList[0] || checkedList.map((i) => (i.assignment?._id === item._id)) ? (<Button color='primary' className='cursor-not-allowed opacity-50' >Upload</Button>
 
                         ) : (<Button color='primary' onClick={() => handleCreateAssignment(item._id)}>Upload</Button>
 
@@ -361,14 +367,14 @@ export default function App() {
             </div>
 
           ) : (
-            <div className='flex flex-col gap-10 lg:gap-5 justify-start pt-10 w-[768px] lg:w-[1200px] xl:w-[1280px] 2xl:w-[1440px] h-[204px] pl-10 pb-8 pr-10' >
+            <div className='flex flex-col gap-10 lg:gap-5 justify-start pt-10  w-full lg:w-[1200px] xl:w-[1280px] 2xl:w-[1440px] h-[204px] pl-10 pb-8 pr-10 container' >
               {checkedList.map((item, index) => (
 
                 <div className='grid grid-cols-3 bg-[#215887]   p-12  border-4 border-l-red-500 ' key={item._id}>
-                  <div className='flex justify-center text-[24px] text-[#fff] font-semibold items-center'>Assignment</div>
+                  <div className='flex justify-start text-[18px] lg:text-[24px] text-[#fff] font-semibold items-center'>Assignment</div>
                   {item.assignment !== null && (
                     <div className='flex flex-col gap-2 justify-start'>
-                      <span className='text-[32px] text-[#fff] font-semibold'>{item?.assignment.title}</span>
+                      <span className='md:text-[20px] lg:text-[32px] text-[#fff] font-semibold'>{item?.assignment.title}</span>
                       <div className='text-[16px] text-[#fff] font-medium'>{item?.assignment.description}</div>
                       <div className='flex flex-col  gap-1'>
                         <span className='text-[16px] text-[#fff] font-semibold'>Reference link </span>
@@ -424,15 +430,15 @@ export default function App() {
 
 
 
-                  <div className='flex flex-col gap-4 p-2 justify-start  bg-[#fff] w-[480px] h-[260px]  rounded-[4px]'>
+                  <div className='flex flex-col gap-4 p-2 justify-start  bg-[#fff]  md:w-[200px] lg:w-[350px] xl:w-[380px] 2xl:w-[480px] h-[260px]  rounded-[4px]'>
 
 
 
-                    <span className='text-[25px] font-semibold'>Mark - <b className='text-[30px] font-semibold text-green-400'>{item.grade}</b></span>
+                    <span className='text-[20px] lg:text-[25px] font-semibold'>Mark - <b className='text-[22px] lg:text-[30px] font-semibold text-green-400'>{item.grade}</b></span>
 
-                    <div className='flex flex-col bg-[#ca3b3b] w-[340px] h-auto rounded-t-[32px] rounded-r-[32px] rounded-b-[32px] rounded-l-[0px] text-[12px] font-normal p-4 text-[#fff] ml-3'>
+                    <div className='flex flex-col bg-[#ca3b3b] lg:w-[320px] xl:w-[340px] h-auto rounded-t-[32px] rounded-r-[32px] rounded-b-[32px] rounded-l-[0px] text-[12px] font-normal p-4 text-[#fff] ml-3'>
                       <b className='text-[16px]'>Teacher's Note</b>
-                      <span className='text-[16px]'>
+                      <span className='text-[14px] lg:text-[16px]'>
                         Oh, hello! All perfectly.
                         My remark is <b>{item.remark}</b>.
                       </span> </div>

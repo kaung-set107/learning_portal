@@ -37,6 +37,21 @@ import Loading from '../../../assets/img/finalloading.gif'
 const oneColor = colors[0]
 const twoColor = colors[1]
 
+const formatDate = (dateStr) => {
+  // Create a Date object from the input date string
+  const dateObj = new Date(dateStr);
+
+  // Options for formatting the date
+  const options = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  };
+
+  // Format the date using toLocaleDateString
+  return dateObj.toLocaleDateString('en-US', options);
+};
+
 export default function CourseDetail(props) {
 
   const ResData = {
@@ -310,7 +325,7 @@ export default function CourseDetail(props) {
                                   <div className='font-medium flex gap-2 w-[300px] text-[#fff]'>
                                     <span className='text-[16px] font-semibold'>Start Date </span>
                                     <span>:</span>
-                                    <span className='text-[16px] font-medium'>April 11, 2024</span>
+                                    <span className='text-[16px] font-medium'>{formatDate(item?.examDate?.split('T')[0])}</span>
                                   </div>
                                   {/* <div className=' font-medium flex gap-2 text-[#fff]  w-[300px]'>
                                       <span className='text-[16px]  font-semibold'>Completed Time </span>
@@ -323,7 +338,7 @@ export default function CourseDetail(props) {
                                   <div className='font-medium flex gap-2 w-[300px] text-[#fff]'>
                                     <span className='text-[16px] font-semibold'>Start Time </span>
                                     <span>:</span>
-                                    <span className='text-[16px] font-medium'>12:00 AM</span>
+                                    <span className='text-[16px] font-medium'>{item?.startTime}</span>
                                   </div>
 
                                 </div>
@@ -377,7 +392,7 @@ export default function CourseDetail(props) {
                                   <div className='font-medium flex gap-2 w-[300px] lg:w-[250px] text-[#fff]'>
                                     <span className='text-[16px] font-semibold'>Start Date </span>
                                     <span>:</span>
-                                    <span className='text-[16px] font-medium'>April 11, 2024</span>
+                                    <span className='text-[16px] font-medium'>{formatDate(res?.submissionDate?.split('T')[0])}</span>
                                   </div>
                                   <div className=' font-medium flex gap-2 text-[#fff]  w-[300px] lg:w-[250px]'>
                                     <span className='text-[16px]  font-semibold'>Completed Time </span>
@@ -390,7 +405,7 @@ export default function CourseDetail(props) {
                                   <div className='font-medium flex gap-2 w-[300px] lg:w-[250px] text-[#fff]'>
                                     <span className='text-[16px] font-semibold'>Start Time </span>
                                     <span>:</span>
-                                    <span className='text-[16px] font-medium'>12:00 AM</span>
+                                    <span className='text-[16px] font-medium'>{res?.startTime}</span>
                                   </div>
                                   <div className=' font-medium flex gap-2 text-[#fff] lg:w-[250px]  w-[300px]'>
                                     <span className='text-[16px]  font-semibold'>Completed Date </span>
@@ -518,8 +533,8 @@ export default function CourseDetail(props) {
 
                             <div className='flex flex-col items-end gap-2 justify-end'>
 
-
-                              <Button color='primary' className='w-[163px] h-[44px]'  >About Questions</Button>
+                              {/* {console.log(item, 'item')} */}
+                              {/* <Button color='primary' className='w-[163px] h-[44px]'  >About Questions</Button> */}
 
 
 

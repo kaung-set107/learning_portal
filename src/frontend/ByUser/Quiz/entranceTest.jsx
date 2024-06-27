@@ -67,7 +67,7 @@ function EntranceTestPage() {
 
 
     // const arrList = [...arr, trueAnswerList.filter((el) => el.id === quizList.questions[counter]._id)[1]]
-    console.log([...arr, trueAnswerList.filter((el) => el.id === quizList.questionData[0].questions[counter]._id)[1]], 'true ori');
+    // console.log([...arr, trueAnswerList.filter((el) => el.id === quizList.questionData[0].questions[counter]._id)[1]], 'true ori');
 
 
     // console.log(trueAns, 'fix true');

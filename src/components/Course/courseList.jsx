@@ -37,7 +37,7 @@ export default function AttendanceTable() {
   const [delID, setDelID] = useState(null);
   const [page, setPage] = React.useState(1);
   const [pages, setPages] = React.useState(1);
-  const [rowsPerPage, setRowsPerPage] = React.useState(15);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [courseList, setCourseList] = React.useState([]);
   const [dataCount, setDataCount] = useState('')
 
