@@ -108,6 +108,7 @@ const ExamCard = (props) => {
         />
         <CustomButton
           iconOnly
+          confirmBox
           type="delete"
           onClick={() => handleExamDelete(examData._id)}
           isLoading={isSubmitting}
@@ -117,7 +118,7 @@ const ExamCard = (props) => {
       <h3 className="font-bold text-lg capitalize mb-3">{examData.title}</h3>
       <div className="flex gap-3">
         <Chip className="mb-3 font-semibold">
-          Due Date: {dateForDisplay(examData.dueDate)}
+          Due Date: {dateForDisplay(examData.examDate)}
         </Chip>
         <Chip className="mb-3 font-semibold">{examData.examType}</Chip>
       </div>

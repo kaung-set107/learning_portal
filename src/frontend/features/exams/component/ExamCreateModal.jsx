@@ -16,6 +16,7 @@ import {
 import { Select, SelectItem } from "@nextui-org/select";
 import CustomFileDrag from "../../../components/general/CustomFileDrag";
 import { showError, showSuccess } from "../../../../util/noti";
+import { dateForPayload } from "../../../../util/Util";
 
 export default function ExamCreateModal(props) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -69,6 +70,7 @@ export default function ExamCreateModal(props) {
         passMark: +formData.passMark,
         examType: formData.examType.currentKey,
         totalMark: +formData.totalMark,
+        examDate: dateForPayload(formData.examDate)
       };
 
       console.log(payload);

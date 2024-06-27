@@ -46,7 +46,7 @@ const getStudentAnswers = (ans, options, type) => {
 };
 
 const isInputQuestion = (type) => {
-  if (type === "fillInTheBlank") {
+  if (type === "fillInTheBlank" || type === 'openQuestion') {
     return true;
   } else {
     return false;
@@ -69,13 +69,14 @@ const QuizResultDetailCard = (props) => {
   };
 
   const isCorrect = (question) => {
+    console.log(question)
     if (!isInputQuestion(question.type)) {
       let res = true;
 
       if (question.studentAnswer.length !== question.correctAnswer.length)
         return false;
 
-      question.studentAnswer.map((each) => {
+      question.studentAnswer?.map((each) => {
         if (!question.correctAnswer.includes(each)) res = false;
       });
 

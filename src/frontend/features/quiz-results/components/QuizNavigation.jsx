@@ -19,7 +19,7 @@ const isCorrect = (question) => {
 };
 
 const isInputQuestion = (type) => {
-  if (type === "fillInTheBlank") {
+  if (type === "fillInTheBlank" || type === "openQuestion") {
     return true;
   } else {
     return false;

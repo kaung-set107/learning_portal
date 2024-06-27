@@ -15,7 +15,7 @@ import {
 import { Select, SelectItem } from "@nextui-org/select";
 import { v4 as uuidv4 } from "uuid";
 import Loading from "../../../components/general/Loading";
-import { dateForInput } from "../../../../util/Util";
+import { dateForInput, dateForPayload } from "../../../../util/Util";
 import FileLoader from "../../../components/general/FileLoader";
 import { showError, showSuccess } from "../../../../util/noti";
 import { Checkbox } from "@nextui-org/react";
@@ -73,6 +73,7 @@ export default function ExamUpdateModal(props) {
         passMark: +formData.passMark,
         examType: formData.examType?.currentKey ?? formData.examType[0],
         totalMark: +formData.totalMark,
+        examDate: dateForPayload(formData.examDate)
       };
       if (formData.newQuestion) {
         payload.question = formData.newQuestion;

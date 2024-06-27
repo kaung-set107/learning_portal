@@ -70,12 +70,6 @@ const ExamResult = () => {
                   Exam Result Details
                 </span>
               </div>
-
-              <div className="flex justify-center items-center p-6 w-[500px] h-[43px] bg-[#ECF2FF]  rounded-lg">
-                <span className="text-[16px] font-semibold  text-[#3D70F5] w-[391px] h-[19px]">
-                  Result Declared on 12:30 AM | 22 September 2023
-                </span>
-              </div>
             </div>
 
             {/* Second Section */}
