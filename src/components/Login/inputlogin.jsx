@@ -235,7 +235,7 @@ export default function Login() {
   return (
     <>
 
-      <div className='flex'>
+      <div className='flex  '>
         {/* Left Side */}
         <div className='hidden lg:flex' >
 
@@ -244,7 +244,7 @@ export default function Login() {
             id="player"
             muted
             autoPlay="autoplay"
-            className=' object-fill h-screen'
+            className=' object-cover h-screen'
             loop
             src={LoginVideo}
 
