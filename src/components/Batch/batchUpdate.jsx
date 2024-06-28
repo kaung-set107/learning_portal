@@ -73,8 +73,8 @@ export default function BatchUpdate() {
                     icon: "success",
                     title: "Batch Update Successful",
                     text: "Nice!",
-                    confirmButtonText: "OK",
-                    confirmButtonColor: "#3085d6",
+                    showConfirmButton: false,
+                    timer: 2000
                 });
             })
             .catch((error) => {
@@ -82,8 +82,8 @@ export default function BatchUpdate() {
                     icon: "error",
                     title: "Something Wrong!",
                     text: "Try again",
-                    confirmButtonText: "OK",
-                    confirmButtonColor: "#3085d6",
+                    showConfirmButton: false,
+                    timer: 2000
                 });
             });
     };
@@ -114,6 +114,7 @@ export default function BatchUpdate() {
                         label={course ? 'Select Course' : courseName}
                         className=''
                         onChange={(e) => setCourse(e.target.value)}
+                        isDisabled
                     >
 
                         {courseList.map((animal) => (
@@ -191,7 +192,7 @@ export default function BatchUpdate() {
                     <Link to='/category'>Cancel</Link>
                 </Button>
                 <Button color='primary' onClick={create}>
-                    Register
+                    Update
                 </Button>
             </div>
         </div>

@@ -51,7 +51,7 @@ export default function Login() {
   const handleCourse = (id) => {
 
     setCourse(id)
-    // console.log(courseList.filter(el => el._id === id)[0], 'c')
+    // console.log(courseList, 'c') 
     setBatch(courseList.filter(el => el._id === id)[0].batch?._id)
     setBatchName(courseList.filter(el => el._id === id)[0].batch?.name)
     // console.log(batchList.filter(el => el.course._id === id).filter(cl => cl.active === true)[0]._id, 'ress')
@@ -127,7 +127,7 @@ export default function Login() {
             }
           })
           .catch((error) => {
-            console.log(error);
+
             Swal.fire({
               icon: "error",
               title: "Login Failed",
@@ -136,6 +136,7 @@ export default function Login() {
               showConfirmButton: false,
               timer: 3000,
             });
+            console.log(error);
           });
       } else {
         Swal.fire({
@@ -166,6 +167,7 @@ export default function Login() {
       desiredCountry: countryRef.current.value,
 
     };
+
     apiInstance
       .post("register-waiting-lists", data)
       .then((res) => {
@@ -233,7 +235,7 @@ export default function Login() {
   return (
     <>
 
-      <div className='flex'>
+      <div className='flex  '>
         {/* Left Side */}
         <div className='hidden lg:flex' >
 
@@ -242,7 +244,7 @@ export default function Login() {
             id="player"
             muted
             autoPlay="autoplay"
-            className=' object-fill h-screen'
+            className=' object-cover h-screen'
             loop
             src={LoginVideo}
 
@@ -436,8 +438,8 @@ export default function Login() {
                   </div>
                   <div className='relative'>
                     {/* <label className='flex justify-start text-[#5A5A5D] text-[14px] font-semibold'>Email</label> */}
-                    <input
-
+                    <Input
+                      label='Birth Date'
                       type='date'
 
                       className="appearance-none border  border-gray-300 rounded-[12px] w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline custom-input"
@@ -495,11 +497,13 @@ export default function Login() {
                     <select
                       className="w-full p-3 border rounded-[12px] hover:border-gray-400 focus:border-gray-400"
                       onChange={(e) => handleCourse(e.target.value)}
+
                     >
                       <option hidden>Select Course</option>
                       {courseList.map((item) => (
-                        <option key={item._id} value={item._id} >
-                          {item.title}
+                        <option key={item._id} disabled={item?.batch?.noOfStudentAllow === item?.batch?.noOfEnrolledStudent} value={item._id} className={(item?.batch?.noOfStudentAllow === item?.batch?.noOfEnrolledStudent
+                          ? `text-slate-300` : '')} >
+                          {item.title} - ({item?.batch?.name})
                         </option>
                       ))}
                     </select>

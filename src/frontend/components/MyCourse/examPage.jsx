@@ -43,7 +43,7 @@ const ExamPage = () => {
     const batchID = location.state.batchID //.data.course.batch.id
     const enrollID = location.state.enroll //.enroll_id
     const student = location.state.student //student
-    console.log(ExamData, 'Hello')
+    // console.log(ExamData, 'Hello')
     const [isLoading, setIsLoading] = useState(true);
     const [optionIndex, setOptionIndex] = useState(5); // Timer set for 5 seconds
     const [counter, setCounter] = useState(0);
@@ -81,18 +81,18 @@ const ExamPage = () => {
 
     // Generate an array of length equal to the count
     // const inputArray = Array.from({ length: FillBlankInput }, (_, index) => index);
-    console.log(quizList, 'opp')
+    // console.log(quizList, 'opp')
 
-    console.log(trueAnswerList, 'dis')
+    // console.log(trueAnswerList, 'dis')
     const TotalMark = trueAnswerList.map((i) => i.markTotal)
         .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
     // console.log(TotalMark, "time");
     const handleBack = () => {
         navigate('/student')
     };
-    console.log(multiTrueAnswerList, 'multiTrueAnswerList')
+    // console.log(multiTrueAnswerList, 'multiTrueAnswerList')
     const MulTotalMark = multiTrueAnswerList.map((i) => i.markTotal).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-    console.log(MulTotalMark, "body");
+    // console.log(MulTotalMark, "body");
     const handleShowFail = () => {
         // alert('Fail')
         setShowOrigin(true)
@@ -157,7 +157,7 @@ const ExamPage = () => {
                             ...i,
 
                             studentAnswer: i.type === 'trueFalse' && studentAnswerList.filter((el) => el.id === i._id)[0]
-                                ?.studentAnswer || i.type === 'multipleChoice' && studentAnswerList.filter((el) => el.id === i._id)[0]?.studentAnswer.slice(-(i.correctAnswer.length)) || i.type === "fillInTheBlank" && studentAnswerList.filter((el) => el.id === i._id)[0].studentAnswer,
+                                ?.studentAnswer || i.type === 'multipleChoice' && studentAnswerList.filter((el) => el.id === i._id)[0]?.studentAnswer.slice(-(i.correctAnswer.length)) || i.type === "fillInTheBlank" && studentAnswerList.filter((el) => el.id === i._id)[0].studentAnswer || i.type === "openQuestion" && studentAnswerList.filter((el) => el.id === i._id)[0].studentAnswer,
                         };
                     }),
 
@@ -192,7 +192,7 @@ const ExamPage = () => {
                     timer: 2000,
                 });
                 navigate('/student')
-                console.log(res.data.data, 'create')
+                // console.log(res.data.data, 'create')
                 // setShowTimer(false)
                 // setShowOrigin(true)
                 // setIsLoading(true)
@@ -214,13 +214,13 @@ const ExamPage = () => {
             // setNumber(prevCount => prevCount + 1)
             const multi = [...multiAns, index + 1]
             setMultiAns(multi);
-            console.log(multi, 'multi')
+            // console.log(multi, 'multi')
             const II = multi.slice(-(correct.length)) //to get last studentAnswer's length
-            console.log(II, 'to get last studentAnswer length')
+            // console.log(II, 'to get last studentAnswer length')
             setCount(II) //to show that we choose answer count
 
             const correctList = correct.map((i) => (parseInt(i))) //to get not include single code in correctAnswer
-            console.log(correctList, 'corr ans list')
+            // console.log(correctList, 'corr ans list')
 
             if (correctList.every(item => II.includes(item)) && correctList.length === II.length) {
                 // setStudentAnswer(val + 1)
@@ -249,7 +249,7 @@ const ExamPage = () => {
                 // Usage
                 const uniqueObjects = getUniqueById(newFormSubmissions);
 
-                console.log(uniqueObjects, 'mul real');
+                // console.log(uniqueObjects, 'mul real');
                 setMultiTrueAnswerList(uniqueObjects);
 
                 // console.log(uniqueObjects, 'setMulTrueAnswerList')
@@ -292,7 +292,7 @@ const ExamPage = () => {
         // setOriIndexList([...oriIndexList, val])
 
         // setDisabledValues([...disabledValues, val]);
-        console.log(val, 'ansIndex')
+        // console.log(val, 'ansIndex')
 
         const newAns = [...tempArr];
         newAns.push({
@@ -309,7 +309,7 @@ const ExamPage = () => {
         //     "newAns"
 
         // );
-        console.log('hello', newAns);
+        // console.log('hello', newAns);
 
         setTempArr(newAns)
         const TrueFalseAns = [...arr, val + 1] // to get student's index choose value with array list style
@@ -337,7 +337,7 @@ const ExamPage = () => {
 
             setTrueAnswerList(newFormSubmissions);
 
-            console.log(newFormSubmissions, 'new radio')
+            // console.log(newFormSubmissions, 'new radio')
 
             // setIsCorrect("Correct");
         } else {
@@ -351,7 +351,7 @@ const ExamPage = () => {
             "studentformSubmission",
             JSON.stringify(newFormSubmissionsforStudentAnswer)
         );
-        console.log(newFormSubmissionsforStudentAnswer, 'final else radio')
+        // console.log(newFormSubmissionsforStudentAnswer, 'final else radio')
         setStudentAnswerList(newFormSubmissionsforStudentAnswer);
 
 
@@ -381,66 +381,34 @@ const ExamPage = () => {
         setStudentAnswerList(stuList);
 
 
-
-
-        // console.log(inputList, 'newItems')
-
-        // const newFormSubmissionsforStudentAnswer = [...studentAnswerList, { studentAnswer: inputList, id: counterid, type: SecItemData.type }];
-        // // newFormSubmissionsforStudentAnswer.push({ studentAnswer: inputList, id: counterid });
-        // localStorage.setItem(
-        //     "studentformSubmission",
-        //     JSON.stringify(newFormSubmissionsforStudentAnswer)
-        // );
-        // console.log(newFormSubmissionsforStudentAnswer, 'final else radio')
-        // const lastInputValue = newFormSubmissionsforStudentAnswer[newFormSubmissionsforStudentAnswer.length - 1]
-        // const otherValue = newFormSubmissionsforStudentAnswer
-        // console.log([...otherValue, lastInputValue], 'lastInputValue')
-        // setStudentAnswerList(newFormSubmissionsforStudentAnswer);
-        // setStudentAnswerList(newItems);
-        // Get the index of the last element
         const lastIndex = newItems.length - 1;
-        console.log('Last Index:', newItems[lastIndex]);
 
-        // const hee = [...inputList, secInd]
-        // console.log(hee, 'val')
-        // setInputList([...inputList, hee[hee.length - 1]])
+    }
 
+    const handleOpenQuestion = (event, val, counterid, SecItemData) => {
 
-        // const getUniqueById = (arr) => {
-        //     return Object.values(arr.reduce((acc, obj) => {
-        //         acc[obj.id] = obj;
-        //         return acc;
-        //     }, {}));
-        // }; //to get same ID object data as one obj data
+        const { value } = event.target;
+        const newItems = [...inputList];
+        newItems[val] = value;
+        setInputList(newItems);
 
-        // // Usage
-        // const uniqueObjects = getUniqueById(hee);
-        // // console.log(uniqueObjects, 'mul real');
-        // // setMultiTrueAnswerList(uniqueObjects);
+        // Create the main array and push the sub-arrays into it
+        const mainArray = [...studentAnswerList, ...[{ studentAnswer: newItems, id: counterid, type: SecItemData.type }]];
 
-        // console.log(uniqueObjects, 'setMulTrueAnswerList')
-        // // console.log(quiz.questions.filter(el=>el.correctAnswer === val+1))
+        const getUniqueById = (arr) => {
+            return Object.values(arr.reduce((acc, obj) => {
+                acc[obj.id] = obj;
+                return acc;
+            }, {}));
+        }; //to get same ID object data as one obj data
 
-        // // const newFormSubmissionsforStudentAnswer = [...studentAnswerList];
-        // // newFormSubmissionsforStudentAnswer.push({ studentAnswer: uniqueObjects[0], id: counterid });
-        // const mainArray = [...studentAnswerList, ...[{ studentAnswer: uniqueObjects, id: counterid }]];
-        // const getFinalUniqueById = (arr) => {
-        //     return Object.values(arr.reduce((acc, obj) => {
-        //         acc[obj.id] = obj;
-        //         return acc;
-        //     }, {}));
-        // }; //to get same ID object data as one obj data
+        // Usage
+        const stuList = getUniqueById(mainArray);
+        // console.log(stuList, 'final blank')
+        setStudentAnswerList(stuList);
 
-        // // Usage
-        // const stuList = getFinalUniqueById(mainArray);
-        // console.log(stuList, 'final final')
-        // setStudentAnswerList(stuList);
-        // localStorage.setItem(
-        //     "studentformSubmission",
-        //     JSON.stringify(newFormSubmissionsforStudentAnswer)
-        // );
-        // console.log(newFormSubmissionsforStudentAnswer, 'fill')
-        // setStudentAnswerList(newFormSubmissionsforStudentAnswer);
+        const lastIndex = newItems.length - 1;
+        // console.log('Last Index:', newItems[lastIndex]);
     }
     useEffect(() => {
         if (!isLoading) return;
@@ -448,13 +416,13 @@ const ExamPage = () => {
 
         const getExamRes = async () => {
             await apiInstance.get('exam-results').then((res) => {
-                console.log(res.data.data.filter(el => el.exam?._id === exam), 'exam res')
+                // console.log(res.data.data.filter(el => el.exam?._id === exam), 'exam res')
                 setAlreadyExamRes(res.data.data.filter(el => el.exam?._id === exam))
             })
         }
         const getQuizRes = async () => {
             await apiInstance.get('quiz-results').then((res) => {
-                console.log(res.data.data, 'quiz res')
+                // console.log(res.data.data, 'quiz res')
                 setAlreadyQuizRes(res.data.data.filter(el => el.quiz?._id === QuizID))
             })
         }
@@ -463,7 +431,7 @@ const ExamPage = () => {
         const item = localStorage.getItem('hello');
         // Update state with the retrieved item
 
-        console.log(item, 'under its array')
+        // console.log(item, 'under its array')
 
 
         const dataFromLocalStorage = localStorage.getItem("id");
@@ -534,11 +502,11 @@ const ExamPage = () => {
                             showOrigin && (
                                 <>
                                     {!showTimer && (
-                                        <div className='flex justify-center  font-serif bg-[#fbfcfe] shadow-lg rounded-lg    gap-20 '>
+                                        <div className='flex justify-center  font-serif bg-[#fbfcfe] shadow-lg rounded-lg    gap-10 '>
 
                                             <div className='flex flex-col gap-10 pt-[20px]  mt-[110px] '>
-                                                <span className='text-[35px] font-bold w-80'>
-                                                    This placement test will test your basic knowledge on IELTS
+                                                <span className='text-[35px] font-bold w-[300px]'>
+                                                    This Exam will test your subject's knowledge.
                                                 </span>
                                                 <div className='flex gap-2'>
                                                     <Button color='primary' variant='bordered'>
@@ -617,10 +585,10 @@ const ExamPage = () => {
                                                                                 key={counter}
                                                                             >
                                                                                 <div>
-
+                                                                                    <span className=''><b className='uppercase'>{secItem?.type === 'openQuestion' ? 'Open-Ended' : secItem?.type}</b> Question.</span>
                                                                                     <div className='text-lg py-3 px-3'>
                                                                                         <b>({secIndex + 1})</b> &nbsp;
-                                                                                        {secItem.question}
+                                                                                        {secItem.type === 'multipleChoice' ? `${secItem.question} ${`(Choose ${secItem.correctAnswer.length} answer)`}` : secItem.question}
                                                                                     </div>
                                                                                     <div>
                                                                                         {/* <img src={secItem.questionPic} /> */}
@@ -640,7 +608,7 @@ const ExamPage = () => {
                                                                                                         <RadioGroup
                                                                                                             // isDisabled={secItem?.studentAnswer.length - 1 === secIndex}
                                                                                                             className='flex flex-col gap-2'
-                                                                                                            orientation="horizontal"
+
 
                                                                                                         >
                                                                                                             {secItem.options.map((e, i) => (
@@ -720,7 +688,7 @@ const ExamPage = () => {
 
                                                                                                     </div>
 
-                                                                                                </div> : (
+                                                                                                </div> : (secItem.type === 'fillInTheBlank' ?
                                                                                                     < div className='text-lg font-semibold ml-10'
                                                                                                     >
 
@@ -757,7 +725,40 @@ const ExamPage = () => {
 
                                                                                                         </div>
 
-                                                                                                    </div>))}
+                                                                                                    </div> : (
+                                                                                                        <div className='text-lg font-semibold ml-10'>
+
+                                                                                                            {/*Open Question */}
+
+                                                                                                            <div className='flex flex-col gap-1'>
+
+
+
+
+                                                                                                                {/* Map over the inputArray and render input boxes */}
+                                                                                                                {Array.from({ length: secItem?.inputCount }, (_, index) => index).map((item, ind) => (
+                                                                                                                    <div className='flex gap-1 '>
+                                                                                                                        <span>({ind + 1})</span>
+                                                                                                                        <Input key={item} type="text" placeholder='Answer' variant="underlined" className="rounded-md p-2 mb-2" onChange={(event) =>
+                                                                                                                            handleOpenQuestion(event,
+                                                                                                                                ind,
+
+                                                                                                                                secItem?._id,
+                                                                                                                                secItem
+
+                                                                                                                            )
+                                                                                                                        } />
+                                                                                                                    </div>
+
+                                                                                                                ))}
+
+
+                                                                                                            </div>
+
+
+
+                                                                                                        </div>
+                                                                                                    )))}
 
 
                                                                                         </>

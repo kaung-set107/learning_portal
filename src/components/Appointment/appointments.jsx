@@ -55,7 +55,7 @@ export default function Counsellors() {
     const DateFormat = `${date.day}-${date.month}-${date.year}`
 
     const handleFilter = async () => {
-        console.log(arr, 'arr')
+        // console.log(arr, 'arr')
         const data = {
             // startDate: DateFormat,
             // endDate: DateFormat,
@@ -81,9 +81,9 @@ export default function Counsellors() {
             data.status = status
         }
 
-        console.log(data, 'res')
+        // console.log(data, 'res')
         await apiInstance.get('appointments', { params: data }).then((res) => {
-            console.log(res.data.data, 'filter')
+            // console.log(res.data.data, 'filter')
             setAppointmentList(res.data.data)
         })
         // setAppointmentList(data)
@@ -139,7 +139,7 @@ export default function Counsellors() {
                 .get(`appointments`, { params: { limit: 80, rowsPerPage: rowsPerPage } })
                 .then((res) => {
                     setAppointmentList(res.data.data);
-                    console.log(res.data.data, 'att')
+                    // console.log(res.data.data, 'att')
                     setDataCount(res.data.count);
                     setPages(
                         res.data.count % rowsPerPage === 0
@@ -222,7 +222,7 @@ export default function Counsellors() {
                         onChange={(e) => setCounsellor(e.target.value)}
                     >
                         {counsellorList.map((item, ind) => (
-                            <SelectItem key={item.name} >
+                            <SelectItem key={item._id} >
                                 {item.name}
                             </SelectItem>
                         ))}
@@ -364,15 +364,31 @@ export default function Counsellors() {
                                 <TableCell>
                                     <div className='relative flex items-center gap-2'>
 
+                                        {item?.status === 'request' ? (
+                                            <Tooltip content='Approve or Reject'>
 
-                                        <Tooltip content='Approve or Reject'>
-                                            <Link to={"/appointment-detail/" + item._id}>
+                                                <Link to={"/appointment-detail/" + item._id}>
 
-                                                <span className='text-lg  text-blue-900 cursor-pointer active:opacity-50'>
+                                                    <span className='text-lg text-blue-900 cursor-pointer active:opacity-50'>
+                                                        <FontAwesomeIcon icon={faCalendarWeek} />
+                                                    </span>
+                                                </Link>
+                                            </Tooltip>
+                                        ) : (
+                                            <Tooltip content='Approve or Reject'>
+
+
+
+                                                <span className='text-lg text-slate-300 cursor-pointer active:opacity-30'>
                                                     <FontAwesomeIcon icon={faCalendarWeek} />
                                                 </span>
-                                            </Link>
-                                        </Tooltip>
+
+                                            </Tooltip>
+                                        )
+
+                                        }
+
+
                                         <Tooltip color='danger' content='Delete user'>
                                             <span
                                                 data-key=''

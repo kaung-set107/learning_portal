@@ -290,7 +290,7 @@ export default function AttendanceTable() {
                 />
               </TableCell>
               <TableCell>{item?.fee}</TableCell>
-              <TableCell>{item?.description}</TableCell>
+              <TableCell>{item?.description?.split(" ").slice(0, 10).join(" ")} ....</TableCell>
 
               <TableCell>
                 <div className="relative flex items-center gap-2">

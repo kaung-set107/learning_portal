@@ -1,4 +1,4 @@
-import { Button, Input, Textarea, RadioGroup, Radio } from "@nextui-org/react";
+import { Button, Input, Textarea, RadioGroup, Radio, Checkbox } from "@nextui-org/react";
 import apiInstance from "../../util/api";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
@@ -30,6 +30,7 @@ export default function DepartmentInputForm() {
   const [fromDate, setFromDate] = useState("");
   const [categoryName, setCategoryName] = useState("");
   const [courseList, setCourseList] = useState([])
+  const [showOnWeb, setShowOnWeb] = useState(false);
   const {
     register,
     handleSubmit,
@@ -71,7 +72,7 @@ export default function DepartmentInputForm() {
     formData.append("installmentTime", inTime);
     formData.append("topic", topic);
     formData.append("installmentPercent", installmentPercent);
-
+    formData.append("showOnWebsite", showOnWeb);
 
 
     apiInstance
@@ -121,6 +122,8 @@ export default function DepartmentInputForm() {
         setPrice(res.data.data?.fee)
         setNewVideoLink(JSON.parse(res.data.data?.previewVideo))
         setDesc(res.data.data?.description)
+        setShowOnWeb(res.data.data?.showOnWebsite)
+
 
         // setCatList(res.data.data);
         // const count = res.data.data.filter((el) => el.subjects.length);
@@ -348,6 +351,17 @@ export default function DepartmentInputForm() {
             ))}
           </div>
           <div>
+            <Input
+              type='number'
+              label='Student Allow'
+              placeholder='eg : 5,10'
+              variant={variant}
+              onChange={(e) => setStudentAllow(e.target.value)}
+              labelPlacement='outside'
+            />
+          </div>
+
+          <div>
             <Textarea
               type='text'
               label='Description'
@@ -358,14 +372,25 @@ export default function DepartmentInputForm() {
               labelPlacement='outside'
             />
           </div>
-
         </div>
+        <div className='flex gap-2'>
+          <label className='text-[18px] font-semibold'>Show On Website</label>
+          <Checkbox
+            color="secondary"
+            isSelected={showOnWeb === true ? true : false}
+            size='lg'
+
+            onChange={(e) => setShowOnWeb(!showOnWeb)}
+
+          />
+        </div>
+
         <div className='flex justify-center gap-10 py-4'>
           <Button color='danger'>
             <Link to='/attendance'>Cancel</Link>
           </Button>
           <Button color='primary' type='submit'>
-            Register
+            Update
           </Button>
         </div>
       </form>

@@ -1,4 +1,4 @@
-import { Button, Input, Textarea, RadioGroup, Radio } from "@nextui-org/react";
+import { Button, Input, Textarea, RadioGroup, Radio, Checkbox } from "@nextui-org/react";
 import apiInstance from "../../util/api";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
@@ -24,7 +24,7 @@ export default function DepartmentInputForm() {
   const [price, setPrice] = useState('')
   const [videoLinks, setVideoLinks] = useState("");
   const [newVideoLink, setNewVideoLink] = useState([]);
-  // const [fromDate, setFromDate] = useState("");
+  const [showOnWeb, setShowOnWeb] = useState(false);
   // const [toDate, setToDate] = useState("");
   const {
     register,
@@ -67,7 +67,7 @@ export default function DepartmentInputForm() {
     formData.append("installmentTime", inTime);
     formData.append("topic", topic);
     formData.append("installmentPercent", installmentPercent);
-
+    formData.append("showOnWebsite", showOnWeb);
 
     apiInstance
       .post("courses", formData, {
@@ -78,8 +78,8 @@ export default function DepartmentInputForm() {
       .then(function () {
         Swal.fire({
           icon: "success",
-          title: "Course Create Successful",
-          text: "",
+          title: "Successful",
+          text: "Course Created!",
           showConfirmButton: false,
           timer: 2000,
         });
@@ -136,7 +136,7 @@ export default function DepartmentInputForm() {
         </div>
         <div className='grid grid-cols-2 w-full mb-6 md:mb-0 gap-4'>
           <div className='flex flex-col '>
-            <label>Image</label>
+            <label>Image <span className='text-red-600 text-[18px]'>*</span></label>
             <input
               type='file'
               onChange={handleImage}
@@ -144,6 +144,7 @@ export default function DepartmentInputForm() {
               placeholder=' '
               labelPlacement='outside'
               variant={variant}
+
               className='border-1 border-slate-300 rounded-md h-10'
             />
             {/* <Image src={courseList.image && getFile({ payload: courseList.image })} className='w-[60px] h-[60px]' /> */}
@@ -316,6 +317,7 @@ export default function DepartmentInputForm() {
               </div>
             ))}
           </div>
+
           <div>
             <Textarea
               type='text'
@@ -326,7 +328,17 @@ export default function DepartmentInputForm() {
               labelPlacement='outside'
             />
           </div>
+        </div>
 
+        <div className='flex gap-2'>
+          <label className='text-[18px] font-semibold'>Show On Website</label>
+          <Checkbox
+            color="secondary"
+            size='lg'
+
+            onChange={(e) => setShowOnWeb(!showOnWeb)}
+
+          />
         </div>
         <div className='flex justify-center gap-10 py-4'>
           <Button color='danger'>

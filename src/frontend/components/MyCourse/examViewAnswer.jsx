@@ -15,87 +15,18 @@ import {
 } from "@nextui-org/react";
 import apiInstance from "../../../util/api";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-// import {useEffect,useState} from 'react'
-import ExamOriginalPage from './examTab'
-import { faEye, faClock, faCalendarDays, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useMemo, useState } from "react";
-// import apiInstance from "../../util/api";
-import ExamTestData from "./examTestData";
-// import Assignment from "./assignTab";
-// import Module from "./moduleTab";
-// import TabValueComponent from "./sub-detail-head";
-import MSINAV from "../../home/header";
-// import PF from '../../../assets/img/pf.png'
-// import QP from '../../../assets/img/qp.png'
-import { convertSecondsToMinutes } from '../../../util/timer'
-import Placement from '../../../assets/img/placementGIF.gif'
-import EHome from '../../../assets/img/EllipseHome.png'
-import EHalf from '../../../assets/img/EllipseHalf.png'
-import Swal from "sweetalert2";
+
 const ExamPage = ({ ViewData }) => {
     const location = useLocation();
 
-    console.log(ViewData.updatedQuestionData.map((i) => (i.questions.map((e) => (e.type === 'fillInTheBlank' ? e.studentAnswer.map((f) => (f)) : parseInt(e.studentAnswer) - 1)))), 'Hello')
-    const [isLoading, setIsLoading] = useState(true);
-    const [optionIndex, setOptionIndex] = useState(5); // Timer set for 5 seconds
+    // console.log(ViewData.updatedQuestionData.map((i) => (i.questions.map((e) => (e.type === 'fillInTheBlank' ? e.studentAnswer.map((f) => (f)) : parseInt(e.studentAnswer) - 1)))), 'Hello')
+
     const [counter, setCounter] = useState(0);
-    let [points, setPoints] = useState(null);
-    const [activeTab, setActiveTab] = useState(1);
-    // const [back, setBack] = useState(showResult);
-    const [back, setBack] = useState('');
-    const [showOrigin, setShowOrigin] = useState(true);
-    const [timeLeft, setTimeLeft] = useState("");
-    const [showTimer, setShowTimer] = useState(false);
+
     // const [quizList, setQuizList] = useState(ResData.quiz);
     const quizList = ViewData.updatedQuestionData
-    console.log(quizList)
-    const [studentID, setStudentID] = useState("");
-    const [clicked, setClicked] = useState(false);
-    const [multiAns, setMultiAns] = useState([])
-    const [nextAnswer, setNextAnswer] = useState(false);
-    const [arr, setArr] = useState([]);
-    const [timer, setTimer] = useState(0);
-    const ti = timer / 30
-    // const [showResult, setShowResult] = useState(false);
-    const navigate = useNavigate();
-    const [ansIndex, setAnsIndex] = useState("");
-    const [showAlert, setShowAlert] = useState(false);
-    const [tempArr, setTempArr] = useState([]);
-    const [trueAnswerList, setTrueAnswerList] = useState([]);
-    const [studentAnswerList, setStudentAnswerList] = useState([]);
-    const [showExamResult, setShowExamResult] = useState(false);
-    const [multiTrueAnswerList, setMultiTrueAnswerList] = useState([]);
-    const [alreadyExamRes, setAlreadyExamRes] = useState('')
-    const [alreadyQuizRes, setAlreadyQuizRes] = useState('')
-
-    const [count, setCount] = useState('')
-    const [inputList, setInputList] = useState([])
-
-    // const FillBlankInput = 3; // Default count is 3
-
-    // Generate an array of length equal to the count
-    // const inputArray = Array.from({ length: FillBlankInput }, (_, index) => index);
-    console.log(inputList, 'opp')
-
-    // console.log(trueAnswerList, 'dis')
-    // const TotalMark = trueAnswerList.map((i) => i.markTotal)
-    //     .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-    // console.log(TotalMark, "time");
-    // const handleBack = () => {
-    //     navigate('/student')
-    // };
-
-    // const MulTotalMark = multiTrueAnswerList.filter(el => el.id).map((i) => i.markTotal).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-    // console.log(quizList, "body");
-
-
-    // console.log(alreadyExamRes, 'exam main')
-    const SubData = location.state;
-    // console.log(ResData, "dat");
-    const displayMinutes = Math.floor(timeLeft / 60);
-    const displaySeconds = timeLeft % 60;
-    // console.log(disabledValues.every(item => oriIndexList.includes(item)), 'same?')
+    // console.log(quizList)
 
     return (
         <div>
@@ -143,9 +74,10 @@ const ExamPage = ({ ViewData }) => {
                                                 >
                                                     <div>
 
+                                                        <span className=''><b className='uppercase'>{secItem?.type === 'openQuestion' ? 'Open-Ended' : secItem?.type}</b> Question.</span>
                                                         <div className='text-lg py-3 px-3'>
                                                             <b>({secIndex + 1})</b> &nbsp;
-                                                            {secItem.question}
+                                                            {secItem.type === 'multipleChoice' ? `${secItem.question} ${`(Choose ${secItem.correctAnswer.length} answer)`}` : secItem.question}
                                                         </div>
                                                         <div>
                                                             {/* <img src={secItem.questionPic} /> */}
@@ -165,7 +97,7 @@ const ExamPage = ({ ViewData }) => {
                                                                             <RadioGroup
 
                                                                                 className='flex flex-col gap-2'
-                                                                                orientation="horizontal"
+
                                                                                 isReadOnly
                                                                                 // isDisabled={secIndex + 1 === parseInt(secItem?.studentAnswer)}
                                                                                 defaultValue={secItem.options[secItem.type !== 'fillInTheBlank' && parseInt(secItem.studentAnswer) - 1].answer}
@@ -226,7 +158,7 @@ const ExamPage = ({ ViewData }) => {
 
                                                                         </div>
 
-                                                                    </div> : (
+                                                                    </div> : (secItem.type === 'fillInTheBlank' ?
                                                                         < div className='text-lg font-semibold ml-10'
                                                                         >
 
@@ -257,7 +189,40 @@ const ExamPage = ({ ViewData }) => {
 
                                                                             </div>
 
-                                                                        </div>))}
+                                                                        </div> : (
+                                                                            <div className='text-lg font-semibold ml-10'>
+
+                                                                                {/*Open Question */}
+
+                                                                                <div className='flex flex-col gap-1'>
+
+
+
+
+                                                                                    {/* Map over the inputArray and render input boxes */}
+                                                                                    {Array.from({ length: secItem?.inputCount }, (_, index) => index).map((item, ind) => (
+                                                                                        <div className='flex gap-1 '>
+                                                                                            <span>({ind + 1})</span>
+                                                                                            <Input key={item} type="text" placeholder='Answer' variant="underlined" value={secItem.type === 'openQuestion' && secItem.studentAnswer[secItem.studentAnswer.map((b, ib) => (ib)).indexOf(ind)]} className="rounded-md p-2 mb-2" onChange={(event) =>
+                                                                                                handleOpenQuestion(event,
+                                                                                                    ind,
+
+                                                                                                    secItem?._id,
+                                                                                                    secItem
+
+                                                                                                )
+                                                                                            } />
+                                                                                        </div>
+
+                                                                                    ))}
+
+
+                                                                                </div>
+
+
+
+                                                                            </div>
+                                                                        )))}
 
 
                                                             </>

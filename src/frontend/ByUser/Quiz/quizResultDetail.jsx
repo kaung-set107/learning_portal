@@ -18,6 +18,7 @@ import Loading from "../../../assets/img/finalloading.gif";
 import { Stack } from "@mui/material";
 import moment from "moment-timezone";
 import Nav from "../../home/header";
+import { Time } from "../../../util/secondtomin";
 const Result = ({ data }) => {
     const dataFromLocalStorage = localStorage.getItem("id");
     const navigate = useNavigate();
@@ -30,7 +31,7 @@ const Result = ({ data }) => {
     const [subList, setSubList] = useState([]);
     const [quizNavigationID, setQuizNavigationID] = useState("");
     const [originMark, setOriginMark] = useState('')
-    console.log(data, 'res data')
+    // console.log(data, 'res data')
 
     useEffect(() => {
         // console.log(dataFromLocalStorage, 'local')
@@ -185,7 +186,7 @@ const Result = ({ data }) => {
                                     Time taken
                                 </span>
                                 <span className='text-[20px] text-[#000] font-bold'>
-                                    25 mins 24 secs
+                                    {Time(quizResult?.timeTaken)} Mins
                                 </span>
                             </div>
                             {/* 5 */}

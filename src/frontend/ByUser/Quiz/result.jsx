@@ -23,7 +23,7 @@ import { Time } from "../../../util/secondtomin";
 export default function Result() {
   const location = useLocation()
   const SubData = location.state
-  console.log(location.state, 'subd')
+  // console.log(location.state, 'subd')
   const dataFromLocalStorage = localStorage.getItem("id");
   const navigate = useNavigate();
   const [quizResult, setQuizResult] = useState([]);
@@ -71,14 +71,14 @@ export default function Result() {
 
     const getSubInfo = async () => {
       await apiInstance.get(`exams/${quizResult?.quiz?.exam}`).then((res) => {
-        console.log(res.data.data.subject, "lm");
+        // console.log(res.data.data.subject, "lm");
         // setLMList(res.data.data.subject);
         setSubjectID(res.data.data.subject)
       });
     };
     const getSUB = async () => {
       await apiInstance.get("subjects").then((res) => {
-        console.log(res.data.data.filter(el => el._id === subjectID)[0].title, "sub info");
+        // console.log(res.data.data.filter(el => el._id === subjectID)[0].title, "sub info");
         setSubList(res.data.data);
         setHeadTitle(res.data.data.filter(el => el._id === subjectID)[0]?.title)
       });
@@ -92,20 +92,20 @@ export default function Result() {
 
     const getResult = async () => {
       await apiInstance.get(`quiz-results`).then((res) => {
-        console.log(res.data.data, 'res quiz mul')
+        // console.log(res.data.data, 'res quiz mul')
         setQuizID(
           res.data.data.filter((el) => el.student?._id === dataFromLocalStorage)[
             res.data.data.filter((el) => el?.student?.id === dataFromLocalStorage)
               .length - 1
           ]?.quiz
         );
-        console.log(
-          res.data.data.filter((el) => el.student?._id === dataFromLocalStorage)[
-            res.data.data.filter((el) => el?.student?._id === dataFromLocalStorage)
-              .length - 1
-          ]?.quiz,
-          "result"
-        );
+        // console.log(
+        //   res.data.data.filter((el) => el.student?._id === dataFromLocalStorage)[
+        //     res.data.data.filter((el) => el?.student?._id === dataFromLocalStorage)
+        //       .length - 1
+        //   ]?.quiz,
+        //   "result"
+        // );
         const timer = setTimeout(() => {
           setQuizResult(
             res.data.data.filter((el) => el?.student?._id === dataFromLocalStorage)[
@@ -151,7 +151,7 @@ export default function Result() {
 
     navigate("/student");
   };
-  console.log(quizResult, "q res");
+  // console.log(quizResult, "q res");
 
   const dateTime = moment(quizResult?.answerDate).locale("en").tz("Asia/Yangon");
   const formattedDateTime = dateTime.format("LLLL");
@@ -175,7 +175,7 @@ export default function Result() {
             </Tooltip>
             <div className='p-1'>
               <span className='text-[32px] font-bold text-[#131313]'>
-                {headTitle} Exam
+                {headTitle} Quiz
               </span>
             </div>
           </div>

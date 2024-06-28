@@ -53,8 +53,9 @@ export default function Contact() {
     return (
         <div className='contact'>
             <MSINav />
-            <div className='bg-[#0B2743]'>
-                <div className='bg-[#fff] h-[900px] w-[1000px] overflow-visible '>
+            <div className=' bg-white'>
+                {/* Normal from XL */}
+                {/* <div className='bg-[#fff] h-[900px] w-[1000px] overflow-visible hidden xl:flex  '>
                     <div className='w-[545px] h-[480px] p-24 absolute left-[20px]'>
                         <div className='flex w-[356px] h-[68px] font-[Montserrat-Bold] gap-4'>
                             <span className='text-[50px] text-[#0B2743] font-bold'>Get </span>
@@ -103,7 +104,7 @@ export default function Contact() {
 
                         </div>
                     </div>
-                    <div className=' h-[700px] w-[545px]  top-[200px] absolute right-[30px]' >
+                    <div className='lg:h-[560px] xl:h-[600px] xl:w-[545px] 2xl:w-[700px] top-[200px] absolute right-[30px]' >
                         <GoogleMapReact
                             bootstrapURLKeys={{ key: "" }}
                             defaultCenter={defaultProps.center}
@@ -116,8 +117,75 @@ export default function Contact() {
                             />
                         </GoogleMapReact>
                     </div>
-                </div>
+                </div> */}
+                <div className='bg-[#fff] w-full overflow-visible  flex flex-col gap-10 container '>
+                    <div className='w-auto h-[500px] flex justify-center ' >
+                        <GoogleMapReact
+                            bootstrapURLKeys={{ key: "" }}
+                            defaultCenter={defaultProps.center}
+                            defaultZoom={defaultProps.zoom}
+                        >
+                            <AnyReactComponent
+                                lat={16.80074855425139}
+                                lng={96.12812930265584}
+                                text="My Marker"
+                            />
+                        </GoogleMapReact>
+                    </div>
+                    <div className='flex gap-10'>
+                        <div className='w-full h-auto py-10 p-5 sm:p-20'>
+                            <div className='flex w-[356px] h-[68px] font-[Montserrat-Bold] gap-4'>
+                                <span className='text-[50px] text-[#0B2743] font-bold'>Get </span>
+                                <span className='text-[50px] text-[#0B2743] font-bold'>in</span>
+                                <span className='text-[#BC1F40] text-[50px] font-bold'>Touch</span>
+                            </div>
+                            <span className='text-[14px] font-semibold w-[844px] h-[24px]'>Contact MSI Academy & start your journey with us!</span>
+                            <div className='flex flex-col gap-6 pt-16 w-full '>
+                                <Input variant='bordered' type='text' placeholder='Name' />
+                                <Input variant='bordered' type='email' placeholder='Email' />
+                                <Input variant='bordered' type='phone' placeholder='Phone Number' />
+                                <Select
+                                    label="How did you find us!"
+                                    className=""
+                                >
+                                    {Items.map((item) => (
+                                        <SelectItem key={item.id} value={item.name}>
+                                            {item.name}
+                                        </SelectItem>
+                                    ))}
+                                </Select>
 
+                                <Button className='w-full h-[50px] bg-[#0B2743] text-[16px] font-bold text-[#fff] font-[Montserrat-Bold]'>Send</Button>
+                                <div className='flex flex-col sm:flex-row pt-20'>
+                                    <div className='flex gap-5'>
+                                        <FontAwesomeIcon icon={faPhone} size='lg' className='text-[#000] ' />
+                                        <div className='flex flex-col gap-2'>
+                                            <span className='text-[#0B2743] text-[16px] font-semibold uppercase font-[Montserrat-Bold]'>Phone</span>
+                                            <span className='text-[16px] font-medium text-[#BC1F40] w-[150px] '>09422557884</span>
+                                            <span className='text-[16px] font-medium text-[#BC1F40] w-[150px] '>09781447554 </span>
+                                        </div>
+
+                                    </div>
+                                    <div className='flex gap-5'>
+                                        <FontAwesomeIcon icon={faEnvelope} size='lg' className='text-[#000] ' />
+                                        <div className='flex flex-col gap-2'>
+                                            <span className='text-[#0B2743] text-[16px] font-semibold uppercase font-[Montserrat-Bold]'>Email</span>
+                                            <span className='text-[16px] font-medium text-[#BC1F40]  '>info@msiacademy.edu.mm</span>
+                                            <span className='text-[16px] font-medium text-[#BC1F40]  '>academicdept@msiacademy.edu.mm</span>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
                 {/* <div className='bg-[#DD5471] h-[700px] w-[545px] absolute top-[200px] left-[1000px] '>
                 </div> */}
 
