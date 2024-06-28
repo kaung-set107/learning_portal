@@ -17,7 +17,7 @@ export default function Newsdetail() {
                 .get(`news-and-activities/${ID}`)
                 .then((res) => {
                     setNewsList(res.data.data);
-                    console.log(res.data.data, 'att')
+
 
                 });
         };

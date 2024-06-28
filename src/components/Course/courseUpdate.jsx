@@ -47,7 +47,7 @@ export default function DepartmentInputForm() {
   };
 
   const DeleteVideo = async (val) => {
-    console.log(val, "val");
+    // console.log(val, "val");
     setNewVideoLink(newVideoLink.filter((el, ind) => ind !== val));
   };
   const handleImage = (e) => {
@@ -200,8 +200,8 @@ export default function DepartmentInputForm() {
             <label>Installment Allowed</label>
 
             <RadioGroup
-              defaultValue={inAllow === true ? 'yes' : 'no'}
-
+              value={inTime ? 'yes' : 'no'}
+              className='flex'
               onChange={(e) => setInAllow(e.target.value)}
             >
               <Radio value='yes' >Yes</Radio>

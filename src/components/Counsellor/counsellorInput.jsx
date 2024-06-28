@@ -14,7 +14,7 @@ export default function CounsellorInput() {
     const [addSection, setAddSection] = useState([])
     const [showNextSection, setShowNextSection] = useState(false)
     // const DateFormat = `${date.day}-${date.month}-${date.year}`
-    console.log(startTime, 'start')
+
 
     const AddSection = () => {
 

@@ -53,16 +53,13 @@ export default function DepartmentUpdateInput() {
       await apiInstance
         .get(`overall-enrollments`, { params: { status: "waiting" } })
         .then((res) => {
-          console.log(
-            res.data.data.filter((el) => el._id === Id)[0],
-            "overall"
-          );
+
           setStudent(res.data.data.filter((el) => el._id === Id)[0]);
           const Img = getFile({
             payload: res.data.data.filter((el) => el._id === Id)[0]?.student
               .image,
           });
-          console.log(Img, "ii");
+
           setImg(Img);
         });
     };

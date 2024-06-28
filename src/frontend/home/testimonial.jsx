@@ -26,18 +26,7 @@ export default function Testimonial() {
         getTestimonial();
     }, [])
 
-    const handleSeeMore = (id) => {
-        console.log(id, 'id')
-        if (testimonialList.filter((el, ind) => ind === id)[0]) {
-            setShow(true)
-        }
 
-    }
-    const handleSeeLess = (id) => {
-        console.log(id, 'id')
-        setShow(false)
-
-    }
     return (
         <div>
             <MSINav />

@@ -1,15 +1,5 @@
 import {
-    Tooltip,
-    Table,
-    TableHeader,
-    Modal,
-    DropdownItem,
-    ModalContent,
-    User,
-    Dropdown,
-    DropdownTrigger,
-    DropdownMenu,
-    Kbd,
+
     Button,
     ModalFooter,
     Pagination,
@@ -33,10 +23,7 @@ import apiInstance from "../../util/api";
 import { EditIcon } from "../Table/editicon";
 import { DeleteIcon } from "../Table/deleteicon";
 import { Link } from "react-router-dom";
-import { ChevronDownIcon } from "../../assets/Icons/ChevronDownIcon";
-import { SearchIcon } from "../Navbar/search";
-import { PlusIcon } from "../../assets/Icons/PlusIcon";
-import { getFile } from "../../util/index";
+
 
 const BannerList = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -61,7 +48,7 @@ const BannerList = () => {
                 .get(`banners`)
                 .then((res) => {
                     setBannerList(res.data.data);
-                    console.log(res.data.data, 'att')
+
                     setPages(res.data._metadata.page_count);
                 });
         };

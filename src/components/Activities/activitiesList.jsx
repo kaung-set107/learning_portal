@@ -75,7 +75,7 @@ export default function BatchList() {
                 .get(`news-and-activities`, { params: { limit: 80, rowsPerPage: rowsPerPage } })
                 .then((res) => {
                     setBatchList(res.data.data);
-                    console.log(res.data.data, 'att')
+
                     setDataCount(res.data.count);
                     setPages(
                         res.data.count % rowsPerPage === 0
@@ -97,7 +97,7 @@ export default function BatchList() {
 
     const handleOpen = (event) => {
         onOpen();
-        console.log(event.currentTarget.getAttribute("data-key"));
+
         setDelID(event.currentTarget.getAttribute("data-key"));
     };
 

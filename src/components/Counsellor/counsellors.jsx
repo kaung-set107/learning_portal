@@ -98,7 +98,7 @@ export default function Counsellors() {
 
     const handleOpen = (event) => {
         onOpen();
-        console.log(event);
+
         setDelID(event);
     };
 

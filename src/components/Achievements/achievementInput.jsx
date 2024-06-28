@@ -13,7 +13,7 @@ const fileTypes = ['JPG', 'PNG', 'GIF']
 export default function Banner() {
     const variant = 'bordered';
     const [types, setTypes] = useState("")
-    console.log(types, 'type')
+
     const [title, setTitle] = useState("");
     const [imageList, setImageList] = useState([])
     const typeList = [{ id: 1, title: "MSI Achievements", value: 'school' }, { id: 2, title: "Student Achievements", value: 'student' }]

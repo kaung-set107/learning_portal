@@ -46,7 +46,7 @@ export default function BatchUpdate() {
                     setCourseId(res.data.data?.course._id)
                     setCourseName(res.data.data?.course.title)
                     setIsSelected(res.data.data?.active)
-                    console.log(res.data.data, 'att')
+
 
                 });
         };

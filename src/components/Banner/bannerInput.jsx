@@ -23,7 +23,7 @@ export default function Banner() {
             webkitRelativePath: i.webkitRelativePath
         }
     })
-    console.log(Last, 'iii')
+    // console.log(Last, 'iii')
     const [view, setView] = useState('')
     const [description, setDescription] = useState('')
     const bSize = { "width": "full", "height": "full" }

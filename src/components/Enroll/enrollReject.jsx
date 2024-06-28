@@ -74,7 +74,7 @@ export default function RejectList() {
       await apiInstance
         .get(`overall-enrollments`, { params: { status: "reject" } })
         .then((res) => {
-          console.log(res.data, "stu wait");
+
           setPendingList(res.data.data);
 
           setDataCount(res.data.counts);
@@ -82,8 +82,8 @@ export default function RejectList() {
             res.data.counts.enrollmentRejectListCount % rowsPerPage === 0
               ? res.data.counts.enrollmentRejectListCount / rowsPerPage
               : Math.floor(
-                  res.data.counts.enrollmentRejectListCount / rowsPerPage
-                ) + 1
+                res.data.counts.enrollmentRejectListCount / rowsPerPage
+              ) + 1
           );
         });
     };
@@ -96,7 +96,7 @@ export default function RejectList() {
   }, [isOpen, rowsPerPage]);
 
   const handleRoute = (id) => {
-    console.log(id, "id");
+
     navigate(`/enroll-reject-detail/${id}`);
   };
   return (

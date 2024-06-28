@@ -98,7 +98,7 @@ export default function BatchList() {
 
     const handleOpen = (event) => {
         onOpen();
-        console.log(event.currentTarget.getAttribute("data-key"));
+
         setDelID(event.currentTarget.getAttribute("data-key"));
     };
 

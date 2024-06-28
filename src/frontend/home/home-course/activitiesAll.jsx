@@ -30,7 +30,7 @@ export default function Activities() {
                 .get(`news-and-activities`)
                 .then((res) => {
                     setNewsList(res.data.data);
-                    console.log(res.data.data, 'att')
+
 
                 });
         };

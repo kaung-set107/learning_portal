@@ -17,15 +17,10 @@ export default function Banner() {
     const variant = 'bordered';
     const [achievementList, setAchievementList] = useState([])
     const [types, setTypes] = useState("")
-    console.log(types, 'type')
     const [title, setTitle] = useState("");
     const [imageList, setImageList] = useState([])
     const typeList = [{ id: 1, title: "MSI Achievements", value: 'school' }, { id: 2, title: "Student Achievements", value: 'student' }]
 
-    console.log(imageList, 'iii')
-    // console.log(
-    //     listData.selectedFile?.split('base64,')[1]
-    // )
     const handleChange = e => {
         let array = []
         for (const item of e) {
@@ -43,7 +38,7 @@ export default function Banner() {
                     setTitle(res.data.data.title)
                     setTypes(res.data.data.type)
 
-                    console.log(res.data.data.image, 'att')
+
 
                 });
         };

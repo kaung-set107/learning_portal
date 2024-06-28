@@ -32,7 +32,7 @@ export default function EmployeeInput() {
   const handleProfile = (e) => {
     if (e.target.files) {
       setProfile(e.target.files[0]);
-      console.log(e.target.files, "file");
+
     }
   };
 

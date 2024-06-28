@@ -18,7 +18,7 @@ export default function CounsellorInput() {
     const [dataList, setDataList] = useState([])
     // const DateFormat = `${date.day}-${date.month}-${date.year}`
 
-    console.log(startTime, 'star')
+
     const AddSection = () => {
 
         setAddSection([

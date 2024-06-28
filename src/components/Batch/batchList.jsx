@@ -85,7 +85,7 @@ export default function BatchList() {
 
     const handleOpen = (event) => {
         onOpen();
-        console.log(event.currentTarget.getAttribute("data-key"));
+
         setDelID(event.currentTarget.getAttribute("data-key"));
     };
 
@@ -95,7 +95,7 @@ export default function BatchList() {
     };
 
     const handleDelete = async () => {
-        console.log(setDelID);
+
         await apiInstance.delete("batches/" + delID).then(() => {
             setBatchList(batchList.filter((item) => item._id !== delID));
             onClose();

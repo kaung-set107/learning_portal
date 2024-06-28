@@ -87,16 +87,16 @@ const Body = () => {
     window.scroll(0, 0)
     const getAssign = async () => {
       await apiInstance.get(`courses`).then((res) => {
-        console.log(res.data.data, "course res");
-        console.log(catList, "cat");
+        // console.log(res.data.data, "course res");
+        // console.log(catList, "cat");
         setCourseList(res.data.data);
         // const count = res.data.data.filter((el) => el.subjects.length);
-        console.log(res.data.data, "cou");
+        // console.log(res.data.data, "cou");
       });
     };
     const getCat = async () => {
       await apiInstance.get(`categories`).then((res) => {
-        console.log(res.data.data, "cat res");
+        // console.log(res.data.data, "cat res");
         setCatList(res.data.data);
         // const count = res.data.data.filter((el) => el.subjects.length);
         // console.log(count, "count");
@@ -113,7 +113,7 @@ const Body = () => {
     };
     const getBanner = async () => {
       await apiInstance.get(`banners`).then((res) => {
-        console.log(res.data.data[0].images, "ev res");
+        // console.log(res.data.data[0].images, "ev res");
         setBannerList(res.data.data[0].images);
         // const count = res.data.data.filter((el) => el.subjects.length);
         // console.log(count, "count");
@@ -128,7 +128,7 @@ const Body = () => {
 
   }, []);
   const handleRoute = (data) => {
-    console.log(data, "da");
+    // console.log(data, "da");
     setId(id);
     setValue(value);
     navigate("/home-course-detail", { state: { data: data } });
@@ -151,20 +151,7 @@ const Body = () => {
           // centerMode={true}
           stopOnHover={true}
           centerSlidePercentage='100'
-          // customLeftArrow={<FontAwesomeIcon
-          //   icon={faChevronLeft}
 
-          //   size="2xl"
-          //   className="absolute top-1/2 text-[#000] hover:text-[#fff] hover:scale-110 duration-700 left-10 max-w-4 cursor-pointer hover:bg-slate-800 p-3 rounded-[100%] w-[30px] h-[30px] "
-          // />}
-          // customRightArrow={
-          //   <FontAwesomeIcon
-          //     icon={faChevronRight}
-
-          //     size="2xl"
-          //     className="absolute top-1/2 text-[#000] hover:text-[#fff] hover:scale-110 duration-700 right-10 max-w-4 cursor-pointer hover:bg-slate-800 p-3 rounded-[100%] w-[30px] h-[30px] "
-          //   />}
-          // customTransition="all .5"
           responsive={responsive}
           className='p-0  bg-transparent'
 
@@ -185,7 +172,7 @@ const Body = () => {
           className="absolute bg-[#0B2743] top-10 sm:top-2 md:top-0 md:-left-[130px] lg:top-16 2xl:top-[90px] -left-[130px] sm:-left-48 lg:-left-[240px] w-[170px] h-[140px] rounded-full md:w-[180px] md:h-[150px] lg:w-[300px] lg:h-[200px] 2xl:w-[300px]"
 
         ></div>
-        <div className='w-[654px] flex flex-col gap-10  mt-1 lg:mt-2'>
+        <div className='w-[654px] flex flex-col gap-10  mt-1  lg:mt-5 xl:mt-10'>
           <ScrollAnimation animateIn='wobble'
           >
             <h1
@@ -250,16 +237,17 @@ const Body = () => {
           <div data-aos={"fade-up"} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-32 md:gap-4 lg:gap-10 2xl:gap-48 items-center justify-center sm:py-4 2xl:py-10 container'>
             {courseList?.slice(0, 4).map((e) => (
               <div
+                key={e._id}
                 onClick={() => handleRoute(e)}
                 data-aos={"fade-up"}
-                className='flex justify-center w-[310px] sm:w-[600px] sm:h-[400px] md:w-full lg:w-[300px] xl:w-[310px] 2xl:w-[400px] md:h-[400px] h-[470px]'
+                className='flex justify-center w-[310px] sm:w-[600px] sm:h-[400px] md:w-full lg:w-[300px] xl:w-[300px] 2xl:w-[400px] md:h-[400px] h-[470px]'
               >
                 <div >
                   <Image
                     // style={{ width: "500px", height: "280px" }}
                     alt={e.image?.originalname}
                     src={getFile({ payload: e.image })}
-                    className='w-[310px] h-full sm:w-[400px]  sm:h-[300px] md:w-[280px] md:h-[200px] lg:w-[280px] lg:h-[250px] xl:w-[300px] xl:h-[260px] 2xl:w-[380px] sm:hover:-translate-y-2 sm:hover:scale-105 duration-500'
+                    className='w-[310px] h-full sm:w-[400px]  sm:h-[300px] md:w-[280px] md:h-[200px] lg:w-[280px] lg:h-[250px] xl:w-[290px] xl:h-[260px] 2xl:w-[380px] sm:hover:-translate-y-2 sm:hover:scale-105 duration-500'
                   />
                   <div className='flex p-5 flex-col justify-start flex-grow sm:w-[300px] xl:w-[280px]'>
                     <span className='w-[280px]  text-[14px] 2xl:text-[20px] font-semibold text-[#B72041] flex'>MSI Academy
@@ -309,7 +297,7 @@ const Body = () => {
             ))}
           </div>
 
-          <Link href='/home-course' data-aos={"zoom-in"} className='flex justify-center py-5 pt-20 sm:pt-[100px] md:pt-[25px] lg:pt-[30px] 2xl:pt-[40px] '>
+          <Link href='/home-course' data-aos={"zoom-in"} className='flex justify-center py-5 pt-20 sm:pt-[100px] md:pt-[50px] lg:pt-[70px] xl:pt-[90px] 2xl:pt-[100px] '>
             <span className=' text-[16px] sm:text-[20px] py-2 text-[#1F4164] hover:text-danger font-semibold text-center cursor-pointer border-1 border-[#1F4164] w-[110px] sm:w-[130px] rounded-lg hover:border-danger-400'>
               See All
             </span>
@@ -330,13 +318,13 @@ const Body = () => {
         </div >
 
         {/* Web */}
-        < div className='hidden sm:grid sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 sm:gap-10 lg:gap-5 items-center justify-around flex-wrap container pr-[33px]' data-aos={"fade-up"}>
+        < div className='hidden sm:grid sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 sm:gap-10 lg:gap-3 items-center justify-around flex-wrap container pr-[33px]' data-aos={"fade-up"}>
           {eventList?.slice(0, 3)?.map((b, index) => (
             <Link href={`/events/${b._id}`} key={index}>
               <div className='relative cursor-pointer hover:translate-y-1 hover:scale-105 duration-500'>
                 <Image
                   src={`data:image/jpeg;base64,${b?.image}`}
-                  className='sm:w-[300px] sm:h-[400px] md:w-[340px] md:h-[511px] lg:w-[420px] lg:h-[450px] 2xl:w-[430px] 2xl:h-[550px]  rounded-[24px]'
+                  className='sm:w-[300px] sm:h-[400px] md:w-[340px] md:h-[511px] lg:w-[420px] lg:h-[450px] xl:w-[330px] xl:h-[480px] 2xl:w-[430px] 2xl:h-[550px]  rounded-[24px]'
                 // width={620}
                 // height={354}
                 />

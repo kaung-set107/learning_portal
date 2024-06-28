@@ -59,10 +59,7 @@ const SubjectDetail = (props) => {
     const getSubjects = async () => {
       await apiInstance.get("subjects").then((res) => {
         setFunQuizData(res.data.data.filter((el) => el._id === SubidfromCourse)[0])
-        console.log(
-          res.data.data.filter((el) => el._id === SubidfromCourse)[0].course,
-          "c subject"
-        );
+
         setCourseData(res.data.data.filter((el) => el._id === SubidfromCourse)[0].course)
         const Filter = res.data.data.filter((el) => el._id === SubidfromCourse)[0];
         // console.log(JSON.parse(Filter), 'sub detail')
@@ -86,7 +83,7 @@ const SubjectDetail = (props) => {
   }, []);
 
   const handleFunQuizPage = (val, stu) => {
-    console.log(stu, 'hfjsakdsnjkj')
+
     navigate(`/fun-quiz/${val?._id}`, { state: { FunQuizData: val?.quiz, StudentID: val?.student, SubID: SubidfromCourse } })
 
   }

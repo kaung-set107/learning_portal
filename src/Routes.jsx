@@ -30,9 +30,6 @@ import CategoryList from "./pages/Category/categoryList.jsx";
 import Course from "./pages/Course/Course";
 import CourseAdd from "./pages/Course/CourseAdd";
 import CourseUpdate from "./pages/Course/CourseUpdate";
-import Leave from "./pages/Leave/Leave";
-import LeaveAdd from "./pages/Leave/LeaveAdd";
-import LeaveUpdate from "./pages/Leave/LeaveUpdate";
 //Student
 import Student from "./frontend/ByUser/index";
 import StudentAssign from "./frontend/ByUser/studentAssign";

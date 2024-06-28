@@ -79,7 +79,6 @@ export default function EmployeeTable() {
 
   const handleOpen = (event) => {
     onOpen();
-    console.log(event.currentTarget.getAttribute("data-key"));
     setDelID(event.currentTarget.getAttribute("data-key"));
   };
 
@@ -89,7 +88,7 @@ export default function EmployeeTable() {
   };
 
   const handleDelete = async () => {
-    console.log(setDelID);
+
     await apiInstance.delete("instructors/" + delID).then(() => {
       setEmpList(empList.filter((item) => item._id !== delID));
 

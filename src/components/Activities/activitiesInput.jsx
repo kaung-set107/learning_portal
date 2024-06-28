@@ -7,8 +7,6 @@ import { faCircleChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { FileUploader } from 'react-drag-drop-files'
 import Swal from "sweetalert2";
-import { Select, SelectItem } from '@nextui-org/select'
-import FileBase64 from 'react-file-base64';
 const fileTypes = ['JPG', 'PNG', 'GIF']
 
 export default function ActivitiesInput() {
@@ -18,17 +16,6 @@ export default function ActivitiesInput() {
     const [imageList1, setImageList1] = useState([])
     const [imageList2, setImageList2] = useState([])
     const [imageList3, setImageList3] = useState([])
-    // const Last = imageList.map((i) => {
-    //     return {
-    //         lastModified: i.lastModified,
-    //         lastModifiedDate: i.lastModifiedDate,
-    //         name: i.name,
-    //         size: i.size,
-    //         type: i.type,
-    //         webkitRelativePath: i.webkitRelativePath
-    //     }
-    // })
-    // console.log(Last, 'iii')
     const [view, setView] = useState('')
     const [description1, setDescription1] = useState('')
     const [description2, setDescription2] = useState('')

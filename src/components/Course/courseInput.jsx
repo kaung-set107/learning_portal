@@ -33,22 +33,22 @@ export default function DepartmentInputForm() {
   } = useForm();
 
   const AddVideo = (val) => {
-    console.log(val, "val");
+    // console.log(val, "val");
     const newData = {
       links: val,
     };
     setNewVideoLink([...newVideoLink, newData]);
-    console.log([...newVideoLink, newData], "res");
+    // console.log([...newVideoLink, newData], "res");
   };
 
   const DeleteVideo = async (val) => {
-    console.log(val, "val");
+    // console.log(val, "val");
     setNewVideoLink(newVideoLink.filter((el) => el.links !== val));
   };
   const handleImage = (e) => {
     if (e.target.files) {
       setImage(e.target.files[0]);
-      console.log(e.target.files, "file");
+      // console.log(e.target.files, "file");
     }
   };
 

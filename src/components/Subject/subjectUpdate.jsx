@@ -34,6 +34,7 @@ export default function SubjectInputForm() {
   const [instructorIDList, setInstructorIDList] = useState([])
   const [oldVideoLink, setOldVideoLink] = useState([])
   const [subImage, setSubImage] = useState('')
+  const [oriInstructorList, setOriInstructorList] = useState([])
   const AddVideo = (val) => {
     console.log(val, "val");
     const newData = {
@@ -53,11 +54,13 @@ export default function SubjectInputForm() {
     // console.log(val, "val");
     setNewVideoLink(newVideoLink.filter((el) => el.links !== val));
   };
+
+  console.log(instructors, "val");
   const create = () => {
     const formData = new FormData();
 
     formData.append("title", title);
-    formData.append("course", course);
+    formData.append("course", courseId);
     formData.append("description", desc);
     formData.append("image", image ? image : subImage);
     formData.append("instructors", instructors ? JSON.stringify({ data: instructors?.split(',') }) : JSON.stringify({ data: instructorIDList }));
@@ -94,6 +97,11 @@ export default function SubjectInputForm() {
       });
   };
   useEffect(() => {
+    const getInstructorList = async () => {
+      await apiInstance
+        .get("instructors")
+        .then((res) => setOriInstructorList(res.data.data));
+    };
     const getCourseList = async () => {
       await apiInstance.get('courses')
         .then(res => {
@@ -129,6 +137,7 @@ export default function SubjectInputForm() {
 
         })
     }
+    getInstructorList()
     getSubjectList()
     getCourseList()
   }, [])
@@ -173,21 +182,7 @@ export default function SubjectInputForm() {
             >
               Course
             </label>
-            <select
-
-              onChange={(e) => setCourse(e.target.value)}
-
-              className='bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-xl m-0 px-0 py-2 focus:ring-gray-500 focus:border-gray-500 block w-full p-3 dark:bg-default-100 dark:border-gray-600 dark:placeholder-gray-100 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500'
-            >
-              <option hidden>{course}</option>
-              {courseList.map((item) => (
-                <option key={item._id} value={item._id}>
-                  {item.title}
-                </option>
-              ))}
-              {/* <option value="Male">Department 1</option>
-                <option value="Female">Department 2</option> */}
-            </select>
+            <Input type='text' variant='bordered' value={course} isDisabled />
           </div>
           <div className='block w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 mt-2'>
             <label
@@ -196,7 +191,7 @@ export default function SubjectInputForm() {
               Instructor
             </label>
             <Select
-              label={instructorList.map((i) => (i.name))}
+              label={instructors ? '' : instructorList.map((i) => (`${i.name} ,`))}
               // placeholder="Select Instructor"
               selectionMode="multiple"
               className="w-full"
@@ -206,7 +201,7 @@ export default function SubjectInputForm() {
 
             >
 
-              {instructorList.map((item) => (
+              {oriInstructorList.map((item) => (
                 <SelectItem key={item._id} value={item._id}>
                   {item.name}
                 </SelectItem>
@@ -297,14 +292,14 @@ export default function SubjectInputForm() {
         </div> */}
 
         <div className='flex justify-center gap-10 py-4'>
-          <Button color='danger'>
-            <Link to='/position'>Cancel</Link>
+          <Button color='danger' >
+            <Link to='/position' className='text-[#fff]'>Cancel</Link>
           </Button>
           <Button color='primary' type='submit'>
             Update
           </Button>
         </div>
       </form >
-    </div>
+    </div >
   );
 }

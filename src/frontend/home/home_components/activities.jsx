@@ -14,15 +14,7 @@ import AOS from 'aos';
 import "aos/dist/aos.css";
 import CarouselView from '../../../util/Carousel'
 export default function Activities() {
-    const data = [
-        { id: 1, title: 'MSI Students Discussion For Better Thinking', img: Act1 },
-        { id: 2, title: 'MSI Students Discussion For Better Thinking', img: Act2 },
-        { id: 3, title: 'MSI Students Discussion For Better Thinking', img: Act3 },
-        { id: 4, title: 'MSI Students Discussion For Better Thinking', img: Act4 },
-        { id: 5, title: 'MSI Students Discussion For Better Thinking', img: Act5 },
-        { id: 6, title: 'MSI Students Discussion For Better Thinking', img: Act6 },
 
-    ]
     const [newsList, setNewsList] = useState([])
     useEffect(() => {
         AOS.init({
@@ -38,7 +30,7 @@ export default function Activities() {
                 .get(`news-and-activities`)
                 .then((res) => {
                     setNewsList(res.data.data);
-                    console.log(res.data.data, 'att')
+
 
                 });
         };

@@ -29,22 +29,10 @@ import StickyBox from "react-sticky-box";
 import { Image, Divider } from "@nextui-org/react";
 
 export default function DepartmentUpdateInput() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const {
-    isOpen: isRejOpen,
-    onOpen: onRejOpen,
-    onOpenChange: onRejOpenChange,
-    onClose: onRejClose,
-  } = useDisclosure();
-  const [scrollBehavior, setScrollBehavior] = React.useState("outside");
+
   const Id = useLocation().pathname.split("/")[2];
   const [student, setStudent] = useState("");
-  const [studentAppr, setStudentAppr] = useState("");
-  const [studentRej, setStudentRej] = useState("");
   const [img, setImg] = useState("");
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [description, setDescription] = useState("");
 
   useEffect(() => {
     const getOverAllStudentDetail = async () => {
@@ -52,16 +40,13 @@ export default function DepartmentUpdateInput() {
       await apiInstance
         .get(`overall-enrollments`, { params: { status: "reject" } })
         .then((res) => {
-          console.log(
-            res.data.data.filter((el) => el._id === Id)[0],
-            "overall"
-          );
+
           setStudent(res.data.data.filter((el) => el._id === Id)[0]);
           const Img = getFile({
             payload: res.data.data.filter((el) => el._id === Id)[0]?.student
               ?.image,
           });
-          console.log(Img, "ii");
+
           setImg(Img);
         });
     };
@@ -170,7 +155,7 @@ export default function DepartmentUpdateInput() {
                   fontWeight: "500",
                   fontSize: "18px",
                 }}
-                // className='sm:ml-10 md:ml-5'
+              // className='sm:ml-10 md:ml-5'
               >
                 {student?.subject?.title}
               </span>
@@ -189,7 +174,7 @@ export default function DepartmentUpdateInput() {
                   fontWeight: "500",
                   fontSize: "18px",
                 }}
-                // className='sm:ml-10 md:ml-5'
+              // className='sm:ml-10 md:ml-5'
               >
                 {new Date(student.student?.date).toLocaleDateString("en-US", {
                   day: "numeric",
@@ -212,7 +197,7 @@ export default function DepartmentUpdateInput() {
                   fontWeight: "500",
                   fontSize: "18px",
                 }}
-                // className='sm:ml-10 md:ml-5'
+              // className='sm:ml-10 md:ml-5'
               >
                 Lorem ipsum dolor sit amet consectetur. Lectus eros molestie id
                 eget nisl leo. Tempor cursus diam venenatis maecenas
@@ -233,7 +218,7 @@ export default function DepartmentUpdateInput() {
                   fontWeight: "500",
                   fontSize: "18px",
                 }}
-                // className='sm:ml-10 md:ml-5'
+              // className='sm:ml-10 md:ml-5'
               >
                 Lorem ipsum dolor sit amet consectetur. Lectus eros molestie id
                 eget nisl leo. Tempor cursus diam venenatis maecenas

@@ -44,7 +44,7 @@ const About = () => {
     <div className=''>
       <MSINav />
       {/* Intro MSI */}
-      <div className='flex 2xl:hidden items-center  justify-around gap-48 flex-wrap h-screen w-full sm:w-full md:w-[768px] lg:w-[1024px] lg:h-[615px] xl:w-[1280px] xl:h-[615px]   md:h-[555px] ' style={{ backgroundImage: `url(${HeadImg})`, backgroundRepeat: 'no-repeat', }}>
+      <div className='flex 2xl:hidden items-center  justify-around gap-48 flex-wrap h-screen w-full sm:w-full md:w-[768px] lg:w-[1024px] lg:h-[615px] xl:w-[1280px] xl:h-[615px]   md:h-[555px] ' style={{ backgroundImage: `url(${HeadImg})`, backgroundRepeat: 'no-repeat' }}>
         <div className='flex flex-col gap-32 overflow-hidden'>
           <div className='flex flex-col justify-center left-[30px] md:left-[50px] md:top-[385px] md:right-[50px] lg:top-[190px] lg:left-[90px] lg:right:-[90px] xl:top-[200px] xl:left-[150px] xl:right-[150px] absolute md:w-[600px] lg:w-[900px] '>
             <span className='text-[30px] md:text-[30px] lg:text-[40px] 2xl:[48px] font-medium text-[#fff] flex justify-center'>"Explore Limitless Opportunities:</span>

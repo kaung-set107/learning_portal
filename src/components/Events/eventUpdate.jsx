@@ -55,7 +55,7 @@ export default function Eventupdate() {
     const handleSpeakerImage = (e) => {
         const file = e.target.files[0];
         setSpeakerImage(e.target.files[0]);
-        console.log(e.target.files[0], 'lll')
+
         if (file && file.type.startsWith('image/')) {
             const url = URL.createObjectURL(file);
             setShowSpeakerImg(url);

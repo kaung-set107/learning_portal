@@ -40,35 +40,30 @@ export default function Banner() {
             webkitRelativePath: i.webkitRelativePath
         }
     })
-    console.log(totalImg.map((i) => {
-        return {
-            lastModified: i.lastModified,
-            lastModifiedDate: i.lastModifiedDate,
-            name: i.name,
-            size: i.size,
-            type: i.type,
-            webkitRelativePath: i.webkitRelativePath
-        }
-    }), 'tot')
-    console.log([...bannerList, ...oriImgList.map((i) => {
-        return {
-            lastModified: i.lastModified,
-            lastModifiedDate: i.lastModifiedDate,
-            name: i.name,
-            size: i.size,
-            type: i.type,
-            webkitRelativePath: i.webkitRelativePath
-        }
-    })], 'when image new')
+    // console.log(totalImg.map((i) => {
+    //     return {
+    //         lastModified: i.lastModified,
+    //         lastModifiedDate: i.lastModifiedDate,
+    //         name: i.name,
+    //         size: i.size,
+    //         type: i.type,
+    //         webkitRelativePath: i.webkitRelativePath
+    //     }
+    // }), 'tot')
+    // console.log([...bannerList, ...oriImgList.map((i) => {
+    //     return {
+    //         lastModified: i.lastModified,
+    //         lastModifiedDate: i.lastModifiedDate,
+    //         name: i.name,
+    //         size: i.size,
+    //         type: i.type,
+    //         webkitRelativePath: i.webkitRelativePath
+    //     }
+    // })], 'when image new')
 
     const [view, setView] = useState('')
     const [description, setDescription] = useState('')
-    const handleDelete = (index) => {
 
-        const filter = bannerList.filter((el, ind) => ind !== index)
-        setBannerList(filter)
-        console.log(filter, 'filter')
-    }
 
     const handleDeleteNew = (index) => {
         // console.log(index)
@@ -77,12 +72,12 @@ export default function Banner() {
         const sec = imageList.filter((el, ind) => ind !== index)
         setImageList(sec)
         setOriImgList(filter)
-        console.log(filter, 'img')
+
     }
     useEffect(() => {
         const getBanner = async () => {
             await apiInstance.get(`banners/${ID}`).then((res) => {
-                console.log(res.data.data.images, "ev res");
+
                 setBannerList(res.data.data.images);
                 setTitle(res.data.data.section)
                 setDescription(res.data.data.description)
@@ -97,7 +92,7 @@ export default function Banner() {
     //     listData.selectedFile?.split('base64,')[1]
     // )
     const handleChange = event => {
-        console.log(event, 'file')
+
         let array = []
         for (const item of event) {
             array.push(item)
