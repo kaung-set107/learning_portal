@@ -166,10 +166,10 @@ const Body = () => {
       </div>
 
 
-      < div data-aos={"fade-up"} className='flex justify-around pl-[26px]  sm:pl-[57px] pr-[26px] sm:pr-[57px] pt-[20px] sm:pt-[30px] md:pt-[10px] relative  overflow-hidden xl:container 2xl:container' >
+      < div data-aos={"fade-up"} className='flex justify-around pl-[26px]  sm:pl-[57px] pr-[26px] sm:pr-[57px] pt-[60px] sm:pt-[30px] md:pt-[10px] xl:pt-[20px] 2xl:pt-[50px] relative  overflow-hidden xl:container 2xl:container' >
 
         <div
-          className="absolute bg-[#0B2743] top-10 sm:top-2 md:top-0 md:-left-[130px] lg:top-16 2xl:top-[90px] -left-[130px] sm:-left-48 lg:-left-[240px] w-[170px] h-[140px] rounded-full md:w-[180px] md:h-[150px] lg:w-[300px] lg:h-[200px] 2xl:w-[300px]"
+          className="absolute bg-[#0B2743] top-12 sm:top-2 md:top-0 md:-left-[130px] lg:top-16 2xl:top-[90px] -left-[130px] sm:-left-48 lg:-left-[240px] w-[170px] h-[140px] rounded-full md:w-[180px] md:h-[150px] lg:w-[300px] lg:h-[200px] 2xl:w-[300px]"
 
         ></div>
         <div className='w-[654px] flex flex-col gap-10  mt-1  lg:mt-5 xl:mt-10'>
@@ -224,69 +224,66 @@ const Body = () => {
       {/* Event */}
       <ScrollAnimation animateIn='fadeIn'
         animateOut='fadeOut'
-        scrollableParentSelector='#cou' >
-        < div className='flex flex-col p-5 md:p-5 container  relative ' id='cou' data-aos={"fade-up"} >
+        scrollableParentSelector='#cou'>
+        < div className='flex flex-col p-5 md:p-5  relative container' id='cou' >
 
           <h1
-            className=' p-5 md:p-10  flex justify-center text-[30px] sm:text-[40px] font-[semibold] py-1'
+            className=' p-5 md:p-10  flex justify-center text-[30px] sm:text-[40px] font-[semibold] py-5'
             style={{ color: "#BC1F40", fontWeight: "900" }}
           >
             Courses We Offer
           </h1>
 
-          <div data-aos={"fade-up"} className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-32 md:gap-4 lg:gap-10 2xl:gap-48 items-center justify-center sm:py-4 2xl:py-10 container'>
-            {courseList?.slice(0, 4).map((e) => (
+          <div className='flex flex-col sm:grid sm:grid-cols-2 md:grid-cols-3  lg:grid-cols-3 xl:grid-cols-4 xl:gap-5 gap-2 sm:gap-4 md:gap-12 lg:gap-5 2xl:gap-10  items-center justify-center md:justify-start md:items-start sm:py-10 2xl:py-20'>
+            {courseList.slice(0, 8)?.map((e) => (
               <div
-                key={e._id}
                 onClick={() => handleRoute(e)}
-                data-aos={"fade-up"}
-                className='flex justify-center w-[310px] sm:w-[600px] sm:h-[400px] md:w-full lg:w-[300px] xl:w-[300px] 2xl:w-[400px] md:h-[400px] h-[470px]'
+
+                className='w-[310px] sm:w-[280px]  md:w-[260px] lg:w-[320px] xl:w-[300px] xl:h-[470px] 2xl:w-[400px] md:h-[480px] h-[470px]'
               >
                 <div >
                   <Image
                     // style={{ width: "500px", height: "280px" }}
                     alt={e.image?.originalname}
                     src={getFile({ payload: e.image })}
-                    className='w-[310px] h-full sm:w-[400px]  sm:h-[300px] md:w-[280px] md:h-[200px] lg:w-[280px] lg:h-[250px] xl:w-[290px] xl:h-[260px] 2xl:w-[380px] sm:hover:-translate-y-2 sm:hover:scale-105 duration-500'
+                    className='w-[310px] h-full md:w-[250px] md:h-[180px] lg:w-[320px] lg:h-[270px] xl:w-[320px] xl:h-[270px]  2xl:w-[370px] sm:hover:-translate-y-2 sm:hover:scale-105 duration-500'
                   />
-                  <div className='flex p-5 flex-col justify-start flex-grow sm:w-[300px] xl:w-[280px]'>
-                    <span className='w-[280px]  text-[14px] 2xl:text-[20px] font-semibold text-[#B72041] flex'>MSI Academy
+                  <div className='flex p-5 flex-col justify-start flex-grow '>
+                    <span className='md:w-[230px] lg:w-[280px] text-[14px] font-semibold text-[#B72041] flex'>MSI Academy
                     </span>
                     <span
                       style={{
                         fontFamily: "Inter",
                         fontWeight: "600px",
-                        fontSize: "23px",
+                        fontSize: "20px",
                         letterSpacing: "-0.96px",
                       }}
-                      className='sm:w-[320px] md:w-[290px] xl:h-auto py-2'
-
+                      className='sm:w-full md:w-[240px] md:h-[50px] lg:w-[290px] lg:h-[60px]'
                     >
                       {e.title}
                     </span>
                     <div
                       style={{
-                        fontSize: "18px",
+                        fontSize: "15px",
                         fontWeight: "400px",
                         // width: "400px",
                         // height: "auto",
                       }}
-                      className='sm:w-[320px] md:w-[280px] xl:w-[260px] h-[40px]'
-
+                      className='md:w-[230px] md:h-[35px] lg:w-[280px] lg:h-[40px]'
                     >
                       {e?.description.substring(0, 50)}...
                     </div>
                     {/* card footer */}
                     <div
-                      className='py-5 flex justify-center gap-2 md:w-[250px] w-[290px]'
+                      className='py-5 flex sm:flex-col lg:flex-row justify-center gap-2 md:w-[240px] lg:w-[260px] w-[290px]'
 
                     >
-                      <div className='h-[24px] w-full md:w-[200px]  text-start bg-[#ECEFFF] rounded-2xl md:text-[12px] text-[13px] 2xl:text-[16px] font-medium'>
+                      <div className='h-[24px] w-full sm:w-[150px] md:w-[200px] lg:w-[250px]  text-start bg-[#ECEFFF] rounded-2xl md:text-[12px] text-[13px] font-medium'>
                         <span>Duration -</span>
                         <span style={{ color: "#262FD9" }}>{e.durationValue ? e.durationValue : 0} {e.durationType ? e.durationType : 'months'}</span>
                       </div>
 
-                      <div className='h-[24px] w-full md:w-[200px]  text-start bg-[#FFF3F6] rounded-2xl md:text-[12px] text-[13px] 2xl:text-[16px] font-medium'>
+                      <div className='h-[24px] w-full sm:w-[150px] md:w-[200px] lg:w-[250px]  text-start bg-[#FFF3F6] rounded-2xl md:text-[12px] text-[13px] font-medium'>
                         Price - <span style={{ color: "#262FD9" }}>{e.fee ? e.fee : 0} MMK</span>
                       </div>
 
@@ -297,11 +294,7 @@ const Body = () => {
             ))}
           </div>
 
-          <Link href='/home-course' data-aos={"zoom-in"} className='flex justify-center py-5 pt-20 sm:pt-[100px] md:pt-[50px] lg:pt-[70px] xl:pt-[90px] 2xl:pt-[100px] '>
-            <span className=' text-[16px] sm:text-[20px] py-2 text-[#1F4164] hover:text-danger font-semibold text-center cursor-pointer border-1 border-[#1F4164] w-[110px] sm:w-[130px] rounded-lg hover:border-danger-400'>
-              See All
-            </span>
-          </Link>
+
         </div >
       </ScrollAnimation >
       < div data-aos={"fade-up"} style={{ background: "var(--blue-pale, #F4FAFF)" }} className='flex flex-col gap-10 sm:gap-32 relative container h-auto py-10 ' >

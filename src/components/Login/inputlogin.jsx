@@ -382,7 +382,7 @@ export default function Login() {
         )}
         {/* Register Page */}
         {showRegisterPage && (
-          <div className='pl-10 pr-10  flex flex-col'>
+          <div className='pl-3 sm:pl-10 pr-10  flex flex-col container'>
 
             <div className=' flex flex-col pl-9 sm:pl-18 items-center gap-4 pt-4 sm:pt-4'>
               <span className=' text-[#262626] text-[18px] sm:text-[32px] lg:text-[20px] xl:text-[23px] 2xl:text-[25px] font-semibold font-inter text-center'>Student Registration</span>

@@ -46,12 +46,12 @@ const About = () => {
       {/* Intro MSI */}
       <div className='flex 2xl:hidden items-center  justify-around gap-48 flex-wrap h-screen w-full sm:w-full md:w-[768px] lg:w-[1024px] lg:h-[615px] xl:w-[1280px] xl:h-[615px]   md:h-[555px] ' style={{ backgroundImage: `url(${HeadImg})`, backgroundRepeat: 'no-repeat' }}>
         <div className='flex flex-col gap-32 overflow-hidden'>
-          <div className='flex flex-col justify-center left-[30px] md:left-[50px] md:top-[385px] md:right-[50px] lg:top-[190px] lg:left-[90px] lg:right:-[90px] xl:top-[200px] xl:left-[150px] xl:right-[150px] absolute md:w-[600px] lg:w-[900px] '>
+          <div className='flex flex-col justify-center left-[30px] md:left-[50px] sm:top-[300px] top-[280px] md:top-[385px] md:right-[50px] lg:top-[190px] lg:left-[90px] lg:right:-[90px] xl:top-[200px] xl:left-[150px] xl:right-[150px] absolute md:w-[600px] lg:w-[900px] '>
             <span className='text-[30px] md:text-[30px] lg:text-[40px] 2xl:[48px] font-medium text-[#fff] flex justify-center'>"Explore Limitless Opportunities:</span>
             <span className='text-[30px] md:text-[30px] lg:text-[40px] 2xl:[48px] font-medium text-[#fff] flex justify-center'>Your Gateway to Overseas MSI Education"</span>
 
           </div>
-          <Link href='/booking' className='mt-[230px] md:mt-[190px] lg:mt-[150px] xl:mt-[160px] 2xl:mt-[170px] flex justify-center'>
+          <Link href='/booking' className='mt-[150px] sm:mt-[230px] md:mt-[190px] lg:mt-[150px] xl:mt-[160px] 2xl:mt-[170px] flex justify-center'>
             <Button className='w-[150px] md:w-[140px] lg:w-[190px] 2xl:w-[229px] h-[55px] md:h-[45px] lg:h-[60px] 2xL:h-[66px] bg-[#0B2743] text-[#fff] text-[16px] md:text-[16px] lg:text-[20px] 2xl:text-[24px] font-medium'>Book Now</Button>
           </Link>
         </div>
@@ -120,14 +120,14 @@ const About = () => {
           </div>
         </div>
         {/* Background Color */}
-        <div className='overflow-hidden md:pt-[0px] 2xl:pt-[150px] pt-[90px]'>
+        <div className='hidden md:block overflow-hidden md:pt-[0px] 2xl:pt-[150px] pt-[90px]'>
 
           <div className='w-full md:w-[1980px] lg:w-[1500px]  md:h-[850px] lg:h-[700px] xl:h-[460px] bg-[#0B2743] overflow-hidden'>
           </div>
           <div className='hidden xl:flex 2xl:hidden w-[238px] h-[238px] bg-[#0B2743] rounded-[50%] -left-[150px] md:top-[1220px] lg:top-[1200px] xl:top-[1150px] 2xl:top-[1360px] absolute'></div>
         </div>
         {/* Founder For 768px */}
-        <div className='w-[446px] md:w-[750px] 2xl:w-full md:container h-[420px] hidden md:flex flex-col gap-10 justify-center items-center pt-[660px] md:pt-[290px] '>
+        <div className='w-[446px] md:w-[750px] 2xl:w-full md:container h-[420px] hidden md:flex flex-col gap-10 justify-center items-center pt-[60px] sm:pt-[240px] md:pt-[290px] '>
           <h1 className='flex justify-center items-center text-[40px] text-[#1C4064] font-[semibold] '>
             Founders of MSI Academy
           </h1>
